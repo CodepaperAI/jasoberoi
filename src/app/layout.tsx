@@ -1,30 +1,32 @@
 import type { Metadata } from "next";
-import { Oswald, Rajdhani } from "next/font/google";
+import { Archivo_Black, Barlow } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
 import { organizationJsonLd } from "@/lib/schema";
 import { absoluteUrl, buildMetadata } from "@/lib/seo";
+import { homePage } from "@/lib/site";
 import "./globals.css";
 
-const oswald = Oswald({
-  variable: "--font-oswald",
+const archivoBlack = Archivo_Black({
+  variable: "--font-archivo-black",
   subsets: ["latin"],
+  weight: "400",
   display: "swap",
 });
 
-const rajdhani = Rajdhani({
-  variable: "--font-rajdhani",
+const barlow = Barlow({
+  variable: "--font-barlow",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
 export const metadata: Metadata = buildMetadata({
-  title: "The Oberoi Group | White Rock & Lower Mainland Real Estate Advisors",
-  description:
-    "The Oberoi Group is a RE/MAX real estate team advising clients across White Rock, South Surrey, Surrey, Vancouver, and the Lower Mainland.",
-  path: "/",
+  title: homePage.title,
+  description: homePage.description,
+  path: homePage.canonicalPath,
+  keywords: homePage.keywords,
 });
 
 export default function RootLayout({
@@ -34,8 +36,8 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${oswald.variable} ${rajdhani.variable} h-full scroll-smooth antialiased`}
+      lang="en-CA"
+      className={`${archivoBlack.variable} ${barlow.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full bg-background text-foreground">
         <JsonLd data={organizationJsonLd(absoluteUrl("/"))} />

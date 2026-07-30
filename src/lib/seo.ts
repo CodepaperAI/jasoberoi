@@ -19,7 +19,7 @@ export function buildMetadata({
   title,
   description,
   path,
-  image = "/assets/images/optimized/hero-desktop.jpg",
+  image = "/oberizon/optimized/hero-commercial.webp",
   keywords = [],
 }: MetadataInput): Metadata {
   const url = absoluteUrl(path);
@@ -54,7 +54,7 @@ export function buildMetadata({
           url: imageUrl,
           width: 1200,
           height: 675,
-          alt: `${siteConfig.name} real estate advisors`,
+          alt: `${siteConfig.name} construction project`,
         },
       ],
       locale: "en_CA",

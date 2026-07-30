@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: page.description,
     path: page.canonicalPath,
     image: page.heroImage,
+    keywords: page.keywords,
   });
 }
 

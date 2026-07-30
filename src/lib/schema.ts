@@ -1,10 +1,16 @@
-import { siteConfig, type PseoPage, type SitePage } from "@/lib/site";
+import {
+  aiFaqs,
+  serviceAreas,
+  siteConfig,
+  type ConstructionPseoPage,
+  type SitePage,
+} from "@/lib/site";
 import { absoluteUrl } from "@/lib/seo";
 
 export function organizationJsonLd(url: string) {
   return {
     "@context": "https://schema.org",
-    "@type": ["RealEstateAgent", "LocalBusiness"],
+    "@type": ["LocalBusiness", "GeneralContractor"],
     "@id": `${url}#organization`,
     name: siteConfig.name,
     legalName: siteConfig.legalName,
@@ -13,23 +19,27 @@ export function organizationJsonLd(url: string) {
     email: siteConfig.email,
     address: {
       "@type": "PostalAddress",
-      streetAddress: "306 - 1493 Foster Street",
+      streetAddress: "Suite 305, 1493 Foster St",
       addressLocality: "White Rock",
       addressRegion: "BC",
+      postalCode: "V4B 0C4",
       addressCountry: "CA",
     },
-    areaServed: [
-      "White Rock",
-      "South Surrey",
-      "Surrey",
-      "Vancouver",
-      "Burnaby",
-      "Richmond",
-      "Delta",
-      "Langley",
-      "Abbotsford",
+    areaServed: serviceAreas.map((area) => ({
+      "@type": "City",
+      name: area.city,
+      addressRegion: "BC",
+      addressCountry: "CA",
+    })),
+    image: absoluteUrl("/oberizon/optimized/hero-commercial.webp"),
+    logo: absoluteUrl("/oberizon/optimized/oberizon-logo.png"),
+    priceRange: "$$$",
+    sameAs: [
+      "https://www.instagram.com/oberizon_construction",
+      "https://www.facebook.com/Oberizon",
+      "https://www.tiktok.com/@oberoi_construction",
+      "https://www.youtube.com/channel/UCXnubLHaLMq3oBTR8w0ylUg",
     ],
-    image: absoluteUrl("/assets/images/optimized/hero-desktop.jpg"),
   };
 }
 
@@ -53,7 +63,9 @@ export function pageJsonLd(page: SitePage) {
     "@id": `${absoluteUrl(page.canonicalPath)}#webpage`,
     url: absoluteUrl(page.canonicalPath),
     name: page.title,
+    headline: page.heading,
     description: page.description,
+    keywords: page.keywords.join(", "),
     isPartOf: {
       "@id": `${absoluteUrl("/")}#website`,
     },
@@ -63,13 +75,14 @@ export function pageJsonLd(page: SitePage) {
   };
 }
 
-export function pseoPageJsonLd(page: PseoPage) {
+export function constructionServiceJsonLd(page: ConstructionPseoPage) {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
     "@id": `${absoluteUrl(page.path)}#service`,
     name: page.h1,
     description: page.description,
+    serviceType: page.service.name,
     provider: {
       "@id": `${absoluteUrl("/")}#organization`,
     },
@@ -79,13 +92,12 @@ export function pseoPageJsonLd(page: PseoPage) {
       addressRegion: "BC",
       addressCountry: "CA",
     },
-    serviceType: page.service.name,
-    keywords: page.keywordCluster.join(", "),
+    keywords: page.keywords.join(", "),
     url: absoluteUrl(page.path),
   };
 }
 
-export function pseoWebPageJsonLd(page: PseoPage) {
+export function constructionWebPageJsonLd(page: ConstructionPseoPage) {
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -94,14 +106,14 @@ export function pseoWebPageJsonLd(page: PseoPage) {
     name: page.title,
     headline: page.h1,
     description: page.description,
-    keywords: page.keywordCluster.join(", "),
+    keywords: page.keywords.join(", "),
     isPartOf: {
       "@id": `${absoluteUrl("/")}#website`,
     },
     about: {
       "@id": `${absoluteUrl(page.path)}#service`,
     },
-    primaryImageOfPage: absoluteUrl("/assets/images/optimized/hero-desktop.jpg"),
+    primaryImageOfPage: absoluteUrl(page.service.image),
   };
 }
 
@@ -118,7 +130,7 @@ export function breadcrumbJsonLd(items: Array<{ label: string; href: string }>) 
   };
 }
 
-export function faqJsonLd(faqs: Array<{ question: string; answer: string }>) {
+export function faqJsonLd(faqs: Array<{ question: string; answer: string }> = aiFaqs) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",

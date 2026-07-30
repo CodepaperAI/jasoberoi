@@ -4,10 +4,16 @@ export type NavItem = {
   items?: Array<{ label: string; href: string }>;
 };
 
+export type Feature = {
+  title: string;
+  text: string;
+};
+
 export type SitePage = {
   slug: string;
   title: string;
   description: string;
+  keywords: string[];
   eyebrow: string;
   heading: string;
   subheading: string;
@@ -16,10 +22,22 @@ export type SitePage = {
   intro: string;
   proof: string[];
   featureTitle: string;
-  features: Array<{ title: string; text: string }>;
+  features: Feature[];
   cards?: Array<{ title: string; text: string; image?: string }>;
-  ctaLabel?: string;
   canonicalPath: string;
+};
+
+export type ConstructionService = {
+  name: string;
+  slug: string;
+  primaryKeyword: string;
+  relatedKeywords: string[];
+  vertical: "Healthcare" | "Commercial" | "Residential";
+  intent: string;
+  summary: string;
+  scope: string[];
+  proof: string[];
+  image: string;
 };
 
 export type ServiceArea = {
@@ -27,456 +45,329 @@ export type ServiceArea = {
   slug: string;
   regionNote: string;
   neighborhoods: string[];
-  marketSignals: string;
-  localModifier: string;
+  localSignals: string;
 };
 
-export type SeoService = {
-  name: string;
-  slug: string;
-  keyword: string;
-  ctaAngle: string;
-  searchIntent: string;
-  relatedKeywords: string[];
-};
-
-export type PseoPage = {
+export type ConstructionPseoPage = {
   city: ServiceArea;
-  service: SeoService;
+  service: ConstructionService;
   path: string;
   title: string;
   description: string;
   h1: string;
-  primaryKeyword: string;
-  keywordCluster: string[];
+  keywords: string[];
   intro: string;
   localProof: string;
   marketContext: string;
-  serviceFocus: Array<{ title: string; text: string }>;
-  serviceBullets: string[];
+  serviceFocus: Feature[];
   faqs: Array<{ question: string; answer: string }>;
   internalLinks: Array<{ label: string; href: string }>;
 };
 
+const imageBase = "/oberizon/optimized";
+
 export const siteConfig = {
-  name: "The Oberoi Group",
-  legalName: "Oberoi Group",
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.theoberoigroup.ca",
-  tagline: "One team, one track, every real estate need under one roof.",
-  email: "jo@jasoberoi.ca",
-  phone: "604.385.3770",
-  address: "#306 - 1493 Foster Street, White Rock, BC",
-  mapsUrl: "https://maps.app.goo.gl/15RXVyvtnzegGi839",
+  name: "Oberizon Construction",
+  legalName: "Oberizon Construction",
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.oberizonconstruction.ca",
+  tagline: "Healthcare, commercial, and luxury construction managed from review to handover.",
+  email: "jo@oberizon.ca",
+  phone: "(604) 385-3770",
+  phoneHref: "tel:+16043853770",
+  address: "Suite 305, 1493 Foster St, White Rock, BC V4B 0C4",
+  mapsUrl:
+    "https://www.google.com/maps/search/?api=1&query=1493+Foster+St+305+White+Rock+BC",
+  heroVideo: "https://jas-project.s3.ap-south-1.amazonaws.com/home-page-video.mp4",
 };
 
 export const socialLinks = [
-  { label: "Instagram", href: "https://www.instagram.com/the_oberoi_group/" },
-  { label: "TikTok", href: "https://www.tiktok.com/@the_oberoi_group" },
-  { label: "YouTube", href: "https://www.youtube.com/@theoberoigroup" },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/company/theoberoigroupofficial/posts/?feedView=all",
-  },
-  { label: "Facebook", href: "https://www.facebook.com/theoberoigroupofficial" },
+  { label: "Instagram", href: "https://www.instagram.com/oberizon_construction" },
+  { label: "Facebook", href: "https://www.facebook.com/Oberizon" },
+  { label: "TikTok", href: "https://www.tiktok.com/@oberoi_construction" },
+  { label: "YouTube", href: "https://www.youtube.com/channel/UCXnubLHaLMq3oBTR8w0ylUg" },
 ];
 
 export const navigation: NavItem[] = [
-  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
   {
-    label: "Mission",
+    label: "Services",
     items: [
-      { label: "About Us", href: "/about" },
-      { label: "Jas Oberoi", href: "/about-jas-oberoi" },
-      { label: "Our Culture", href: "/our-culture" },
-      { label: "Our Contributions", href: "/our-contributions" },
+      { label: "Healthcare Construction", href: "/construction/white-rock/healthcare-construction" },
+      { label: "Dental Clinic Construction", href: "/construction/white-rock/dental-clinic-construction" },
+      { label: "Medical Clinic Construction", href: "/construction/white-rock/medical-clinic-construction" },
+      { label: "Commercial Construction", href: "/construction/white-rock/commercial-construction" },
+      { label: "Luxury Residential", href: "/construction/white-rock/luxury-residential-construction" },
+      { label: "All Services", href: "/services" },
     ],
   },
-  {
-    label: "Properties",
-    items: [
-      { label: "Featured Listing", href: "/featured-listing" },
-      { label: "MLS Search", href: "/mls-search" },
-      { label: "Commercial Listing", href: "/commercial-listing" },
-      { label: "Service Areas", href: "/real-estate" },
-    ],
-  },
-  {
-    label: "Market Insights",
-    items: [
-      { label: "Blog", href: "/blog" },
-      { label: "Podcast", href: "/podcast" },
-      { label: "Seller's Guide", href: "/sellers-guide" },
-      { label: "Buyer's Guide", href: "/buyers-guide" },
-    ],
-  },
-  { label: "Contact Us", href: "/contact" },
+  { label: "Projects", href: "/projects" },
+  { label: "Service Areas", href: "/construction" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const quickLinks = [
-  { label: "About Us", href: "/about" },
-  { label: "Our Culture", href: "/our-culture" },
-  { label: "Featured Listing", href: "/featured-listing" },
-  { label: "Commercial Listing", href: "/commercial-listing" },
-  { label: "Service Areas", href: "/real-estate" },
-  { label: "Contact Us", href: "/contact" },
-  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Projects", href: "/projects" },
+  { label: "Service Areas", href: "/construction" },
+  { label: "Contact", href: "/contact" },
+  { label: "Privacy", href: "/privacy-policy" },
 ];
 
 export const stats = [
-  { value: "$900M +", label: "Career Sales" },
-  { value: "40 Awards", label: "Over 40+ Real Estate Awards" },
-  { value: "10 Yrs", label: "Years of Experience" },
+  { value: "90 Days", label: "Featured dental clinic delivery window" },
+  { value: "1 Team", label: "Planning, permits, trades, inspections, handover" },
+  { value: "BC", label: "White Rock based, Lower Mainland focused" },
 ];
 
-export const awards = [
-  { src: "/assets/images/clients/asset%204.webp", alt: "RE/MAX Chairman's Club award" },
-  { src: "/assets/images/clients/asset%205.webp", alt: "RE/MAX Platinum Club award" },
-  { src: "/assets/images/clients/asset%206.webp", alt: "RE/MAX Executive Club award" },
-  { src: "/assets/images/clients/asset%207.webp", alt: "Real Estate Board medallion award" },
-  { src: "/assets/images/clients/asset%208.webp", alt: "MLS medallion club award" },
-  { src: "/assets/images/clients/asset%209.webp", alt: "Fraser Valley award medallion" },
-  { src: "/assets/images/clients/asset%2010.webp", alt: "Fraser Valley real estate award" },
-  { src: "/assets/images/clients/asset%2011.webp", alt: "RE/MAX lifetime achievement award" },
-  { src: "/assets/images/clients/asset%2012.webp", alt: "RE/MAX Hall of Fame award" },
-  { src: "/assets/images/clients/asset%2013.webp", alt: "RE/MAX Pinnacle Club Team award" },
-  { src: "/assets/images/clients/asset%2014.webp", alt: "RE/MAX Diamond Club Team award" },
-  { src: "/assets/images/clients/asset%2015.webp", alt: "RE/MAX Chairman's Club award" },
+export const trustItems = [
+  "Planning before construction",
+  "Permits and inspections managed",
+  "Healthcare workflow coordination",
+  "Commercial tenant improvement control",
+  "Senior oversight from review to handover",
 ];
 
 export const homePage = {
-  title: "The Oberoi Group | White Rock & Lower Mainland Real Estate Advisors",
+  title: "Medical, Dental & Commercial Construction BC | Oberizon Construction",
   description:
-    "Make the move with The Oberoi Group, a top RE/MAX commercial real estate team advising residential and commercial clients across the Lower Mainland.",
+    "Oberizon Construction builds healthcare, commercial, dental, pharmacy, clinic, office, and luxury residential projects across White Rock and the Lower Mainland.",
   canonicalPath: "/",
+  keywords: [
+    "commercial construction company",
+    "commercial general contractor",
+    "healthcare construction",
+    "dental clinic construction",
+    "commercial renovation",
+    "Lower Mainland construction company",
+  ],
 };
 
-export const mainPages: SitePage[] = [
+export const constructionServices: ConstructionService[] = [
   {
-    slug: "about",
-    title: "About The Oberoi Group | White Rock Real Estate Team",
-    description:
-      "Meet The Oberoi Group, a White Rock-based RE/MAX real estate team built for residential, commercial, buying, selling, and investment advisory.",
-    eyebrow: "About Us",
-    heading: "WHO WE ARE",
-    subheading:
-      "A real estate team built like a pit crew: sharp roles, fast communication, and one standard for every move.",
-    heroImage: "/assets/images/banner/about-page-banner.jpg",
-    introTitle: "Fueled by precision, driven by passion.",
-    intro:
-      "The Oberoi Group combines advisory discipline, market intelligence, and a deep professional network to help clients move through residential and commercial real estate with confidence.",
-    proof: ["White Rock office", "RE/MAX commercial recognition", "Residential and commercial advisory"],
-    featureTitle: "How the team runs",
-    features: [
-      { title: "Advisory First", text: "Strategy comes before showings, offers, or listings, so every recommendation is anchored to the client's real goal." },
-      { title: "Speed With Control", text: "The team keeps timelines tight while protecting negotiation leverage, due diligence, and decision quality." },
-      { title: "One Roof", text: "Residential, commercial, buyer, seller, and investment needs are handled through one connected advisory lane." },
+    name: "Commercial Construction",
+    slug: "commercial-construction",
+    primaryKeyword: "commercial construction",
+    relatedKeywords: [
+      "commercial construction company",
+      "commercial builders",
+      "commercial general contractor",
+      "commercial contractors Vancouver",
     ],
-    cards: [
-      { title: "Residential", text: "Buying, selling, relocation, and move-up guidance across the Lower Mainland.", image: "/assets/images/residential-2.png" },
-      { title: "Commercial", text: "Commercial property search, positioning, investment review, and listing strategy.", image: "/assets/images/medical-vernon.png" },
-      { title: "Network", text: "A trusted circle of lenders, inspectors, designers, legal partners, and local operators.", image: "/assets/images/collage-clear.png" },
+    vertical: "Commercial",
+    intent: "hire a commercial construction company with clear scope, budget, and schedule control",
+    summary:
+      "Commercial spaces built around operations, access, finish quality, inspections, and business continuity.",
+    scope: [
+      "commercial build-outs and tenant improvements",
+      "trade coordination and site sequencing",
+      "scope, budget, schedule, and deficiency control",
     ],
-    canonicalPath: "/about",
+    proof: ["Commercial interiors", "Office and retail", "Permit and trade coordination"],
+    image: `${imageBase}/project-commercial-2.jpg`,
   },
   {
-    slug: "about-jas-oberoi",
-    title: "About Jas Oberoi | The Oberoi Group",
-    description:
-      "Learn about Jas Oberoi, a real estate advisor and private wealth strategist serving White Rock, South Surrey, and the Lower Mainland.",
-    eyebrow: "Jas Oberoi",
-    heading: "PRIVATE WEALTH STRATEGY MEETS REAL ESTATE",
-    subheading:
-      "Real estate decisions are financial decisions. Jas brings market judgment, negotiation discipline, and long-view strategy to the table.",
-    heroImage: "/assets/images/banner/jas-dark-image.png",
-    introTitle: "Built for clients who move deliberately.",
-    intro:
-      "Jas Oberoi advises clients through high-stakes property decisions with a focus on timing, risk, value, and the life plan behind the transaction.",
-    proof: ["Commercial real estate leadership", "Private wealth perspective", "Lower Mainland market network"],
-    featureTitle: "Advisory focus",
-    features: [
-      { title: "Portfolio Thinking", text: "A property is evaluated as part of a broader wealth and lifestyle picture." },
-      { title: "Negotiation Readiness", text: "Offers, listings, and terms are prepared with clear leverage points before entering the market." },
-      { title: "Quiet Confidence", text: "Clients get direct counsel, measured recommendations, and a team that stays close through the details." },
+    name: "Commercial Renovation",
+    slug: "commercial-renovation",
+    primaryKeyword: "commercial renovation",
+    relatedKeywords: [
+      "commercial renovation contractor",
+      "commercial office space renovation",
+      "office renovation contractor",
+      "commercial builders",
     ],
-    cards: [
-      { title: "Leadership", text: "A client-first approach shaped by commercial performance and residential trust.", image: "/assets/images/jas-about2.png" },
-      { title: "Team Depth", text: "Jas and Maria bring a coordinated partner model to every major move.", image: "/assets/images/Partners-new.png" },
+    vertical: "Commercial",
+    intent: "renovate an active or upcoming business space without losing control of schedule or cost",
+    summary:
+      "Renovations planned around how the space needs to function before demolition, trades, and finishes begin.",
+    scope: [
+      "existing space review and scope mapping",
+      "phased renovation planning",
+      "finish, millwork, service, and handover coordination",
     ],
-    canonicalPath: "/about-jas-oberoi",
+    proof: ["Commercial renovation", "Tenant improvements", "Operational planning"],
+    image: `${imageBase}/project-office.jpg`,
   },
   {
-    slug: "our-culture",
-    title: "Our Culture | The Oberoi Group",
-    description:
-      "Explore the values and client standard behind The Oberoi Group's real estate advisory culture.",
-    eyebrow: "Our Culture",
-    heading: "OUR VALUES SET THE PACE",
-    subheading:
-      "The culture is direct, prepared, and deeply accountable. Every client deserves the same championship standard.",
-    heroImage: "/assets/images/banner/culcure-banner.jpg",
-    introTitle: "Integrity keeps the team ahead.",
-    intro:
-      "From first strategy call to closing day, The Oberoi Group works with candor, urgency, and a bias for making hard decisions clearer.",
-    proof: ["Prepared advice", "Responsive communication", "Long-term client relationships"],
-    featureTitle: "Values in motion",
-    features: [
-      { title: "Precision", text: "Details matter because details change outcomes in pricing, negotiation, financing, and closing." },
-      { title: "Passion", text: "The team brings intensity to the work without turning the process into noise." },
-      { title: "Accountability", text: "Every recommendation is made with the client's next chapter in mind." },
+    name: "Office Renovation Contractor",
+    slug: "office-renovation-contractor",
+    primaryKeyword: "office renovation contractor",
+    relatedKeywords: [
+      "office renovation contractor",
+      "commercial office space renovation",
+      "office contractor",
+      "commercial general contractor",
     ],
-    cards: [
-      { title: "Team Standard", text: "A collaborative, high-energy culture built around client outcomes.", image: "/assets/images/banner/culcure-banner2.jpg" },
-      { title: "Production Mindset", text: "Every listing, search, and negotiation is treated like a performance.", image: "/assets/images/banner/jas-team-about-hd.png" },
+    vertical: "Commercial",
+    intent: "renovate or build an office that supports staff flow, client experience, and daily operation",
+    summary:
+      "Private offices and professional interiors built with layout, acoustic, finish, and workflow discipline.",
+    scope: [
+      "office layout and finish planning",
+      "meeting rooms, reception, storage, and staff areas",
+      "construction sequencing with minimal operational friction",
     ],
-    canonicalPath: "/our-culture",
+    proof: ["Private office builds", "Professional interiors", "Finish control"],
+    image: `${imageBase}/project-office.jpg`,
   },
   {
-    slug: "our-contributions",
-    title: "Community Contributions | The Oberoi Group",
-    description:
-      "See community initiatives, events, and contribution highlights supported by The Oberoi Group.",
-    eyebrow: "Our Contributions",
-    heading: "THE BEST BANTING GALA",
-    subheading:
-      "A team that performs in the market should also show up for the communities that shape it.",
-    heroImage: "/assets/images/optimized/gala-hero.jpg",
-    introTitle: "Community is part of the work.",
-    intro:
-      "The Oberoi Group supports events and local initiatives that bring people together around health, generosity, and opportunity.",
-    proof: ["Event sponsorship", "Community partnership", "Local leadership"],
-    featureTitle: "Contributions",
-    features: [
-      { title: "Presence", text: "Showing up with time, attention, and resources for the causes clients and neighbors care about." },
-      { title: "Partnership", text: "Working alongside community leaders and organizations to extend the impact of each initiative." },
-      { title: "Momentum", text: "Treating contribution as a long-term commitment, not a one-night appearance." },
+    name: "Healthcare Construction",
+    slug: "healthcare-construction",
+    primaryKeyword: "healthcare construction",
+    relatedKeywords: [
+      "healthcare construction company",
+      "healthcare facility construction",
+      "healthcare general contractors",
+      "healthcare contractors",
     ],
-    cards: [
-      { title: "Gallery", text: "Highlights from the night and the people behind it.", image: "/assets/images/gallery/1.jpg" },
-      { title: "Sponsors", text: "Partners and speakers who helped bring the event to life.", image: "/assets/images/contributions/dr-brian.webp" },
-      { title: "Team", text: "The Oberoi Group in motion beyond the transaction.", image: "/assets/images/gallery/4.jpg" },
+    vertical: "Healthcare",
+    intent: "build a healthcare space where services, permits, patient flow, and handover cannot be improvised",
+    summary:
+      "Healthcare projects managed around compliance, equipment, service locations, patient flow, and operational readiness.",
+    scope: [
+      "clinical layout and service coordination",
+      "equipment, millwork, plumbing, and electrical planning",
+      "inspection, deficiency, and handover management",
     ],
-    canonicalPath: "/our-contributions",
+    proof: ["Dental", "Medical", "Pharmacy", "Physio", "Med spa"],
+    image: `${imageBase}/project-healthcare-3.jpg`,
   },
   {
-    slug: "featured-listing",
-    title: "Featured Real Estate Listings | The Oberoi Group",
-    description:
-      "View featured real estate listing opportunities represented by The Oberoi Group across White Rock and the Lower Mainland.",
-    eyebrow: "Featured Listing",
-    heading: "FEATURED LISTING",
-    subheading:
-      "A polished showcase for high-attention properties. Live MLS data can be connected when feed credentials are available.",
-    heroImage: "/assets/images/optimized/listing-hero.jpg",
-    introTitle: "Listings deserve more than placement.",
-    intro:
-      "The Oberoi Group positions properties with visual discipline, market context, and a clear path from first impression to qualified offer.",
-    proof: ["Property positioning", "Buyer qualification", "Listing strategy"],
-    featureTitle: "Current showcase",
-    features: [
-      { title: "Presentation", text: "Hero imagery, concise property narrative, and clear next-step calls to action." },
-      { title: "Context", text: "Neighborhood, use case, and buyer profile information designed for faster evaluation." },
-      { title: "Conversion", text: "Every listing touchpoint points toward a direct conversation with the team." },
+    name: "Dental Clinic Construction",
+    slug: "dental-clinic-construction",
+    primaryKeyword: "dental clinic construction",
+    relatedKeywords: [
+      "dental office construction",
+      "dental construction",
+      "dental contractor",
+      "dental office construction companies",
+      "dental construction company",
+      "dental builder",
+      "dental clinic construction contractors",
+      "dental clinic construction contractors near me",
     ],
-    cards: [
-      { title: "Commercial Opportunity", text: "A visual slot for featured commercial inventory once feed data is connected.", image: "/assets/images/landmark.png" },
-      { title: "Residential Feature", text: "A ready-to-fill card for a residential hero listing.", image: "/assets/images/residential-3.png" },
-      { title: "Investment Review", text: "A property card for buyers comparing income, zoning, location, and risk.", image: "/assets/images/scotia-kamloops.png" },
+    vertical: "Healthcare",
+    intent: "build a dental clinic with operatories, sterilization, services, millwork, and equipment planned early",
+    summary:
+      "Dental clinic builds coordinated around operatories, sterilization, plumbing, electrical, cabinetry, and patient flow.",
+    scope: [
+      "operatory and sterilization coordination",
+      "dental plumbing, electrical, equipment, and millwork planning",
+      "inspection readiness and clean handover",
     ],
-    canonicalPath: "/featured-listing",
+    proof: ["90-day dental build", "Operatories mapped", "Service locations coordinated"],
+    image: `${imageBase}/dental-clinic.jpg`,
   },
   {
-    slug: "commercial-listing",
-    title: "Commercial Real Estate Listings | The Oberoi Group",
-    description:
-      "Explore commercial real estate listing support and commercial property opportunities with The Oberoi Group in the Lower Mainland.",
-    eyebrow: "Commercial Listing",
-    heading: "COMMERCIAL LISTING",
-    subheading:
-      "Commercial property moves faster when positioning, financial context, and buyer qualification are aligned.",
-    heroImage: "/assets/images/optimized/market-hero.jpg",
-    introTitle: "Commercial real estate with a sharper line.",
-    intro:
-      "For owner-users, investors, and operators, The Oberoi Group helps evaluate location, function, deal structure, and exit strategy before the market decides for you.",
-    proof: ["Top 3 commercial team at RE/MAX", "Investor and operator advisory", "Lower Mainland market reach"],
-    featureTitle: "Commercial lanes",
-    features: [
-      { title: "Acquisition", text: "Search support for owner-users and investors comparing sites, assets, and business fit." },
-      { title: "Disposition", text: "Listing strategy that clarifies value, buyer profile, and proof before launch." },
-      { title: "Due Diligence", text: "A coordinated process for zoning, financials, access, condition, and local market context." },
+    name: "Dental Office Renovation",
+    slug: "dental-office-renovation",
+    primaryKeyword: "dental office renovation",
+    relatedKeywords: [
+      "dental office renovation",
+      "dental office contractors near me",
+      "dental contractor",
+      "dental construction company",
     ],
-    cards: [
-      { title: "Medical & Office", text: "Clinic, dental, professional office, and mixed-use opportunities.", image: "/assets/images/medical-vernon.png" },
-      { title: "Retail & Service", text: "Streetfront and service-based locations with visibility and access considerations.", image: "/assets/images/scotia-kamloops.png" },
-      { title: "Investment Assets", text: "Income property evaluation with practical operator insight.", image: "/assets/images/landmark.png" },
+    vertical: "Healthcare",
+    intent: "renovate a dental office while protecting workflow, patient experience, and technical service requirements",
+    summary:
+      "Dental office renovations built around the realities of clinical workflow and technical service coordination.",
+    scope: [
+      "existing clinic review and renovation phasing",
+      "operatory, sterilization, reception, and staff-area updates",
+      "deficiency control before reopening or launch",
     ],
-    canonicalPath: "/commercial-listing",
+    proof: ["Dental offices", "Clinical flow", "Technical service planning"],
+    image: `${imageBase}/project-dental-1.jpg`,
   },
   {
-    slug: "mls-search",
-    title: "MLS Search | The Oberoi Group",
-    description:
-      "Search-ready MLS experience for The Oberoi Group clients, with IDX integration slots prepared for future live listing data.",
-    eyebrow: "MLS Search",
-    heading: "MLS SEARCH",
-    subheading:
-      "A fast, branded search surface prepared for live MLS/IDX once credentials and feed terms are available.",
-    heroImage: "/assets/images/banner/about-banner.png",
-    introTitle: "Search is only the starting grid.",
-    intro:
-      "The public feed shows inventory. The advisory process clarifies fit, value, timing, and negotiation strategy before you commit.",
-    proof: ["IDX-ready layout", "Search-to-consult CTA", "No invented listing data"],
-    featureTitle: "Search support",
-    features: [
-      { title: "Saved Criteria", text: "Future integration can support saved searches by city, price, property type, and intent." },
-      { title: "Advisor Review", text: "Shortlisted listings can be assessed against goals, risks, and resale logic." },
-      { title: "Fast Contact", text: "Search pages keep the path to an Oberoi advisor visible and direct." },
+    name: "Medical Clinic Construction",
+    slug: "medical-clinic-construction",
+    primaryKeyword: "medical clinic construction",
+    relatedKeywords: [
+      "medical office construction",
+      "medical construction company",
+      "medical builder",
+      "medical clinic contractor",
+      "clinic contractors",
     ],
-    cards: [
-      { title: "Residential Search", text: "A placeholder lane for homes, townhomes, condos, and luxury property.", image: "/assets/images/residential-1.png" },
-      { title: "Commercial Search", text: "A placeholder lane for retail, office, investment, and owner-user assets.", image: "/assets/images/renovation-4.png" },
+    vertical: "Healthcare",
+    intent: "build a medical clinic with exam rooms, reception, services, privacy, and staff workflow coordinated",
+    summary:
+      "Medical clinics built around intake, exam rooms, staff circulation, patient comfort, and inspection readiness.",
+    scope: [
+      "exam room, reception, and support-area planning",
+      "privacy, services, finishes, and daily-use details",
+      "construction management through inspection and handover",
     ],
-    canonicalPath: "/mls-search",
+    proof: ["Medical office construction", "Clinic workflow", "Patient-facing interiors"],
+    image: `${imageBase}/project-clinic-9.jpg`,
   },
   {
-    slug: "buyers-guide",
-    title: "Buyer's Guide | The Oberoi Group",
-    description:
-      "A practical buyer's guide for purchasing real estate with The Oberoi Group across White Rock and the Lower Mainland.",
-    eyebrow: "Buy With Us",
-    heading: "BUY WITH US",
-    subheading:
-      "Buying well means knowing what to chase, what to question, and when to accelerate.",
-    heroImage: "/assets/images/banner/buys-guide.png",
-    introTitle: "A calmer way to compete.",
-    intro:
-      "The Oberoi Group helps buyers move from curiosity to confident offer with strategy, preparation, and local market context.",
-    proof: ["Needs assessment", "Offer strategy", "Closing coordination"],
-    featureTitle: "Buyer process",
-    features: [
-      { title: "Define the Lane", text: "Clarify budget, neighborhoods, property type, timeline, and non-negotiables before the search widens." },
-      { title: "Pressure Test Value", text: "Review comparables, condition, future resale, and local signals before writing." },
-      { title: "Finish Cleanly", text: "Coordinate financing, inspections, subjects, documents, and closing details." },
+    name: "Pharmacy Construction",
+    slug: "pharmacy-construction",
+    primaryKeyword: "pharmacy construction",
+    relatedKeywords: [
+      "pharmacy construction",
+      "healthcare construction",
+      "healthcare facility construction",
+      "commercial construction company",
     ],
-    canonicalPath: "/buyers-guide",
+    vertical: "Healthcare",
+    intent: "build a pharmacy with customer flow, back-of-house function, storage, security, and handover clarity",
+    summary:
+      "Pharmacy construction planned around customer experience, dispensing workflow, storage, security, and inspection timing.",
+    scope: [
+      "retail, dispensing, storage, and staff-area planning",
+      "millwork, services, accessibility, and security coordination",
+      "construction sequence and launch handover",
+    ],
+    proof: ["Healthcare retail", "Pharmacy workflow", "Commercial finish control"],
+    image: `${imageBase}/project-clinic-10.jpg`,
   },
   {
-    slug: "sellers-guide",
-    title: "Seller's Guide | The Oberoi Group",
-    description:
-      "A seller's guide for pricing, preparing, marketing, and negotiating real estate with The Oberoi Group.",
-    eyebrow: "List With Us",
-    heading: "LIST WITH US",
-    subheading:
-      "A listing launch should feel engineered: pricing, preparation, media, market timing, and negotiation all moving together.",
-    heroImage: "/assets/images/optimized/seller-guide.jpg",
-    introTitle: "Position before promotion.",
-    intro:
-      "The Oberoi Group prepares listings with a focus on buyer psychology, local comparables, media quality, and negotiation leverage.",
-    proof: ["Pricing strategy", "Launch planning", "Offer negotiation"],
-    featureTitle: "Seller process",
-    features: [
-      { title: "Market Read", text: "Establish pricing range, competition, buyer pool, and likely objections before launch." },
-      { title: "Presentation", text: "Prepare copy, visuals, and showing flow so the property lands with clarity." },
-      { title: "Negotiation", text: "Review offers through price, certainty, subjects, timing, and buyer quality." },
+    name: "Clinic Renovation Contractor",
+    slug: "clinic-renovation-contractor",
+    primaryKeyword: "clinic renovation contractor",
+    relatedKeywords: [
+      "clinic renovation contractor",
+      "clinic contractors",
+      "healthcare contractors",
+      "medical office construction",
     ],
-    canonicalPath: "/sellers-guide",
+    vertical: "Healthcare",
+    intent: "renovate a healthcare clinic with service, schedule, staff, and patient impacts mapped before work starts",
+    summary:
+      "Clinic renovations planned around clinical continuity, infection-sensitive details, services, and final readiness.",
+    scope: [
+      "clinic assessment and phasing",
+      "service, finish, equipment, and patient-flow coordination",
+      "deficiency management and reopening support",
+    ],
+    proof: ["Clinics", "Med spas", "Physio", "Operational readiness"],
+    image: `${imageBase}/project-med-spa.jpg`,
   },
   {
-    slug: "blog",
-    title: "Real Estate Insights Blog | The Oberoi Group",
-    description:
-      "Read real estate market insights from The Oberoi Group for White Rock, South Surrey, Surrey, Vancouver, and the Lower Mainland.",
-    eyebrow: "Real Estate Insights",
-    heading: "MARKET INSIGHTS",
-    subheading:
-      "Short, useful market thinking for clients who want to understand the move before they make it.",
-    heroImage: "/assets/images/optimized/market-hero.jpg",
-    introTitle: "Insights with a point of view.",
-    intro:
-      "The blog is structured for local search growth, market education, and strong internal linking to buyer, seller, commercial, and pSEO pages.",
-    proof: ["Local SEO-ready", "Market education", "Internal linking hub"],
-    featureTitle: "Editorial lanes",
-    features: [
-      { title: "Local Markets", text: "City and neighborhood guides grounded in Lower Mainland buyer and seller behavior." },
-      { title: "Commercial Moves", text: "Plain-English views on commercial property, owner-user needs, and investor evaluation." },
-      { title: "Client Guides", text: "Evergreen advice for buying, selling, pricing, due diligence, and closing." },
+    name: "Luxury Residential Construction",
+    slug: "luxury-residential-construction",
+    primaryKeyword: "luxury residential construction",
+    relatedKeywords: [
+      "luxury residential construction",
+      "luxury custom homes",
+      "custom residential construction",
+      "residential construction company",
     ],
-    cards: [
-      { title: "White Rock Market Notes", text: "What buyers and sellers should watch in coastal South Surrey and White Rock.", image: "/assets/images/banner/floor-bg.jpg" },
-      { title: "Commercial Real Estate Signals", text: "How owner-users can compare location, access, zoning, and future exit.", image: "/assets/images/medical-vernon.png" },
-      { title: "Selling With Timing", text: "Why launch timing and price discipline matter more than noise.", image: "/assets/images/residential-2.png" },
+    vertical: "Residential",
+    intent: "build a high-end home with detail, finish, sequencing, and senior oversight managed tightly",
+    summary:
+      "Luxury residential projects controlled through planning, sequencing, finish standards, and clear owner communication.",
+    scope: [
+      "custom home planning and construction management",
+      "finish, millwork, fixture, and detail coordination",
+      "quality control through final walkthrough and handover",
     ],
-    canonicalPath: "/blog",
-  },
-  {
-    slug: "podcast",
-    title: "The Oberoi Group Podcast | Real Estate Conversations",
-    description:
-      "Listen to The Oberoi Group's real estate conversations and market perspectives from the Lower Mainland.",
-    eyebrow: "Podcast",
-    heading: "REAL ESTATE CONVERSATIONS",
-    subheading:
-      "A media lane for practical conversations with operators, advisors, community leaders, and market voices.",
-    heroImage: "/assets/images/banner/podcast-image.png",
-    introTitle: "The conversation behind the move.",
-    intro:
-      "The podcast page is prepared as a branded media hub for episodes, clips, guest profiles, and market insight content.",
-    proof: ["Episode hub", "Guest profiles", "Market authority"],
-    featureTitle: "Podcast format",
-    features: [
-      { title: "Market Talk", text: "Current conditions, buyer and seller psychology, and commercial real estate signals." },
-      { title: "Community Voices", text: "Conversations with people shaping White Rock, South Surrey, and the Lower Mainland." },
-      { title: "Advisor Notes", text: "Short episodes that turn common questions into useful real estate decisions." },
-    ],
-    cards: [
-      { title: "Oberoi Group Podcast", text: "A polished show hub ready for embedded episodes.", image: "/assets/images/banner/podcast-logo.png" },
-      { title: "Market Guests", text: "A guest feature slot for advisors, builders, lenders, and local leaders.", image: "/assets/images/banner/podcast-image.png" },
-    ],
-    canonicalPath: "/podcast",
-  },
-  {
-    slug: "contact",
-    title: "Contact The Oberoi Group | Make The Move",
-    description:
-      "Contact The Oberoi Group in White Rock, BC for residential real estate, commercial real estate, buying, selling, and advisory support.",
-    eyebrow: "Contact Us",
-    heading: "MAKE THE MOVE",
-    subheading:
-      "Start with a direct conversation. The team will help clarify the right lane for your next real estate decision.",
-    heroImage: "/assets/images/banner/contact-banner.jpg",
-    introTitle: "One call can set the pace.",
-    intro:
-      "Reach the White Rock office for buyer guidance, seller strategy, commercial property questions, or private advisory support.",
-    proof: ["White Rock office", siteConfig.phone, siteConfig.email],
-    featureTitle: "Contact lanes",
-    features: [
-      { title: "Buy", text: "Get clear on neighborhoods, property types, timelines, financing, and offer strategy." },
-      { title: "Sell", text: "Review pricing, preparation, media, launch timing, and negotiation plan." },
-      { title: "Commercial", text: "Discuss acquisition, listing, owner-user, investment, or leasing considerations." },
-    ],
-    canonicalPath: "/contact",
-  },
-  {
-    slug: "privacy-policy",
-    title: "Privacy Policy | The Oberoi Group",
-    description:
-      "Read The Oberoi Group privacy policy for website use, contact information, and client inquiry handling.",
-    eyebrow: "Privacy Policy",
-    heading: "PRIVACY POLICY",
-    subheading:
-      "A clear privacy page for visitors who contact The Oberoi Group through the website.",
-    heroImage: "/assets/images/optimized/effect2-bg.jpg",
-    introTitle: "Information handling",
-    intro:
-      "Information submitted through this site is used to respond to inquiries, provide requested real estate guidance, and maintain client communication.",
-    proof: ["Contact data", "Inquiry response", "Website analytics"],
-    featureTitle: "Policy summary",
-    features: [
-      { title: "Collection", text: "The site may collect contact details, inquiry details, and standard analytics data." },
-      { title: "Use", text: "Information is used to respond to requests and improve the website experience." },
-      { title: "Choice", text: "Visitors can contact the team to request updates or removal of submitted details." },
-    ],
-    canonicalPath: "/privacy-policy",
+    proof: ["Custom homes", "High-end finishes", "Senior oversight"],
+    image: `${imageBase}/project-residential.jpg`,
   },
 ];
 
@@ -484,129 +375,358 @@ export const serviceAreas: ServiceArea[] = [
   {
     city: "White Rock",
     slug: "white-rock",
-    regionNote: "coastal South Surrey and White Rock",
-    neighborhoods: ["Uptown White Rock", "East Beach", "West Beach", "Five Corners", "Marine Drive"],
-    marketSignals: "view premiums, downsizer demand, walkable village pockets, and limited coastal inventory",
-    localModifier: "coastal South Surrey and White Rock",
-  },
-  {
-    city: "South Surrey",
-    slug: "south-surrey",
-    regionNote: "South Surrey neighborhoods and nearby White Rock",
-    neighborhoods: ["Morgan Creek", "Grandview Heights", "Crescent Beach", "Ocean Park", "Sunnyside"],
-    marketSignals: "school catchments, newer construction, townhome supply, luxury homes, and beach-adjacent demand",
-    localModifier: "South Surrey and Semiahmoo Peninsula",
+    regionNote: "White Rock and the Semiahmoo Peninsula",
+    neighborhoods: ["Uptown White Rock", "Five Corners", "Marine Drive", "East Beach"],
+    localSignals: "tight commercial footprints, healthcare demand, coastal retail, and high-finish residential expectations",
   },
   {
     city: "Surrey",
     slug: "surrey",
-    regionNote: "Surrey's urban centres and growing residential corridors",
-    neighborhoods: ["City Centre", "Guildford", "Fleetwood", "Newton", "Cloverdale"],
-    marketSignals: "rapid population growth, transit expansion, town centre density, and a broad property mix",
-    localModifier: "Surrey and the Fraser Valley gateway",
+    regionNote: "Surrey's growing commercial and healthcare corridors",
+    neighborhoods: ["City Centre", "Guildford", "Fleetwood", "Newton"],
+    localSignals: "population growth, healthcare access needs, transit-oriented commercial nodes, and tenant improvement activity",
   },
   {
     city: "Vancouver",
     slug: "vancouver",
-    regionNote: "Vancouver's residential and commercial property markets",
-    neighborhoods: ["Kitsilano", "Mount Pleasant", "Kerrisdale", "Yaletown", "Cambie"],
-    marketSignals: "tight supply, strata complexity, mixed-use corridors, land value pressure, and buyer competition",
-    localModifier: "Vancouver west side, east side, and downtown markets",
+    regionNote: "Vancouver's dense healthcare, office, retail, and residential markets",
+    neighborhoods: ["Mount Pleasant", "Kitsilano", "Cambie", "Downtown"],
+    localSignals: "limited space, complex building coordination, strict schedules, and high finish standards",
   },
   {
     city: "Burnaby",
     slug: "burnaby",
-    regionNote: "Burnaby's central locations, transit nodes, and mixed-use areas",
-    neighborhoods: ["Metrotown", "Brentwood", "Edmonds", "Lougheed", "Burnaby Heights"],
-    marketSignals: "transit-oriented growth, high-rise nodes, retail corridors, and central Lower Mainland access",
-    localModifier: "Burnaby's transit-linked real estate corridors",
+    regionNote: "Burnaby's central Lower Mainland business districts",
+    neighborhoods: ["Metrotown", "Brentwood", "Lougheed", "Edmonds"],
+    localSignals: "transit-linked growth, professional office demand, mixed-use buildings, and clinic build-out opportunities",
   },
   {
     city: "Richmond",
     slug: "richmond",
-    regionNote: "Richmond's residential communities and commercial corridors",
-    neighborhoods: ["Brighouse", "Steveston", "Oval Village", "Cambie", "Ironwood"],
-    marketSignals: "airport access, industrial corridors, strata communities, retail hubs, and family neighborhoods",
-    localModifier: "Richmond residential and business districts",
-  },
-  {
-    city: "Delta",
-    slug: "delta",
-    regionNote: "Delta, Tsawwassen, Ladner, and surrounding communities",
-    neighborhoods: ["Tsawwassen", "Ladner", "North Delta", "Sunshine Hills", "Annieville"],
-    marketSignals: "family neighborhoods, port and logistics access, waterfront pockets, and suburban move-up demand",
-    localModifier: "Delta, Ladner, Tsawwassen, and North Delta",
+    regionNote: "Richmond's commercial corridors and healthcare communities",
+    neighborhoods: ["Brighouse", "Steveston", "Cambie", "Ironwood"],
+    localSignals: "retail density, airport access, medical offices, and business parks with specialized improvement needs",
   },
   {
     city: "Langley",
     slug: "langley",
-    regionNote: "Langley City, Township, and growth-area neighborhoods",
-    neighborhoods: ["Willoughby", "Walnut Grove", "Murrayville", "Brookswood", "Fort Langley"],
-    marketSignals: "growth corridors, new construction, acreage pockets, family demand, and expanding transit plans",
-    localModifier: "Langley City and Langley Township",
+    regionNote: "Langley City, Township, and fast-growing commercial areas",
+    neighborhoods: ["Willoughby", "Walnut Grove", "Murrayville", "Brookswood"],
+    localSignals: "new residential growth, professional services expansion, healthcare demand, and custom home activity",
   },
   {
     city: "Abbotsford",
     slug: "abbotsford",
-    regionNote: "Abbotsford's Fraser Valley housing and business districts",
-    neighborhoods: ["McMillan", "Auguston", "Clearbrook", "Sumas Prairie", "Historic Downtown"],
-    marketSignals: "Fraser Valley affordability, agricultural land context, industrial activity, and commuter demand",
-    localModifier: "Abbotsford and central Fraser Valley",
+    regionNote: "Abbotsford and the central Fraser Valley",
+    neighborhoods: ["Historic Downtown", "Clearbrook", "McMillan", "Auguston"],
+    localSignals: "Fraser Valley growth, clinic and pharmacy demand, industrial access, and value-focused commercial build-outs",
+  },
+  {
+    city: "Chilliwack",
+    slug: "chilliwack",
+    regionNote: "Chilliwack and the eastern Fraser Valley",
+    neighborhoods: ["Downtown Chilliwack", "Sardis", "Promontory", "Vedder"],
+    localSignals: "expanding residential communities, healthcare access needs, commercial renewal, and new service businesses",
+  },
+  {
+    city: "Coquitlam",
+    slug: "coquitlam",
+    regionNote: "Coquitlam and the northeast Metro Vancouver market",
+    neighborhoods: ["Town Centre", "Austin Heights", "Burquitlam", "Maillardville"],
+    localSignals: "mixed-use growth, clinic demand, strata commercial spaces, and office renovation opportunities",
+  },
+  {
+    city: "North Vancouver",
+    slug: "north-vancouver",
+    regionNote: "North Vancouver and the North Shore",
+    neighborhoods: ["Lonsdale", "Marine Drive", "Edgemont", "Lynn Valley"],
+    localSignals: "high-finish expectations, limited access windows, healthcare demand, and boutique commercial spaces",
+  },
+  {
+    city: "West Vancouver",
+    slug: "west-vancouver",
+    regionNote: "West Vancouver and premium North Shore properties",
+    neighborhoods: ["Dundarave", "Ambleside", "Park Royal", "Caulfeild"],
+    localSignals: "luxury residential expectations, boutique healthcare spaces, premium finishes, and careful site coordination",
+  },
+  {
+    city: "Delta",
+    slug: "delta",
+    regionNote: "Delta, Ladner, Tsawwassen, and North Delta",
+    neighborhoods: ["Tsawwassen", "Ladner", "North Delta", "Sunshine Hills"],
+    localSignals: "family communities, medical and dental access, commercial renewal, and suburban service businesses",
+  },
+  {
+    city: "New Westminster",
+    slug: "new-westminster",
+    regionNote: "New Westminster's historic and high-density commercial areas",
+    neighborhoods: ["Uptown", "Downtown", "Sapperton", "Queensborough"],
+    localSignals: "older building conditions, healthcare tenancy, mixed-use projects, and tight urban construction sequencing",
+  },
+  {
+    city: "Tri-Cities",
+    slug: "tri-cities",
+    regionNote: "Coquitlam, Port Coquitlam, and Port Moody",
+    neighborhoods: ["Port Moody", "Port Coquitlam", "Coquitlam Centre", "Burke Mountain"],
+    localSignals: "rapid growth, family healthcare demand, strata commercial units, and service-business build-outs",
   },
 ];
 
-export const seoServices: SeoService[] = [
+export const mainPages: SitePage[] = [
   {
-    name: "Commercial Real Estate",
-    slug: "commercial-real-estate",
-    keyword: "commercial real estate",
-    ctaAngle: "commercial acquisition, disposition, and investment strategy",
-    searchIntent: "compare commercial property, listing, and investment advisory options",
-    relatedKeywords: [
-      "commercial real estate agent",
-      "commercial realtor",
-      "commercial property for sale",
-      "investment property advisor",
+    slug: "about",
+    title: "About Oberizon Construction | Trusted BC Builders",
+    description:
+      "Meet Oberizon Construction, a White Rock based construction company managing healthcare, commercial, and luxury residential projects across the Lower Mainland.",
+    keywords: ["Oberizon Construction", "construction company White Rock", "commercial builders BC"],
+    eyebrow: "About Oberizon",
+    heading: "A builder for spaces that cannot be improvised.",
+    subheading:
+      "Oberizon manages complex builds where planning, permits, services, trades, timelines, and finish quality need one accountable process.",
+    heroImage: `${imageBase}/project-commercial-13.jpg`,
+    introTitle: "Planning before construction gets loud.",
+    intro:
+      "From dental clinics and pharmacies to commercial interiors and luxury homes, Oberizon is built around the work that happens before the site gets busy: review, scope, services, sequencing, and handover.",
+    proof: ["White Rock HQ", "Healthcare and commercial focus", "Lower Mainland service area"],
+    featureTitle: "How Oberizon works",
+    features: [
+      {
+        title: "Review First",
+        text: "The project, space, drawings, budget, timeline, and risk are reviewed before construction begins.",
+      },
+      {
+        title: "One Managed Process",
+        text: "Permits, trades, construction, inspections, deficiencies, and handover stay connected.",
+      },
+      {
+        title: "Built Around Operations",
+        text: "The finished space is planned around patients, staff, customers, equipment, and daily use.",
+      },
     ],
+    cards: [
+      {
+        title: "Healthcare",
+        text: "Dental, medical, pharmacy, physio, and med spa projects with service and workflow control.",
+        image: `${imageBase}/project-healthcare-4.jpg`,
+      },
+      {
+        title: "Commercial",
+        text: "Offices, retail spaces, and tenant improvements planned around business operations.",
+        image: `${imageBase}/project-office.jpg`,
+      },
+      {
+        title: "Residential",
+        text: "Luxury residential construction with senior oversight and finish discipline.",
+        image: `${imageBase}/project-residential.jpg`,
+      },
+    ],
+    canonicalPath: "/about",
   },
   {
-    name: "Residential Real Estate",
-    slug: "residential-real-estate",
-    keyword: "residential real estate",
-    ctaAngle: "home buying, selling, and move-up strategy",
-    searchIntent: "find a residential realtor for homes, condos, townhomes, and move-up decisions",
-    relatedKeywords: [
-      "real estate agent",
-      "residential realtor",
-      "homes for sale",
-      "local real estate market",
+    slug: "services",
+    title: "Construction Services in BC | Medical, Dental & Commercial",
+    description:
+      "Explore Oberizon Construction services for healthcare construction, dental clinics, medical clinics, pharmacy construction, commercial renovations, offices, and luxury homes.",
+    keywords: ["construction services BC", "healthcare construction company", "commercial renovation contractor"],
+    eyebrow: "Services",
+    heading: "Construction services for complex spaces.",
+    subheading:
+      "Healthcare, commercial, and luxury residential projects need more than trades. They need a managed plan from review to handover.",
+    heroImage: `${imageBase}/project-commercial-13.jpg`,
+    introTitle: "End-to-end expertise. Exceptional outcomes.",
+    intro:
+      "Oberizon supports owners and operators through advisory, project management, construction solutions, equipment coordination, operational readiness, and move management.",
+    proof: ["Advisory", "Project management", "Construction solutions", "Operational readiness"],
+    featureTitle: "Service lanes",
+    features: [
+      {
+        title: "Healthcare Builds",
+        text: "Dental, medical, pharmacy, physio, and med spa spaces built around workflow and services.",
+      },
+      {
+        title: "Commercial Interiors",
+        text: "Offices, retail, and tenant improvements built around how the business operates.",
+      },
+      {
+        title: "Luxury Residential",
+        text: "Custom homes and high-end residential projects managed with finish control.",
+      },
     ],
+    cards: constructionServices.slice(0, 6).map((service) => ({
+      title: service.name,
+      text: service.summary,
+      image: service.image,
+    })),
+    canonicalPath: "/services",
   },
   {
-    name: "Buying a Home",
-    slug: "buying-a-home",
-    keyword: "buying a home",
-    ctaAngle: "buyer preparation, search strategy, and offer execution",
-    searchIntent: "get buyer representation before touring, shortlisting, and writing an offer",
-    relatedKeywords: [
-      "buyer agent",
-      "home buying advisor",
-      "buy a house",
-      "first time home buyer",
+    slug: "projects",
+    title: "Our Construction Projects | Oberizon Construction",
+    description:
+      "View selected Oberizon Construction projects including dental clinics, medical spa interiors, private offices, commercial interiors, and luxury residential construction.",
+    keywords: ["construction projects BC", "dental clinic construction project", "commercial interior projects"],
+    eyebrow: "Projects",
+    heading: "Selected projects across the Lower Mainland.",
+    subheading:
+      "Healthcare, commercial, and residential projects where the planning shows up in the finished space.",
+    heroImage: `${imageBase}/dental-clinic.jpg`,
+    introTitle: "Built with structure from the beginning.",
+    intro:
+      "The strongest projects are not rescued at the end. They are set up early through layout, service locations, material flow, trade sequencing, inspections, and deficiency control.",
+    proof: ["Dental clinic construction", "Commercial offices", "Med spa interiors", "Luxury residential"],
+    featureTitle: "Recent work",
+    features: [
+      {
+        title: "The Shine Dental",
+        text: "Dental clinic construction with operatory, sterilization, and workflow coordination.",
+      },
+      {
+        title: "Skinholic Aesthetics",
+        text: "Medical spa interior built around client experience, treatment flow, and finish detail.",
+      },
+      {
+        title: "Private Office",
+        text: "Commercial office interior built for professional use and daily operation.",
+      },
     ],
+    cards: [
+      {
+        title: "The Shine Dental, White Rock",
+        text: "Dental clinic construction with operatories, sterilization, workflow, and technical services coordinated.",
+        image: `${imageBase}/dental-clinic.jpg`,
+      },
+      {
+        title: "Skinholic Aesthetics",
+        text: "Med spa interior built around treatment flow, client experience, privacy, and finish detail.",
+        image: `${imageBase}/project-med-spa.jpg`,
+      },
+      {
+        title: "Dental Clinic, Abbotsford",
+        text: "Dental clinic build-out with clinical service coordination and clean handover.",
+        image: `${imageBase}/project-clinic-9.jpg`,
+      },
+      {
+        title: "Luxury Residential",
+        text: "Custom residential construction with high-end finish planning and project control.",
+        image: `${imageBase}/project-residential.jpg`,
+      },
+      {
+        title: "Private Office, White Rock",
+        text: "Commercial office interior built for professional use and daily operation.",
+        image: `${imageBase}/project-office.jpg`,
+      },
+    ],
+    canonicalPath: "/projects",
   },
   {
-    name: "Selling a Property",
-    slug: "selling-a-property",
-    keyword: "selling a property",
-    ctaAngle: "pricing, preparation, launch, and negotiation planning",
-    searchIntent: "choose a listing advisor for pricing, preparation, launch, and offer review",
-    relatedKeywords: [
-      "listing agent",
-      "sell my house",
-      "home valuation",
-      "property selling strategy",
+    slug: "contact",
+    title: "Contact Oberizon Construction | Book a Free Consultation",
+    description:
+      "Contact Oberizon Construction in White Rock, BC to review a healthcare, dental, medical, pharmacy, commercial, office, or luxury residential construction project.",
+    keywords: ["contact Oberizon Construction", "construction consultation White Rock", "commercial contractor consultation"],
+    eyebrow: "Start the conversation",
+    heading: "Planning a clinic, commercial space, or luxury home?",
+    subheading:
+      "Start with a project review before you commit to a space, drawings, budget, or construction timeline.",
+    heroImage: `${imageBase}/reception.jpg`,
+    introTitle: "Book a project review.",
+    intro:
+      "Oberizon will help you understand scope, permits, services, budget risks, schedule pressure, and what needs to be planned before construction starts.",
+    proof: [siteConfig.phone, siteConfig.email, "Suite 305, 1493 Foster St"],
+    featureTitle: "What to bring",
+    features: [
+      {
+        title: "Project Type",
+        text: "Dental, medical, pharmacy, commercial, office, clinic renovation, or luxury residential.",
+      },
+      {
+        title: "Location",
+        text: "The city, building type, lease stage, and any constraints you already know.",
+      },
+      {
+        title: "Timeline",
+        text: "Opening target, permit expectations, equipment timing, and decision deadlines.",
+      },
     ],
+    canonicalPath: "/contact",
+  },
+  {
+    slug: "privacy-policy",
+    title: "Privacy Policy | Oberizon Construction",
+    description:
+      "Read Oberizon Construction's privacy policy for website inquiries, consultation requests, and contact information handling.",
+    keywords: ["Oberizon privacy policy"],
+    eyebrow: "Privacy",
+    heading: "Privacy Policy",
+    subheading:
+      "How website inquiries and contact details are handled when visitors request a construction consultation.",
+    heroImage: `${imageBase}/hero-commercial.webp`,
+    introTitle: "Information handling",
+    intro:
+      "Information submitted through the website is used to respond to project inquiries, provide requested construction guidance, and maintain communication.",
+    proof: ["Contact information", "Project inquiry details", "Website analytics"],
+    featureTitle: "Policy summary",
+    features: [
+      {
+        title: "Collection",
+        text: "The site may collect contact details, inquiry details, and standard analytics data.",
+      },
+      {
+        title: "Use",
+        text: "Information is used to respond to requests and improve the website experience.",
+      },
+      {
+        title: "Choice",
+        text: "Visitors can contact Oberizon to request updates or removal of submitted details.",
+      },
+    ],
+    canonicalPath: "/privacy-policy",
+  },
+];
+
+export const processSteps = [
+  {
+    number: "01",
+    title: "Review",
+    text: "We review the project, space, budget, timeline, and risk before construction starts.",
+  },
+  {
+    number: "02",
+    title: "Plan",
+    text: "Layout, drawings, permits, services, equipment needs, trades, and construction sequence.",
+  },
+  {
+    number: "03",
+    title: "Build",
+    text: "Site execution, trade coordination, material flow, quality control, and regular updates.",
+  },
+  {
+    number: "04",
+    title: "Handover",
+    text: "Inspections, deficiencies, final walkthrough, and handover so the space is ready for use.",
+  },
+];
+
+export const aiFaqs = [
+  {
+    question: "What is healthcare construction?",
+    answer:
+      "Healthcare construction is the planning and build-out of spaces such as dental clinics, medical clinics, pharmacies, physiotherapy clinics, and med spas where layout, services, equipment, compliance, inspections, and patient flow must be coordinated before construction begins.",
+  },
+  {
+    question: "How long does it take to build a dental clinic?",
+    answer:
+      "A dental clinic timeline depends on permits, drawings, equipment, operatories, plumbing, electrical, millwork, and inspection readiness. Oberizon highlights a 90-day dental clinic project where early planning allowed the site work to stay controlled.",
+  },
+  {
+    question: "What permits are required for a medical clinic in BC?",
+    answer:
+      "Permit requirements vary by municipality, building, occupancy, and scope. A medical clinic may require building permits, trade permits, inspections, accessibility review, and coordination with the landlord or strata before construction begins.",
+  },
+  {
+    question: "What is the cost of building a pharmacy in British Columbia?",
+    answer:
+      "Pharmacy construction cost depends on size, building condition, millwork, security, services, accessibility, finishes, schedule pressure, and permitting. Oberizon starts with a project review so owners can understand budget risks before committing.",
   },
 ];
 
@@ -614,141 +734,111 @@ export function getMainPage(slug: string) {
   return mainPages.find((page) => page.slug === slug);
 }
 
-export function getPseoPage(citySlug: string, serviceSlug: string): PseoPage | undefined {
-  return getAllPseoPages().find(
+export function getConstructionPage(citySlug: string, serviceSlug: string) {
+  return getAllConstructionPages().find(
     (page) => page.city.slug === citySlug && page.service.slug === serviceSlug,
   );
 }
 
-export function getAllPseoPages(): PseoPage[] {
+export function getAllConstructionPages(): ConstructionPseoPage[] {
   return serviceAreas.flatMap((city) =>
-    seoServices.map((service) => {
-      const path = `/real-estate/${city.slug}/${service.slug}`;
-      const primaryKeyword = `${service.keyword} in ${city.city}, BC`;
-      const keywordCluster = buildKeywordCluster(service, city);
-      const serviceBullets = buildServiceBullets(service, city);
-      const serviceFocus = buildServiceFocus(service, city);
+    constructionServices.map((service) => {
+      const path = `/construction/${city.slug}/${service.slug}`;
+      const primary = `${service.primaryKeyword} in ${city.city}, BC`;
+      const keywords = buildKeywordCluster(service, city);
 
       return {
         city,
         service,
         path,
-        title: `${service.name} in ${city.city}, BC | The Oberoi Group`,
-        description: `Need ${primaryKeyword}? The Oberoi Group provides ${service.ctaAngle} with local guidance across ${city.regionNote}.`,
+        title: `${service.name} in ${city.city}, BC | Oberizon Construction`,
+        description: `Need ${primary}? Oberizon Construction manages ${service.intent} across ${city.regionNote}.`,
         h1: `${service.name} in ${city.city}, BC`,
-        primaryKeyword,
-        keywordCluster,
-        intro: `For clients searching for ${primaryKeyword}, The Oberoi Group brings a precise, advisory-first process. The team helps clients ${service.searchIntent}, adding local context, negotiation discipline, and a trusted professional network across ${city.regionNote}.`,
-        localProof: `Based from White Rock and active across the Lower Mainland, the team helps ${city.city} clients compare timing, value, property fit, and next-step risk before making a real estate move.`,
-        marketContext: `${city.city} real estate decisions are shaped by ${city.marketSignals}. The Oberoi Group uses those signals to frame ${service.keyword} conversations around pricing, timing, property quality, and negotiation leverage.`,
-        serviceFocus,
-        serviceBullets,
+        keywords,
+        intro: `For owners searching for ${primary}, Oberizon Construction brings a structured process before the site gets busy. The team helps clients ${service.intent}, with planning, permits, trades, inspections, and handover controlled from day one.`,
+        localProof: `From its White Rock base, Oberizon manages construction across the Lower Mainland, including ${city.regionNote}. Projects are planned around local building conditions, access, inspections, owner deadlines, and the way the finished space must operate.`,
+        marketContext: `${city.city} projects are shaped by ${city.localSignals}. Oberizon uses those local details to plan scope, sequencing, services, finishes, and risk before construction begins.`,
+        serviceFocus: buildServiceFocus(service, city),
         faqs: [
           {
-            question: `Who helps with ${primaryKeyword}?`,
-            answer: `The Oberoi Group supports ${service.ctaAngle} for clients evaluating ${city.city} and nearby Lower Mainland opportunities.`,
+            question: `Does Oberizon handle ${primary}?`,
+            answer: `Yes. Oberizon supports ${service.name.toLowerCase()} for owners and operators in ${city.city} and nearby Lower Mainland markets.`,
           },
           {
-            question: `Which ${city.city} areas does the team discuss?`,
-            answer: `Common local conversations include ${formatList(city.neighborhoods)} along with nearby markets when they fit the client goal.`,
+            question: `What areas near ${city.city} does Oberizon review?`,
+            answer: `Common local project conversations include ${formatList(city.neighborhoods)} along with nearby communities when the project scope requires it.`,
           },
           {
-            question: `What should I know before starting ${service.name.toLowerCase()} in ${city.city}?`,
-            answer: `Start with your goal, timing, budget or property profile, and decision constraints. The team will translate that into a practical next step for ${service.keyword} in ${city.city}.`,
+            question: `What should I prepare before starting ${service.name.toLowerCase()}?`,
+            answer: `Bring the address or target space, lease or ownership stage, drawings if available, opening timeline, project type, known budget, and any equipment or operational needs.`,
           },
           {
-            question: `Can The Oberoi Group compare ${city.city} with nearby markets?`,
-            answer: `Yes. The advisory process can compare ${city.city} with other Lower Mainland and Fraser Valley markets so you can weigh value, timing, lifestyle, and investment fit.`,
+            question: `Can Oberizon review the space before I commit?`,
+            answer: `Yes. A project review can help identify scope, permit, service, schedule, and budget risks before you commit to a space, design, or construction timeline.`,
           },
         ],
         internalLinks: [
-          ...seoServices
+          ...constructionServices
             .filter((item) => item.slug !== service.slug)
+            .slice(0, 4)
             .map((item) => ({
               label: `${item.name} in ${city.city}`,
-              href: `/real-estate/${city.slug}/${item.slug}`,
+              href: `/construction/${city.slug}/${item.slug}`,
             })),
-          { label: "All Service Areas", href: "/real-estate" },
-          { label: "Contact The Team", href: "/contact" },
+          { label: "All Service Areas", href: "/construction" },
+          { label: "Book a Project Review", href: "/contact" },
         ],
       };
     }),
   );
 }
 
-function buildKeywordCluster(service: SeoService, city: ServiceArea) {
+function buildKeywordCluster(service: ConstructionService, city: ServiceArea) {
   return [
-    `${service.keyword} in ${city.city}, BC`,
-    `${city.city} ${service.keyword}`,
+    `${service.primaryKeyword} in ${city.city}, BC`,
+    `${city.city} ${service.primaryKeyword}`,
     ...service.relatedKeywords.map((keyword) => `${keyword} ${city.city}`),
-    `${service.name.toLowerCase()} ${city.localModifier}`,
+    `${service.vertical.toLowerCase()} construction ${city.regionNote}`,
   ];
 }
 
-function buildServiceFocus(service: SeoService, city: ServiceArea) {
-  if (service.slug === "commercial-real-estate") {
+function buildServiceFocus(service: ConstructionService, city: ServiceArea): Feature[] {
+  const shared = [
+    {
+      title: "Project review",
+      text: `Review the space, project type, budget, timeline, permits, and risk before committing to ${service.primaryKeyword} in ${city.city}.`,
+    },
+    {
+      title: "Managed execution",
+      text: "Coordinate trades, materials, inspections, deficiencies, and updates through one accountable construction process.",
+    },
+  ];
+
+  if (service.vertical === "Healthcare") {
     return [
+      ...shared,
       {
-        title: "Commercial fit",
-        text: `Evaluate location, access, use, zoning, and operator fit before committing to a ${city.city} commercial property.`,
-      },
-      {
-        title: "Investor lens",
-        text: `Review income potential, tenant profile, resale logic, and risk in relation to ${city.marketSignals}.`,
-      },
-      {
-        title: "Listing strategy",
-        text: `Position commercial real estate in ${city.city} with buyer qualification, proof points, and disciplined negotiation terms.`,
+        title: "Clinical workflow",
+        text: `Plan rooms, services, equipment, patient flow, staff movement, accessibility, and handover around daily healthcare operation in ${city.city}.`,
       },
     ];
   }
 
-  if (service.slug === "residential-real-estate") {
+  if (service.vertical === "Commercial") {
     return [
+      ...shared,
       {
-        title: "Property match",
-        text: `Compare homes, condos, and townhomes across ${formatList(city.neighborhoods)} with lifestyle and resale in mind.`,
-      },
-      {
-        title: "Market read",
-        text: `Use ${city.city} pricing signals, condition, buyer pool, and timing to shape the residential real estate plan.`,
-      },
-      {
-        title: "Move strategy",
-        text: `Coordinate buying, selling, financing, subjects, and closing steps through one advisory team.`,
-      },
-    ];
-  }
-
-  if (service.slug === "buying-a-home") {
-    return [
-      {
-        title: "Buyer preparation",
-        text: `Clarify budget, must-haves, property type, and target areas in ${city.city} before the search widens.`,
-      },
-      {
-        title: "Offer discipline",
-        text: `Assess comparable sales, condition, competition, and negotiation leverage before writing on a home.`,
-      },
-      {
-        title: "Local confidence",
-        text: `Compare ${formatList(city.neighborhoods)} against nearby options when value, commute, or lifestyle tradeoffs matter.`,
+        title: "Business operation",
+        text: `Build around reception, staff areas, customer flow, storage, opening targets, and the way the ${city.city} business actually needs to run.`,
       },
     ];
   }
 
   return [
+    ...shared,
     {
-      title: "Pricing strategy",
-      text: `Establish the ${city.city} pricing range, likely buyer pool, and key objections before the property launches.`,
-    },
-    {
-      title: "Presentation plan",
-      text: `Prepare visuals, copy, showing flow, and launch timing around the strongest parts of the property.`,
-    },
-    {
-      title: "Offer control",
-      text: `Review price, terms, subjects, buyer quality, and closing timing before accepting an offer.`,
+      title: "Finish control",
+      text: `Coordinate the details that matter in luxury residential construction: sequencing, materials, millwork, fixtures, inspections, and final walkthrough.`,
     },
   ];
 }
@@ -761,41 +851,9 @@ function formatList(items: string[]) {
   return `${items.slice(0, -1).join(", ")}, and ${items.at(-1)}`;
 }
 
-function buildServiceBullets(service: SeoService, city: ServiceArea) {
-  if (service.slug === "commercial-real-estate") {
-    return [
-      `Commercial property search and listing strategy across ${city.city}.`,
-      "Owner-user and investor evaluation with attention to zoning, access, use, and exit options.",
-      "Deal preparation that aligns pricing, diligence, buyer qualification, and negotiation terms.",
-    ];
-  }
-
-  if (service.slug === "residential-real-estate") {
-    return [
-      `Residential buying and selling guidance for ${city.city} homes, condos, and townhomes.`,
-      "Market comparisons that weigh lifestyle, resale, condition, and negotiation leverage.",
-      "A single team coordinating search, listing, offer, subject removal, and closing steps.",
-    ];
-  }
-
-  if (service.slug === "buying-a-home") {
-    return [
-      `Buyer strategy for finding and securing the right property in ${city.city}.`,
-      "Shortlist review, comparable sales analysis, and offer planning before competition begins.",
-      "Clear support through financing, inspections, documents, and closing logistics.",
-    ];
-  }
-
-  return [
-    `Seller strategy for positioning a ${city.city} property before it reaches the market.`,
-    "Pricing, preparation, visual presentation, launch timing, and buyer targeting.",
-    "Offer review that weighs price, terms, certainty, subjects, and closing timing.",
-  ];
-}
-
 export const allStaticPaths = [
   "/",
-  "/real-estate",
+  "/construction",
   ...mainPages.map((page) => page.canonicalPath),
-  ...getAllPseoPages().map((page) => page.path),
+  ...getAllConstructionPages().map((page) => page.path),
 ];

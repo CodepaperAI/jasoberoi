@@ -16,16 +16,16 @@ export function ButtonLink({
 }: ButtonLinkProps) {
   const toneClass =
     tone === "red"
-      ? "red-button text-white"
+      ? "amber-button text-stone-950"
       : tone === "black"
         ? "black-button text-white"
-        : "border border-white/50 bg-black/25 text-white";
+        : "border border-amber-300/50 bg-stone-950/25 text-white";
 
   return (
     <Link
       href={href}
       className={[
-        "inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-bold uppercase transition duration-300 hover:-translate-y-0.5 hover:border-white hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-white/70",
+        "inline-flex min-h-11 items-center justify-center gap-2 rounded-sm px-5 py-3 text-sm font-extrabold uppercase tracking-[0.12em] transition duration-300 hover:-translate-y-0.5 hover:border-amber-200 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-amber-300/70",
         toneClass,
         className,
       ].join(" ")}

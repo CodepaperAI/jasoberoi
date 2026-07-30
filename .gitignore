@@ -23,6 +23,10 @@
 # misc
 .DS_Store
 *.pem
+public/oberizon/images/
+public/oberizon/optimized/project-shine-dental.jpg
+.lighthouse-*.json
+.tmp-lighthouse/
 
 # debug
 npm-debug.log*
