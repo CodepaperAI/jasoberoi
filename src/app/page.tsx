@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { HomeExperience } from "@/components/HomeExperience";
 import { JsonLd } from "@/components/JsonLd";
-import { breadcrumbJsonLd, faqJsonLd, websiteJsonLd } from "@/lib/schema";
+import { breadcrumbJsonLd, websiteJsonLd } from "@/lib/schema";
 import { homePage } from "@/lib/site";
 import { buildMetadata } from "@/lib/seo";
 
@@ -17,7 +17,6 @@ export default function HomePage() {
     <>
       <JsonLd data={websiteJsonLd()} />
       <JsonLd data={breadcrumbJsonLd([{ label: "Home", href: "/" }])} />
-      <JsonLd data={faqJsonLd()} />
       <HomeExperience />
     </>
   );

@@ -1,21 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0d0c09;
-  --foreground: #f5f1e8;
-  --oberizon-amber: #f3a21b;
-  --oberizon-orange: #f05a24;
-  --ink: #14120d;
-  --charcoal: #1d1a13;
-  --paper: #f5f1e8;
-  --line: rgba(245, 241, 232, 0.14);
+  --background: #ffffff;
+  --foreground: #171717;
+  --oberizon-orange: #ff4f0a;
+  --oberizon-orange-dark: #ea4300;
+  --ink: #171717;
+  --muted: #667085;
+  --paper: #ffffff;
+  --soft-blue: #f8faff;
+  --line: rgba(15, 23, 42, 0.1);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-barlow);
-  --font-display: var(--font-archivo-black);
+  --font-display: Georgia, "Times New Roman", serif;
 }
 
 * {
@@ -23,12 +24,9 @@
 }
 
 body {
-  background:
-    radial-gradient(circle at 20% 0%, rgba(240, 90, 36, 0.16), transparent 32rem),
-    radial-gradient(circle at 80% 20%, rgba(243, 162, 27, 0.12), transparent 34rem),
-    var(--background);
+  background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-barlow), "Arial Narrow", sans-serif;
+  font-family: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
 }
 
 a {
@@ -36,43 +34,48 @@ a {
 }
 
 ::selection {
-  background: var(--oberizon-amber);
-  color: #111;
+  background: var(--oberizon-orange);
+  color: #fff;
 }
 
 .display-font {
-  font-family: var(--font-archivo-black), Impact, sans-serif;
+  font-family: Georgia, "Times New Roman", serif;
   letter-spacing: 0;
 }
 
+.serif-font {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.orange-italic {
+  color: var(--oberizon-orange);
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+}
+
 .steel-shadow {
-  text-shadow: 0 14px 34px rgba(0, 0, 0, 0.62);
+  text-shadow: 0 14px 34px rgba(0, 0, 0, 0.3);
 }
 
 .amber-button {
-  background: linear-gradient(135deg, #ffbe35, #f05a24);
-  box-shadow: 0 18px 36px rgba(240, 90, 36, 0.26);
+  background: linear-gradient(135deg, #ff7a1a, #ff4f0a);
+  box-shadow: 0 16px 34px rgba(255, 79, 10, 0.28);
 }
 
 .black-button {
-  background: #11100c;
+  background: #111111;
   box-shadow: 0 18px 36px rgba(0, 0, 0, 0.34);
 }
 
 .industrial-surface {
   position: relative;
   isolation: isolate;
-  background:
-    linear-gradient(rgba(13, 12, 9, 0.84), rgba(13, 12, 9, 0.94)),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.055) 0 1px, transparent 1px 72px),
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 72px);
+  background: #0f1115;
 }
 
 .blueprint-band {
   min-height: 88px;
-  background:
-    linear-gradient(135deg, rgba(243, 162, 27, 0.88), rgba(240, 90, 36, 0.92)),
-    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.16) 0 2px, transparent 2px 20px);
+  background: linear-gradient(135deg, #ff7a1a, #ff4f0a);
 }
 
 .diagonal-cut {
@@ -97,6 +100,38 @@ a {
 
 .service-track {
   animation: service-scroll 34s linear infinite;
+}
+
+.soft-grid {
+  background:
+    radial-gradient(circle at 8% 15%, rgba(255, 115, 0, 0.08), transparent 18rem),
+    radial-gradient(circle at 92% 0%, rgba(255, 115, 0, 0.08), transparent 20rem),
+    linear-gradient(180deg, #ffffff, #f8faff);
+}
+
+.corner-dots::before,
+.corner-dots::after {
+  content: "";
+  position: absolute;
+  width: 84px;
+  height: 84px;
+  background-image: radial-gradient(rgba(148, 163, 184, 0.22) 2px, transparent 2px);
+  background-size: 14px 14px;
+  pointer-events: none;
+}
+
+.corner-dots::before {
+  left: 44px;
+  top: 44px;
+}
+
+.corner-dots::after {
+  right: 44px;
+  bottom: 44px;
+}
+
+.live-card-shadow {
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
 }
 
 @keyframes reveal-up {

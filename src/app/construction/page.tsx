@@ -34,19 +34,15 @@ export default function ConstructionIndexPage() {
         ])}
       />
 
-      <section className="relative isolate overflow-hidden pt-24">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-[url('/oberizon/optimized/hero-commercial.webp')] bg-cover bg-center opacity-45" />
-          <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/[0.88] to-stone-950/[0.42]" />
-        </div>
-        <div className="mx-auto max-w-7xl px-5 py-20 sm:px-6 lg:px-8">
-          <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-amber-300">
+      <section className="soft-grid relative overflow-hidden px-5 pb-20 pt-32 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
             Location + Service SEO
           </p>
-          <h1 className="display-font steel-shadow mt-4 max-w-5xl break-words text-[2.55rem] uppercase leading-none text-white sm:text-7xl">
+          <h1 className="serif-font mt-5 max-w-5xl text-5xl leading-tight tracking-tight text-zinc-950 sm:text-7xl">
             Construction Services By City
           </h1>
-          <p className="mt-6 max-w-3xl text-xl font-semibold leading-8 text-white/80">
+          <p className="mt-6 max-w-3xl text-xl font-medium leading-8 text-slate-600">
             Healthcare, dental, medical, pharmacy, commercial renovation, office renovation, and
             luxury residential construction pages for Lower Mainland service areas.
           </p>
@@ -56,33 +52,35 @@ export default function ConstructionIndexPage() {
         </div>
       </section>
 
-      <section className="industrial-surface px-5 py-20 sm:px-6 lg:px-8">
+      <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {serviceAreas.map((city) => (
               <article
                 key={city.slug}
-                className="rounded-sm border border-white/[0.12] bg-stone-950/[0.52] p-5"
+                className="live-card-shadow rounded-3xl bg-white p-6 ring-1 ring-slate-200"
               >
                 <div className="flex items-start gap-3">
-                  <MapPin className="mt-1 shrink-0 text-amber-300" size={22} aria-hidden="true" />
+                  <MapPin className="mt-1 shrink-0 text-orange-600" size={22} aria-hidden="true" />
                   <div>
-                    <h2 className="display-font text-3xl uppercase text-white">{city.city}</h2>
-                    <p className="mt-2 text-base font-medium leading-6 text-white/[0.68]">
+                    <h2 className="serif-font text-3xl text-zinc-950">{city.city}</h2>
+                    <p className="mt-2 text-base font-medium leading-6 text-slate-600">
                       {city.regionNote}. Common project conversations include{" "}
                       {city.neighborhoods.slice(0, 3).join(", ")}.
                     </p>
                   </div>
                 </div>
 
-                <div className="mt-5 grid gap-2">
+                <div className="mt-6 grid gap-2">
                   {constructionServices.map((service) => (
                     <Link
                       key={service.slug}
                       href={`/construction/${city.slug}/${service.slug}`}
-                      className="flex min-h-12 items-center justify-between rounded-sm border border-white/[0.12] bg-white/[0.04] px-4 py-3 text-sm font-extrabold uppercase text-white/[0.76] transition hover:border-amber-400 hover:bg-amber-500 hover:text-stone-950"
+                      className="flex min-h-12 items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-extrabold uppercase tracking-[0.06em] text-zinc-800 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700"
                     >
-                      <span>{service.name} in {city.city}</span>
+                      <span>
+                        {service.name} in {city.city}
+                      </span>
                       <ArrowRight size={17} aria-hidden="true" />
                     </Link>
                   ))}
