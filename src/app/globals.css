@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+:root {
+  --background: #030303;
+  --foreground: #f8f8f8;
+  --race-red: #e10d12;
+  --race-red-dark: #a80509;
+  --asphalt: #080808;
+  --asphalt-soft: #121212;
+  --pit-gray: #d7d7d7;
+  --line: rgba(255, 255, 255, 0.16);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-rajdhani);
+  --font-display: var(--font-oswald);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-rajdhani), "Arial Narrow", sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--race-red);
+  color: white;
+}
+
+.display-font {
+  font-family: var(--font-oswald), Impact, sans-serif;
+  letter-spacing: 0;
+}
+
+.race-text-shadow {
+  text-shadow: 0 6px 14px rgba(0, 0, 0, 0.75);
+}
+
+.grain-surface {
+  position: relative;
+  isolation: isolate;
+}
+
+.grain-surface::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.82)),
+    url("/assets/images/optimized/effect2-bg.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.checker-band {
+  min-height: 88px;
+  background-image: conic-gradient(#fff 25%, #000 0 50%, #fff 0 75%, #000 0);
+  background-position: 0 0;
+  background-size: 120px 88px;
+}
+
+.red-button {
+  background: linear-gradient(135deg, #ff1919, #d50000);
+  box-shadow: 0 16px 32px rgba(225, 13, 18, 0.22);
+}
+
+.black-button {
+  background: #030303;
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.36);
+}
+
+.reveal-up {
+  animation: reveal-up 700ms ease both;
+}
+
+.reveal-delay-1 {
+  animation-delay: 120ms;
+}
+
+.reveal-delay-2 {
+  animation-delay: 240ms;
+}
+
+.reveal-delay-3 {
+  animation-delay: 360ms;
+}
+
+.award-track {
+  animation: award-scroll 30s linear infinite;
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes award-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}
