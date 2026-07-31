@@ -134,11 +134,18 @@ export const homePage = {
     "Oberizon Construction builds healthcare, commercial, dental, pharmacy, clinic, office, and luxury residential projects across White Rock and the Lower Mainland.",
   canonicalPath: "/",
   keywords: [
+    "commercial construction",
     "commercial construction company",
     "commercial general contractor",
+    "commercial builders",
     "healthcare construction",
+    "healthcare construction company",
     "dental clinic construction",
+    "medical clinic construction",
+    "pharmacy construction",
     "commercial renovation",
+    "office renovation contractor",
+    "luxury residential construction",
     "Lower Mainland construction company",
   ],
 };
@@ -727,6 +734,11 @@ export const aiFaqs = [
     question: "What is the cost of building a pharmacy in British Columbia?",
     answer:
       "Pharmacy construction cost depends on size, building condition, millwork, security, services, accessibility, finishes, schedule pressure, and permitting. Oberizon starts with a project review so owners can understand budget risks before committing.",
+  },
+  {
+    question: "What should you look for in a healthcare construction contractor?",
+    answer:
+      "Look for a healthcare construction contractor with clinical build experience, a managed process from review to handover, coordination of permits and inspections, and clear scope, budget, and schedule control. Oberizon focuses on planning services, equipment, and patient flow before construction begins.",
   },
 ];
 

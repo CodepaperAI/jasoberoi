@@ -77,7 +77,12 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <a className="flex items-start gap-3 transition hover:text-orange-500" href={siteConfig.mapsUrl}>
+              <a
+                className="flex items-start gap-3 transition hover:text-orange-500"
+                href={siteConfig.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <MapPin size={16} aria-hidden="true" className="mt-1 shrink-0" />
                 <span>{siteConfig.address}</span>
               </a>
@@ -93,7 +98,7 @@ export function Footer() {
                 key={link.label}
                 href={link.href}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white/70 transition hover:-translate-y-0.5 hover:border-orange-500 hover:bg-orange-600 hover:text-white"
                 aria-label={link.label}
               >
@@ -108,7 +113,12 @@ export function Footer() {
 
       <div className="border-t border-white/10 px-5 py-6">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-center text-xs font-semibold text-white/40 sm:flex-row sm:text-left">
-          <p>Copyright (c) 2014-2025 Oberizon Construction. Privacy . Terms</p>
+          <p>
+            Copyright (c) 2014-2025 Oberizon Construction.{" "}
+            <Link href="/privacy-policy" className="transition hover:text-orange-500">
+              Privacy
+            </Link>
+          </p>
           <p>
             Designed by <span className="text-orange-500">HexBytes</span>
           </p>

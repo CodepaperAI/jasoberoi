@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { AppointmentModal } from "@/components/AppointmentModal";
-import { processSteps, serviceAreas, siteConfig } from "@/lib/site";
+import { aiFaqs, processSteps, serviceAreas, siteConfig } from "@/lib/site";
 
 const visionItems = [
   {
@@ -192,8 +192,12 @@ export function HomeExperience() {
         <div className="mx-auto flex max-w-7xl items-center justify-between border-t border-zinc-100 pt-10 text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-400">
           <p className="normal-case tracking-normal">A system for brands to feel as good as they look.</p>
           <div className="hidden gap-8 text-zinc-700 sm:flex">
-            <Link href="/contact">Get template</Link>
-            <Link href="/projects">Explore</Link>
+            <Link href="/contact" className="transition hover:text-orange-600">
+              Book a Review
+            </Link>
+            <Link href="/projects" className="transition hover:text-orange-600">
+              Explore Projects
+            </Link>
           </div>
         </div>
       </section>
@@ -587,6 +591,34 @@ export function HomeExperience() {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white px-5 py-24 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl">
+          <div className="text-center">
+            <p className="text-sm font-bold uppercase tracking-[0.24em] text-orange-600">
+              Frequently Asked
+            </p>
+            <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+              What Owners <span className="orange-italic">Ask Us.</span>
+            </h2>
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">
+              Answers to the most common questions about healthcare, dental, medical, and pharmacy
+              construction in British Columbia.
+            </p>
+          </div>
+          <div className="mt-14 grid gap-5 md:grid-cols-2">
+            {aiFaqs.map((faq) => (
+              <article
+                key={faq.question}
+                className="live-card-shadow rounded-3xl bg-white p-7 ring-1 ring-slate-200"
+              >
+                <h3 className="text-xl font-bold leading-snug text-zinc-950">{faq.question}</h3>
+                <p className="mt-3 text-base font-medium leading-7 text-slate-600">{faq.answer}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
