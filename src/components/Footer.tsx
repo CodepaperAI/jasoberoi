@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { constructionServices, siteConfig, socialLinks } from "@/lib/site";
+import { constructionServices, credentials, siteConfig, socialLinks } from "@/lib/site";
 
 const socialMarks: Record<string, string> = {
   Instagram: "IG",
@@ -27,6 +27,16 @@ export function Footer() {
             healthcare construction, commercial interiors, and luxury residential projects across
             the Lower Mainland.
           </p>
+          <dl className="mt-6 grid max-w-xs gap-3 text-xs text-white/60">
+            {credentials.map((item) => (
+              <div key={item.label} className="grid grid-cols-[80px_1fr] items-baseline gap-3">
+                <dt className="font-extrabold uppercase tracking-[0.18em] text-orange-400">
+                  {item.label}
+                </dt>
+                <dd className="text-white/70">{item.value}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
         <div>

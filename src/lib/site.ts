@@ -57,6 +57,8 @@ export type ConstructionPseoPage = {
   h1: string;
   keywords: string[];
   intro: string;
+  quickFacts: string[];
+  pricingBrief: string;
   localProof: string;
   marketContext: string;
   serviceFocus: Feature[];
@@ -78,6 +80,14 @@ export const siteConfig = {
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=1493+Foster+St+305+White+Rock+BC",
   heroVideo: "https://jas-project.s3.ap-south-1.amazonaws.com/home-page-video.mp4",
+  foundedYear: 2014,
+  founderName: "Jas Oberoi",
+  founderRole: "Founder & Principal",
+  // TODO(client): confirm BC contractor licence + WorkSafeBC account number for public display.
+  // Placeholder text is intentionally non-numeric so no false schema/citations leak until confirmed.
+  licenceStatus: "BC-licensed general contractor",
+  insuranceStatus: "Fully insured, WorkSafeBC registered",
+  warranty: "2-5-10 Home Warranty on residential builds",
 };
 
 export const socialLinks = [
@@ -115,17 +125,37 @@ export const quickLinks = [
 ];
 
 export const stats = [
+  { value: "10+ Years", label: "Building across the Lower Mainland since 2014" },
   { value: "90 Days", label: "Featured dental clinic delivery window" },
   { value: "1 Team", label: "Planning, permits, trades, inspections, handover" },
-  { value: "BC", label: "White Rock based, Lower Mainland focused" },
 ];
 
 export const trustItems = [
+  "BC-licensed general contractor",
+  "Fully insured, WorkSafeBC registered",
   "Planning before construction",
   "Permits and inspections managed",
   "Healthcare workflow coordination",
-  "Commercial tenant improvement control",
   "Senior oversight from review to handover",
+];
+
+export const credentials = [
+  {
+    label: "Licence",
+    value: "BC-licensed general contractor",
+  },
+  {
+    label: "Insurance",
+    value: "Fully insured, WorkSafeBC registered",
+  },
+  {
+    label: "Warranty",
+    value: "2-5-10 Home Warranty on residential builds",
+  },
+  {
+    label: "Established",
+    value: "Building across the Lower Mainland since 2014",
+  },
 ];
 
 export const homePage = {
@@ -494,7 +524,13 @@ export const mainPages: SitePage[] = [
     introTitle: "Planning before construction gets loud.",
     intro:
       "From dental clinics and pharmacies to commercial interiors and luxury homes, Oberizon is built around the work that happens before the site gets busy: review, scope, services, sequencing, and handover.",
-    proof: ["White Rock HQ", "Healthcare and commercial focus", "Lower Mainland service area"],
+    proof: [
+      "BC-licensed general contractor",
+      "Fully insured, WorkSafeBC registered",
+      "Building across the Lower Mainland since 2014",
+      "White Rock HQ",
+      "Healthcare and commercial focus",
+    ],
     featureTitle: "How Oberizon works",
     features: [
       {
@@ -758,6 +794,7 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
       const path = `/construction/${city.slug}/${service.slug}`;
       const primary = `${service.primaryKeyword} in ${city.city}, BC`;
       const keywords = buildKeywordCluster(service, city);
+      const pricing = buildPricingBrief(service);
 
       return {
         city,
@@ -768,27 +805,12 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
         h1: `${service.name} in ${city.city}, BC`,
         keywords,
         intro: `For owners searching for ${primary}, Oberizon Construction brings a structured process before the site gets busy. The team helps clients ${service.intent}, with planning, permits, trades, inspections, and handover controlled from day one.`,
+        quickFacts: buildQuickFacts(service, city, pricing),
+        pricingBrief: pricing,
         localProof: `From its White Rock base, Oberizon manages construction across the Lower Mainland, including ${city.regionNote}. Projects are planned around local building conditions, access, inspections, owner deadlines, and the way the finished space must operate.`,
         marketContext: `${city.city} projects are shaped by ${city.localSignals}. Oberizon uses those local details to plan scope, sequencing, services, finishes, and risk before construction begins.`,
         serviceFocus: buildServiceFocus(service, city),
-        faqs: [
-          {
-            question: `Does Oberizon handle ${primary}?`,
-            answer: `Yes. Oberizon supports ${service.name.toLowerCase()} for owners and operators in ${city.city} and nearby Lower Mainland markets.`,
-          },
-          {
-            question: `What areas near ${city.city} does Oberizon review?`,
-            answer: `Common local project conversations include ${formatList(city.neighborhoods)} along with nearby communities when the project scope requires it.`,
-          },
-          {
-            question: `What should I prepare before starting ${service.name.toLowerCase()}?`,
-            answer: `Bring the address or target space, lease or ownership stage, drawings if available, opening timeline, project type, known budget, and any equipment or operational needs.`,
-          },
-          {
-            question: `Can Oberizon review the space before I commit?`,
-            answer: `Yes. A project review can help identify scope, permit, service, schedule, and budget risks before you commit to a space, design, or construction timeline.`,
-          },
-        ],
+        faqs: buildPseoFaqs(service, city, primary, pricing),
         internalLinks: [
           ...constructionServices
             .filter((item) => item.slug !== service.slug)
@@ -798,11 +820,86 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
               href: `/construction/${city.slug}/${item.slug}`,
             })),
           { label: "All Service Areas", href: "/construction" },
+          { label: "Full cost guide", href: "/cost" },
           { label: "Book a Project Review", href: "/contact" },
         ],
       };
     }),
   );
+}
+
+function buildPricingBrief(service: ConstructionService): string {
+  const ranges: Record<string, string> = {
+    "healthcare-construction": "$150–$320 per sq ft turnkey depending on service coordination and finish level",
+    "dental-clinic-construction": "$180–$320 per sq ft turnkey — typically $450k–$850k for a 2,500–3,500 sq ft clinic",
+    "dental-office-renovation": "$120–$260 per sq ft depending on the scope of the renovation",
+    "medical-clinic-construction": "$150–$260 per sq ft turnkey — typically $375k–$650k for a 2,500 sq ft clinic",
+    "pharmacy-construction": "$140–$230 per sq ft turnkey — typically $280k–$460k for a 2,000 sq ft space",
+    "clinic-renovation-contractor": "$120–$240 per sq ft depending on phasing and existing site conditions",
+    "commercial-construction": "$120–$220 per sq ft turnkey for standard commercial fit-outs",
+    "commercial-renovation": "$95–$180 per sq ft depending on the base-building condition",
+    "office-renovation-contractor": "$120–$220 per sq ft depending on layout, finishes, and services",
+    "luxury-residential-construction": "$500–$1,200 per sq ft turnkey for a custom home",
+  };
+  return ranges[service.slug] ?? "Price varies by scope, finish level, and site conditions.";
+}
+
+function buildQuickFacts(
+  service: ConstructionService,
+  city: ServiceArea,
+  pricing: string,
+): string[] {
+  const neighborhoodList = formatList(city.neighborhoods.slice(0, 3));
+  const facts: string[] = [
+    `Oberizon Construction delivers ${service.name.toLowerCase()} for owners across ${city.city} and the surrounding ${city.regionNote}, from a White Rock, BC head office.`,
+    `Typical 2026 pricing in ${city.city} for ${service.primaryKeyword} is ${pricing.toLowerCase().replace(/\.$/, "")}.`,
+  ];
+
+  if (service.vertical === "Healthcare") {
+    facts.push(
+      `Common ${city.city} project neighborhoods for healthcare builds include ${neighborhoodList}, with equipment, plumbing, and services coordinated before construction starts.`,
+    );
+  } else if (service.vertical === "Commercial") {
+    facts.push(
+      `Common ${city.city} commercial project areas include ${neighborhoodList}, with operations, permits, and tenant improvement timing planned before demolition.`,
+    );
+  } else {
+    facts.push(
+      `Common ${city.city} residential project neighborhoods include ${neighborhoodList}, with finish, sequencing, and site coordination planned around the block.`,
+    );
+  }
+
+  return facts;
+}
+
+function buildPseoFaqs(
+  service: ConstructionService,
+  city: ServiceArea,
+  primary: string,
+  pricing: string,
+) {
+  return [
+    {
+      question: `Does Oberizon handle ${service.name.toLowerCase()} in ${city.city}?`,
+      answer: `Yes. Oberizon Construction delivers ${service.name.toLowerCase()} for owners and operators in ${city.city} and the surrounding Lower Mainland from a White Rock, BC head office.`,
+    },
+    {
+      question: `How much does ${service.primaryKeyword} cost in ${city.city}?`,
+      answer: `${pricing}. The final number depends on base-building condition, service coordination, finish level, and schedule pressure. See the full Oberizon cost guide at /cost for the 2026 Lower Mainland breakdown.`,
+    },
+    {
+      question: `What areas near ${city.city} does Oberizon serve for ${service.name.toLowerCase()}?`,
+      answer: `Common ${city.city} project conversations include ${formatList(city.neighborhoods)}, plus nearby communities when the project scope justifies the travel.`,
+    },
+    {
+      question: `What should I prepare before starting ${service.name.toLowerCase()} in ${city.city}?`,
+      answer: `Bring the address or target space, lease or ownership stage, drawings if available, opening or move-in timeline, project type, known budget, and any equipment or operational needs. The more Oberizon knows early, the tighter the feasibility comes back.`,
+    },
+    {
+      question: `Can Oberizon review my ${city.city} space before I commit?`,
+      answer: `Yes. A project review identifies scope, permit, service, schedule, and budget risks before you commit to a lease, a design, or a construction timeline — critical for ${primary}.`,
+    },
+  ];
 }
 
 function buildKeywordCluster(service: ConstructionService, city: ServiceArea) {
@@ -866,6 +963,7 @@ function formatList(items: string[]) {
 export const allStaticPaths = [
   "/",
   "/construction",
+  "/cost",
   ...mainPages.map((page) => page.canonicalPath),
   ...getAllConstructionPages().map((page) => page.path),
 ];

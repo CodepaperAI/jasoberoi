@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, Menu } from "lucide-react";
+import { ChevronDown, Menu, Phone } from "lucide-react";
 import { ButtonLink } from "@/components/ButtonLink";
-import { navigation } from "@/lib/site";
+import { navigation, siteConfig } from "@/lib/site";
 
 export function Header() {
   return (
@@ -54,17 +54,37 @@ export function Header() {
           )}
         </nav>
 
-        <div className="hidden lg:block">
-          <ButtonLink href="/contact" className="min-h-10 px-6 py-2.5 text-sm shadow-orange-600/25">
-            Schedule Consultation
-          </ButtonLink>
-        </div>
+        <div className="flex items-center gap-2 lg:gap-3">
+          <a
+            href={siteConfig.phoneHref}
+            aria-label={`Call Oberizon Construction at ${siteConfig.phone}`}
+            data-analytics="header-call"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full bg-orange-600 px-3 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-orange-500 lg:hidden"
+          >
+            <Phone size={16} aria-hidden="true" strokeWidth={2.4} />
+            <span className="hidden sm:inline">{siteConfig.phone}</span>
+            <span className="sr-only sm:hidden">Call {siteConfig.phone}</span>
+          </a>
+          <a
+            href={siteConfig.phoneHref}
+            aria-label={`Call Oberizon Construction at ${siteConfig.phone}`}
+            data-analytics="header-call"
+            className="hidden items-center gap-2 rounded-full border border-orange-200 px-3 py-2 text-sm font-bold text-orange-700 transition hover:bg-orange-50 lg:inline-flex"
+          >
+            <Phone size={15} aria-hidden="true" strokeWidth={2.4} />
+            {siteConfig.phone}
+          </a>
+          <div className="hidden lg:block">
+            <ButtonLink href="/contact" className="min-h-10 px-6 py-2.5 text-sm shadow-orange-600/25">
+              Schedule Consultation
+            </ButtonLink>
+          </div>
 
-        <details className="relative lg:hidden">
-          <summary className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-xl border border-zinc-200 text-zinc-900">
-            <span className="sr-only">Open navigation</span>
-            <Menu aria-hidden="true" size={21} />
-          </summary>
+          <details className="relative lg:hidden">
+            <summary className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-xl border border-zinc-200 text-zinc-900">
+              <span className="sr-only">Open navigation</span>
+              <Menu aria-hidden="true" size={21} />
+            </summary>
           <div className="absolute right-0 top-14 w-80 rounded-2xl border border-orange-100 bg-white p-3 shadow-2xl shadow-orange-950/10">
             {navigation.map((item) =>
               item.items ? (
@@ -92,8 +112,9 @@ export function Header() {
                 </Link>
               ),
             )}
-          </div>
-        </details>
+            </div>
+          </details>
+        </div>
       </div>
     </header>
   );

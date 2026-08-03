@@ -95,6 +95,24 @@ export default async function ConstructionRoute({ params }: ConstructionProps) {
         </div>
       </section>
 
+      <section className="bg-white px-5 py-16 sm:px-6 lg:px-8" aria-label="Quick facts">
+        <div className="mx-auto max-w-7xl">
+          <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
+            Quick facts about {page.service.name.toLowerCase()} in {page.city.city}
+          </p>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {page.quickFacts.map((fact) => (
+              <p
+                key={fact}
+                className="rounded-3xl border border-orange-100 bg-orange-50/60 p-6 text-base font-medium leading-7 text-zinc-800"
+              >
+                {fact}
+              </p>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
@@ -102,7 +120,7 @@ export default async function ConstructionRoute({ params }: ConstructionProps) {
               Local Planning
             </p>
             <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
-              Local strategy for {page.city.city}
+              How does Oberizon plan {page.service.name.toLowerCase()} in {page.city.city}?
             </h2>
             <p className="mt-5 text-xl font-medium leading-8 text-slate-600">{page.localProof}</p>
           </div>
@@ -114,10 +132,10 @@ export default async function ConstructionRoute({ params }: ConstructionProps) {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
             <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
-              Search Coverage
+              Local scope
             </p>
             <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
-              {page.service.name} coverage in {page.city.city}
+              What&apos;s included in {page.service.name.toLowerCase()} in {page.city.city}?
             </h2>
             <p className="mt-5 text-xl font-medium leading-8 text-slate-600">
               {page.marketContext}
@@ -167,7 +185,9 @@ export default async function ConstructionRoute({ params }: ConstructionProps) {
 
       <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <h2 className="serif-font text-4xl text-zinc-950">Frequently Asked Questions</h2>
+          <h2 className="serif-font text-4xl text-zinc-950">
+            Frequently asked about {page.service.name.toLowerCase()} in {page.city.city}
+          </h2>
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             {page.faqs.map((faq) => (
               <article key={faq.question} className="rounded-3xl bg-white p-6 ring-1 ring-slate-200">

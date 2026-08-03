@@ -34,6 +34,34 @@ export function organizationJsonLd(url: string) {
     image: absoluteUrl("/oberizon/optimized/hero-commercial.webp"),
     logo: absoluteUrl("/oberizon/optimized/oberizon-logo.png"),
     priceRange: "$$$",
+    foundingDate: String(siteConfig.foundedYear),
+    founder: {
+      "@type": "Person",
+      name: siteConfig.founderName,
+      jobTitle: siteConfig.founderRole,
+    },
+    knowsAbout: [
+      "Healthcare construction",
+      "Dental clinic construction",
+      "Medical clinic construction",
+      "Pharmacy construction",
+      "Commercial construction",
+      "Commercial renovation",
+      "Office renovation",
+      "Luxury residential construction",
+    ],
+    hasCredential: [
+      {
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "licence",
+        name: siteConfig.licenceStatus,
+      },
+      {
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "insurance",
+        name: siteConfig.insuranceStatus,
+      },
+    ],
     sameAs: [
       "https://www.instagram.com/oberizon_construction",
       "https://www.facebook.com/Oberizon",

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo_Black, Barlow } from "next/font/google";
+import { Analytics } from "@/components/Analytics";
+import { ConversionTracking } from "@/components/ConversionTracking";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
@@ -41,6 +43,8 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-background text-foreground">
         <JsonLd data={organizationJsonLd(absoluteUrl("/"))} />
+        <Analytics />
+        <ConversionTracking />
         <Header />
         <main>{children}</main>
         <Footer />
