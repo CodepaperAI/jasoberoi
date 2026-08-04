@@ -4,10 +4,14 @@ import {
   ArrowRight,
   Check,
   ClipboardCheck,
+  Eye,
   Globe2,
+  Receipt,
   Send,
   Sparkles,
   Star,
+  Users,
+  Workflow,
 } from "lucide-react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { AppointmentModal } from "@/components/AppointmentModal";
@@ -39,26 +43,34 @@ const verticals = [
   },
 ];
 
+// One icon per reason. All five previously shared a single clipboard glyph,
+// which made the column read as an unfinished placeholder rather than five
+// distinct claims.
 const difference = [
   {
     title: "Planning Before Construction",
     text: "We review the space, layout, services, permits, budget, and timeline before work starts.",
+    icon: ClipboardCheck,
   },
   {
     title: "One Accountable Team",
     text: "Permits, trades, construction, inspections, and handover managed through one process.",
+    icon: Users,
   },
   {
     title: "Built Around Operations",
     text: "How the space will actually work for patients, staff, customers, and daily use.",
+    icon: Workflow,
   },
   {
     title: "Clear Scope & Budget",
     text: "Clear scope, clear budget, clear timeline, and fewer surprises.",
+    icon: Receipt,
   },
   {
     title: "Senior Oversight",
     text: "Oberizon stays involved in planning, sequencing, and execution.",
+    icon: Eye,
   },
 ];
 
@@ -106,7 +118,7 @@ export function HomeExperience() {
   return (
     <>
       <AppointmentModal />
-      <section className="relative overflow-hidden bg-white pb-20 pt-28">
+      <section className="relative overflow-hidden bg-white pt-28">
         <div className="absolute inset-x-0 top-20 h-[590px] bg-[#eef8fc]" />
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl pt-20 text-center">
@@ -146,23 +158,6 @@ export function HomeExperience() {
           poster="/oberizon/optimized/project-dental-1.jpg"
           src={siteConfig.heroVideo}
         />
-      </section>
-
-      <section className="bg-white px-5 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-7xl items-center justify-between border-t border-zinc-100 pt-10 text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-400">
-          <p className="normal-case tracking-normal">
-            Healthcare and commercial construction across the Lower Mainland since{" "}
-            {siteConfig.foundedYear}.
-          </p>
-          <div className="hidden gap-8 text-zinc-700 sm:flex">
-            <Link href="/contact" className="transition hover:text-orange-600">
-              Book a Consultation
-            </Link>
-            <Link href="/projects" className="transition hover:text-orange-600">
-              Explore Projects
-            </Link>
-          </div>
-        </div>
       </section>
 
       <section className="relative isolate overflow-hidden bg-zinc-950 px-5 py-28 text-white sm:px-6 lg:px-8">
@@ -250,52 +245,76 @@ export function HomeExperience() {
         </div>
       </section>
 
-      <section className="corner-dots relative overflow-hidden bg-gradient-to-b from-[#f8faff] via-white to-[#f8faff] px-5 py-24 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-[1fr_0.95fr] lg:items-center">
+      {/* overflow-clip, not overflow-hidden: hidden establishes a scroll
+          container, which silently disables the sticky image column below.
+          clip still contains the corner decoration without that side effect. */}
+      <section className="corner-dots relative overflow-clip bg-gradient-to-b from-[#f8faff] via-white to-[#f8faff] px-5 py-24 sm:px-6 lg:px-8">
+        {/* items-start, not items-center — sticky positioning needs the column
+            to be free to scroll within the grid area rather than be centred. */}
+        <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-[1fr_0.95fr] lg:items-start">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.22em] text-orange-600">
               The Difference
             </p>
-            <h2 className="mt-4 text-4xl font-bold tracking-tight text-zinc-950 sm:text-5xl">
-              Why Owners Choose Oberizon.
+            {/* Serif, matching every other section heading on the page. */}
+            <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+              Why Owners <span className="orange-italic">Choose Oberizon.</span>
             </h2>
             <p className="mt-4 text-xl leading-8 text-slate-600">
               Because the build has to be managed before the site gets busy.
             </p>
-            <div className="mt-10 grid gap-6">
-              {difference.map((item, index) => (
-                <article
-                  key={item.title}
-                  className="live-card-shadow relative rounded-3xl bg-white p-6 ring-1 ring-slate-200"
-                >
-                  <span className="absolute left-16 top-4 rounded-full bg-slate-100 px-2 py-1 text-xs font-bold text-slate-400">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <div className="flex gap-6">
-                    <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-orange-600 ring-1 ring-orange-100">
-                      <ClipboardCheck size={24} aria-hidden="true" />
-                    </span>
-                    <div>
-                      <h3 className="text-2xl font-bold text-zinc-950">{item.title}</h3>
-                      <p className="mt-2 text-lg leading-8 text-slate-600">{item.text}</p>
+            <div className="mt-10 grid gap-4">
+              {difference.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <article
+                    key={item.title}
+                    className="live-card-shadow rounded-3xl bg-white p-6 ring-1 ring-slate-200"
+                  >
+                    <div className="flex items-start gap-5">
+                      <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-orange-600 ring-1 ring-orange-100">
+                        <Icon size={22} aria-hidden="true" />
+                      </span>
+                      <div className="min-w-0">
+                        {/* The number sits inline with the title. Absolutely
+                            positioned, it landed on top of the icon tile. */}
+                        <h3 className="flex items-baseline gap-3 text-2xl font-bold text-zinc-950">
+                          <span className="text-sm font-extrabold tabular-nums text-orange-300">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          {item.title}
+                        </h3>
+                        <p className="mt-1.5 text-base leading-7 text-slate-600">{item.text}</p>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                );
+              })}
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4 border border-slate-200 bg-white p-4">
-            {differenceImages.map((image, index) => (
-              <div key={image} className="relative aspect-square overflow-hidden bg-slate-100">
-                <Image
-                  src={image}
-                  alt={`Oberizon clinic planning detail ${index + 1}`}
-                  fill
-                  sizes="(min-width: 1024px) 25vw, 50vw"
-                  className="object-cover"
-                />
-              </div>
-            ))}
+
+          {/*
+            The image grid is shorter than the five cards beside it, so it used
+            to leave a large void. Sticking it to the viewport keeps it beside
+            whichever card you are reading and removes the dead space.
+          */}
+          <div className="lg:sticky lg:top-28">
+            <div className="grid grid-cols-2 gap-3 rounded-3xl border border-slate-200 bg-white p-3">
+              {differenceImages.map((image, index) => (
+                <div
+                  key={image}
+                  className="relative aspect-square overflow-hidden rounded-2xl bg-slate-100"
+                >
+                  <Image
+                    src={image}
+                    alt={`Oberizon clinic planning detail ${index + 1}`}
+                    fill
+                    sizes="(min-width: 1024px) 25vw, 50vw"
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
