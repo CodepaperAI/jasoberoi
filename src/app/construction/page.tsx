@@ -47,7 +47,7 @@ export default function ConstructionIndexPage() {
             luxury residential construction pages for Lower Mainland service areas.
           </p>
           <ButtonLink href="/contact" className="mt-8">
-            Book a Project Review
+            Book a Consultation
           </ButtonLink>
         </div>
       </section>

@@ -1,0 +1,371 @@
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, BadgeCheck, CalendarDays, MapPin, Phone, Quote, Star } from "lucide-react";
+import { ButtonLink } from "@/components/ButtonLink";
+import {
+  processSteps,
+  projects,
+  siteConfig,
+  type Project,
+  type Review,
+  type ServiceArea,
+} from "@/lib/site";
+
+/**
+ * The trust-first landing page, in the order a visitor earns confidence:
+ *
+ *   1. Keyword confirmation — "yes, this page is about the thing you searched"
+ *   2. Experience          — who is doing the work, and for how long
+ *   3. The work            — proof they have done it before
+ *   4. Reviews             — proof other people were happy with it
+ *   5. Why these services  — where to go next, and why
+ *   6. FAQs                — the specifics, with real numbers
+ *   7. CTA                 — the ask, once trust has been built
+ *
+ * Message match is the first principle of a converting page: mirroring the
+ * search query in the headline is what confirms, in about a second, that the
+ * visitor is in the right place. Everything below the hero exists to convert
+ * that recognition into trust before anything is asked of them.
+ */
+
+const yearsBuilding = new Date().getFullYear() - siteConfig.foundedYear;
+const deliveredCount = projects.filter((project) => project.status === "Delivered").length;
+
+/** Click-to-call. Roughly two thirds of contractor leads arrive as phone calls, so this is never buried. */
+export function CallLink({ className = "" }: { className?: string }) {
+  return (
+    <a
+      href={siteConfig.phoneHref}
+      className={[
+        "inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-zinc-900/15 bg-white px-6 py-3 text-sm font-bold text-zinc-900 transition duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400/70",
+        className,
+      ].join(" ")}
+    >
+      <Phone aria-hidden="true" size={17} strokeWidth={2.4} />
+      <span>{siteConfig.phone}</span>
+    </a>
+  );
+}
+
+/**
+ * Specific trust beats generic trust: years in business and a countable project
+ * total outperform "trusted by thousands" badges. The licence entry stays
+ * non-numeric until the client confirms the BC contractor and WorkSafeBC numbers.
+ */
+export function TrustStrip({ className = "" }: { className?: string }) {
+  const items = [
+    { icon: CalendarDays, label: `Building since ${siteConfig.foundedYear}`, sub: `${yearsBuilding} years` },
+    { icon: BadgeCheck, label: siteConfig.licenceStatus, sub: siteConfig.insuranceStatus },
+    { icon: MapPin, label: `${deliveredCount} delivered projects`, sub: "Lower Mainland, BC" },
+  ];
+
+  return (
+    <dl className={["grid gap-3 sm:grid-cols-3", className].join(" ")}>
+      {items.map((item) => (
+        <div
+          key={item.label}
+          className="flex items-start gap-3 rounded-2xl border border-orange-100 bg-orange-50/60 px-4 py-3"
+        >
+          <item.icon className="mt-0.5 shrink-0 text-orange-600" size={20} aria-hidden="true" />
+          <div>
+            <dt className="text-sm font-bold leading-5 text-zinc-900">{item.label}</dt>
+            <dd className="text-xs font-semibold uppercase tracking-[0.1em] text-slate-500">
+              {item.sub}
+            </dd>
+          </div>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+/** 1 — Keyword confirmation. The H1 is the target keyword verbatim. */
+export function LandingHero({
+  eyebrow,
+  heading,
+  intro,
+  image,
+  evidenceNote,
+}: {
+  eyebrow: string;
+  heading: string;
+  intro: string;
+  image: string;
+  evidenceNote?: string;
+}) {
+  return (
+    <section className="soft-grid relative overflow-hidden px-5 pb-16 pt-32 sm:px-6 lg:px-8">
+      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+        <div>
+          <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
+            {eyebrow}
+          </p>
+          <h1 className="serif-font mt-5 break-words text-5xl leading-tight tracking-tight text-zinc-950 sm:text-6xl lg:text-7xl">
+            {heading}
+          </h1>
+          <p className="mt-6 max-w-3xl text-xl font-medium leading-8 text-slate-600">{intro}</p>
+
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <ButtonLink href="/contact">Book a Consultation</ButtonLink>
+            <CallLink />
+          </div>
+
+          <TrustStrip className="mt-8 max-w-2xl" />
+
+          {evidenceNote ? (
+            <p className="mt-5 max-w-2xl rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium leading-6 text-slate-500">
+              {evidenceNote}
+            </p>
+          ) : null}
+        </div>
+
+        <div className="relative min-h-[480px] overflow-hidden rounded-[2rem] bg-zinc-900 shadow-2xl shadow-slate-900/12">
+          <Image
+            src={image}
+            alt={`${heading} project image`}
+            fill
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            priority
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-black/20" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** 2 — Experience. Countable, not adjectival. */
+export function ExperienceBlock({ city }: { city: ServiceArea }) {
+  return (
+    <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
+          Experience
+        </p>
+        <h2 className="serif-font mt-4 max-w-4xl text-4xl leading-tight text-zinc-950 sm:text-5xl">
+          {yearsBuilding} years building healthcare and commercial projects across the Lower
+          Mainland — including {city.regionNote}.
+        </h2>
+        <p className="mt-5 max-w-3xl text-xl font-medium leading-8 text-slate-600">
+          Oberizon Construction has run {deliveredCount} delivered builds and four more in progress
+          from its White Rock office since {siteConfig.foundedYear}, under {siteConfig.founderName},{" "}
+          {siteConfig.founderRole.toLowerCase()}. Every project runs through the same four stages.
+        </p>
+
+        <ol className="mt-10 grid gap-4 md:grid-cols-4">
+          {processSteps.map((step) => (
+            <li
+              key={step.number}
+              className="relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-orange-100"
+            >
+              <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-orange-50" />
+              <p className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-orange-600 text-lg font-bold text-white">
+                {step.number}
+              </p>
+              <h3 className="mt-6 text-2xl font-semibold text-zinc-950">{step.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{step.text}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * 3 — The work. The single strongest trust signal available to a contractor:
+ * named projects with real addresses. The market leader holds 26 page-one
+ * positions largely on the strength of a library of pages exactly like these.
+ */
+export function ProjectProof({ items, cityName }: { items: Project[]; cityName: string }) {
+  if (items.length === 0) {
+    return null;
+  }
+
+  return (
+    <section className="bg-slate-50 px-5 py-20 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
+          The work
+        </p>
+        <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+          Builds we have delivered near {cityName}.
+        </h2>
+
+        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {items.map((project) => (
+            <article
+              key={project.slug}
+              className="live-card-shadow flex flex-col rounded-3xl bg-white p-6 ring-1 ring-slate-200"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <span className="rounded-full bg-orange-50 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.12em] text-orange-700">
+                  {project.discipline}
+                </span>
+                <span
+                  className={[
+                    "text-xs font-extrabold uppercase tracking-[0.12em]",
+                    project.status === "Delivered" ? "text-emerald-600" : "text-slate-400",
+                  ].join(" ")}
+                >
+                  {project.status}
+                </span>
+              </div>
+
+              <h3 className="mt-4 text-2xl font-bold text-zinc-950">{project.name}</h3>
+              <p className="mt-2 flex items-start gap-2 text-base font-medium leading-7 text-slate-600">
+                <MapPin className="mt-1 shrink-0 text-slate-400" size={16} aria-hidden="true" />
+                {project.address}
+              </p>
+
+              {project.challenge ? (
+                <p className="mt-4 border-l-2 border-orange-200 pl-4 text-base font-medium leading-7 text-slate-600">
+                  {project.challenge}
+                </p>
+              ) : null}
+
+              {project.timeline ? (
+                <p className="mt-4 text-sm font-bold uppercase tracking-[0.1em] text-zinc-900">
+                  {project.timeline}
+                </p>
+              ) : null}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** 4 — Reviews. A named person saying the work was good, not a star average. */
+export function ReviewsBlock({ items }: { items: Review[] }) {
+  if (items.length === 0) {
+    return null;
+  }
+
+  return (
+    <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
+          Reviews
+        </p>
+        <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+          What clinic owners say.
+        </h2>
+
+        <div className="mt-10 grid gap-5 md:grid-cols-3">
+          {items.map((review) => (
+            <figure
+              key={review.author}
+              className="flex flex-col rounded-3xl bg-slate-50 p-6 ring-1 ring-slate-200"
+            >
+              <div className="flex items-center gap-1 text-orange-600" aria-label="Five out of five">
+                {Array.from({ length: 5 }, (_, index) => (
+                  <Star key={index} size={15} fill="currentColor" strokeWidth={0} aria-hidden="true" />
+                ))}
+              </div>
+              <Quote className="mt-4 text-orange-200" size={22} aria-hidden="true" />
+              <blockquote className="mt-2 grow text-base font-medium italic leading-7 text-slate-700">
+                {review.quote}
+              </blockquote>
+              <figcaption className="mt-6 border-t border-slate-200 pt-4">
+                <span className="block text-base font-bold text-zinc-950">{review.author}</span>
+                <span className="block text-xs font-extrabold uppercase tracking-[0.12em] text-orange-600">
+                  {[review.role, review.city].filter(Boolean).join(", ")}
+                </span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** 5 — Why these services. Each link says what it is for, so the rail guides rather than pads. */
+export function WhyTheseServices({
+  links,
+  cityName,
+}: {
+  links: Array<{ label: string; href: string; why?: string }>;
+  cityName: string;
+}) {
+  return (
+    <section className="bg-slate-50 px-5 py-20 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
+          Where to go next
+        </p>
+        <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+          Other things Oberizon builds in {cityName} — and when each one applies.
+        </h2>
+
+        <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="group flex flex-col justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-5 transition hover:border-orange-300"
+            >
+              <span className="flex items-center justify-between gap-3 text-sm font-extrabold uppercase tracking-[0.08em] text-zinc-900 group-hover:text-orange-600">
+                {link.label}
+                <ArrowRight size={18} aria-hidden="true" className="shrink-0" />
+              </span>
+              {link.why ? (
+                <span className="text-sm font-medium leading-6 text-slate-500">{link.why}</span>
+              ) : null}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** 6 — FAQs. */
+export function LandingFaqs({
+  items,
+  heading,
+}: {
+  items: Array<{ question: string; answer: string }>;
+  heading: string;
+}) {
+  return (
+    <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
+          Questions
+        </p>
+        <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+          {heading}
+        </h2>
+        <div className="mt-10 grid gap-4 md:grid-cols-2">
+          {items.map((faq) => (
+            <article key={faq.question} className="rounded-3xl bg-slate-50 p-6 ring-1 ring-slate-200">
+              <h3 className="text-2xl font-bold text-zinc-950">{faq.question}</h3>
+              <p className="mt-3 text-base font-medium leading-7 text-slate-600">{faq.answer}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** 7 — The ask, last, once the page has earned it. */
+export function LandingCta({ heading, body }: { heading: string; body: string }) {
+  return (
+    <section className="relative overflow-hidden bg-[#0f1115] px-5 py-20 text-white sm:px-6 lg:px-8">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,79,10,0.16),transparent_34rem)]" />
+      <div className="relative mx-auto max-w-4xl text-center">
+        <h2 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">{heading}</h2>
+        <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/70">{body}</p>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <ButtonLink href="/contact">Book a Consultation</ButtonLink>
+          <CallLink className="border-white/25 bg-transparent text-white hover:border-orange-400 hover:text-orange-400" />
+        </div>
+      </div>
+    </section>
+  );
+}

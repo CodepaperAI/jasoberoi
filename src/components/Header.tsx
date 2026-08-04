@@ -76,7 +76,7 @@ export function Header() {
           </a>
           <div className="hidden lg:block">
             <ButtonLink href="/contact" className="min-h-10 px-6 py-2.5 text-sm shadow-orange-600/25">
-              Schedule Consultation
+              Book a Consultation
             </ButtonLink>
           </div>
 

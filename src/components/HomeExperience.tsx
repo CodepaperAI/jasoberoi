@@ -11,37 +11,43 @@ import {
 } from "lucide-react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { AppointmentModal } from "@/components/AppointmentModal";
-import { aiFaqs, processSteps, serviceAreas, siteConfig } from "@/lib/site";
+import { aiFaqs, processSteps, reviews, serviceAreas, siteConfig } from "@/lib/site";
 
+/**
+ * Named after the services people actually search for, not generic consulting
+ * labels. Commercial construction and commercial renovation lead because they
+ * are the two largest measured opportunities and previously appeared nowhere on
+ * the homepage.
+ */
 const visionItems = [
   {
-    title: "Advisory",
-    text: "Strategic guidance to shape your vision.",
+    title: "Commercial Construction",
+    text: "Ground-up commercial builds and tenant improvements across the Lower Mainland.",
     tone: "orange",
   },
   {
-    title: "Project Management",
-    text: "Seamless planning and execution from start to finish.",
+    title: "Commercial Renovation",
+    text: "Interior renovations for offices, retail, and professional spaces already in use.",
     tone: "blue",
   },
   {
-    title: "Furniture & Equipment",
-    text: "High-quality solutions for every clinical need.",
+    title: "Dental Office Renovation",
+    text: "Operatory reconfiguration, suction and air runs, and imaging shielding in live clinics.",
     tone: "orange",
   },
   {
-    title: "Construction Solutions",
-    text: "Built with precision. Designed for care.",
+    title: "Medical & Healthcare Construction",
+    text: "Clinics and practices built around clinical workflow, IPAC barriers, and patient flow.",
     tone: "blue",
   },
   {
-    title: "Operational Readiness",
-    text: "Preparing your facility for operational excellence.",
+    title: "Pharmacy Construction",
+    text: "Dispensary sightlines, security glazing, and USP 795/797 compounding-room compliance.",
     tone: "orange",
   },
   {
-    title: "One Managed Process",
-    text: "Planning, permits, trades, inspections, handover - one team.",
+    title: "Luxury Residential",
+    text: "Custom homes run with the same planning discipline as our clinical work.",
     tone: "blue",
   },
 ];
@@ -133,27 +139,6 @@ const projects = [
   },
 ];
 
-const testimonials = [
-  {
-    name: "Dr. Kanwar",
-    role: "Clinic Owner",
-    quote:
-      "Very impressed with Oberizon construction and the way they handled my new office project. The team handled everything from planning to execution and the final result was just the way we envisioned it.",
-  },
-  {
-    name: "Dr. Satpreet",
-    role: "Clinic Owner",
-    quote:
-      "We hired Oberizon to build out our dental clinic and they did an amazing job. The place looks so clean and modern, exactly the look we were going for.",
-  },
-  {
-    name: "Dr. Bradley",
-    role: "Richmond",
-    quote:
-      "Working with Oberizon on our dental clinic was a great experience from start to finish. Jas Oberoi and his team were professional, responsive, and genuinely invested in getting the details right.",
-  },
-];
-
 export function HomeExperience() {
   return (
     <>
@@ -162,13 +147,29 @@ export function HomeExperience() {
         <div className="absolute inset-x-0 top-20 h-[590px] bg-[#eef8fc]" />
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl pt-20 text-center">
+            {/*
+              Dental leads because that is where the portfolio and the competitive
+              gap are strongest; commercial is named in the same breath because it
+              carries 4.2x the search volume. The previous headline ordered three
+              categories with no hierarchy and no specialism.
+            */}
+            {/*
+              The explicit spaces matter: the spans are display:block, so the
+              line breaks are visual, but without them the H1's text content
+              extracts as "British Columbia'sDental & CommercialConstruction".
+            */}
             <h1 className="serif-font text-[2.65rem] leading-[1.08] tracking-tight text-black sm:text-6xl lg:text-[5.25rem]">
-              Healthcare, Commercial
-              <span className="block">&amp;</span>
-              <span className="orange-italic">Luxury Construction</span> in BC.
+              British Columbia&apos;s{" "}
+              <span className="block orange-italic">Dental &amp; Commercial</span>{" "}
+              Construction Specialist.
             </h1>
-            <ButtonLink href="/contact" className="mt-12 px-10 py-4 text-lg">
-              Book an Appointment
+            <p className="mx-auto mt-8 max-w-2xl text-lg font-medium leading-8 text-slate-600">
+              Dental clinics, medical offices and pharmacies are where we differentiate. Commercial
+              construction and renovation are a full service line we build every day — not an
+              afterthought.
+            </p>
+            <ButtonLink href="/contact" className="mt-10 px-10 py-4 text-lg">
+              Book a Consultation
             </ButtonLink>
           </div>
 
@@ -190,10 +191,13 @@ export function HomeExperience() {
 
       <section className="bg-white px-5 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-7xl items-center justify-between border-t border-zinc-100 pt-10 text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-400">
-          <p className="normal-case tracking-normal">A system for brands to feel as good as they look.</p>
+          <p className="normal-case tracking-normal">
+            Healthcare and commercial construction across the Lower Mainland since{" "}
+            {siteConfig.foundedYear}.
+          </p>
           <div className="hidden gap-8 text-zinc-700 sm:flex">
             <Link href="/contact" className="transition hover:text-orange-600">
-              Book a Review
+              Book a Consultation
             </Link>
             <Link href="/projects" className="transition hover:text-orange-600">
               Explore Projects
@@ -212,32 +216,31 @@ export function HomeExperience() {
         />
         <div className="absolute inset-0 -z-10 bg-black/35" />
         <div className="mx-auto max-w-5xl text-center">
+          {/*
+            Was 24 words fronting six abstract nouns before saying what Oberizon
+            builds, with none of the priority keywords in it. Now 9 words, and the
+            supporting line names the actual highest-volume services.
+          */}
           <h2 className="serif-font text-4xl leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            Oberizon Construction Builds Complex Spaces Where Planning, Permits, Services,{" "}
-            <span className="orange-italic">Trades, Timelines &amp; Finish Quality</span> Have To Be
-            Controlled From Day One.
+            Commercial, Dental &amp; Medical Construction —{" "}
+            <span className="orange-italic">Built Right, On Time.</span>
           </h2>
           <div className="mx-auto mt-8 h-1 w-20 bg-orange-600" />
           <p className="mx-auto mt-8 max-w-3xl text-lg font-medium leading-8 text-white/88">
-            From dental clinics and pharmacies to physiotherapy clinics, commercial interiors, and
-            luxury homes - we manage the build with structure, clarity, and accountability.
+            From commercial renovations and tenant improvements to dental clinics, medical offices
+            and pharmacies — we manage permits, trades and timelines so your space opens on
+            schedule.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
               href="/contact"
               className="bg-orange-600 px-7 py-4 text-base font-bold uppercase text-white shadow-xl shadow-orange-950/20 transition hover:bg-orange-500"
             >
-              Book a Project Review
-            </Link>
-            <Link
-              href="/projects"
-              className="border border-white px-7 py-4 text-base font-bold uppercase text-white transition hover:bg-white hover:text-zinc-950"
-            >
-              View Our Work
+              Book a Consultation
             </Link>
           </div>
           <p className="mt-10 border-t border-white/35 pt-6 text-sm font-semibold uppercase tracking-[0.35em] text-white/70">
-            Serving White Rock . Surrey . Vancouver . Langley . Abbotsford . Lower Mainland
+            Serving {serviceAreas.map((area) => area.city).join(" . ")}
           </p>
         </div>
       </section>
@@ -245,7 +248,9 @@ export function HomeExperience() {
       <section className="corner-dots relative overflow-hidden bg-[#f8faff] px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.78fr_1.22fr] lg:items-center">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.22em] text-orange-600">Trust Bar</p>
+            <p className="text-sm font-bold uppercase tracking-[0.22em] text-orange-600">
+              Our Expertise
+            </p>
             <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
               Enabling Your
               <span className="block orange-italic">Healthcare Vision</span>
@@ -513,8 +518,8 @@ export function HomeExperience() {
             </p>
           </div>
           <div className="mt-16 grid gap-8 lg:grid-cols-3">
-            {testimonials.map((item) => (
-              <article key={item.name} className="live-card-shadow rounded-[2rem] bg-white p-9">
+            {reviews.map((item) => (
+              <article key={item.author} className="live-card-shadow rounded-[2rem] bg-white p-9">
                 <div className="flex gap-1 text-orange-500">
                   {Array.from({ length: 5 }).map((_, index) => (
                     <Star key={index} size={16} fill="currentColor" aria-hidden="true" />
@@ -525,12 +530,12 @@ export function HomeExperience() {
                 </p>
                 <div className="mt-10 flex items-center gap-4">
                   <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-600 text-lg font-bold text-white">
-                    {item.name.charAt(4) ?? item.name.charAt(0)}
+                    {item.author.replace(/^Dr\.\s*/, "").charAt(0)}
                   </span>
                   <div>
-                    <p className="font-bold text-zinc-950">{item.name}</p>
+                    <p className="font-bold text-zinc-950">{item.author}</p>
                     <p className="text-xs font-bold uppercase tracking-[0.16em] text-orange-600">
-                      {item.role}
+                      {[item.role, item.city].filter(Boolean).join(", ")}
                     </p>
                   </div>
                 </div>
@@ -627,11 +632,11 @@ export function HomeExperience() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,79,10,0.16),transparent_34rem)]" />
         <div className="relative mx-auto max-w-4xl text-center">
           <span className="inline-flex rounded-full bg-orange-600/15 px-5 py-2 text-xs font-extrabold uppercase tracking-[0.22em] text-orange-500">
-            Start The Conversation
+            Book a Consultation
           </span>
           <h2 className="mt-8 text-4xl font-semibold leading-tight text-white sm:text-5xl">
-            Planning A Clinic, Commercial Space, or Luxury Home?{" "}
-            <span className="orange-italic">Start With The Review.</span>
+            Planning a clinic, commercial space, or luxury home?{" "}
+            <span className="orange-italic">Book a consultation.</span>
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/70">
             Before you commit to a space, drawings, budget, or construction timeline, let Oberizon
@@ -675,7 +680,7 @@ export function HomeExperience() {
                 className="inline-flex items-center justify-center gap-3 rounded-2xl bg-orange-600 px-16 py-5 text-xs font-bold uppercase tracking-[0.2em] text-white shadow-xl shadow-orange-600/20 transition hover:bg-orange-500"
               >
                 <Send size={15} aria-hidden="true" />
-                Request Consultation
+                Book a Consultation
               </button>
             </div>
           </form>

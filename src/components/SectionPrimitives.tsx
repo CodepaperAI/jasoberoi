@@ -26,7 +26,7 @@ export function PageHero({ eyebrow, heading, subheading, image }: PageHeroProps)
             {subheading}
           </p>
           <ButtonLink href="/contact" className="mt-8">
-            Book a Project Review
+            Book a Consultation
           </ButtonLink>
         </div>
         <div className="relative min-h-[420px] overflow-hidden rounded-[2rem] bg-zinc-900 shadow-2xl shadow-slate-900/12">
@@ -69,11 +69,11 @@ export function ReviewCta() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,79,10,0.16),transparent_34rem)]" />
       <div className="relative mx-auto max-w-4xl text-center">
         <span className="inline-flex rounded-full bg-orange-600/15 px-5 py-2 text-xs font-extrabold uppercase tracking-[0.22em] text-orange-500">
-          Start the conversation
+          Book a Consultation
         </span>
         <h2 className="mt-8 text-4xl font-semibold leading-tight text-white sm:text-5xl">
           Planning a clinic, commercial space, or luxury home?{" "}
-          <span className="orange-italic">Start with the review.</span>
+          <span className="orange-italic">Book a consultation.</span>
         </h2>
         <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/70">
           Before you commit to a space, drawings, budget, or construction timeline, let Oberizon
@@ -81,7 +81,7 @@ export function ReviewCta() {
           starts.
         </p>
         <ButtonLink href="/contact" className="mt-8">
-          Request Consultation
+          Book a Consultation
         </ButtonLink>
       </div>
     </section>

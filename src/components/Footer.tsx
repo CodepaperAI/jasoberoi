@@ -1,7 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { constructionServices, credentials, siteConfig, socialLinks } from "@/lib/site";
+import {
+  constructionServices,
+  credentials,
+  serviceAreas,
+  siteConfig,
+  socialLinks,
+} from "@/lib/site";
 
 const socialMarks: Record<string, string> = {
   Instagram: "IG",
@@ -23,7 +29,7 @@ export function Footer() {
             className="h-auto w-44"
           />
           <p className="mt-6 max-w-xs text-sm font-medium leading-7 text-white/58">
-            Oberizon Construction is a White Rock based construction company specializing in
+            Oberizon Construction is a White Rock-based construction company specializing in
             healthcare construction, commercial interiors, and luxury residential projects across
             the Lower Mainland.
           </p>
@@ -41,8 +47,14 @@ export function Footer() {
 
         <div>
           <h2 className="text-xs font-extrabold uppercase tracking-[0.28em] text-white">Services</h2>
+          {/*
+            Every service, not a slice. The previous slice(4, 10) silently hid
+            Commercial Construction and Commercial Renovation — at 1,000 and 880
+            searches a month, the two largest keyword opportunities measured in
+            the entire research set.
+          */}
           <ul className="mt-6 space-y-3">
-            {constructionServices.slice(4, 10).map((service) => (
+            {constructionServices.map((service) => (
               <li key={service.slug}>
                 <Link
                   href={`/construction/white-rock/${service.slug}`}
@@ -57,14 +69,20 @@ export function Footer() {
 
         <div>
           <h2 className="text-xs font-extrabold uppercase tracking-[0.28em] text-white">Service Areas</h2>
+          {/*
+            Rendered from serviceAreas so the footer and the Service Areas page
+            can never disagree — previously a hardcoded 10 against a list of 14.
+            Each city links to its highest-volume service page, which is the
+            internal-linking backbone the strategy asks for.
+          */}
           <ul className="mt-6 space-y-3">
-            {["White Rock . Surrey", "Vancouver . Burnaby", "Richmond . Langley", "Abbotsford . Chilliwack", "North . West Vancouver"].map((area) => (
-              <li key={area}>
+            {serviceAreas.map((area) => (
+              <li key={area.slug}>
                 <Link
-                  href="/construction"
+                  href={`/construction/${area.slug}/commercial-construction`}
                   className="text-sm font-semibold text-white/55 transition hover:text-orange-500"
                 >
-                  {area}
+                  {area.city}
                 </Link>
               </li>
             ))}
@@ -124,7 +142,7 @@ export function Footer() {
       <div className="border-t border-white/10 px-5 py-6">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-center text-xs font-semibold text-white/40 sm:flex-row sm:text-left">
           <p>
-            Copyright (c) 2014-2025 Oberizon Construction.{" "}
+            Copyright © {siteConfig.foundedYear}–{new Date().getFullYear()} Oberizon Construction.{" "}
             <Link href="/privacy-policy" className="transition hover:text-orange-500">
               Privacy
             </Link>

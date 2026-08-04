@@ -9,7 +9,7 @@ export default function NotFound() {
           Page Not Found
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-xl font-medium leading-8 text-white/[0.72]">
-          This page is not part of the current construction plan. Head back to the main site or book a project review.
+          This page is not part of the current construction plan. Head back to the main site or book a consultation.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link className="amber-button rounded-sm px-5 py-3 text-sm font-extrabold uppercase tracking-[0.12em] text-stone-950" href="/">

@@ -7,6 +7,13 @@ type MetadataInput = {
   path: string;
   image?: string;
   keywords?: string[];
+  /**
+   * Set false for pages that are built and linkable but should not be asked to
+   * rank — currently the city pages with no delivered project and no measured
+   * search demand. Links are still followed, so equity reaches the pages that
+   * have earned their place.
+   */
+  index?: boolean;
 };
 
 export function absoluteUrl(path: string) {
@@ -21,6 +28,7 @@ export function buildMetadata({
   path,
   image = "/oberizon/optimized/hero-commercial.webp",
   keywords = [],
+  index = true,
 }: MetadataInput): Metadata {
   const url = absoluteUrl(path);
   const imageUrl = absoluteUrl(image);
@@ -34,10 +42,10 @@ export function buildMetadata({
       canonical: url,
     },
     robots: {
-      index: true,
+      index,
       follow: true,
       googleBot: {
-        index: true,
+        index,
         follow: true,
         "max-image-preview": "large",
         "max-snippet": -1,

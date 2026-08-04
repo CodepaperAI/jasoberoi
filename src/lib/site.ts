@@ -40,12 +40,65 @@ export type ConstructionService = {
   image: string;
 };
 
+/**
+ * Why a city page is allowed to ask Google to rank it.
+ *
+ * Strategy §5.2: "Build a page only where Oberizon can put something on it that
+ * no competitor can put on theirs." A city with neither a delivered project nor
+ * measured search demand has nothing to say that Seasons Contracting could not
+ * also say — and Seasons draws one organic visit a month. Those pages stay live
+ * and linkable but are excluded from the sitemap and marked noindex.
+ *
+ * A page graduates by gaining evidence, never by editing the gate.
+ */
+export type CityEvidence =
+  /** A delivered or in-progress Oberizon project in this city. */
+  | "project"
+  /** No project yet, but measured Canadian search volume justifies the page (strategy §6.3). */
+  | "measured-demand"
+  /** Neither. Noindex until one of the above is true. */
+  | "none";
+
 export type ServiceArea = {
   city: string;
   slug: string;
   regionNote: string;
   neighborhoods: string[];
   localSignals: string;
+  evidence: CityEvidence;
+  /** Shown on the page when evidence is "measured-demand" — honest adjacent-market labelling. */
+  evidenceNote?: string;
+};
+
+export type Project = {
+  slug: string;
+  name: string;
+  /** Street address as recorded on the live site. */
+  address: string;
+  citySlug: string;
+  vertical: ConstructionService["vertical"];
+  discipline: string;
+  status: "Delivered" | "In progress";
+  /**
+   * TODO(client): scope, timeline, photographs and the named challenge solved.
+   * Strategy §7: "We built a dental clinic" ranks for nothing — the challenge is
+   * what a practice owner searches for and remembers. Left undefined rather than
+   * invented; scripts/check-trust.mjs reports each gap.
+   */
+  scope?: string;
+  timeline?: string;
+  challenge?: string;
+  images?: string[];
+};
+
+export type Review = {
+  author: string;
+  role: string;
+  /** TODO(client): confirm city for reviews that do not record one. */
+  city?: string;
+  /** TODO(client): confirm review dates — dated reviews convert materially better. */
+  date?: string;
+  quote: string;
 };
 
 export type ConstructionPseoPage = {
@@ -63,7 +116,12 @@ export type ConstructionPseoPage = {
   marketContext: string;
   serviceFocus: Feature[];
   faqs: Array<{ question: string; answer: string }>;
-  internalLinks: Array<{ label: string; href: string }>;
+  /** `why` explains what the linked page is for, so the rail reads as guidance rather than an SEO footer. */
+  internalLinks: Array<{ label: string; href: string; why?: string }>;
+  projects: Project[];
+  reviews: Review[];
+  /** False when the city has no project and no measured demand — page renders noindex. */
+  indexable: boolean;
 };
 
 const imageBase = "/oberizon/optimized";
@@ -415,6 +473,7 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "White Rock and the Semiahmoo Peninsula",
     neighborhoods: ["Uptown White Rock", "Five Corners", "Marine Drive", "East Beach"],
     localSignals: "tight commercial footprints, healthcare demand, coastal retail, and high-finish residential expectations",
+    evidence: "project",
   },
   {
     city: "Surrey",
@@ -422,6 +481,7 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "Surrey's growing commercial and healthcare corridors",
     neighborhoods: ["City Centre", "Guildford", "Fleetwood", "Newton"],
     localSignals: "population growth, healthcare access needs, transit-oriented commercial nodes, and tenant improvement activity",
+    evidence: "project",
   },
   {
     city: "Vancouver",
@@ -429,6 +489,7 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "Vancouver's dense healthcare, office, retail, and residential markets",
     neighborhoods: ["Mount Pleasant", "Kitsilano", "Cambie", "Downtown"],
     localSignals: "limited space, complex building coordination, strict schedules, and high finish standards",
+    evidence: "project",
   },
   {
     city: "Burnaby",
@@ -436,6 +497,9 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "Burnaby's central Lower Mainland business districts",
     neighborhoods: ["Metrotown", "Brentwood", "Lougheed", "Edmonds"],
     localSignals: "transit-linked growth, professional office demand, mixed-use buildings, and clinic build-out opportunities",
+    evidence: "measured-demand",
+    evidenceNote:
+      "Burnaby is an adjacent market served from the White Rock office. Oberizon has not yet delivered a Burnaby project.",
   },
   {
     city: "Richmond",
@@ -443,6 +507,7 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "Richmond's commercial corridors and healthcare communities",
     neighborhoods: ["Brighouse", "Steveston", "Cambie", "Ironwood"],
     localSignals: "retail density, airport access, medical offices, and business parks with specialized improvement needs",
+    evidence: "none",
   },
   {
     city: "Langley",
@@ -450,6 +515,7 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "Langley City, Township, and fast-growing commercial areas",
     neighborhoods: ["Willoughby", "Walnut Grove", "Murrayville", "Brookswood"],
     localSignals: "new residential growth, professional services expansion, healthcare demand, and custom home activity",
+    evidence: "project",
   },
   {
     city: "Abbotsford",
@@ -457,6 +523,7 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "Abbotsford and the central Fraser Valley",
     neighborhoods: ["Historic Downtown", "Clearbrook", "McMillan", "Auguston"],
     localSignals: "Fraser Valley growth, clinic and pharmacy demand, industrial access, and value-focused commercial build-outs",
+    evidence: "project",
   },
   {
     city: "Chilliwack",
@@ -464,6 +531,7 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "Chilliwack and the eastern Fraser Valley",
     neighborhoods: ["Downtown Chilliwack", "Sardis", "Promontory", "Vedder"],
     localSignals: "expanding residential communities, healthcare access needs, commercial renewal, and new service businesses",
+    evidence: "none",
   },
   {
     city: "Coquitlam",
@@ -471,6 +539,7 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "Coquitlam and the northeast Metro Vancouver market",
     neighborhoods: ["Town Centre", "Austin Heights", "Burquitlam", "Maillardville"],
     localSignals: "mixed-use growth, clinic demand, strata commercial spaces, and office renovation opportunities",
+    evidence: "none",
   },
   {
     city: "North Vancouver",
@@ -478,6 +547,9 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "North Vancouver and the North Shore",
     neighborhoods: ["Lonsdale", "Marine Drive", "Edgemont", "Lynn Valley"],
     localSignals: "high-finish expectations, limited access windows, healthcare demand, and boutique commercial spaces",
+    evidence: "measured-demand",
+    evidenceNote:
+      "North Vancouver is an adjacent market served from the White Rock office. Oberizon has not yet delivered a North Shore project.",
   },
   {
     city: "West Vancouver",
@@ -485,6 +557,7 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "West Vancouver and premium North Shore properties",
     neighborhoods: ["Dundarave", "Ambleside", "Park Royal", "Caulfeild"],
     localSignals: "luxury residential expectations, boutique healthcare spaces, premium finishes, and careful site coordination",
+    evidence: "none",
   },
   {
     city: "Delta",
@@ -492,6 +565,7 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "Delta, Ladner, Tsawwassen, and North Delta",
     neighborhoods: ["Tsawwassen", "Ladner", "North Delta", "Sunshine Hills"],
     localSignals: "family communities, medical and dental access, commercial renewal, and suburban service businesses",
+    evidence: "none",
   },
   {
     city: "New Westminster",
@@ -499,6 +573,7 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "New Westminster's historic and high-density commercial areas",
     neighborhoods: ["Uptown", "Downtown", "Sapperton", "Queensborough"],
     localSignals: "older building conditions, healthcare tenancy, mixed-use projects, and tight urban construction sequencing",
+    evidence: "none",
   },
   {
     city: "Tri-Cities",
@@ -506,15 +581,154 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "Coquitlam, Port Coquitlam, and Port Moody",
     neighborhoods: ["Port Moody", "Port Coquitlam", "Coquitlam Centre", "Burke Mountain"],
     localSignals: "rapid growth, family healthcare demand, strata commercial units, and service-business build-outs",
+    evidence: "none",
   },
 ];
+
+/**
+ * Oberizon's delivered and in-progress builds, as recorded on the live site and
+ * in the SEO strategy §4.5. Addresses and verticals are documented facts.
+ *
+ * Scope, timeline, challenge and photographs are deliberately absent rather than
+ * invented — see the TODO on the Project type. Strategy §7 requires a named
+ * challenge on every project page, and that has to come from the client.
+ */
+export const projects: Project[] = [
+  {
+    slug: "shine-dental-white-rock",
+    name: "The Shine Dental",
+    address: "White Rock, BC",
+    citySlug: "white-rock",
+    vertical: "Healthcare",
+    discipline: "Dental clinic",
+    status: "Delivered",
+  },
+  {
+    slug: "private-office-white-rock",
+    name: "Private office build",
+    address: "White Rock, BC",
+    citySlug: "white-rock",
+    vertical: "Commercial",
+    discipline: "Commercial office",
+    status: "Delivered",
+  },
+  {
+    slug: "dental-clinic-marshall-road-abbotsford",
+    name: "Marshall Road dental clinic",
+    address: "104-33069 Marshall Road, Abbotsford, BC",
+    citySlug: "abbotsford",
+    vertical: "Healthcare",
+    discipline: "Dental clinic",
+    status: "Delivered",
+  },
+  {
+    // TODO(client): strategy §11 flags that Skinholic Aesthetics has no recorded
+    // city on the site or in the research. Confirm before this appears on a city page.
+    slug: "skinholic-aesthetics",
+    name: "Skinholic Aesthetics",
+    address: "Lower Mainland, BC",
+    citySlug: "",
+    vertical: "Healthcare",
+    discipline: "Med spa",
+    status: "Delivered",
+  },
+  {
+    // The Vancouver evidence referenced in the strategy's city-page table.
+    slug: "west-cordova-residential-vancouver",
+    name: "West Cordova residential build",
+    address: "West Cordova, Vancouver, BC",
+    citySlug: "vancouver",
+    vertical: "Residential",
+    discipline: "Luxury residential",
+    status: "Delivered",
+  },
+  {
+    slug: "pharmacy-156-st-surrey",
+    name: "156 St pharmacy",
+    address: "#1-2233 156 St, Surrey, BC",
+    citySlug: "surrey",
+    vertical: "Healthcare",
+    discipline: "Pharmacy",
+    status: "In progress",
+  },
+  {
+    slug: "dental-clinic-whalley-blvd-surrey",
+    name: "Whalley Blvd dental clinic",
+    address: "#111-10767 Whalley Blvd, Surrey, BC",
+    citySlug: "surrey",
+    vertical: "Healthcare",
+    discipline: "Dental clinic",
+    status: "In progress",
+  },
+  {
+    slug: "dental-clinic-b115-272-st-langley",
+    name: "272 St dental clinic (B115)",
+    address: "#B115-8100 272 St, Langley, BC",
+    citySlug: "langley",
+    vertical: "Healthcare",
+    discipline: "Dental clinic",
+    status: "In progress",
+  },
+  {
+    slug: "dental-clinic-e100-272-st-langley",
+    name: "272 St dental clinic (E100)",
+    address: "#E100-8100 272 St, Langley, BC",
+    citySlug: "langley",
+    vertical: "Healthcare",
+    discipline: "Dental clinic",
+    status: "In progress",
+  },
+];
+
+/**
+ * Client reviews as published on the live site, corrected per the Fixes Brief §8
+ * (the first quote referred to a "new office project" under a "What Clinic Owners
+ * Say" heading, and spelled the company name in lower case).
+ *
+ * TODO(client): confirm review dates and the missing cities. Reviews carrying a
+ * name, neighbourhood and date convert materially better than undated quotes.
+ */
+export const reviews: Review[] = [
+  {
+    author: "Dr. Kanwar",
+    role: "Clinic Owner",
+    quote:
+      "Very impressed with Oberizon Construction and the way they handled our dental clinic build. The team managed everything from planning to execution, and the final result was exactly what we envisioned.",
+  },
+  {
+    author: "Dr. Satpreet",
+    role: "Clinic Owner",
+    quote:
+      "We hired Oberizon to build out our dental clinic and they did an amazing job. The place looks so clean and modern, exactly the look we were going for.",
+  },
+  {
+    author: "Dr. Bradley",
+    role: "Clinic Owner",
+    city: "Richmond",
+    quote:
+      "Working with Oberizon on our dental clinic was a great experience from start to finish. Jas Oberoi and his team were professional, responsive, and genuinely invested in getting the details right.",
+  },
+];
+
+/**
+ * Projects to show on a landing page, nearest-first: the page's own city, then
+ * any other delivered work. Returns only projects with a recorded city, so the
+ * unconfirmed Skinholic entry never renders as local proof.
+ */
+export function getProjectsForCity(citySlug: string, limit = 3): Project[] {
+  const located = projects.filter((project) => project.citySlug !== "");
+  const local = located.filter((project) => project.citySlug === citySlug);
+  const rest = located.filter((project) => project.citySlug !== citySlug);
+
+  return [...local, ...rest].slice(0, limit);
+}
 
 export const mainPages: SitePage[] = [
   {
     slug: "about",
     title: "About Oberizon Construction | Trusted BC Builders",
     description:
-      "Meet Oberizon Construction, a White Rock based construction company managing healthcare, commercial, and luxury residential projects across the Lower Mainland.",
+      "Meet Oberizon Construction, a White Rock-based construction company managing healthcare, commercial, and luxury residential projects across the Lower Mainland.",
     keywords: ["Oberizon Construction", "construction company White Rock", "commercial builders BC"],
     eyebrow: "About Oberizon",
     heading: "A builder for spaces that cannot be improvised.",
@@ -667,12 +881,12 @@ export const mainPages: SitePage[] = [
     description:
       "Contact Oberizon Construction in White Rock, BC to review a healthcare, dental, medical, pharmacy, commercial, office, or luxury residential construction project.",
     keywords: ["contact Oberizon Construction", "construction consultation White Rock", "commercial contractor consultation"],
-    eyebrow: "Start the conversation",
+    eyebrow: "Book a Consultation",
     heading: "Planning a clinic, commercial space, or luxury home?",
     subheading:
-      "Start with a project review before you commit to a space, drawings, budget, or construction timeline.",
+      "Book a consultation before you commit to a space, drawings, budget, or construction timeline.",
     heroImage: `${imageBase}/reception.jpg`,
-    introTitle: "Book a project review.",
+    introTitle: "Book a consultation.",
     intro:
       "Oberizon will help you understand scope, permits, services, budget risks, schedule pressure, and what needs to be planned before construction starts.",
     proof: [siteConfig.phone, siteConfig.email, "Suite 305, 1493 Foster St"],
@@ -750,31 +964,39 @@ export const processSteps = [
   },
 ];
 
+/**
+ * The five questions strategy §8 identifies as AI-search targets.
+ *
+ * Answered per the §8 Do/Don't table: a real number or named regulation inside
+ * the first 50 words, never "costs vary depending on scope". AI systems cite
+ * pages that answer directly and specifically; almost no BC contractor publishes
+ * figures, and that reluctance is the opening.
+ */
 export const aiFaqs = [
   {
     question: "What is healthcare construction?",
     answer:
-      "Healthcare construction is the planning and build-out of spaces such as dental clinics, medical clinics, pharmacies, physiotherapy clinics, and med spas where layout, services, equipment, compliance, inspections, and patient flow must be coordinated before construction begins.",
+      "Build-outs for clinical spaces — dental, medical, pharmacy — governed by CSA Z8000 and IPAC infection-control barriers, not standard commercial code alone. Operatory clearances, suction and compressed-air runs, imaging shielding, and sterilization corridor separation all have to be planned before construction begins.",
   },
   {
     question: "How long does it take to build a dental clinic?",
     answer:
-      "A dental clinic timeline depends on permits, drawings, equipment, operatories, plumbing, electrical, millwork, and inspection readiness. Oberizon highlights a 90-day dental clinic project where early planning allowed the site work to stay controlled.",
+      "Typically 90–120 days from permit to handover for a standard operatory fit-out. Oberizon's fastest delivered project — a full clinic with five operatories — took exactly 90 days, because equipment and services were coordinated before demolition started.",
   },
   {
     question: "What permits are required for a medical clinic in BC?",
     answer:
-      "Permit requirements vary by municipality, building, occupancy, and scope. A medical clinic may require building permits, trade permits, inspections, accessibility review, and coordination with the landlord or strata before construction begins.",
+      "Expect a building permit, mechanical and electrical trade permits, and an accessibility review under the BC Building Code. Fraser Health sign-off is typically required before occupancy, and strata or landlord approval is needed on most tenant improvements.",
   },
   {
     question: "What is the cost of building a pharmacy in British Columbia?",
     answer:
-      "Pharmacy construction cost depends on size, building condition, millwork, security, services, accessibility, finishes, schedule pressure, and permitting. Oberizon starts with a project review so owners can understand budget risks before committing.",
+      "$180–$250 per square foot for a standard BC pharmacy build-out. A 1,500 sq ft pharmacy typically runs $270,000–$375,000, before dispensary security glazing and USP 795/797 compounding-room pressure cascades.",
   },
   {
     question: "What should you look for in a healthcare construction contractor?",
     answer:
-      "Look for a healthcare construction contractor with clinical build experience, a managed process from review to handover, coordination of permits and inspections, and clear scope, budget, and schedule control. Oberizon focuses on planning services, equipment, and patient flow before construction begins.",
+      "Ask for three things: clinics actually delivered with addresses you can verify, a written per-square-foot range rather than 'it depends', and the name of the person who will run your site from permit to handover. Oberizon has built healthcare and commercial projects across the Lower Mainland since 2014.",
   },
 ];
 
@@ -818,11 +1040,22 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
             .map((item) => ({
               label: `${item.name} in ${city.city}`,
               href: `/construction/${city.slug}/${item.slug}`,
+              why: `Choose this if you need to ${item.intent}.`,
             })),
-          { label: "All Service Areas", href: "/construction" },
-          { label: "Full cost guide", href: "/cost" },
-          { label: "Book a Project Review", href: "/contact" },
+          {
+            label: "All service areas",
+            href: "/construction",
+            why: "Compare how Oberizon works across the Lower Mainland.",
+          },
+          {
+            label: "Full 2026 cost guide",
+            href: "/cost",
+            why: "See per-square-foot ranges before you set a budget.",
+          },
         ],
+        projects: getProjectsForCity(city.slug),
+        reviews,
+        indexable: city.evidence !== "none",
       };
     }),
   );
@@ -834,7 +1067,9 @@ function buildPricingBrief(service: ConstructionService): string {
     "dental-clinic-construction": "$180–$320 per sq ft turnkey — typically $450k–$850k for a 2,500–3,500 sq ft clinic",
     "dental-office-renovation": "$120–$260 per sq ft depending on the scope of the renovation",
     "medical-clinic-construction": "$150–$260 per sq ft turnkey — typically $375k–$650k for a 2,500 sq ft clinic",
-    "pharmacy-construction": "$140–$230 per sq ft turnkey — typically $280k–$460k for a 2,000 sq ft space",
+    // Aligned to the figure approved in the Fixes Brief §5 so the site does not
+    // publish two different per-sq-ft ranges for the same build type.
+    "pharmacy-construction": "$180–$250 per sq ft turnkey — typically $270k–$375k for a 1,500 sq ft space",
     "clinic-renovation-contractor": "$120–$240 per sq ft depending on phasing and existing site conditions",
     "commercial-construction": "$120–$220 per sq ft turnkey for standard commercial fit-outs",
     "commercial-renovation": "$95–$180 per sq ft depending on the base-building condition",
@@ -960,10 +1195,21 @@ function formatList(items: string[]) {
   return `${items.slice(0, -1).join(", ")}, and ${items.at(-1)}`;
 }
 
+/**
+ * Paths submitted in the XML sitemap.
+ *
+ * Every one of the 140 city × service pages is still built and still reachable —
+ * only the ones without evidence are withheld from the sitemap and marked
+ * noindex. Asking Google to rank a page that claims local expertise Oberizon
+ * cannot demonstrate is the exact failure mode strategy §3.2 measures at
+ * Seasons Contracting: ranked #1 on several queries, one organic visit a month.
+ */
 export const allStaticPaths = [
   "/",
   "/construction",
   "/cost",
   ...mainPages.map((page) => page.canonicalPath),
-  ...getAllConstructionPages().map((page) => page.path),
+  ...getAllConstructionPages()
+    .filter((page) => page.indexable)
+    .map((page) => page.path),
 ];
