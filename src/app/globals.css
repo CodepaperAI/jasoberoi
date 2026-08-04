@@ -171,16 +171,16 @@ a {
   animation: route-fade-out 220ms ease-in both;
 }
 
-/* The horizon draws outward from the centre, then the sun settles onto it. */
+/* The horizon draws outward from the centre, then the sun opens around it. */
 .route-transition-horizon {
   transform-box: view-box;
-  transform-origin: 32px 29px;
+  transform-origin: 32px 32px;
   animation: route-horizon 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .route-transition-sun {
   transform-box: view-box;
-  transform-origin: 32px 36.5px;
+  transform-origin: 32px 32px;
   animation: route-sun 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -219,7 +219,7 @@ a {
 @keyframes route-sun {
   0% {
     opacity: 0;
-    transform: translateY(9px) scale(0.72);
+    transform: scale(0.55);
   }
 
   55% {
@@ -228,7 +228,7 @@ a {
 
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: scale(1);
   }
 }
 

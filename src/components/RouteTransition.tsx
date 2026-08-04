@@ -116,13 +116,13 @@ export function RouteTransition() {
     >
       <div className="route-transition-mark">
         <svg viewBox="0 0 64 64" className="h-20 w-20" fill="none" aria-hidden="true">
-          {/* The horizon line sweeps out from the centre, then the sun settles onto it. */}
+          {/* The horizon draws outward from the centre, then the sun opens around it. */}
           <line
             className="route-transition-horizon"
             x1="3.5"
-            y1="29"
+            y1="32"
             x2="60.5"
-            y2="29"
+            y2="32"
             stroke="var(--oberizon-orange)"
             strokeWidth="5"
             strokeLinecap="round"
@@ -130,7 +130,7 @@ export function RouteTransition() {
           <circle
             className="route-transition-sun"
             cx="32"
-            cy="36.5"
+            cy="32"
             r="15"
             stroke="var(--oberizon-orange)"
             strokeWidth="5"
