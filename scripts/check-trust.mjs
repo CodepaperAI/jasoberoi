@@ -601,6 +601,50 @@ function checkSchema(site, sources) {
   }
 }
 
+/**
+ * A hub without spokes is not a hub.
+ *
+ * These pages exist for one structural reason: to consolidate a topic and link
+ * down to all fourteen cities. Drop the city block and you are back to ten
+ * orphaned pages competing with the very city pages they were meant to gather,
+ * which is the defect this whole layer was built to fix. The FAQ matters too —
+ * it is what carries the FAQPage schema.
+ */
+function checkHubStructure(hubs, sources) {
+  const page = sources.find((file) => file.path.includes("services/[service]"));
+  if (!page) {
+    fail("hub-structure", "service hub template not found", "src/app/services");
+    return;
+  }
+
+  if (!/hub\.cities\.map/.test(page.text)) {
+    fail(
+      "hub-structure",
+      "The hub template no longer renders hub.cities. That link set is the entire reason these " +
+        "pages exist — without it they are ten more orphans competing with the city pages.",
+      page.path,
+    );
+  }
+
+  if (!/FaqAccordion/.test(page.text)) {
+    fail("hub-structure", "The hub template is missing its FAQ accordion.", page.path);
+  }
+
+  for (const hub of hubs.getAllServiceHubs()) {
+    if (hub.cities.length !== site.serviceAreas.length) {
+      fail(
+        "hub-structure",
+        `${hub.path} links ${hub.cities.length} cities but there are ${site.serviceAreas.length}. ` +
+          `A hub must link every city it serves.`,
+        "src/lib/hubs.ts",
+      );
+    }
+    if (hub.faqs.length < 3) {
+      fail("hub-structure", `${hub.path} has only ${hub.faqs.length} FAQs.`, "src/lib/hubs.ts");
+    }
+  }
+}
+
 /** The landing template must keep all seven trust sections, in order. */
 function checkLandingStructure(sources) {
   const page = sources.find((file) => file.path.includes("construction/[city]/[service]"));
@@ -666,6 +710,7 @@ function report() {
 const sources = await readSource();
 const site = await import("../src/lib/site.ts");
 const pricing = await import("../src/lib/pricing.ts");
+const hubs = await import("../src/lib/hubs.ts");
 
 checkCopy(sources);
 checkCopyrightYear(sources);
@@ -686,5 +731,6 @@ checkContentGaps(site);
 checkFooter(sources);
 checkKeywordChips(sources);
 checkSchema(site, sources);
+checkHubStructure(hubs, sources);
 checkLandingStructure(sources);
 report();

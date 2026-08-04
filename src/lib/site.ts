@@ -1,3 +1,5 @@
+import { pricingSentence, ratesConfirmedByClient } from "@/lib/pricing";
+
 export type NavItem = {
   label: string;
   href?: string;
@@ -130,7 +132,6 @@ export type ConstructionPseoPage = {
   indexable: boolean;
 };
 
-import { pricingSentence, ratesConfirmedByClient } from "@/lib/pricing";
 
 const imageBase = "/oberizon/optimized";
 
@@ -163,27 +164,6 @@ export const socialLinks = [
   { label: "YouTube", href: "https://www.youtube.com/channel/UCXnubLHaLMq3oBTR8w0ylUg" },
 ];
 
-export const navigation: NavItem[] = [
-  { label: "About Us", href: "/about" },
-  {
-    label: "Services",
-    items: [
-      { label: "Healthcare Construction", href: "/construction/white-rock/healthcare-construction" },
-      { label: "Dental Clinic Construction", href: "/construction/white-rock/dental-clinic-construction" },
-      { label: "Medical Clinic Construction", href: "/construction/white-rock/medical-clinic-construction" },
-      { label: "Commercial Construction", href: "/construction/white-rock/commercial-construction" },
-      { label: "Luxury Residential", href: "/construction/white-rock/luxury-residential-construction" },
-      { label: "All Services", href: "/services" },
-    ],
-  },
-  { label: "Projects", href: "/projects" },
-  { label: "Service Areas", href: "/construction" },
-  // Top level rather than buried under Services: it carries the cost calculator,
-  // which is the only page on the site a visitor might arrive wanting to use.
-  // Gated so nothing links to unconfirmed rates.
-  ...(ratesConfirmedByClient ? [{ label: "Cost Guide", href: "/cost" }] : []),
-  { label: "Contact", href: "/contact" },
-];
 
 /**
  * Footer resources.
@@ -484,6 +464,29 @@ export const constructionServices: ConstructionService[] = [
     proof: ["Custom homes", "High-end finishes", "Senior oversight"],
     image: `${imageBase}/project-residential.jpg`,
   },
+];
+
+export const navigation: NavItem[] = [
+  { label: "About Us", href: "/about" },
+  {
+    // Generated from the service list and pointed at the hubs. These five links
+    // used to hardcode /construction/white-rock/*, so anyone in Abbotsford who
+    // opened the Services menu landed on a White Rock page.
+    label: "Services",
+    items: [
+      ...constructionServices
+        .slice(0, 6)
+        .map((service) => ({ label: service.name, href: `/services/${service.slug}` })),
+      { label: "All Services", href: "/services" },
+    ],
+  },
+  { label: "Projects", href: "/projects" },
+  { label: "Service Areas", href: "/construction" },
+  // Top level rather than buried under Services: it carries the cost calculator,
+  // which is the only page on the site a visitor might arrive wanting to use.
+  // Gated so nothing links to unconfirmed rates.
+  ...(ratesConfirmedByClient ? [{ label: "Cost Guide", href: "/cost" }] : []),
+  { label: "Contact", href: "/contact" },
 ];
 
 export const serviceAreas: ServiceArea[] = [
@@ -805,43 +808,6 @@ export const mainPages: SitePage[] = [
     canonicalPath: "/about",
   },
   {
-    slug: "services",
-    title: "Construction Services in BC | Medical, Dental & Commercial",
-    description:
-      "Explore Oberizon Construction services for healthcare construction, dental clinics, medical clinics, pharmacy construction, commercial renovations, offices, and luxury homes.",
-    keywords: ["construction services BC", "healthcare construction company", "commercial renovation contractor"],
-    eyebrow: "Services",
-    heading: "Construction services for complex spaces.",
-    subheading:
-      "Healthcare, commercial, and luxury residential projects need more than trades. They need a managed plan from review to handover.",
-    heroImage: `${imageBase}/project-commercial-13.jpg`,
-    introTitle: "End-to-end expertise. Exceptional outcomes.",
-    intro:
-      "Oberizon supports owners and operators through advisory, project management, construction solutions, equipment coordination, operational readiness, and move management.",
-    proof: ["Advisory", "Project management", "Construction solutions", "Operational readiness"],
-    featureTitle: "Service lanes",
-    features: [
-      {
-        title: "Healthcare Builds",
-        text: "Dental, medical, pharmacy, physio, and med spa spaces built around workflow and services.",
-      },
-      {
-        title: "Commercial Interiors",
-        text: "Offices, retail, and tenant improvements built around how the business operates.",
-      },
-      {
-        title: "Luxury Residential",
-        text: "Custom homes and high-end residential projects managed with finish control.",
-      },
-    ],
-    cards: constructionServices.slice(0, 6).map((service) => ({
-      title: service.name,
-      text: service.summary,
-      image: service.image,
-    })),
-    canonicalPath: "/services",
-  },
-  {
     slug: "projects",
     title: "Our Construction Projects | Oberizon Construction",
     description:
@@ -1126,6 +1092,11 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
             href: "/construction",
             why: "Compare how Oberizon works across the Lower Mainland.",
           },
+          {
+            label: `All ${service.name}`,
+            href: `/services/${service.slug}`,
+            why: `See the full service, pricing and every city we build it in.`,
+          },
           ...(ratesConfirmedByClient
             ? [
                 {
@@ -1292,6 +1263,8 @@ export const allStaticPaths = [
   // the client has confirmed the ranges it generates. Same rule as the city
   // evidence gate: built and reachable, but not asking to rank yet.
   ...(ratesConfirmedByClient ? ["/cost"] : []),
+  "/services",
+  ...constructionServices.map((service) => `/services/${service.slug}`),
   ...mainPages.map((page) => page.canonicalPath),
   ...getAllConstructionPages()
     .filter((page) => page.indexable)

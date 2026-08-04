@@ -18,8 +18,9 @@ import { constructionServices } from "@/lib/site";
  * connects them — one managed process — rather than a label.
  *
  * Copy comes from `constructionServices` rather than being written twice, and
- * every card links to its service page, so the section doubles as internal
- * linking instead of being decoration.
+ * every card links to its service hub, so the section doubles as internal
+ * linking instead of being decoration. It pointed at /construction/white-rock/*
+ * until the hubs existed, which sent every homepage click to one city.
  */
 
 type Spoke = {
@@ -101,7 +102,7 @@ function SpokeCard({ spoke, side }: { spoke: Spoke; side: "left" | "right" }) {
 
   return (
     <Link
-      href={`/construction/white-rock/${spoke.slug}`}
+      href={`/services/${spoke.slug}`}
       className={[
         "group relative flex min-w-0 flex-1 items-start gap-4 overflow-hidden rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200/70 transition duration-300",
         "hover:-translate-y-0.5 hover:shadow-lg hover:ring-slate-300",

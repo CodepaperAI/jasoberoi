@@ -60,12 +60,15 @@ export function Footer() {
             Commercial Construction and Commercial Renovation — at 1,000 and 880
             searches a month, the two largest keyword opportunities measured in
             the entire research set.
+
+            Points at the service hubs rather than /construction/white-rock/*,
+            which sent every footer click to one city regardless of the visitor.
           */}
           <ul className="mt-6 space-y-3">
             {constructionServices.map((service) => (
               <li key={service.slug}>
                 <Link
-                  href={`/construction/white-rock/${service.slug}`}
+                  href={`/services/${service.slug}`}
                   className="text-sm font-semibold text-white/55 transition hover:text-orange-500"
                 >
                   {service.name}
