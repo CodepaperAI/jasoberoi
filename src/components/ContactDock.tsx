@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { MessageCircle, Send, X } from "lucide-react";
+import { Phone, Send, X } from "lucide-react";
 import { composeConsultationMailto } from "@/lib/contact";
 import { siteConfig } from "@/lib/site";
 
@@ -45,17 +45,12 @@ export function ContactDock() {
 
   return (
     <>
+      {/*
+        Kept even though the header carries the same call to action, because the
+        header's button is `hidden lg:block` — on a phone there is no book button
+        anywhere until you reach the footer.
+      */}
       <div className="fixed bottom-5 right-5 z-[80] flex flex-col items-end gap-3 sm:bottom-7 sm:right-7">
-        <a
-          href={siteConfig.whatsappHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group flex items-center gap-2.5 rounded-full bg-[#25D366] py-3 pl-4 pr-5 font-bold text-white shadow-lg shadow-emerald-900/25 transition duration-300 hover:-translate-y-0.5 hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2"
-        >
-          <MessageCircle size={19} aria-hidden="true" />
-          <span className="text-sm">Let&apos;s talk on WhatsApp</span>
-        </a>
-
         <button
           type="button"
           onClick={() => setOpen(true)}
@@ -156,13 +151,11 @@ export function ContactDock() {
                   Send request
                 </button>
                 <a
-                  href={siteConfig.whatsappHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-white transition hover:brightness-105"
+                  href={siteConfig.phoneHref}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-zinc-900 transition hover:border-orange-300 hover:text-orange-600"
                 >
-                  <MessageCircle size={15} aria-hidden="true" />
-                  WhatsApp
+                  <Phone size={15} aria-hidden="true" />
+                  Call instead
                 </a>
               </div>
             </form>
