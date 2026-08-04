@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Calculator, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Calculator, Mail, MapPin, Phone } from "lucide-react";
 import {
   constructionServices,
   credentials,
@@ -72,23 +72,6 @@ export function Footer() {
                   className="text-sm font-semibold text-white/55 transition hover:text-orange-500"
                 >
                   {service.name}
-                </Link>
-              </li>
-            ))}
-            {/*
-              Resources sit under Services rather than in their own column: it is
-              one link today, and an almost-empty fifth column reads as a mistake.
-              Highlighted because the cost guide is the only page a visitor might
-              arrive specifically wanting to use.
-            */}
-            {resourceLinks.map((link) => (
-              <li key={link.href} className="pt-2">
-                <Link
-                  href={link.href}
-                  className="inline-flex items-center gap-2 text-sm font-bold text-orange-400 transition hover:text-orange-300"
-                >
-                  <Calculator size={15} aria-hidden="true" />
-                  {link.label}
                 </Link>
               </li>
             ))}
@@ -167,6 +150,36 @@ export function Footer() {
         </div>
       </div>
 
+      {/*
+        Resources get their own band rather than a slot in the Services list.
+        As an eleventh list item the label wrapped to two lines, the icon
+        detached from it, and a differently-styled entry at the bottom of ten
+        services read as a mistake. A full-width band is both calmer and more
+        prominent, which suits the one page a visitor might arrive wanting to use.
+      */}
+      {resourceLinks.length > 0 ? (
+        <div className="border-t border-white/10 px-5 sm:px-6 lg:px-8">
+          <div className="mx-auto flex max-w-7xl flex-col gap-4 py-7 sm:flex-row sm:items-center sm:justify-between">
+            <p className="flex items-center gap-3 text-sm text-white/60">
+              <Calculator size={18} className="shrink-0 text-orange-500" aria-hidden="true" />
+              Working out a budget? Set your own square footage and finish level.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              {resourceLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="inline-flex items-center gap-2 rounded-full border border-orange-500/40 px-5 py-2.5 text-sm font-bold text-orange-400 transition hover:border-orange-400 hover:bg-orange-500/10 hover:text-orange-300"
+                >
+                  {link.label}
+                  <ArrowRight size={15} aria-hidden="true" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       <div className="border-t border-white/10 px-5 py-6">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-center text-xs font-semibold text-white/40 sm:flex-row sm:text-left">
           <p>
@@ -175,7 +188,9 @@ export function Footer() {
               Privacy
             </Link>
           </p>
-          <p>
+          {/* Right padding clears the floating contact dock, which sat on top
+              of this line at the bottom of every page. */}
+          <p className="sm:pr-56">
             Designed by <span className="text-orange-500">HexBytes</span>
           </p>
         </div>

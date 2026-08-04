@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Banknote, CheckCircle2, MapPin } from "lucide-react";
+import { ArrowRight, Banknote, Calculator, CheckCircle2, MapPin } from "lucide-react";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { JsonLd } from "@/components/JsonLd";
 import {
@@ -116,17 +116,24 @@ export default async function ServiceHubPage({ params }: HubProps) {
               </p>
               <p className="mt-3 text-sm leading-6 text-white/60">{hub.priceLine}</p>
             </div>
+            {/*
+              A real button, not a text link. This is the handoff to the only
+              interactive tool on the site, and as a small underline-less link it
+              read as a footnote to the price above it.
+            */}
             <div className="bg-white p-7">
+              <p className="text-sm leading-6 text-slate-500">
+                That is the published range. Set your own square footage and finish level for a
+                number against your actual space — no form to see the result.
+              </p>
               <Link
                 href={`/cost?service=${hub.service.slug}`}
-                className="inline-flex items-center gap-2 text-sm font-extrabold uppercase tracking-[0.14em] text-orange-600 transition hover:text-orange-500"
+                className="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-orange-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-orange-900/15 transition duration-300 hover:-translate-y-0.5 hover:bg-orange-500"
               >
+                <Calculator size={17} aria-hidden="true" />
                 Estimate your build
-                <ArrowRight size={17} aria-hidden="true" />
+                <ArrowRight size={16} aria-hidden="true" />
               </Link>
-              <p className="mt-3 text-sm leading-6 text-slate-500">
-                Set your own square footage and finish level. No form to see the number.
-              </p>
             </div>
           </div>
         </div>

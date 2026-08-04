@@ -1097,15 +1097,13 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
             href: `/services/${service.slug}`,
             why: `See the full service, pricing and every city we build it in.`,
           },
-          ...(ratesConfirmedByClient
-            ? [
-                {
-                  label: "Full 2026 cost guide",
-                  href: `/cost?service=${service.slug}`,
-                  why: "See per-square-foot ranges before you set a budget.",
-                },
-              ]
-            : []),
+          // Ungated, matching the footer. Indexing and the sitemap stay gated
+          // on ratesConfirmedByClient; reachability does not.
+          {
+            label: "Estimate your build",
+            href: `/cost?service=${service.slug}`,
+            why: "Set your own square footage and see the range.",
+          },
         ],
         projects: getProjectsForCity(city.slug),
         reviews,
