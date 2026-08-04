@@ -486,7 +486,7 @@ export const serviceAreas: ServiceArea[] = [
   {
     city: "Vancouver",
     slug: "vancouver",
-    regionNote: "Vancouver's dense healthcare, office, retail, and residential markets",
+    regionNote: "Vancouver's dense healthcare and commercial market",
     neighborhoods: ["Mount Pleasant", "Kitsilano", "Cambie", "Downtown"],
     localSignals: "limited space, complex building coordination, strict schedules, and high finish standards",
     evidence: "project",
@@ -512,7 +512,7 @@ export const serviceAreas: ServiceArea[] = [
   {
     city: "Langley",
     slug: "langley",
-    regionNote: "Langley City, Township, and fast-growing commercial areas",
+    regionNote: "Langley City and the Township",
     neighborhoods: ["Willoughby", "Walnut Grove", "Murrayville", "Brookswood"],
     localSignals: "new residential growth, professional services expansion, healthcare demand, and custom home activity",
     evidence: "project",
@@ -562,7 +562,7 @@ export const serviceAreas: ServiceArea[] = [
   {
     city: "Delta",
     slug: "delta",
-    regionNote: "Delta, Ladner, Tsawwassen, and North Delta",
+    regionNote: "Delta and the Ladner and Tsawwassen communities",
     neighborhoods: ["Tsawwassen", "Ladner", "North Delta", "Sunshine Hills"],
     localSignals: "family communities, medical and dental access, commercial renewal, and suburban service businesses",
     evidence: "none",
@@ -578,7 +578,7 @@ export const serviceAreas: ServiceArea[] = [
   {
     city: "Tri-Cities",
     slug: "tri-cities",
-    regionNote: "Coquitlam, Port Coquitlam, and Port Moody",
+    regionNote: "Coquitlam and the Port Moody corridor",
     neighborhoods: ["Port Moody", "Port Coquitlam", "Coquitlam Centre", "Burke Mountain"],
     localSignals: "rapid growth, family healthcare demand, strata commercial units, and service-business build-outs",
     evidence: "none",
@@ -602,6 +602,7 @@ export const projects: Project[] = [
     vertical: "Healthcare",
     discipline: "Dental clinic",
     status: "Delivered",
+    images: [`${imageBase}/project-shine-dental-live.jpg`],
   },
   {
     slug: "private-office-white-rock",
@@ -611,6 +612,7 @@ export const projects: Project[] = [
     vertical: "Commercial",
     discipline: "Commercial office",
     status: "Delivered",
+    images: [`${imageBase}/project-private-office-live.jpg`],
   },
   {
     slug: "dental-clinic-marshall-road-abbotsford",
@@ -620,6 +622,7 @@ export const projects: Project[] = [
     vertical: "Healthcare",
     discipline: "Dental clinic",
     status: "Delivered",
+    images: [`${imageBase}/project-abby-dental-live.jpg`],
   },
   {
     // TODO(client): strategy §11 flags that Skinholic Aesthetics has no recorded
@@ -631,6 +634,7 @@ export const projects: Project[] = [
     vertical: "Healthcare",
     discipline: "Med spa",
     status: "Delivered",
+    images: [`${imageBase}/project-med-spa.jpg`],
   },
   {
     // The Vancouver evidence referenced in the strategy's city-page table.
@@ -641,6 +645,7 @@ export const projects: Project[] = [
     vertical: "Residential",
     discipline: "Luxury residential",
     status: "Delivered",
+    images: [`${imageBase}/project-luxury-live.jpg`],
   },
   {
     slug: "pharmacy-156-st-surrey",
@@ -941,26 +946,28 @@ export const mainPages: SitePage[] = [
   },
 ];
 
+// Four steps, one sentence each. These were comma-strings of up to seven nouns —
+// the same pattern that made the landing pages read as padded.
 export const processSteps = [
   {
     number: "01",
     title: "Review",
-    text: "We review the project, space, budget, timeline, and risk before construction starts.",
+    text: "We walk the space and price the risk before you commit to anything.",
   },
   {
     number: "02",
     title: "Plan",
-    text: "Layout, drawings, permits, services, equipment needs, trades, and construction sequence.",
+    text: "Drawings and permits go in while equipment and long-lead items are ordered.",
   },
   {
     number: "03",
     title: "Build",
-    text: "Site execution, trade coordination, material flow, quality control, and regular updates.",
+    text: "One site lead holds the trades and calls you with progress every week.",
   },
   {
     number: "04",
     title: "Handover",
-    text: "Inspections, deficiencies, final walkthrough, and handover so the space is ready for use.",
+    text: "Inspections cleared and the deficiency list closed before you take the keys.",
   },
 ];
 
@@ -1010,6 +1017,55 @@ export function getConstructionPage(citySlug: string, serviceSlug: string) {
   );
 }
 
+/**
+ * The one thing that is actually true of each build type, in a sentence.
+ *
+ * These open every landing page. The previous opener — "For owners searching for
+ * {keyword}, Oberizon Construction brings a structured process before the site
+ * gets busy" — was 49 words and nine commas that said nothing a competitor could
+ * not also say. Leading with the real constraint is both better writing and the
+ * §5.2 rule applied to prose: say the thing only someone who has built one knows.
+ */
+const serviceLead: Record<string, string> = {
+  "commercial-construction":
+    "A commercial build is won or lost on the permit sequence, long before anyone breaks ground.",
+  "commercial-renovation":
+    "Renovating an occupied space means working around a business that still has to trade.",
+  "office-renovation-contractor":
+    "An office renovation runs while staff are still in the building.",
+  "healthcare-construction":
+    "Clinical space answers to CSA Z8000 and IPAC barriers, not standard commercial code alone.",
+  "dental-clinic-construction":
+    "A dental clinic is suction lines and plumbing long before it is finishes.",
+  "dental-office-renovation":
+    "Renovating a dental office means working around a live clinic that still has patients booked.",
+  "medical-clinic-construction":
+    "A medical clinic has to satisfy Fraser Health before it can open its doors.",
+  "pharmacy-construction":
+    "A pharmacy is a security and compounding problem wrapped inside a retail fit-out.",
+  "clinic-renovation-contractor":
+    "Renovating a working clinic means the practice keeps seeing patients throughout.",
+  "luxury-residential-construction":
+    "A custom home is a finish schedule with a house attached to it.",
+};
+
+/**
+ * Keeps the first `count` comma-separated clauses of a string.
+ *
+ * Several `localSignals` entries are four-item noun strings. Rendered whole they
+ * pushed sentences past four commas, which is most of why the pages read as
+ * padded. The data stays complete; only the prose is trimmed.
+ */
+function firstClauses(text: string, count: number) {
+  const parts = text.split(",").map((part) => part.replace(/^\s*and\s+/, "").trim());
+  const kept = parts.slice(0, count);
+  if (kept.length < 2) return kept[0];
+  // Comma-join rather than "and"-join: several clauses contain their own "and"
+  // ("clinic and pharmacy demand"), and joining those with another one produced
+  // "Fraser Valley growth and clinic and pharmacy demand".
+  return kept.join(", ");
+}
+
 export function getAllConstructionPages(): ConstructionPseoPage[] {
   return serviceAreas.flatMap((city) =>
     constructionServices.map((service) => {
@@ -1026,12 +1082,12 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
         description: `Need ${primary}? Oberizon Construction manages ${service.intent} across ${city.regionNote}.`,
         h1: `${service.name} in ${city.city}, BC`,
         keywords,
-        intro: `For owners searching for ${primary}, Oberizon Construction brings a structured process before the site gets busy. The team helps clients ${service.intent}, with planning, permits, trades, inspections, and handover controlled from day one.`,
+        intro: `${serviceLead[service.slug] ?? ""} We plan that before the site gets busy. Drawings, permits and trades are sequenced by one team out of White Rock.`.trim(),
         quickFacts: buildQuickFacts(service, city, pricing),
         pricingBrief: pricing,
-        localProof: `From its White Rock base, Oberizon manages construction across the Lower Mainland, including ${city.regionNote}. Projects are planned around local building conditions, access, inspections, owner deadlines, and the way the finished space must operate.`,
-        marketContext: `${city.city} projects are shaped by ${city.localSignals}. Oberizon uses those local details to plan scope, sequencing, services, finishes, and risk before construction begins.`,
-        serviceFocus: buildServiceFocus(service, city),
+        localProof: `Oberizon works across the Lower Mainland, including ${city.regionNote}. Every project is planned around site access, inspection windows and how the finished space has to run.`,
+        marketContext: `${city.city} work is shaped by ${firstClauses(city.localSignals, 2)}. We use that to set scope and sequence before demolition starts.`,
+        serviceFocus: buildServiceFocus(service),
         faqs: buildPseoFaqs(service, city, primary, pricing),
         internalLinks: [
           ...constructionServices
@@ -1085,26 +1141,32 @@ function buildQuickFacts(
   pricing: string,
 ): string[] {
   const neighborhoodList = formatList(city.neighborhoods.slice(0, 3));
-  const facts: string[] = [
-    `Oberizon Construction delivers ${service.name.toLowerCase()} for owners across ${city.city} and the surrounding ${city.regionNote}, from a White Rock, BC head office.`,
-    `Typical 2026 pricing in ${city.city} for ${service.primaryKeyword} is ${pricing.toLowerCase().replace(/\.$/, "")}.`,
+
+  // What each vertical is actually hard about. This replaces three near-identical
+  // sentences that differed only in the word before "project neighborhoods".
+  const constraint =
+    service.vertical === "Healthcare"
+      ? "Equipment, services and shielding are set before a single wall goes up. Getting that order wrong is what pushes an opening date."
+      : service.vertical === "Commercial"
+        ? "Tenant improvement timing is agreed with the landlord before demolition. Late approvals cost more days than any trade does."
+        : "Finish schedules drive the sequence. Long-lead millwork and fixtures are ordered before framing is closed in.";
+
+  // The detail a contractor who has actually built one would volunteer. This is
+  // the §5.2 rule applied to the page body: content no competitor can copy
+  // because they have not done the work.
+  const technical =
+    service.vertical === "Healthcare"
+      ? "Operatory clearances and the sterilization corridor are set before millwork is ordered. Suction and compressed-air runs follow the chair layout, not the other way round. Imaging rooms need their shielding specified at drawing stage, because retrofitting lead is a demolition job."
+      : service.vertical === "Commercial"
+        ? "Base-building services rarely match what the drawings assume. We verify the electrical capacity and the make-up air before pricing, because discovering a shortfall after demolition is what turns a fixed price into a change order."
+        : "Long-lead millwork and imported fixtures set the critical path. We order them against the framing schedule, so the trades are not waiting on a countertop.";
+
+  return [
+    `Oberizon delivers ${service.name.toLowerCase()} from a White Rock head office. Work runs across ${city.regionNote}.`,
+    `2026 pricing is ${pricing.toLowerCase().replace(/\.$/, "")}. The final number moves with base-building condition and finish level.`,
+    `${constraint} Projects here typically sit around ${neighborhoodList}.`,
+    technical,
   ];
-
-  if (service.vertical === "Healthcare") {
-    facts.push(
-      `Common ${city.city} project neighborhoods for healthcare builds include ${neighborhoodList}, with equipment, plumbing, and services coordinated before construction starts.`,
-    );
-  } else if (service.vertical === "Commercial") {
-    facts.push(
-      `Common ${city.city} commercial project areas include ${neighborhoodList}, with operations, permits, and tenant improvement timing planned before demolition.`,
-    );
-  } else {
-    facts.push(
-      `Common ${city.city} residential project neighborhoods include ${neighborhoodList}, with finish, sequencing, and site coordination planned around the block.`,
-    );
-  }
-
-  return facts;
 }
 
 function buildPseoFaqs(
@@ -1116,23 +1178,23 @@ function buildPseoFaqs(
   return [
     {
       question: `Does Oberizon handle ${service.name.toLowerCase()} in ${city.city}?`,
-      answer: `Yes. Oberizon Construction delivers ${service.name.toLowerCase()} for owners and operators in ${city.city} and the surrounding Lower Mainland from a White Rock, BC head office.`,
+      answer: `Yes. We run ${service.name.toLowerCase()} across the Lower Mainland from a White Rock head office, ${city.regionNote} included.`,
     },
     {
       question: `How much does ${service.primaryKeyword} cost in ${city.city}?`,
-      answer: `${pricing}. The final number depends on base-building condition, service coordination, finish level, and schedule pressure. See the full Oberizon cost guide at /cost for the 2026 Lower Mainland breakdown.`,
+      answer: `${pricing}. Base-building condition and finish level move that number most. The full 2026 breakdown is in the cost guide at /cost.`,
     },
     {
       question: `What areas near ${city.city} does Oberizon serve for ${service.name.toLowerCase()}?`,
-      answer: `Common ${city.city} project conversations include ${formatList(city.neighborhoods)}, plus nearby communities when the project scope justifies the travel.`,
+      answer: `Most conversations start around ${formatList(city.neighborhoods.slice(0, 3))}. We travel further when the scope justifies it.`,
     },
     {
       question: `What should I prepare before starting ${service.name.toLowerCase()} in ${city.city}?`,
-      answer: `Bring the address or target space, lease or ownership stage, drawings if available, opening or move-in timeline, project type, known budget, and any equipment or operational needs. The more Oberizon knows early, the tighter the feasibility comes back.`,
+      answer: `The address, your lease stage and a target opening date. Drawings and a budget range help. The more we know early, the tighter the feasibility comes back.`,
     },
     {
       question: `Can Oberizon review my ${city.city} space before I commit?`,
-      answer: `Yes. A project review identifies scope, permit, service, schedule, and budget risks before you commit to a lease, a design, or a construction timeline — critical for ${primary}.`,
+      answer: `Yes. A review finds the permit and service risks before you sign a lease or a design. That is the cheapest point to find them — a change after drawings are sealed costs weeks, not hours.`,
     },
   ];
 }
@@ -1146,15 +1208,18 @@ function buildKeywordCluster(service: ConstructionService, city: ServiceArea) {
   ];
 }
 
-function buildServiceFocus(service: ConstructionService, city: ServiceArea): Feature[] {
+// No longer takes a city: these three cards describe how the work is run, which
+// does not change between Surrey and Langley. Injecting the city name into each
+// of them was part of what pushed one page to twelve mentions.
+function buildServiceFocus(service: ConstructionService): Feature[] {
   const shared = [
     {
       title: "Project review",
-      text: `Review the space, project type, budget, timeline, permits, and risk before committing to ${service.primaryKeyword} in ${city.city}.`,
+      text: `We walk the space and price the risk before you commit to ${service.primaryKeyword}. Permits and services are the two that bite.`,
     },
     {
       title: "Managed execution",
-      text: "Coordinate trades, materials, inspections, deficiencies, and updates through one accountable construction process.",
+      text: "One team holds the trades, the inspections and the deficiency list. You get one number to call.",
     },
   ];
 
@@ -1163,7 +1228,7 @@ function buildServiceFocus(service: ConstructionService, city: ServiceArea): Fea
       ...shared,
       {
         title: "Clinical workflow",
-        text: `Plan rooms, services, equipment, patient flow, staff movement, accessibility, and handover around daily healthcare operation in ${city.city}.`,
+        text: "Operatory clearances, suction runs and sterilization separation are planned first. Patient and staff flow follow from them.",
       },
     ];
   }
@@ -1173,7 +1238,7 @@ function buildServiceFocus(service: ConstructionService, city: ServiceArea): Fea
       ...shared,
       {
         title: "Business operation",
-        text: `Build around reception, staff areas, customer flow, storage, opening targets, and the way the ${city.city} business actually needs to run.`,
+        text: "Reception, storage and customer flow are set against your opening date. The build is sequenced to protect it.",
       },
     ];
   }
@@ -1182,7 +1247,7 @@ function buildServiceFocus(service: ConstructionService, city: ServiceArea): Fea
     ...shared,
     {
       title: "Finish control",
-      text: `Coordinate the details that matter in luxury residential construction: sequencing, materials, millwork, fixtures, inspections, and final walkthrough.`,
+      text: "Millwork and fixtures are long-lead items. They are ordered before framing closes, not after.",
     },
   ];
 }

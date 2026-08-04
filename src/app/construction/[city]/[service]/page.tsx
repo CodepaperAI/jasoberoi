@@ -87,7 +87,7 @@ export default async function ConstructionRoute({ params }: ConstructionProps) {
       />
 
       {/* 2 — Experience. */}
-      <ExperienceBlock city={page.city} />
+      <ExperienceBlock city={page.city} items={page.projects} />
 
       {/* 3 — The work that earns the trust. */}
       <ProjectProof items={page.projects} cityName={page.city.city} />
@@ -154,10 +154,10 @@ export default async function ConstructionRoute({ params }: ConstructionProps) {
       <WhyTheseServices links={page.internalLinks} cityName={page.city.city} />
 
       {/* 6 — FAQs. */}
-      <LandingFaqs
-        items={page.faqs}
-        heading={`Frequently asked about ${serviceLabel} in ${page.city.city}.`}
-      />
+      {/* The questions below already name the service and the city; repeating
+          both in the heading pushed it onto two lines and added a fifth
+          mention of the city to the page. */}
+      <LandingFaqs items={page.faqs} heading="Frequently asked." />
 
       {/* 7 — The ask, once the page has earned it. */}
       <LandingCta

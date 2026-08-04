@@ -16,7 +16,9 @@ import {
 import { ButtonLink } from "@/components/ButtonLink";
 import { AppointmentModal } from "@/components/AppointmentModal";
 import { ExpertiseHub } from "@/components/ExpertiseHub";
+import { FaqAccordion } from "@/components/FaqAccordion";
 import { ProofBar } from "@/components/ProofBar";
+import { ReviewAvatar } from "@/components/ReviewAvatar";
 import { ScrollExpandVideo } from "@/components/ScrollExpandVideo";
 import { aiFaqs, processSteps, reviews, serviceAreas, siteConfig } from "@/lib/site";
 
@@ -471,9 +473,7 @@ export function HomeExperience() {
                   {item.quote}
                 </p>
                 <div className="mt-10 flex items-center gap-4">
-                  <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-600 text-lg font-bold text-white">
-                    {item.author.replace(/^Dr\.\s*/, "").charAt(0)}
-                  </span>
+                  <ReviewAvatar author={item.author} />
                   <div>
                     <p className="font-bold text-zinc-950">{item.author}</p>
                     <p className="text-xs font-bold uppercase tracking-[0.16em] text-orange-600">
@@ -556,17 +556,7 @@ export function HomeExperience() {
               construction in British Columbia.
             </p>
           </div>
-          <div className="mt-14 grid gap-5 md:grid-cols-2">
-            {aiFaqs.map((faq) => (
-              <article
-                key={faq.question}
-                className="live-card-shadow rounded-3xl bg-white p-7 ring-1 ring-slate-200"
-              >
-                <h3 className="text-xl font-bold leading-snug text-zinc-950">{faq.question}</h3>
-                <p className="mt-3 text-base font-medium leading-7 text-slate-600">{faq.answer}</p>
-              </article>
-            ))}
-          </div>
+          <FaqAccordion items={aiFaqs} className="mx-auto mt-14 max-w-4xl" />
         </div>
       </section>
 

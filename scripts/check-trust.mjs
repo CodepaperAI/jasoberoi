@@ -339,6 +339,94 @@ function checkFooter(sources) {
   }
 }
 
+/**
+ * Copy density.
+ *
+ * The generated pages once averaged 3.4 commas per sentence, because every field
+ * was built from the same list-of-nouns template. That is what made them read as
+ * padded even at a modest word count, and it is the kind of thing that creeps
+ * back one template edit at a time.
+ *
+ * Comma density blocks: the measure is unambiguous and the current worst page
+ * sits at 0.83 against a limit of 2.0, so there is real headroom.
+ *
+ * Word repetition only warns. Some legitimate pages repeat a term unavoidably —
+ * Tri-Cities' own regionNote is "Coquitlam, Port Coquitlam and Port Moody", and
+ * White Rock is both a service area and the head office. A hard count would fail
+ * on honest content, so this reports the outlier and leaves the judgement to a
+ * person, which is the same line the rest of this file draws.
+ */
+const MAX_COMMAS_PER_SENTENCE = 2;
+const REPETITION_WARN_PER_100_WORDS = 3;
+
+/** Each field is measured on its own — a page average dilutes one bad field into nothing. */
+function pageFields(page) {
+  return [
+    ["intro", page.intro],
+    ["localProof", page.localProof],
+    ["marketContext", page.marketContext],
+    ...page.quickFacts.map((text, i) => [`quickFacts[${i}]`, text]),
+    ...page.serviceFocus.map((item) => [`serviceFocus:${item.title}`, item.text]),
+    ...page.faqs.map((faq) => [`faq:${faq.question.slice(0, 34)}`, faq.answer]),
+  ];
+}
+
+function pageBody(page) {
+  return pageFields(page)
+    .map(([, text]) => text)
+    .join(" ");
+}
+
+const DENSITY_STOP_WORDS = new Set(
+  ("the and a to of in for is on with that before it as by are be or so how what from can you your " +
+    "not this they their we our one all after than into more most has have its").split(" "),
+);
+
+function checkCopyDensity(site) {
+  let worstComma = { value: 0, path: "", field: "" };
+  let worstWord = { value: 0, term: "", path: "" };
+
+  for (const page of site.getAllConstructionPages()) {
+    for (const [field, text] of pageFields(page)) {
+      const sentences = (text.match(/\./g) || []).length || 1;
+      const commas = (text.match(/,/g) || []).length;
+      const density = commas / sentences;
+      if (density > worstComma.value) worstComma = { value: density, path: page.path, field };
+    }
+
+    const body = pageBody(page);
+    const words = body.toLowerCase().replace(/[^a-z ]/g, " ").split(/\s+/).filter(Boolean);
+    const counts = new Map();
+    for (const word of words) {
+      if (word.length <= 3 || DENSITY_STOP_WORDS.has(word)) continue;
+      counts.set(word, (counts.get(word) ?? 0) + 1);
+    }
+    for (const [term, count] of counts) {
+      const per100 = (count / words.length) * 100;
+      if (per100 > worstWord.value) worstWord = { value: per100, term, path: page.path };
+    }
+  }
+
+  if (worstComma.value > MAX_COMMAS_PER_SENTENCE) {
+    fail(
+      "comma-density",
+      `${worstComma.field} on ${worstComma.path} averages ${worstComma.value.toFixed(2)} commas ` +
+        `per sentence, over the limit of ${MAX_COMMAS_PER_SENTENCE}. Break the noun-string into ` +
+        `sentences — this is what made the pages read as padded at only ~390 words.`,
+      "src/lib/site.ts",
+    );
+  }
+
+  if (worstWord.value > REPETITION_WARN_PER_100_WORDS) {
+    warn(
+      "keyword-repetition",
+      `"${worstWord.term}" appears ${worstWord.value.toFixed(1)} times per 100 words on ` +
+        `${worstWord.path}. Check it reads naturally rather than as stuffing.`,
+      "src/lib/site.ts",
+    );
+  }
+}
+
 /** Raw keyword lists rendered to visitors are the clearest tell of a page written for a crawler. */
 function checkKeywordChips(sources) {
   for (const { path, text } of sources) {
@@ -462,6 +550,7 @@ checkFaqSpecificity(
   "src/lib/site.ts",
 );
 checkPriceConsistency(site);
+checkCopyDensity(site);
 checkCredentials(site, sources);
 checkEvidence(site);
 checkContentGaps(site);

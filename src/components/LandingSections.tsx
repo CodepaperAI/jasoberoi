@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, CalendarDays, MapPin, Phone, Quote, Star } from "lucide-react";
 import { ButtonLink } from "@/components/ButtonLink";
+import { FaqAccordion } from "@/components/FaqAccordion";
+import { ReviewAvatar } from "@/components/ReviewAvatar";
 import {
   processSteps,
   projects,
@@ -30,6 +32,9 @@ import {
 
 const yearsBuilding = new Date().getFullYear() - siteConfig.foundedYear;
 const deliveredCount = projects.filter((project) => project.status === "Delivered").length;
+// Derived, not written down. The previous copy said "four more in progress",
+// which would have quietly gone wrong the moment a project completed.
+const inProgressCount = projects.filter((project) => project.status === "In progress").length;
 
 /** Click-to-call. Roughly two thirds of contractor leads arrive as phone calls, so this is never buried. */
 export function CallLink({ className = "" }: { className?: string }) {
@@ -135,40 +140,92 @@ export function LandingHero({
   );
 }
 
-/** 2 — Experience. Countable, not adjectival. */
-export function ExperienceBlock({ city }: { city: ServiceArea }) {
+/**
+ * 2 — Experience.
+ *
+ * Was an eyebrow, a twenty-word sentence used as a heading, a dense paragraph
+ * and four identical cards on plain white — nothing for the eye to land on and
+ * the only real content, the numbers, buried mid-paragraph.
+ *
+ * Now the numbers are the anchor, in the same treatment as the homepage
+ * ProofBar so the site has one way of presenting a figure, with a real photo of
+ * work near this city beside them.
+ */
+export function ExperienceBlock({ city, items }: { city: ServiceArea; items: Project[] }) {
+  const figures = [
+    { value: String(yearsBuilding), unit: "years", label: `Building since ${siteConfig.foundedYear}` },
+    { value: String(deliveredCount), unit: "delivered", label: `Plus ${inProgressCount} in progress` },
+    { value: "90", unit: "days", label: "Fastest clinic, five operatories" },
+  ];
+  const shown = items.find((project) => project.images?.length);
+
   return (
     <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
-          Experience
-        </p>
-        <h2 className="serif-font mt-4 max-w-4xl text-4xl leading-tight text-zinc-950 sm:text-5xl">
-          {yearsBuilding} years building healthcare and commercial projects across the Lower
-          Mainland — including {city.regionNote}.
-        </h2>
-        <p className="mt-5 max-w-3xl text-xl font-medium leading-8 text-slate-600">
-          Oberizon Construction has run {deliveredCount} delivered builds and four more in progress
-          from its White Rock office since {siteConfig.foundedYear}, under {siteConfig.founderName},{" "}
-          {siteConfig.founderRole.toLowerCase()}. Every project runs through the same four stages.
-        </p>
+      <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+        <div>
+          <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
+            Experience
+          </p>
+          <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+            The same team, <span className="orange-italic">every build.</span>
+          </h2>
+          <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600">
+            {siteConfig.founderName} has run Oberizon from its White Rock office since{" "}
+            {siteConfig.foundedYear}. Work near {city.city} runs through the same four stages.
+          </p>
 
-        <ol className="mt-10 grid gap-4 md:grid-cols-4">
-          {processSteps.map((step) => (
-            <li
-              key={step.number}
-              className="relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-orange-100"
-            >
-              <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-orange-50" />
-              <p className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-orange-600 text-lg font-bold text-white">
-                {step.number}
-              </p>
-              <h3 className="mt-6 text-2xl font-semibold text-zinc-950">{step.title}</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600">{step.text}</p>
-            </li>
-          ))}
-        </ol>
+          <dl className="mt-10 grid grid-cols-3 gap-4 border-t border-slate-200 pt-8">
+            {figures.map((figure) => (
+              <div key={figure.unit}>
+                <dt className="sr-only">{figure.label}</dt>
+                <dd>
+                  <span className="serif-font block text-4xl leading-none text-zinc-950 sm:text-5xl">
+                    {figure.value}
+                    <span className="orange-italic ml-1.5 text-2xl sm:text-3xl">{figure.unit}</span>
+                  </span>
+                  <span className="mt-3 block text-sm font-medium leading-5 text-slate-500">
+                    {figure.label}
+                  </span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        {shown ? (
+          <figure className="relative overflow-hidden rounded-[2rem] bg-zinc-900 shadow-2xl shadow-slate-900/12">
+            <div className="relative aspect-[4/3]">
+              <Image
+                src={shown.images![0]}
+                alt={`${shown.name}, ${shown.address}`}
+                fill
+                sizes="(min-width: 1024px) 45vw, 100vw"
+                className="object-cover"
+              />
+            </div>
+            <figcaption className="absolute inset-x-4 bottom-4 rounded-2xl bg-white/95 px-5 py-4 backdrop-blur">
+              <span className="block text-xs font-extrabold uppercase tracking-[0.14em] text-orange-600">
+                {shown.discipline} · {shown.status}
+              </span>
+              <span className="mt-1 block text-base font-bold text-zinc-950">{shown.name}</span>
+              <span className="block text-sm text-slate-500">{shown.address}</span>
+            </figcaption>
+          </figure>
+        ) : null}
       </div>
+
+      {/* The four stages, compact, so they support the numbers rather than compete with them. */}
+      <ol className="mx-auto mt-14 grid max-w-7xl gap-px overflow-hidden rounded-2xl bg-slate-200 md:grid-cols-4">
+        {processSteps.map((step) => (
+          <li key={step.number} className="bg-white p-6">
+            <span className="text-xs font-extrabold tracking-[0.18em] text-orange-500">
+              {step.number}
+            </span>
+            <h3 className="mt-2 text-lg font-bold text-zinc-950">{step.title}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-slate-600">{step.text}</p>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }
@@ -197,8 +254,20 @@ export function ProjectProof({ items, cityName }: { items: Project[]; cityName: 
           {items.map((project) => (
             <article
               key={project.slug}
-              className="live-card-shadow flex flex-col rounded-3xl bg-white p-6 ring-1 ring-slate-200"
+              className="live-card-shadow flex flex-col overflow-hidden rounded-3xl bg-white ring-1 ring-slate-200"
             >
+              {project.images?.length ? (
+                <div className="relative aspect-[16/10]">
+                  <Image
+                    src={project.images[0]}
+                    alt={`${project.name}, ${project.address}`}
+                    fill
+                    sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+              ) : null}
+              <div className="flex flex-col p-6">
               <div className="flex items-center justify-between gap-3">
                 <span className="rounded-full bg-orange-50 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.12em] text-orange-700">
                   {project.discipline}
@@ -230,6 +299,7 @@ export function ProjectProof({ items, cityName }: { items: Project[]; cityName: 
                   {project.timeline}
                 </p>
               ) : null}
+              </div>
             </article>
           ))}
         </div>
@@ -269,10 +339,13 @@ export function ReviewsBlock({ items }: { items: Review[] }) {
               <blockquote className="mt-2 grow text-base font-medium italic leading-7 text-slate-700">
                 {review.quote}
               </blockquote>
-              <figcaption className="mt-6 border-t border-slate-200 pt-4">
-                <span className="block text-base font-bold text-zinc-950">{review.author}</span>
-                <span className="block text-xs font-extrabold uppercase tracking-[0.12em] text-orange-600">
-                  {[review.role, review.city].filter(Boolean).join(", ")}
+              <figcaption className="mt-6 flex items-center gap-4 border-t border-slate-200 pt-5">
+                <ReviewAvatar author={review.author} size="sm" />
+                <span className="min-w-0">
+                  <span className="block text-base font-bold text-zinc-950">{review.author}</span>
+                  <span className="block text-xs font-extrabold uppercase tracking-[0.12em] text-orange-600">
+                    {[review.role, review.city].filter(Boolean).join(", ")}
+                  </span>
                 </span>
               </figcaption>
             </figure>
@@ -340,14 +413,7 @@ export function LandingFaqs({
         <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
           {heading}
         </h2>
-        <div className="mt-10 grid gap-4 md:grid-cols-2">
-          {items.map((faq) => (
-            <article key={faq.question} className="rounded-3xl bg-slate-50 p-6 ring-1 ring-slate-200">
-              <h3 className="text-2xl font-bold text-zinc-950">{faq.question}</h3>
-              <p className="mt-3 text-base font-medium leading-7 text-slate-600">{faq.answer}</p>
-            </article>
-          ))}
-        </div>
+        <FaqAccordion items={items} className="mt-10" />
       </div>
     </section>
   );
