@@ -56,31 +56,34 @@ export function CallLink({ className = "" }: { className?: string }) {
  * Specific trust beats generic trust: years in business and a countable project
  * total outperform "trusted by thousands" badges. The licence entry stays
  * non-numeric until the client confirms the BC contractor and WorkSafeBC numbers.
+ *
+ * One line each, no sub-labels, no cards. This sits in the hero's left column,
+ * which is only ~600px wide — as three bordered cards with a stacked uppercase
+ * sub-label, every entry wrapped and "Fully insured, WorkSafeBC registered" ran
+ * to three tracked-out lines. Short single-line labels fit across without
+ * wrapping, and match the credential row on the homepage hero.
  */
 export function TrustStrip({ className = "" }: { className?: string }) {
   const items = [
-    { icon: CalendarDays, label: `Building since ${siteConfig.foundedYear}`, sub: `${yearsBuilding} years` },
-    { icon: BadgeCheck, label: siteConfig.licenceStatus, sub: siteConfig.insuranceStatus },
-    { icon: MapPin, label: `${deliveredCount} delivered projects`, sub: "Lower Mainland, BC" },
+    { icon: CalendarDays, label: `Building since ${siteConfig.foundedYear}` },
+    { icon: BadgeCheck, label: "Licensed & fully insured" },
+    { icon: MapPin, label: `${deliveredCount} delivered projects` },
   ];
 
   return (
-    <dl className={["grid gap-3 sm:grid-cols-3", className].join(" ")}>
+    <ul
+      className={[
+        "flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold text-slate-600",
+        className,
+      ].join(" ")}
+    >
       {items.map((item) => (
-        <div
-          key={item.label}
-          className="flex items-start gap-3 rounded-2xl border border-orange-100 bg-orange-50/60 px-4 py-3"
-        >
-          <item.icon className="mt-0.5 shrink-0 text-orange-600" size={20} aria-hidden="true" />
-          <div>
-            <dt className="text-sm font-bold leading-5 text-zinc-900">{item.label}</dt>
-            <dd className="text-xs font-semibold uppercase tracking-[0.1em] text-slate-500">
-              {item.sub}
-            </dd>
-          </div>
-        </div>
+        <li key={item.label} className="flex items-center gap-2">
+          <item.icon className="shrink-0 text-orange-600" size={17} strokeWidth={2.4} aria-hidden="true" />
+          {item.label}
+        </li>
       ))}
-    </dl>
+    </ul>
   );
 }
 
@@ -118,10 +121,13 @@ export function LandingHero({
             <CallLink />
           </div>
 
-          <TrustStrip className="mt-8 max-w-2xl" />
+          <TrustStrip className="mt-8" />
 
+          {/* An honesty note, so it should read as an aside rather than as a
+              claim. The rule and muted type keep it clearly subordinate to the
+              trust row above it. */}
           {evidenceNote ? (
-            <p className="mt-5 max-w-2xl rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium leading-6 text-slate-500">
+            <p className="mt-7 max-w-xl border-l-2 border-slate-200 pl-4 text-sm leading-6 text-slate-500">
               {evidenceNote}
             </p>
           ) : null}
