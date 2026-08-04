@@ -1093,8 +1093,11 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
           ...constructionServices
             .filter((item) => item.slug !== service.slug)
             .slice(0, 4)
+            // No city in the label: the section heading above already says
+            // "Also built in {city}", and repeating it six times wrapped the
+            // longer labels onto two lines.
             .map((item) => ({
-              label: `${item.name} in ${city.city}`,
+              label: item.name,
               href: `/construction/${city.slug}/${item.slug}`,
               why: `Choose this if you need to ${item.intent}.`,
             })),

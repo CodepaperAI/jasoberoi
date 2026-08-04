@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Building2 } from "lucide-react";
 import {
   ExperienceBlock,
   LandingCta,
@@ -10,8 +9,8 @@ import {
   ReviewsBlock,
   WhyTheseServices,
 } from "@/components/LandingSections";
-import { ScopeList } from "@/components/SectionPrimitives";
 import { JsonLd } from "@/components/JsonLd";
+import { LocalDelivery } from "@/components/LocalDelivery";
 import {
   breadcrumbJsonLd,
   constructionServiceJsonLd,
@@ -95,60 +94,8 @@ export default async function ConstructionRoute({ params }: ConstructionProps) {
       {/* 4 — Reviews. */}
       <ReviewsBlock items={page.reviews} />
 
-      {/* Scope detail: what the service actually covers in this city. */}
-      <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr]">
-          <div>
-            <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
-              Local planning
-            </p>
-            <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
-              How does Oberizon plan {serviceLabel} in {page.city.city}?
-            </h2>
-            <p className="mt-5 text-xl font-medium leading-8 text-slate-600">{page.localProof}</p>
-            <p className="mt-4 text-xl font-medium leading-8 text-slate-600">{page.marketContext}</p>
-
-            <div className="mt-6 flex flex-wrap gap-2">
-              {page.city.neighborhoods.map((area) => (
-                <span
-                  key={area}
-                  className="rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-extrabold uppercase tracking-[0.14em] text-zinc-700"
-                >
-                  {area}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid gap-4">
-            {page.serviceFocus.map((item) => (
-              <article
-                key={item.title}
-                className="live-card-shadow rounded-3xl bg-white p-6 ring-1 ring-slate-200"
-              >
-                <Building2 className="text-orange-600" size={24} aria-hidden="true" />
-                <h3 className="mt-4 text-2xl font-bold text-zinc-950">{item.title}</h3>
-                <p className="mt-2 text-base font-medium leading-7 text-slate-600">{item.text}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-slate-50 px-5 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr]">
-          <div>
-            <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
-              What&apos;s included
-            </p>
-            <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
-              Scope of {serviceLabel} in {page.city.city}.
-            </h2>
-            <p className="mt-5 text-xl font-medium leading-8 text-slate-600">{page.pricingBrief}.</p>
-          </div>
-          <ScopeList items={page.service.scope} />
-        </div>
-      </section>
+      {/* How the work runs here: planning, price, scope and focus in one section. */}
+      <LocalDelivery page={page} />
 
       {/* 5 — Why these services: internal links that explain themselves. */}
       <WhyTheseServices links={page.internalLinks} cityName={page.city.city} />

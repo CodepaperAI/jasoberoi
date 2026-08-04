@@ -370,8 +370,10 @@ export function WhyTheseServices({
         <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
           Where to go next
         </p>
+        {/* Short. The old heading ran to two lines and repeated the city again;
+            the cards underneath already say which city they are for. */}
         <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
-          Other things Oberizon builds in {cityName} — and when each one applies.
+          Also built <span className="orange-italic">in {cityName}.</span>
         </h2>
 
         <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
