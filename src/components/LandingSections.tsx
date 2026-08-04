@@ -244,10 +244,32 @@ export function ExperienceBlock({ city, items }: { city: ServiceArea; items: Pro
  * named projects with real addresses. The market leader holds 26 page-one
  * positions largely on the strength of a library of pages exactly like these.
  */
-export function ProjectProof({ items, cityName }: { items: Project[]; cityName: string }) {
+export function ProjectProof({
+  items,
+  cityName,
+  heading,
+}: {
+  items: Project[];
+  cityName?: string;
+  heading?: string;
+}) {
   if (items.length === 0) {
     return null;
   }
+
+  /**
+   * The grid tracks the number of cards.
+   *
+   * A fixed three-column grid left a single card marooned beside two thirds of
+   * empty row, which read as a section that had failed to load rather than as a
+   * design. Fewer cards now means fewer columns.
+   */
+  const columns =
+    items.length === 1
+      ? "max-w-md"
+      : items.length === 2
+        ? "md:grid-cols-2 max-w-4xl"
+        : "md:grid-cols-2 xl:grid-cols-3";
 
   return (
     <section className="bg-slate-50 px-5 py-20 sm:px-6 lg:px-8">
@@ -256,10 +278,10 @@ export function ProjectProof({ items, cityName }: { items: Project[]; cityName: 
           The work
         </p>
         <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
-          Builds we have delivered near {cityName}.
+          {heading ?? `Builds we have delivered near ${cityName}.`}
         </h2>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className={`mt-10 grid gap-5 ${columns}`}>
           {items.map((project) => (
             <article
               key={project.slug}

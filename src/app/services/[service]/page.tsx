@@ -56,10 +56,20 @@ export default async function ServiceHubPage({ params }: HubProps) {
   const hub = getServiceHub(service);
   if (!hub) notFound();
 
-  // Projects in this vertical, so a dental hub shows dental work.
-  const relevant = projects
-    .filter((project) => project.vertical === hub.service.vertical && project.citySlug !== "")
-    .slice(0, 3);
+  /**
+   * Matching vertical first, then whatever else is real, up to three.
+   *
+   * A strict vertical filter left the Commercial and Residential hubs showing a
+   * single card in a three-column grid, because only one located project exists
+   * in each. Every card names its own discipline, so a dental clinic appearing
+   * under "the work" on a commercial hub claims nothing false — and one card
+   * marooned in an empty row looked like the section had failed to load.
+   */
+  const located = projects.filter((project) => project.citySlug !== "");
+  const relevant = [
+    ...located.filter((project) => project.vertical === hub.service.vertical),
+    ...located.filter((project) => project.vertical !== hub.service.vertical),
+  ].slice(0, 3);
 
   return (
     <>
@@ -168,7 +178,7 @@ export default async function ServiceHubPage({ params }: HubProps) {
       </section>
 
       {/* 4 — Built, not claimed. */}
-      <ProjectProof items={relevant} cityName="the Lower Mainland" />
+      <ProjectProof items={relevant} heading="Builds we have delivered." />
 
       {/*
         5 — The load-bearing section. Every city, linked. This is the hub-to-spoke
