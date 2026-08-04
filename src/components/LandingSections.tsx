@@ -105,7 +105,10 @@ export function LandingHero({
           <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
             {eyebrow}
           </p>
-          <h1 className="serif-font mt-5 break-words text-5xl leading-tight tracking-tight text-zinc-950 sm:text-6xl lg:text-7xl">
+          {/* leading-[1.05], not leading-tight. At 72px a 1.25 line-height opens
+              ~18px of air between lines, which on a three-line display heading
+              reads as a gap rather than a paragraph. Matches the homepage H1. */}
+          <h1 className="serif-font mt-5 break-words text-5xl leading-[1.05] tracking-tight text-zinc-950 sm:text-6xl lg:text-7xl">
             {heading}
           </h1>
           <p className="mt-6 max-w-3xl text-xl font-medium leading-8 text-slate-600">{intro}</p>

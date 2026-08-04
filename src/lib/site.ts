@@ -140,6 +140,10 @@ export const siteConfig = {
   email: "jo@oberizon.ca",
   phone: "(604) 385-3770",
   phoneHref: "tel:+16043853770",
+  // TODO(client): confirm WhatsApp is active on the business line. If it is not,
+  // the link opens a "phone number not on WhatsApp" dead end — point this at
+  // whichever number the team actually answers.
+  whatsappHref: "https://wa.me/16043853770",
   address: "Suite 305, 1493 Foster St, White Rock, BC V4B 0C4",
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=1493+Foster+St+305+White+Rock+BC",

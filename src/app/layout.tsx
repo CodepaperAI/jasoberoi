@@ -4,6 +4,7 @@ import { Analytics } from "@/components/Analytics";
 import { ConversionTracking } from "@/components/ConversionTracking";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { ContactDock } from "@/components/ContactDock";
 import { JsonLd } from "@/components/JsonLd";
 import { RouteTransition } from "@/components/RouteTransition";
 import { organizationJsonLd } from "@/lib/schema";
@@ -53,6 +54,8 @@ export default function RootLayout({
         <Analytics />
         <ConversionTracking />
         <RouteTransition />
+        {/* Reachable from every page, and it never opens itself. */}
+        <ContactDock />
         <Header />
         <main>{children}</main>
         <Footer />

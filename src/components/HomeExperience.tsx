@@ -7,16 +7,15 @@ import {
   Eye,
   Globe2,
   Receipt,
-  Send,
   Sparkles,
   Star,
   Users,
   Workflow,
 } from "lucide-react";
 import { ButtonLink } from "@/components/ButtonLink";
-import { AppointmentModal } from "@/components/AppointmentModal";
 import { ExpertiseHub } from "@/components/ExpertiseHub";
 import { FaqAccordion } from "@/components/FaqAccordion";
+import { HomeConsultationForm } from "@/components/HomeConsultationForm";
 import { ProofBar } from "@/components/ProofBar";
 import { ReviewAvatar } from "@/components/ReviewAvatar";
 import { ScrollExpandVideo } from "@/components/ScrollExpandVideo";
@@ -120,7 +119,6 @@ const projects = [
 export function HomeExperience() {
   return (
     <>
-      <AppointmentModal />
       <section className="relative overflow-hidden bg-white pt-28">
         <div className="absolute inset-x-0 top-20 h-[590px] bg-[#eef8fc]" />
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
@@ -575,47 +573,7 @@ export function HomeExperience() {
             review the project and help you understand what needs to be planned before construction
             starts.
           </p>
-          <form className="mt-12 grid gap-5 text-left sm:grid-cols-2">
-            <label className="grid gap-2 text-xs font-bold text-white">
-              Full Name
-              <input className="rounded-2xl border border-white/10 bg-white/10 px-5 py-4 text-sm text-white outline-none placeholder:text-white/40 focus:border-orange-500" placeholder="Enter your full name" />
-            </label>
-            <label className="grid gap-2 text-xs font-bold text-white">
-              Email *
-              <input className="rounded-2xl border border-white/10 bg-white/10 px-5 py-4 text-sm text-white outline-none placeholder:text-white/40 focus:border-orange-500" placeholder="your@email.com" />
-            </label>
-            <label className="grid gap-2 text-xs font-bold text-white">
-              Phone *
-              <input className="rounded-2xl border border-white/10 bg-white/10 px-5 py-4 text-sm text-white outline-none placeholder:text-white/40 focus:border-orange-500" placeholder="+1 (555) 000-0000" />
-            </label>
-            <label className="grid gap-2 text-xs font-bold text-white">
-              Project Location
-              <input className="rounded-2xl border border-white/10 bg-white/10 px-5 py-4 text-sm text-white outline-none placeholder:text-white/40 focus:border-orange-500" placeholder="White Rock" />
-            </label>
-            <label className="grid gap-2 text-xs font-bold text-white sm:col-span-2">
-              Type of Project
-              <select className="rounded-2xl border border-white/10 bg-white/10 px-5 py-4 text-sm text-white outline-none focus:border-orange-500">
-                <option>Select an option</option>
-                <option>Dental Clinic Construction</option>
-                <option>Medical Clinic Construction</option>
-                <option>Commercial Interior</option>
-                <option>Luxury Residential</option>
-              </select>
-            </label>
-            <label className="grid gap-2 text-xs font-bold text-white sm:col-span-2">
-              Tell us more about your project
-              <textarea className="min-h-32 rounded-2xl border border-white/10 bg-white/10 px-5 py-4 text-sm text-white outline-none placeholder:text-white/40 focus:border-orange-500" placeholder="City, target open date, budget range, and scope. Anything else we should know - say it here." />
-            </label>
-            <div className="text-center sm:col-span-2">
-              <button
-                type="button"
-                className="inline-flex items-center justify-center gap-3 rounded-2xl bg-orange-600 px-16 py-5 text-xs font-bold uppercase tracking-[0.2em] text-white shadow-xl shadow-orange-600/20 transition hover:bg-orange-500"
-              >
-                <Send size={15} aria-hidden="true" />
-                Book a Consultation
-              </button>
-            </div>
-          </form>
+          <HomeConsultationForm />
         </div>
       </section>
     </>
