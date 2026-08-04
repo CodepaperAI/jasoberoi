@@ -156,6 +156,82 @@ a {
   }
 }
 
+/*
+  Route transition overlay.
+
+  Every animation below uses fill-mode `both` and resolves to the *visible*
+  state, so the reduced-motion rule underneath — which collapses durations to
+  1ms — lands users on a fully drawn mark rather than an invisible one.
+*/
+.route-transition {
+  animation: route-fade-in 140ms ease-out both;
+}
+
+.route-transition[data-state="leaving"] {
+  animation: route-fade-out 220ms ease-in both;
+}
+
+/* The horizon draws outward from the centre, then the sun settles onto it. */
+.route-transition-horizon {
+  transform-box: view-box;
+  transform-origin: 32px 29px;
+  animation: route-horizon 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.route-transition-sun {
+  transform-box: view-box;
+  transform-origin: 32px 36.5px;
+  animation: route-sun 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes route-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes route-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes route-horizon {
+  from {
+    opacity: 0;
+    transform: scaleX(0.1);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes route-sun {
+  0% {
+    opacity: 0;
+    transform: translateY(9px) scale(0.72);
+  }
+
+  55% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

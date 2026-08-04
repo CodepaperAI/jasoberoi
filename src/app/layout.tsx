@@ -5,6 +5,7 @@ import { ConversionTracking } from "@/components/ConversionTracking";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
+import { RouteTransition } from "@/components/RouteTransition";
 import { organizationJsonLd } from "@/lib/schema";
 import { absoluteUrl, buildMetadata } from "@/lib/seo";
 import { homePage } from "@/lib/site";
@@ -45,6 +46,7 @@ export default function RootLayout({
         <JsonLd data={organizationJsonLd(absoluteUrl("/"))} />
         <Analytics />
         <ConversionTracking />
+        <RouteTransition />
         <Header />
         <main>{children}</main>
         <Footer />
