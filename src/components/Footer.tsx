@@ -181,17 +181,15 @@ export function Footer() {
       ) : null}
 
       <div className="border-t border-white/10 px-5 py-6">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-center text-xs font-semibold text-white/40 sm:flex-row sm:text-left">
+        {/* Single line now that the agency credit is gone, so it no longer needs
+            justify-between or the right padding that kept the credit clear of
+            the floating contact dock. */}
+        <div className="mx-auto max-w-7xl text-center text-xs font-semibold text-white/40 sm:text-left">
           <p>
             Copyright © {siteConfig.foundedYear}–{new Date().getFullYear()} Oberizon Construction.{" "}
             <Link href="/privacy-policy" className="transition hover:text-orange-500">
               Privacy
             </Link>
-          </p>
-          {/* Right padding clears the floating contact dock, which sat on top
-              of this line at the bottom of every page. */}
-          <p className="sm:pr-56">
-            Designed by <span className="text-orange-500">HexBytes</span>
           </p>
         </div>
       </div>
