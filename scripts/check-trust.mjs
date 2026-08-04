@@ -415,7 +415,7 @@ function checkRatesAgainstConfig(pricing, sources) {
  * The calculator must not reach a public surface on rates the client has not
  * agreed to be held to.
  */
-function checkRatesSignedOff(pricing, site, sources) {
+function checkRatesSignedOff(pricing, site) {
   if (pricing.ratesConfirmedByClient) return;
 
   if (site.allStaticPaths.includes("/cost")) {
@@ -666,7 +666,7 @@ checkFaqSpecificity(
 );
 checkPriceConsistency(site);
 checkRatesAgainstConfig(pricing, sources);
-checkRatesSignedOff(pricing, site, sources);
+checkRatesSignedOff(pricing, site);
 checkCopyDensity(site);
 checkCredentials(site, sources);
 checkEvidence(site);
