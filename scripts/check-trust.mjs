@@ -427,11 +427,19 @@ function checkRatesSignedOff(pricing, site, sources) {
     );
   }
 
-  const navSource = sources.find((file) => file.path.endsWith("lib/site.ts"));
-  if (/navigation[\s\S]{0,2000}href:\s*"\/cost"/.test(navSource?.text ?? "")) {
+  // Inspect the resolved values, not the source text. A regex over source cannot
+  // tell a live link from one already guarded by this same flag, and reported a
+  // false positive the moment the nav entry was written as a conditional.
+  const linksToCost = [
+    ...site.navigation.flatMap((item) => [item.href, ...(item.items ?? []).map((sub) => sub.href)]),
+    ...site.resourceLinks.map((link) => link.href),
+  ].filter((href) => href?.startsWith("/cost"));
+
+  if (linksToCost.length > 0) {
     fail(
       "unconfirmed-rates",
-      "/cost is linked from the main navigation while its rates are unconfirmed.",
+      `/cost is linked from the navigation or footer (${linksToCost.join(", ")}) while its rates ` +
+        `are unconfirmed.`,
       "src/lib/site.ts",
     );
   }

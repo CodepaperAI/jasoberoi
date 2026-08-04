@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Calculator, Mail, MapPin, Phone } from "lucide-react";
 import {
   constructionServices,
   credentials,
+  resourceLinks,
   serviceAreas,
   siteConfig,
   socialLinks,
@@ -68,6 +69,23 @@ export function Footer() {
                   className="text-sm font-semibold text-white/55 transition hover:text-orange-500"
                 >
                   {service.name}
+                </Link>
+              </li>
+            ))}
+            {/*
+              Resources sit under Services rather than in their own column: it is
+              one link today, and an almost-empty fifth column reads as a mistake.
+              Highlighted because the cost guide is the only page a visitor might
+              arrive specifically wanting to use.
+            */}
+            {resourceLinks.map((link) => (
+              <li key={link.href} className="pt-2">
+                <Link
+                  href={link.href}
+                  className="inline-flex items-center gap-2 text-sm font-bold text-orange-400 transition hover:text-orange-300"
+                >
+                  <Calculator size={15} aria-hidden="true" />
+                  {link.label}
                 </Link>
               </li>
             ))}

@@ -178,17 +178,22 @@ export const navigation: NavItem[] = [
   },
   { label: "Projects", href: "/projects" },
   { label: "Service Areas", href: "/construction" },
+  // Top level rather than buried under Services: it carries the cost calculator,
+  // which is the only page on the site a visitor might arrive wanting to use.
+  // Gated so nothing links to unconfirmed rates.
+  ...(ratesConfirmedByClient ? [{ label: "Cost Guide", href: "/cost" }] : []),
   { label: "Contact", href: "/contact" },
 ];
 
-export const quickLinks = [
-  { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Projects", href: "/projects" },
-  { label: "Service Areas", href: "/construction" },
-  { label: "Contact", href: "/contact" },
-  { label: "Privacy", href: "/privacy-policy" },
-];
+/**
+ * Footer resources. Empty until the cost rates are signed off, at which point
+ * the guide gains a footer link, a nav entry and its landing-page links all at
+ * once — one flag controls every entry point rather than three separate edits.
+ */
+export const resourceLinks = ratesConfirmedByClient
+  ? [{ label: "2026 Cost Guide & Calculator", href: "/cost" }]
+  : [];
+
 
 export const stats = [
   { value: "10+ Years", label: "Building across the Lower Mainland since 2014" },
