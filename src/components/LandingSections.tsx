@@ -340,7 +340,7 @@ export function ReviewsBlock({ items }: { items: Review[] }) {
                 {review.quote}
               </blockquote>
               <figcaption className="mt-6 flex items-center gap-4 border-t border-slate-200 pt-5">
-                <ReviewAvatar author={review.author} size="sm" />
+                <ReviewAvatar author={review.author} image={review.image} size="sm" />
                 <span className="min-w-0">
                   <span className="block text-base font-bold text-zinc-950">{review.author}</span>
                   <span className="block text-xs font-extrabold uppercase tracking-[0.12em] text-orange-600">

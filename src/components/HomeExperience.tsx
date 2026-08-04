@@ -473,7 +473,7 @@ export function HomeExperience() {
                   {item.quote}
                 </p>
                 <div className="mt-10 flex items-center gap-4">
-                  <ReviewAvatar author={item.author} />
+                  <ReviewAvatar author={item.author} image={item.image} />
                   <div>
                     <p className="font-bold text-zinc-950">{item.author}</p>
                     <p className="text-xs font-bold uppercase tracking-[0.16em] text-orange-600">

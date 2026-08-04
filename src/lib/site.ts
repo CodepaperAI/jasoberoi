@@ -98,6 +98,12 @@ export type Review = {
   city?: string;
   /** TODO(client): confirm review dates — dated reviews convert materially better. */
   date?: string;
+  /**
+   * TODO(client): a real headshot, if the reviewer agrees to one. Left undefined
+   * rather than filled with a stock portrait — a stranger's face against a named
+   * testimonial invents a person. ReviewAvatar falls back to a person glyph.
+   */
+  image?: string;
   quote: string;
 };
 
