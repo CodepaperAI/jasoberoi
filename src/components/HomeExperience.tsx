@@ -160,15 +160,16 @@ export function HomeExperience() {
         />
       </section>
 
-      <section className="relative isolate overflow-hidden bg-zinc-950 px-5 py-28 text-white sm:px-6 lg:px-8">
-        <Image
-          src="/oberizon/optimized/dental-clinic.jpg"
-          alt="Dental clinic construction by Oberizon"
-          fill
-          sizes="100vw"
-          className="-z-10 object-cover opacity-45"
-        />
-        <div className="absolute inset-0 -z-10 bg-black/35" />
+      {/*
+        Solid, not another photograph. This sits directly beneath the hero video,
+        and when both carried imagery the join read as two unrelated pictures
+        stacked on each other. The video now fades into exactly this colour, so
+        the two behave as one continuous dark passage before the page opens back
+        up into light — and the statement is far easier to read without a
+        competing image behind it.
+      */}
+      <section className="relative isolate overflow-hidden bg-[#0b0c0e] px-5 py-28 text-white sm:px-6 lg:px-8">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(255,79,10,0.12),transparent_28rem)]" />
         <div className="mx-auto max-w-5xl text-center">
           {/*
             Was 24 words fronting six abstract nouns before saying what Oberizon
@@ -185,13 +186,12 @@ export function HomeExperience() {
             and pharmacies — we manage permits, trades and timelines so your space opens on
             schedule.
           </p>
+          {/* ButtonLink, not a bespoke square block — every other call to action
+              on the site is a rounded pill with the same arrow affordance. */}
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              href="/contact"
-              className="bg-orange-600 px-7 py-4 text-base font-bold uppercase text-white shadow-xl shadow-orange-950/20 transition hover:bg-orange-500"
-            >
+            <ButtonLink href="/contact" className="px-8 py-4 text-base">
               Book a Consultation
-            </Link>
+            </ButtonLink>
           </div>
           <p className="mt-10 border-t border-white/35 pt-6 text-sm font-semibold uppercase tracking-[0.35em] text-white/70">
             Serving {serviceAreas.map((area) => area.city).join(" . ")}
