@@ -68,16 +68,6 @@ export function ScrollExpandVideo({ poster, src }: { poster: string; src: string
           <source src={src} type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-black/25" />
-        {/*
-          Resolves the bottom edge into the dark section that follows. Tied to
-          --expand so it only appears as the video goes full-bleed: on the
-          contained, rounded card there is no seam to hide.
-        */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-[#0b0c0e]"
-          style={{ opacity: "var(--expand)" }}
-        />
       </div>
     </div>
   );

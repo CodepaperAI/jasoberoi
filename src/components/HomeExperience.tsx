@@ -16,6 +16,7 @@ import {
 import { ButtonLink } from "@/components/ButtonLink";
 import { AppointmentModal } from "@/components/AppointmentModal";
 import { ExpertiseHub } from "@/components/ExpertiseHub";
+import { ProofBar } from "@/components/ProofBar";
 import { ScrollExpandVideo } from "@/components/ScrollExpandVideo";
 import { aiFaqs, processSteps, reviews, serviceAreas, siteConfig } from "@/lib/site";
 
@@ -161,12 +162,17 @@ export function HomeExperience() {
       </section>
 
       {/*
-        Solid, not another photograph. This sits directly beneath the hero video,
-        and when both carried imagery the join read as two unrelated pictures
-        stacked on each other. The video now fades into exactly this colour, so
-        the two behave as one continuous dark passage before the page opens back
-        up into light — and the statement is far easier to read without a
-        competing image behind it.
+        A light band of real numbers separates the full-bleed video above from
+        the dark statement below. Two dark blocks in sequence read as one
+        undifferentiated mass however the seam is treated, so the page breathes
+        back to light in between — and does it with evidence rather than filler.
+      */}
+      <ProofBar />
+
+      {/*
+        Solid, not another photograph. When this carried its own background image
+        the join with the video read as two unrelated pictures stacked on each
+        other, and the statement was harder to read for it.
       */}
       <section className="relative isolate overflow-hidden bg-[#0b0c0e] px-5 py-28 text-white sm:px-6 lg:px-8">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(255,79,10,0.12),transparent_28rem)]" />
