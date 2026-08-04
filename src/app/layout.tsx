@@ -40,6 +40,12 @@ export default function RootLayout({
   return (
     <html
       lang="en-CA"
+      // `scroll-smooth` is wanted for in-page anchor links, but without this
+      // attribute Next runs its post-navigation scroll reset as-is, so the
+      // browser smooth-scrolls all the way from wherever you were up to the top
+      // — an animated glide rather than a jump. The attribute lets Next switch
+      // to `auto` for that one reset and restore smooth afterwards.
+      data-scroll-behavior="smooth"
       className={`${archivoBlack.variable} ${barlow.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full bg-background text-foreground">

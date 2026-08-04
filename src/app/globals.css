@@ -157,6 +157,36 @@ a {
 }
 
 /*
+  Hero video that expands to full-bleed on scroll.
+
+  `--expand` runs 0 -> 1 and is set by ScrollExpandVideo. Everything below is
+  derived from it, so the scroll handler writes one value and CSS does the rest.
+  Width, height and corner radius all interpolate together: a contained,
+  heavily-rounded letterbox becomes a full-width 16:9 frame with square corners.
+*/
+.scroll-expand-frame {
+  --expand: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.scroll-expand-media {
+  /* 78% of the container out to the full viewport width. */
+  width: calc(78% + 22% * var(--expand));
+  max-width: calc(1180px + (100vw - 1180px) * var(--expand));
+  /* Letterbox (2.9:1) opening out to 16:9. */
+  aspect-ratio: calc(2.9 - 1.12 * var(--expand));
+  border-radius: calc(5rem * (1 - var(--expand))) calc(5rem * (1 - var(--expand))) 0 0;
+  will-change: width, aspect-ratio;
+}
+
+@media (max-width: 1180px) {
+  .scroll-expand-media {
+    max-width: 100vw;
+  }
+}
+
+/*
   Route transition overlay.
 
   Every animation below uses fill-mode `both` and resolves to the *visible*

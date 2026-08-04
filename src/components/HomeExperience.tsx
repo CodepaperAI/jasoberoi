@@ -11,46 +11,9 @@ import {
 } from "lucide-react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { AppointmentModal } from "@/components/AppointmentModal";
+import { ExpertiseHub } from "@/components/ExpertiseHub";
+import { ScrollExpandVideo } from "@/components/ScrollExpandVideo";
 import { aiFaqs, processSteps, reviews, serviceAreas, siteConfig } from "@/lib/site";
-
-/**
- * Named after the services people actually search for, not generic consulting
- * labels. Commercial construction and commercial renovation lead because they
- * are the two largest measured opportunities and previously appeared nowhere on
- * the homepage.
- */
-const visionItems = [
-  {
-    title: "Commercial Construction",
-    text: "Ground-up commercial builds and tenant improvements across the Lower Mainland.",
-    tone: "orange",
-  },
-  {
-    title: "Commercial Renovation",
-    text: "Interior renovations for offices, retail, and professional spaces already in use.",
-    tone: "blue",
-  },
-  {
-    title: "Dental Office Renovation",
-    text: "Operatory reconfiguration, suction and air runs, and imaging shielding in live clinics.",
-    tone: "orange",
-  },
-  {
-    title: "Medical & Healthcare Construction",
-    text: "Clinics and practices built around clinical workflow, IPAC barriers, and patient flow.",
-    tone: "blue",
-  },
-  {
-    title: "Pharmacy Construction",
-    text: "Dispensary sightlines, security glazing, and USP 795/797 compounding-room compliance.",
-    tone: "orange",
-  },
-  {
-    title: "Luxury Residential",
-    text: "Custom homes run with the same planning discipline as our clinical work.",
-    tone: "blue",
-  },
-];
 
 const verticals = [
   {
@@ -172,21 +135,17 @@ export function HomeExperience() {
               Book a Consultation
             </ButtonLink>
           </div>
-
-          <div className="relative mx-auto mt-20 aspect-[16/9] max-w-[1180px] overflow-hidden rounded-t-[5rem] bg-zinc-900 shadow-2xl shadow-slate-900/20">
-            <video
-              className="h-full w-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              poster="/oberizon/optimized/project-dental-1.jpg"
-            >
-              <source src={siteConfig.heroVideo} type="video/mp4" />
-            </video>
-            <div className="absolute inset-0 bg-black/38" />
-          </div>
         </div>
+
+        {/*
+          Deliberately outside the max-w-7xl container above. The whole point is
+          that it reaches the viewport edges, and it cannot do that from inside a
+          padded, width-capped wrapper.
+        */}
+        <ScrollExpandVideo
+          poster="/oberizon/optimized/project-dental-1.jpg"
+          src={siteConfig.heroVideo}
+        />
       </section>
 
       <section className="bg-white px-5 py-16 sm:px-6 lg:px-8">
@@ -245,49 +204,7 @@ export function HomeExperience() {
         </div>
       </section>
 
-      <section className="corner-dots relative overflow-hidden bg-[#f8faff] px-5 py-24 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.78fr_1.22fr] lg:items-center">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.22em] text-orange-600">
-              Our Expertise
-            </p>
-            <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
-              Enabling Your
-              <span className="block orange-italic">Healthcare Vision</span>
-            </h2>
-            <p className="mt-5 max-w-md text-lg leading-8 text-slate-600">
-              End-to-end expertise. Exceptional outcomes.
-            </p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {visionItems.map((item) => (
-              <article
-                key={item.title}
-                className="live-card-shadow rounded-3xl bg-white p-6 ring-1 ring-slate-200/70"
-              >
-                <div className="flex items-start gap-4">
-                  <span
-                    className={[
-                      "flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl",
-                      item.tone === "orange"
-                        ? "bg-orange-50 text-orange-600 ring-1 ring-orange-100"
-                        : "bg-blue-50 text-blue-600 ring-1 ring-blue-100",
-                    ].join(" ")}
-                  >
-                    <ClipboardCheck size={22} aria-hidden="true" />
-                  </span>
-                  <div>
-                    <h3 className="text-base font-extrabold uppercase tracking-wide text-zinc-950">
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-6 text-slate-600">{item.text}</p>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ExpertiseHub />
 
       <section className="bg-white px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">

@@ -43,3 +43,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# iCloud Drive conflict copies. The Desktop is synced, and iCloud writes
+# "file 2.ext" duplicates that break typecheck (duplicate identifiers in
+# .next/types) and pollute the Next.js icon convention in src/app.
+* [0-9].*
