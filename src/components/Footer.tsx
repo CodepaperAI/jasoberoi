@@ -33,13 +33,20 @@ export function Footer() {
             healthcare construction, commercial interiors, and luxury residential projects across
             the Lower Mainland.
           </p>
-          <dl className="mt-6 grid max-w-xs gap-3 text-xs text-white/60">
+          {/*
+            Label above value rather than beside it. The previous two-column grid
+            fixed the label track at 80px, but "ESTABLISHED" sets ~95px at this
+            letter-spacing, so it collided with its own value while the shorter
+            labels left their values wrapping raggedly. Stacking removes the
+            constraint entirely — no label length can break this layout.
+          */}
+          <dl className="mt-8 grid max-w-xs gap-5">
             {credentials.map((item) => (
-              <div key={item.label} className="grid grid-cols-[80px_1fr] items-baseline gap-3">
-                <dt className="font-extrabold uppercase tracking-[0.18em] text-orange-400">
+              <div key={item.label}>
+                <dt className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-orange-400">
                   {item.label}
                 </dt>
-                <dd className="text-white/70">{item.value}</dd>
+                <dd className="mt-1.5 text-sm font-medium leading-6 text-white/70">{item.value}</dd>
               </div>
             ))}
           </dl>
