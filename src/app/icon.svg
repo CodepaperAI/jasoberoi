@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Oberizon Construction">
+  <title>Oberizon Construction</title>
+  <!--
+    The Oberizon mark: a ring crossed near its top by a horizon line that runs
+    past it on both sides — a sun on a horizon, for Ober-izon.
+
+    Drawn on a dark tile rather than a transparent field so it holds contrast in
+    both light and dark browser tabs, and strokes are heavier than the wordmark's
+    so the ring survives at 16px, where a hairline would disappear.
+  -->
+  <rect width="64" height="64" rx="14" fill="#111111" />
+  <g fill="none" stroke="#ff4f0a" stroke-width="5" stroke-linecap="round">
+    <circle cx="32" cy="36.5" r="15" />
+    <line x1="3.5" y1="29" x2="60.5" y2="29" />
+  </g>
+</svg>
