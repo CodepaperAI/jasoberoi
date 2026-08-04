@@ -186,13 +186,20 @@ export const navigation: NavItem[] = [
 ];
 
 /**
- * Footer resources. Empty until the cost rates are signed off, at which point
- * the guide gains a footer link, a nav entry and its landing-page links all at
- * once — one flag controls every entry point rather than three separate edits.
+ * Footer resources.
+ *
+ * Linked unconditionally, deliberately separated from `ratesConfirmedByClient`.
+ * Those are two different questions:
+ *
+ *   Can a visitor find this?      — yes, by client request
+ *   Should Google rank it?        — not until the rates are confirmed
+ *
+ * So the footer link is live while the page stays noindex, out of the sitemap
+ * and out of the main navigation. The residual risk is real and worth naming: a
+ * visitor who reaches the calculator from here can generate a figure Oberizon
+ * has not yet agreed to be held to.
  */
-export const resourceLinks = ratesConfirmedByClient
-  ? [{ label: "2026 Cost Guide & Calculator", href: "/cost" }]
-  : [];
+export const resourceLinks = [{ label: "2026 Cost Guide & Calculator", href: "/cost" }];
 
 
 export const stats = [

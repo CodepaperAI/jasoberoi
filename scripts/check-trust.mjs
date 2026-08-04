@@ -430,25 +430,37 @@ function checkRatesSignedOff(pricing, site) {
   // Inspect the resolved values, not the source text. A regex over source cannot
   // tell a live link from one already guarded by this same flag, and reported a
   // false positive the moment the nav entry was written as a conditional.
-  const linksToCost = [
-    ...site.navigation.flatMap((item) => [item.href, ...(item.items ?? []).map((sub) => sub.href)]),
-    ...site.resourceLinks.map((link) => link.href),
-  ].filter((href) => href?.startsWith("/cost"));
+  const inNav = site.navigation
+    .flatMap((item) => [item.href, ...(item.items ?? []).map((sub) => sub.href)])
+    .filter((href) => href?.startsWith("/cost"));
 
-  if (linksToCost.length > 0) {
+  if (inNav.length > 0) {
     fail(
       "unconfirmed-rates",
-      `/cost is linked from the navigation or footer (${linksToCost.join(", ")}) while its rates ` +
-        `are unconfirmed.`,
+      "/cost is in the main navigation while its rates are unconfirmed. The footer link is a " +
+        "deliberate exception; promoting it to the nav is not.",
+      "src/lib/site.ts",
+    );
+  }
+
+  // The footer link is live at the client's request. That is their call to make,
+  // but it stops being invisible — a visitor can now reach the calculator and
+  // generate a figure nobody has agreed to honour.
+  if (site.resourceLinks.some((link) => link.href.startsWith("/cost"))) {
+    warn(
+      "unconfirmed-rates",
+      "The footer links to /cost while ratesConfirmedByClient is false, so visitors can reach the " +
+        "calculator and generate figures from unconfirmed rates. Indexing and the sitemap are " +
+        "still gated. Get the ranges signed off.",
       "src/lib/site.ts",
     );
   }
 
   warn(
     "unconfirmed-rates",
-    "Cost calculator is built and testable but noindex, out of the sitemap and unlinked, because " +
-      "ratesConfirmedByClient is false. Get the ranges signed off, then flip the flag in " +
-      "src/lib/pricing.ts.",
+    "Cost calculator is noindex, out of the sitemap and out of the main navigation because " +
+      "ratesConfirmedByClient is false. Confirm the ten ranges with the client, then flip the flag " +
+      "in src/lib/pricing.ts to index it and add the nav entry.",
     "src/lib/pricing.ts",
   );
 }
