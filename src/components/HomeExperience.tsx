@@ -6,6 +6,7 @@ import {
   ClipboardCheck,
   Eye,
   Globe2,
+  Phone,
   Receipt,
   Sparkles,
   Star,
@@ -19,7 +20,7 @@ import { HomeConsultationForm } from "@/components/HomeConsultationForm";
 import { ProofBar } from "@/components/ProofBar";
 import { ReviewAvatar } from "@/components/ReviewAvatar";
 import { ScrollExpandVideo } from "@/components/ScrollExpandVideo";
-import { aiFaqs, processSteps, reviews, serviceAreas, siteConfig } from "@/lib/site";
+import { aiFaqs, processSteps, reviews, serviceAreas, siteConfig, trustItems } from "@/lib/site";
 
 const verticals = [
   {
@@ -119,10 +120,25 @@ const projects = [
 export function HomeExperience() {
   return (
     <>
-      <section className="relative overflow-hidden bg-white pt-28">
-        <div className="absolute inset-x-0 top-20 h-[590px] bg-[#eef8fc]" />
+      {/*
+        The first screen used to be ~900px of centred type on a flat panel: no
+        image, no proof, no phone number, and the video pushed entirely below the
+        fold. The landing pages had a stronger hero than the homepage did.
+
+        Three changes. The vertical padding is roughly halved so the top of the
+        video is visible before any scrolling, which is what makes the expansion
+        discoverable at all. Credentials and a phone number sit under the CTA, so
+        the screen carries evidence rather than only a claim. And the flat panel
+        gets the same soft radial wash used elsewhere on the site.
+      */}
+      <section className="relative overflow-hidden bg-white pt-24">
+        <div className="soft-grid absolute inset-x-0 top-20 h-[610px]" />
+        <div className="absolute inset-x-0 top-20 h-[610px] bg-[#eef8fc]/70" />
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl pt-20 text-center">
+          <div className="mx-auto max-w-6xl pt-8 text-center">
+            <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-orange-600 sm:text-sm">
+              White Rock · Serving the Lower Mainland
+            </p>
             {/*
               Dental leads because that is where the portfolio and the competitive
               gap are strongest; commercial is named in the same breath because it
@@ -134,19 +150,38 @@ export function HomeExperience() {
               line breaks are visual, but without them the H1's text content
               extracts as "British Columbia'sDental & CommercialConstruction".
             */}
-            <h1 className="serif-font text-[2.65rem] leading-[1.08] tracking-tight text-black sm:text-6xl lg:text-[5.25rem]">
+            <h1 className="serif-font mt-5 text-[2.65rem] leading-[1.04] tracking-tight text-black sm:text-6xl lg:text-[5rem]">
               British Columbia&apos;s{" "}
               <span className="block orange-italic">Dental &amp; Commercial</span>{" "}
               Construction Specialist.
             </h1>
-            <p className="mx-auto mt-8 max-w-2xl text-lg font-medium leading-8 text-slate-600">
-              Dental clinics, medical offices and pharmacies are where we differentiate. Commercial
-              construction and renovation are a full service line we build every day — not an
-              afterthought.
+            <p className="mx-auto mt-6 max-w-xl text-lg font-medium leading-8 text-slate-600">
+              Clinics, pharmacies and commercial interiors — planned before the site gets busy.
             </p>
-            <ButtonLink href="/contact" className="mt-10 px-10 py-4 text-lg">
-              Book a Consultation
-            </ButtonLink>
+
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <ButtonLink href="/contact" className="px-9 py-4 text-base">
+                Book a Consultation
+              </ButtonLink>
+              <a
+                href={siteConfig.phoneHref}
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-zinc-900/15 bg-white/80 px-7 py-3.5 text-base font-bold text-zinc-900 backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:text-orange-600"
+              >
+                <Phone size={17} strokeWidth={2.4} aria-hidden="true" />
+                {siteConfig.phone}
+              </a>
+            </div>
+
+            {/* Credentials, not numbers — the ProofBar below the video already
+                carries the counts, and repeating them here would be noise. */}
+            <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-sm font-semibold text-slate-600">
+              {trustItems.slice(0, 3).map((item) => (
+                <li key={item} className="flex items-center gap-2">
+                  <Check size={16} strokeWidth={3} className="text-orange-600" aria-hidden="true" />
+                  {item}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 

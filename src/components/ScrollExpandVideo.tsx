@@ -55,7 +55,7 @@ export function ScrollExpandVideo({ poster, src }: { poster: string; src: string
   }, []);
 
   return (
-    <div ref={frameRef} className="scroll-expand-frame relative mt-20">
+    <div ref={frameRef} className="scroll-expand-frame relative mt-14">
       <div className="scroll-expand-media relative overflow-hidden bg-zinc-900 shadow-2xl shadow-slate-900/20">
         <video
           className="h-full w-full object-cover"
