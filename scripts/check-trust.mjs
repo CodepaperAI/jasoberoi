@@ -22,12 +22,46 @@
  * Run: node scripts/check-trust.mjs   (also runs automatically via `prebuild`)
  */
 
+import { existsSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
+import { registerHooks } from "node:module";
 import { join, relative } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const SRC = join(ROOT, "src");
+
+/**
+ * Teach Node the "@/" path alias from tsconfig.
+ *
+ * This gate reads the real modules rather than regex-parsing them, which is why
+ * its findings are trustworthy. That worked only while src/lib/site.ts had no
+ * imports of its own — the moment it imported "@/lib/pricing", Node could not
+ * resolve it and the whole gate died.
+ *
+ * Rather than contort the application code to suit the checker, the checker
+ * resolves the alias the way the bundler does, and fills in the file extension
+ * that TypeScript lets source omit.
+ */
+const resolveWithExtension = (filePath) => {
+  if (existsSync(filePath)) return filePath;
+  for (const extension of [".ts", ".tsx", "/index.ts"]) {
+    if (existsSync(filePath + extension)) return filePath + extension;
+  }
+  return filePath;
+};
+
+registerHooks({
+  resolve(specifier, context, nextResolve) {
+    if (specifier.startsWith("@/")) {
+      return {
+        url: pathToFileURL(resolveWithExtension(join(SRC, specifier.slice(2)))).href,
+        shortCircuit: true,
+      };
+    }
+    return nextResolve(specifier, context);
+  },
+});
 
 const errors = [];
 const warnings = [];
@@ -340,6 +374,78 @@ function checkFooter(sources) {
 }
 
 /**
+ * Every published per-square-foot rate must match src/lib/pricing.ts.
+ *
+ * The previous price check only compared `pricingBrief` against `aiFaqs`, which
+ * is why it never noticed that app/cost/page.tsx published a pharmacy at
+ * $140–$230 while the rest of the site said $180–$250. This scans the source for
+ * any "$N–$M per sq ft" claim and holds it against the config, so the numbers
+ * cannot drift apart again no matter which file someone edits.
+ */
+function checkRatesAgainstConfig(pricing, sources) {
+  const known = new Set(pricing.serviceRates.map((rate) => `${rate.low}-${rate.high}`));
+
+  // Deliberately no tolerance for finish-adjusted bands. The calculator applies
+  // its multipliers at runtime from the config, so a *literal* rate in source is
+  // always a base rate. An earlier version allowed a window around each rate and
+  // it silently accepted the very contradiction this rule exists to catch:
+  // $140–$230 passed as a "finish-adjusted" $120–$220.
+  for (const { path, text } of sources) {
+    if (path.endsWith("lib/pricing.ts")) continue;
+    const body = stripComments(text);
+
+    for (const match of body.matchAll(/\$\s?([\d,]+)\s*[-–—]\s*\$?\s?([\d,]+)\s*(?:per sq ft|\/ ?sq ft|per square foot)/gi)) {
+      const low = Number(match[1].replace(/,/g, ""));
+      const high = Number(match[2].replace(/,/g, ""));
+      if (known.has(`${low}-${high}`)) continue;
+
+
+      fail(
+        "price-consistency",
+        `"$${low}–$${high} per sq ft" is published here but matches no rate in src/lib/pricing.ts. ` +
+          `Every published figure must come from that config — this is exactly how the pharmacy ` +
+          `rate ended up as $140–$230 on the cost page and $180–$250 everywhere else.`,
+        path,
+      );
+    }
+  }
+}
+
+/**
+ * The calculator must not reach a public surface on rates the client has not
+ * agreed to be held to.
+ */
+function checkRatesSignedOff(pricing, site, sources) {
+  if (pricing.ratesConfirmedByClient) return;
+
+  if (site.allStaticPaths.includes("/cost")) {
+    fail(
+      "unconfirmed-rates",
+      "/cost is in the sitemap while ratesConfirmedByClient is false. The page carries a cost " +
+        "calculator, which invites a visitor to generate a figure and hold Oberizon to it.",
+      "src/lib/site.ts",
+    );
+  }
+
+  const navSource = sources.find((file) => file.path.endsWith("lib/site.ts"));
+  if (/navigation[\s\S]{0,2000}href:\s*"\/cost"/.test(navSource?.text ?? "")) {
+    fail(
+      "unconfirmed-rates",
+      "/cost is linked from the main navigation while its rates are unconfirmed.",
+      "src/lib/site.ts",
+    );
+  }
+
+  warn(
+    "unconfirmed-rates",
+    "Cost calculator is built and testable but noindex, out of the sitemap and unlinked, because " +
+      "ratesConfirmedByClient is false. Get the ranges signed off, then flip the flag in " +
+      "src/lib/pricing.ts.",
+    "src/lib/pricing.ts",
+  );
+}
+
+/**
  * Copy density.
  *
  * The generated pages once averaged 3.4 commas per sentence, because every field
@@ -539,6 +645,7 @@ function report() {
 
 const sources = await readSource();
 const site = await import("../src/lib/site.ts");
+const pricing = await import("../src/lib/pricing.ts");
 
 checkCopy(sources);
 checkCopyrightYear(sources);
@@ -550,6 +657,8 @@ checkFaqSpecificity(
   "src/lib/site.ts",
 );
 checkPriceConsistency(site);
+checkRatesAgainstConfig(pricing, sources);
+checkRatesSignedOff(pricing, site, sources);
 checkCopyDensity(site);
 checkCredentials(site, sources);
 checkEvidence(site);

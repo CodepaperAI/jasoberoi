@@ -4,60 +4,37 @@ import { PageHero, ReviewCta } from "@/components/SectionPrimitives";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd, faqJsonLd, websiteJsonLd } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
+import { constructionServices } from "@/lib/site";
+import { CostCalculator } from "@/components/CostCalculator";
+import {
+  formatMoney,
+  ratesConfirmedByClient,
+  formatRateBand,
+  roundEstimate,
+  serviceRates,
+} from "@/lib/pricing";
 
 const HERO_IMAGE = "/oberizon/optimized/project-commercial-13.jpg";
 
-const COST_BRACKETS = [
-  {
-    scope: "Dental clinic construction",
-    range: "$180 – $320 / sq ft",
-    typical: "$450k – $850k for a 2,500–3,500 sq ft clinic",
-    notes:
-      "Operatories, sterilization, plumbing chairs and compressed-air runs drive the cost. Millwork, cabinetry, and equipment coordination sit inside the number.",
-  },
-  {
-    scope: "Medical clinic construction",
-    range: "$150 – $260 / sq ft",
-    typical: "$375k – $650k for a 2,500 sq ft clinic",
-    notes:
-      "Exam rooms, reception, privacy planning, accessibility, and finishes. Fewer plumbing runs than dental keeps per-sqft cost lower.",
-  },
-  {
-    scope: "Pharmacy construction",
-    range: "$140 – $230 / sq ft",
-    typical: "$280k – $460k for a 2,000 sq ft space",
-    notes:
-      "Retail floor, dispensing counter, storage, security, and back-of-house workflow.",
-  },
-  {
-    scope: "Med spa / physio interior",
-    range: "$160 – $280 / sq ft",
-    typical: "$320k – $700k depending on treatment mix",
-    notes:
-      "Treatment rooms, privacy, service locations, finish detail, and equipment planning drive variability.",
-  },
-  {
-    scope: "Commercial tenant improvement",
-    range: "$120 – $220 / sq ft",
-    typical: "$240k – $550k for a 2,000–2,500 sq ft office fit-out",
-    notes:
-      "Office layout, meeting rooms, reception, kitchenette, IT. Base building condition sets the floor.",
-  },
-  {
-    scope: "Retail / storefront build-out",
-    range: "$130 – $240 / sq ft",
-    typical: "$260k – $500k for a mid-size storefront",
-    notes:
-      "Storefront glazing, HVAC balancing, sign approvals, and merchandising fixtures.",
-  },
-  {
-    scope: "Luxury residential construction",
-    range: "$500 – $1,200 / sq ft",
-    typical: "$2M – $6M+ for a 4,000–5,500 sq ft custom home",
-    notes:
-      "Finish level, millwork, stone, glazing, mechanical, and site conditions drive the top of the range.",
-  },
-];
+/**
+ * Derived from src/lib/pricing.ts, not restated.
+ *
+ * These seven brackets used to be written out by hand here, alongside another
+ * copy of the same numbers in site.ts. They had already drifted: this page said
+ * a pharmacy runs $140-$230 per sq ft while the rest of the site said
+ * $180-$250, and a visitor could read both figures in one session.
+ */
+const COST_BRACKETS = serviceRates.map((rate) => {
+  const service = constructionServices.find((item) => item.slug === rate.slug);
+  const low = roundEstimate(rate.low * rate.typicalSqFt);
+  const high = roundEstimate(rate.high * rate.typicalSqFt);
+  return {
+    scope: service?.name ?? rate.slug,
+    range: `${formatRateBand(rate)} / sq ft`,
+    typical: `${formatMoney(low)} - ${formatMoney(high)} for a ${rate.typicalSqFt.toLocaleString("en-CA")} sq ft space`,
+    driver: rate.driver,
+  };
+});
 
 const FACTORS = [
   {
@@ -95,7 +72,7 @@ const FAQS = [
   {
     question: "How much does it cost to build a dental clinic in BC?",
     answer:
-      "A dental clinic in the Lower Mainland typically runs $180–$320 per square foot turnkey, or roughly $450,000–$850,000 for a 2,500–3,500 sq ft space. The final number depends on operatory count, equipment package, base building condition, and finish level. Oberizon completed a full 2,500 sq ft dental clinic in White Rock in 90 days end to end.",
+      "A dental clinic in the Lower Mainland typically runs $180–$320 per square foot turnkey, or roughly $450,000–$800,000 for a 2,500 sq ft space. The final number depends on operatory count, equipment package, base building condition, and finish level. Oberizon completed a full 2,500 sq ft dental clinic in White Rock in 90 days end to end.",
   },
   {
     question: "How much does a commercial tenant improvement cost in the Lower Mainland?",
@@ -125,6 +102,10 @@ const FAQS = [
 ];
 
 export const metadata: Metadata = buildMetadata({
+  // noindex until the client signs off on the ranges. A calculator invites the
+  // visitor to generate a figure and hold you to it, so the page stays live and
+  // testable but does not ask to rank until the numbers are confirmed.
+  index: ratesConfirmedByClient,
   title: "Cost of Construction in BC — 2026 Guide | Oberizon Construction",
   description:
     "Real 2026 cost ranges for healthcare, dental, medical, pharmacy, commercial, and luxury residential construction across White Rock and the Lower Mainland — from Oberizon Construction.",
@@ -158,6 +139,12 @@ export default function CostPage() {
         subheading="Real 2026 cost ranges for healthcare, dental, medical, pharmacy, commercial, and luxury residential projects across White Rock and the Lower Mainland."
         image={HERO_IMAGE}
       />
+
+      <section className="bg-[#f8faff] px-5 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <CostCalculator />
+        </div>
+      </section>
 
       <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
@@ -199,8 +186,10 @@ export default function CostPage() {
                         className="px-5 py-4 text-sm font-bold text-zinc-950"
                       >
                         {row.scope}
+                        {/* What moves the number, rather than a general
+                            description of the service — this is a cost table. */}
                         <p className="mt-2 text-xs font-medium leading-6 text-slate-500">
-                          {row.notes}
+                          Driven by {row.driver}.
                         </p>
                       </th>
                       <td className="whitespace-nowrap px-5 py-4 text-sm font-semibold text-zinc-950">

@@ -130,6 +130,8 @@ export type ConstructionPseoPage = {
   indexable: boolean;
 };
 
+import { pricingSentence, ratesConfirmedByClient } from "@/lib/pricing";
+
 const imageBase = "/oberizon/optimized";
 
 export const siteConfig = {
@@ -1112,11 +1114,15 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
             href: "/construction",
             why: "Compare how Oberizon works across the Lower Mainland.",
           },
-          {
-            label: "Full 2026 cost guide",
-            href: "/cost",
-            why: "See per-square-foot ranges before you set a budget.",
-          },
+          ...(ratesConfirmedByClient
+            ? [
+                {
+                  label: "Full 2026 cost guide",
+                  href: `/cost?service=${service.slug}`,
+                  why: "See per-square-foot ranges before you set a budget.",
+                },
+              ]
+            : []),
         ],
         projects: getProjectsForCity(city.slug),
         reviews,
@@ -1126,22 +1132,11 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
   );
 }
 
+// Reads from src/lib/pricing.ts rather than restating the numbers. These strings
+// used to be written out here by hand alongside another copy in app/cost/page.tsx,
+// and the two had already drifted apart on pharmacy construction.
 function buildPricingBrief(service: ConstructionService): string {
-  const ranges: Record<string, string> = {
-    "healthcare-construction": "$150–$320 per sq ft turnkey depending on service coordination and finish level",
-    "dental-clinic-construction": "$180–$320 per sq ft turnkey — typically $450k–$850k for a 2,500–3,500 sq ft clinic",
-    "dental-office-renovation": "$120–$260 per sq ft depending on the scope of the renovation",
-    "medical-clinic-construction": "$150–$260 per sq ft turnkey — typically $375k–$650k for a 2,500 sq ft clinic",
-    // Aligned to the figure approved in the Fixes Brief §5 so the site does not
-    // publish two different per-sq-ft ranges for the same build type.
-    "pharmacy-construction": "$180–$250 per sq ft turnkey — typically $270k–$375k for a 1,500 sq ft space",
-    "clinic-renovation-contractor": "$120–$240 per sq ft depending on phasing and existing site conditions",
-    "commercial-construction": "$120–$220 per sq ft turnkey for standard commercial fit-outs",
-    "commercial-renovation": "$95–$180 per sq ft depending on the base-building condition",
-    "office-renovation-contractor": "$120–$220 per sq ft depending on layout, finishes, and services",
-    "luxury-residential-construction": "$500–$1,200 per sq ft turnkey for a custom home",
-  };
-  return ranges[service.slug] ?? "Price varies by scope, finish level, and site conditions.";
+  return pricingSentence(service.slug);
 }
 
 function buildQuickFacts(
@@ -1281,7 +1276,10 @@ function formatList(items: string[]) {
 export const allStaticPaths = [
   "/",
   "/construction",
-  "/cost",
+  // The cost guide carries the calculator, so it stays out of the sitemap until
+  // the client has confirmed the ranges it generates. Same rule as the city
+  // evidence gate: built and reachable, but not asking to rank yet.
+  ...(ratesConfirmedByClient ? ["/cost"] : []),
   ...mainPages.map((page) => page.canonicalPath),
   ...getAllConstructionPages()
     .filter((page) => page.indexable)
