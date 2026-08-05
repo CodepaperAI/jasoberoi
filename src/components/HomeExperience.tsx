@@ -77,31 +77,48 @@ const difference = [
   },
 ];
 
+/**
+ * These sit beside the claims above — service coordination, operations, senior
+ * oversight — so they are the rooms that prove those claims rather than four
+ * more wide interiors: sterilization suites and operatory corridors from
+ * delivered clinics. Generic stock stood here while photographs of the real
+ * thing existed.
+ */
 const differenceImages = [
-  "/oberizon/optimized/project-commercial-2.jpg",
-  "/oberizon/optimized/project-healthcare-3.jpg",
-  "/oberizon/optimized/project-healthcare-4.jpg",
-  "/oberizon/optimized/project-healthcare-5.jpg",
+  "/oberizon/optimized/project-abby-dental-sterilization-live.jpg",
+  "/oberizon/optimized/project-kanwarveer-corridor-live.jpg",
+  "/oberizon/optimized/project-shine-dental-sterilization-live.jpg",
+  "/oberizon/optimized/project-kanwarveer-operatory-live.jpg",
 ];
 
+/**
+ * Five, not six. The grid below runs four columns with the first card spanning
+ * two of them in both directions, so five cards fill it exactly — a sixth would
+ * sit alone against three empty cells. Dr. Kanwarveer is on /projects instead.
+ *
+ * The images are client photographs of these named jobs, not stock chosen to
+ * resemble them.
+ */
 const projects = [
   {
     title: "The Shine Dental, White Rock",
     label: "Healthcare",
     text: "Dental clinic construction with operatory, sterilization, and workflow coordination.",
-    image: "/oberizon/optimized/project-shine-dental-live.jpg",
+    // The lead card, and the only photograph here carrying the client's own
+    // signage — which is the part no competitor can copy onto their site.
+    image: "/oberizon/optimized/project-shine-dental-reception-live.jpg",
   },
   {
-    title: "Skinholic Aesthetics",
+    title: "Skinholic Aesthetics, Abbotsford",
     label: "Med Spa",
     text: "Medical spa interior built around client experience, treatment flow, and finish detail.",
-    image: "/oberizon/optimized/project-med-spa.jpg",
+    image: "/oberizon/optimized/project-skinholic-reception-live.jpg",
   },
   {
     title: "Dental Clinic, 104 33069 Marshall Road Abbotsford",
     label: "Healthcare",
     text: "Dental clinic build-out with clinical service coordination and clean handover.",
-    image: "/oberizon/optimized/project-abby-dental-live.jpg",
+    image: "/oberizon/optimized/project-abby-dental-reception-live.jpg",
   },
   {
     title: "Luxury Residential",
@@ -459,7 +476,15 @@ export function HomeExperience() {
                   sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
                   className="object-cover transition duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/74 via-black/18 to-transparent" />
+                {/*
+                  Heavier than it looks like it needs to be, because these are
+                  now real clinic photographs: bright white walls and pale wood,
+                  where the old stock was dark. At from-black/74 via-black/18 the
+                  orange eyebrow and the white heading sat on near-white pixels
+                  and were unreadable. The floor of /25 at the top keeps the
+                  label legible wherever a photo happens to be brightest.
+                */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/55 to-black/25" />
                 <div className="absolute inset-x-0 bottom-0 p-7 text-white">
                   <p className="text-xs font-bold uppercase tracking-[0.24em] text-orange-300">
                     {project.label}

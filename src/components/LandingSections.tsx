@@ -5,8 +5,8 @@ import { ButtonLink } from "@/components/ButtonLink";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { ReviewAvatar } from "@/components/ReviewAvatar";
 import {
+  portfolioTally,
   processSteps,
-  projects,
   siteConfig,
   type Project,
   type Review,
@@ -31,10 +31,12 @@ import {
  */
 
 const yearsBuilding = new Date().getFullYear() - siteConfig.foundedYear;
-const deliveredCount = projects.filter((project) => project.status === "Delivered").length;
-// Derived, not written down. The previous copy said "four more in progress",
-// which would have quietly gone wrong the moment a project completed.
-const inProgressCount = projects.filter((project) => project.status === "In progress").length;
+// Counts come from portfolioTally, not from the `projects` array. These 140
+// landing pages sit beside the homepage stats band, and counting only the
+// documented case studies here while the homepage says 40+ would read as one of
+// the two being untrue. The project *cards* below still come from `projects` —
+// only the count is the client's figure.
+const { delivered: deliveredCount, inProgress: inProgressCount } = portfolioTally;
 
 /** Click-to-call. Roughly two thirds of contractor leads arrive as phone calls, so this is never buried. */
 export function CallLink({ className = "" }: { className?: string }) {
@@ -67,7 +69,7 @@ export function TrustStrip({ className = "" }: { className?: string }) {
   const items = [
     { icon: CalendarDays, label: `Building since ${siteConfig.foundedYear}` },
     { icon: BadgeCheck, label: "Licensed & fully insured" },
-    { icon: MapPin, label: `${deliveredCount} delivered projects` },
+    { icon: MapPin, label: `${deliveredCount}+ delivered projects` },
   ];
 
   return (
@@ -162,8 +164,8 @@ export function LandingHero({
  */
 export function ExperienceBlock({ city, items }: { city: ServiceArea; items: Project[] }) {
   const figures = [
-    { value: String(yearsBuilding), unit: "years", label: `Building since ${siteConfig.foundedYear}` },
-    { value: String(deliveredCount), unit: "delivered", label: `Plus ${inProgressCount} in progress` },
+    { value: `${yearsBuilding}+`, unit: "years", label: `Building since ${siteConfig.foundedYear}` },
+    { value: `${deliveredCount}+`, unit: "delivered", label: `Plus ${inProgressCount} in progress` },
     { value: "90", unit: "days", label: "Fastest clinic, five operatories" },
   ];
   const shown = items.find((project) => project.images?.length);

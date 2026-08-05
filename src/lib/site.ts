@@ -147,7 +147,7 @@ export const siteConfig = {
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=1493+Foster+St+305+White+Rock+BC",
   heroVideo: "https://jas-project.s3.ap-south-1.amazonaws.com/home-page-video.mp4",
-  foundedYear: 2014,
+  foundedYear: 2021,
   founderName: "Jas Oberoi",
   founderRole: "Founder & Principal",
   // TODO(client): confirm BC contractor licence + WorkSafeBC account number for public display.
@@ -182,12 +182,6 @@ export const socialLinks = [
 export const resourceLinks = [{ label: "2026 Cost Guide & Calculator", href: "/cost" }];
 
 
-export const stats = [
-  { value: "10+ Years", label: "Building across the Lower Mainland since 2014" },
-  { value: "90 Days", label: "Featured dental clinic delivery window" },
-  { value: "1 Team", label: "Planning, permits, trades, inspections, handover" },
-];
-
 export const trustItems = [
   "BC-licensed general contractor",
   "Fully insured, WorkSafeBC registered",
@@ -212,7 +206,9 @@ export const credentials = [
   },
   {
     label: "Established",
-    value: "Building across the Lower Mainland since 2014",
+    // Interpolated, not typed. The hardcoded "since 2014" that used to sit here
+    // survived the year change in siteConfig and contradicted the stats band.
+    value: `Building across the Lower Mainland since ${siteConfig.foundedYear}`,
   },
 ];
 
@@ -609,6 +605,27 @@ export const serviceAreas: ServiceArea[] = [
 ];
 
 /**
+ * The full portfolio, as confirmed by Jas Oberoi on 2026-08-05.
+ *
+ * `projects` below is the documented subset — the jobs with an address, a city
+ * and a photograph the site can point at. This tally is larger because most of
+ * the work predates the site and has no publishable record yet.
+ *
+ * The two must never contradict each other: this is the ceiling, the documented
+ * list is the floor, and check-trust enforces that. When a job here gets an
+ * address and a photograph it moves into `projects` and the documented count
+ * rises to meet the claim.
+ *
+ * This is the one number on the site that is asserted rather than derived, which
+ * is why it carries a date and a name. Anyone changing it needs the same.
+ */
+export const portfolioTally = {
+  delivered: 35,
+  inProgress: 5,
+  confirmedOn: "2026-08-05",
+};
+
+/**
  * Oberizon's delivered and in-progress builds, as recorded on the live site and
  * in the SEO strategy §4.5. Addresses and verticals are documented facts.
  *
@@ -625,7 +642,14 @@ export const projects: Project[] = [
     vertical: "Healthcare",
     discipline: "Dental clinic",
     status: "Delivered",
-    images: [`${imageBase}/project-shine-dental-live.jpg`],
+    // Client photography, 2026-08-05. Reception first — it carries the Shine
+    // signage, which is the only thing here a competitor cannot also photograph.
+    images: [
+      `${imageBase}/project-shine-dental-reception-live.jpg`,
+      `${imageBase}/project-shine-dental-operatory-live.jpg`,
+      `${imageBase}/project-shine-dental-sterilization-live.jpg`,
+      `${imageBase}/project-shine-dental-live.jpg`,
+    ],
   },
   {
     slug: "private-office-white-rock",
@@ -645,19 +669,54 @@ export const projects: Project[] = [
     vertical: "Healthcare",
     discipline: "Dental clinic",
     status: "Delivered",
-    images: [`${imageBase}/project-abby-dental-live.jpg`],
+    images: [
+      `${imageBase}/project-abby-dental-reception-live.jpg`,
+      `${imageBase}/project-abby-dental-operatory-live.jpg`,
+      `${imageBase}/project-abby-dental-corridor-live.jpg`,
+      `${imageBase}/project-abby-dental-sterilization-live.jpg`,
+      `${imageBase}/project-abby-dental-live.jpg`,
+    ],
   },
   {
-    // TODO(client): strategy §11 flags that Skinholic Aesthetics has no recorded
-    // city on the site or in the research. Confirm before this appears on a city page.
+    // The missing city is resolved: the client's own 2026-08-05 photo set files
+    // this and the Marshall Road clinic together as "Abbotsford Shine Dental
+    // Clinic and Skinholic Aesthetics Medical Spa", which places the med spa in
+    // Abbotsford alongside it. That is the client stating it, so the strategy
+    // §11 TODO is closed and Abbotsford now carries two pieces of local proof.
     slug: "skinholic-aesthetics",
     name: "Skinholic Aesthetics",
-    address: "Lower Mainland, BC",
-    citySlug: "",
+    address: "Abbotsford, BC",
+    citySlug: "abbotsford",
     vertical: "Healthcare",
     discipline: "Med spa",
     status: "Delivered",
-    images: [`${imageBase}/project-med-spa.jpg`],
+    images: [
+      `${imageBase}/project-skinholic-reception-live.jpg`,
+      `${imageBase}/project-skinholic-feature-wall-live.jpg`,
+      `${imageBase}/project-skinholic-lobby-live.jpg`,
+      `${imageBase}/project-skinholic-treatment-live.jpg`,
+      `${imageBase}/project-skinholic-alcove-live.jpg`,
+    ],
+  },
+  {
+    // TODO(client): confirm the address and completion date. Seventeen finished
+    // photographs arrived on 2026-08-05 for a clinic that appears nowhere in the
+    // project records, so it is published without a city — the same treatment
+    // Skinholic had until its own photo set resolved it. check-trust warns on the
+    // missing city every build until an address arrives.
+    slug: "kanwarveer-family-dentist",
+    name: "Dr. Kanwarveer Family Dentist Clinic",
+    address: "Lower Mainland, BC",
+    citySlug: "",
+    vertical: "Healthcare",
+    discipline: "Dental clinic",
+    status: "Delivered",
+    images: [
+      `${imageBase}/project-kanwarveer-reception-live.jpg`,
+      `${imageBase}/project-kanwarveer-operatory-live.jpg`,
+      `${imageBase}/project-kanwarveer-corridor-live.jpg`,
+      `${imageBase}/project-kanwarveer-sterilization-live.jpg`,
+    ],
   },
   {
     // The Vancouver evidence referenced in the strategy's city-page table.
@@ -769,7 +828,7 @@ export const mainPages: SitePage[] = [
     proof: [
       "BC-licensed general contractor",
       "Fully insured, WorkSafeBC registered",
-      "Building across the Lower Mainland since 2014",
+      `Building across the Lower Mainland since ${siteConfig.foundedYear}`,
       "White Rock HQ",
       "Healthcare and commercial focus",
     ],
@@ -837,31 +896,41 @@ export const mainPages: SitePage[] = [
         text: "Commercial office interior built for professional use and daily operation.",
       },
     ],
+    // Photographs of the actual named job, not stock standing in for it. This
+    // grid previously showed dental-clinic.jpg for The Shine Dental and
+    // project-clinic-9.jpg for Abbotsford while real photographs of both sat
+    // unused — the page asking a visitor to believe in delivered work was the
+    // one page not showing it.
     cards: [
       {
         title: "The Shine Dental, White Rock",
         text: "Dental clinic construction with operatories, sterilization, workflow, and technical services coordinated.",
-        image: `${imageBase}/dental-clinic.jpg`,
+        image: `${imageBase}/project-shine-dental-reception-live.jpg`,
       },
       {
-        title: "Skinholic Aesthetics",
+        title: "Skinholic Aesthetics, Abbotsford",
         text: "Med spa interior built around treatment flow, client experience, privacy, and finish detail.",
-        image: `${imageBase}/project-med-spa.jpg`,
+        image: `${imageBase}/project-skinholic-reception-live.jpg`,
       },
       {
         title: "Dental Clinic, Abbotsford",
         text: "Dental clinic build-out with clinical service coordination and clean handover.",
-        image: `${imageBase}/project-clinic-9.jpg`,
+        image: `${imageBase}/project-abby-dental-reception-live.jpg`,
+      },
+      {
+        title: "Dr. Kanwarveer Family Dentist Clinic",
+        text: "Family dental clinic with a glass-partitioned operatory corridor, sterilization suite, and full millwork package.",
+        image: `${imageBase}/project-kanwarveer-reception-live.jpg`,
       },
       {
         title: "Luxury Residential",
         text: "Custom residential construction with high-end finish planning and project control.",
-        image: `${imageBase}/project-residential.jpg`,
+        image: `${imageBase}/project-luxury-live.jpg`,
       },
       {
         title: "Private Office, White Rock",
         text: "Commercial office interior built for professional use and daily operation.",
-        image: `${imageBase}/project-office.jpg`,
+        image: `${imageBase}/project-private-office-live.jpg`,
       },
     ],
     canonicalPath: "/projects",
@@ -989,7 +1058,7 @@ export const aiFaqs = [
   {
     question: "What should you look for in a healthcare construction contractor?",
     answer:
-      "Ask for three things: clinics actually delivered with addresses you can verify, a written per-square-foot range rather than 'it depends', and the name of the person who will run your site from permit to handover. Oberizon has built healthcare and commercial projects across the Lower Mainland since 2014.",
+      `Ask for three things: clinics actually delivered with addresses you can verify, a written per-square-foot range rather than 'it depends', and the name of the person who will run your site from permit to handover. Oberizon has built healthcare and commercial projects across the Lower Mainland since ${siteConfig.foundedYear}.`,
   },
 ];
 

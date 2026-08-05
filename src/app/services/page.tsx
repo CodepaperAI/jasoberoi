@@ -29,7 +29,10 @@ const GROUPS = [
   {
     id: "Healthcare",
     title: "Healthcare",
-    blurb: "Where we differentiate. Five of eight delivered commercial builds are clinical.",
+    // Was "Five of eight delivered commercial builds are clinical" — a fraction
+    // that matched no count in the data and never had. The clinical focus is
+    // real and visible in the project list; the arithmetic was invented.
+    blurb: "Where we differentiate. Dental, medical and pharmacy build-outs are most of the work.",
   },
   {
     id: "Commercial",

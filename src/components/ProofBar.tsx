@@ -1,4 +1,4 @@
-import { siteConfig, projects, serviceAreas } from "@/lib/site";
+import { siteConfig, portfolioTally, serviceAreas } from "@/lib/site";
 
 /**
  * A light band of real numbers, sitting between the hero video and the dark
@@ -11,22 +11,30 @@ import { siteConfig, projects, serviceAreas } from "@/lib/site";
  * visitor sees after the hero, which is exactly where countable evidence belongs
  * rather than another line of adjectives.
  *
- * Every figure is derived from the data rather than typed in, so none of them
- * can quietly go stale — the previous hardcoded "10+ Years" was already two
- * years out of date.
+ * Every figure is computed rather than typed in, so none of them can quietly go
+ * stale — the previous hardcoded "10+ Years" was already two years out of date.
+ *
+ * The years and cities figures derive from siteConfig and serviceAreas. The
+ * project count comes from portfolioTally, which is the one asserted number on
+ * the site: Oberizon has built far more than the handful of jobs documented in
+ * `projects`, and counting the documented list here would understate the
+ * business rather than protect the visitor. check-trust holds the tally above
+ * the documented count so the claim can never fall below the evidence.
+ *
+ * The "+" on the first two is the client's own framing — the tally is a floor
+ * he stands behind, not an exact census.
  */
 
-const delivered = projects.filter((project) => project.status === "Delivered").length;
-const inProgress = projects.filter((project) => project.status === "In progress").length;
+const { delivered, inProgress } = portfolioTally;
 
 const proofPoints = [
   {
-    value: String(new Date().getFullYear() - siteConfig.foundedYear),
+    value: `${new Date().getFullYear() - siteConfig.foundedYear}+`,
     unit: "years",
     label: `Building across the Lower Mainland since ${siteConfig.foundedYear}`,
   },
   {
-    value: String(delivered + inProgress),
+    value: `${delivered + inProgress}+`,
     unit: "projects",
     label: `${delivered} delivered, ${inProgress} in progress`,
   },

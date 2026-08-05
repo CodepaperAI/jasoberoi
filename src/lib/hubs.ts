@@ -155,7 +155,7 @@ const hubQuestions: Record<string, Array<{ question: string; answer: string }>> 
     {
       question: "How long does a custom home take?",
       answer:
-        "Ten to fourteen months of construction for a 5,000 sq ft home, after design and permits. Long-lead millwork drives the critical path.",
+        "Ten to fourteen months of construction for a 4,500 sq ft home, after design and permits. Long-lead millwork drives the critical path.",
     },
   ],
 };

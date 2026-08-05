@@ -10,10 +10,11 @@
  * The build gate now compares every published rate against this table, so that
  * class of contradiction cannot come back.
  *
- * Sources: the ranges are Oberizon's own, carried over from the live site.
- * Published Vancouver figures for dental build-outs run $150–$225 per sq ft
- * against our $180–$320, so ours sit above the local published floor — which is
- * exactly why `ratesConfirmedByClient` exists below.
+ * Sources: the ranges are Oberizon's own. Dental clinic and luxury residential
+ * were revised by the client on 2026-08-05; the rest carry over from the live
+ * site. Published Vancouver figures for dental build-outs run $150–$225 per sq
+ * ft against our $300–$450, so ours sit well above the local published floor —
+ * which is exactly why `ratesConfirmedByClient` exists below.
  */
 
 export type FinishLevel = "standard" | "mid" | "high";
@@ -87,8 +88,8 @@ export const serviceRates: ServiceRate[] = [
   },
   {
     slug: "dental-clinic-construction",
-    low: 180,
-    high: 320,
+    low: 300,
+    high: 450,
     typicalSqFt: 2500,
     driver: "operatory count, suction runs and imaging shielding",
   },
@@ -122,8 +123,8 @@ export const serviceRates: ServiceRate[] = [
   },
   {
     slug: "luxury-residential-construction",
-    low: 500,
-    high: 1200,
+    low: 300,
+    high: 400,
     typicalSqFt: 4500,
     driver: "finish level, millwork and site conditions",
   },
@@ -133,7 +134,7 @@ export function getRate(slug: string) {
   return serviceRates.find((rate) => rate.slug === slug);
 }
 
-/** "$180–$320" — the per-square-foot band, formatted once. */
+/** "$300–$450" — the per-square-foot band, formatted once. */
 export function formatRateBand(rate: ServiceRate) {
   return `$${rate.low}–$${rate.high}`;
 }

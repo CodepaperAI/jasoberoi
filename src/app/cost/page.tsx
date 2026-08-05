@@ -64,7 +64,7 @@ const TIMELINE = [
   { phase: "Design & selections", weeks: "6 – 12 weeks" },
   { phase: "Permits & tender", weeks: "6 – 16 weeks" },
   { phase: "Construction (2,500 sq ft clinic)", weeks: "10 – 16 weeks" },
-  { phase: "Construction (5,000 sq ft luxury home)", weeks: "10 – 14 months" },
+  { phase: "Construction (4,500 sq ft luxury home)", weeks: "10 – 14 months" },
   { phase: "Deficiencies & handover", weeks: "1 – 3 weeks" },
 ];
 
@@ -72,7 +72,7 @@ const FAQS = [
   {
     question: "How much does it cost to build a dental clinic in BC?",
     answer:
-      "A dental clinic in the Lower Mainland typically runs $180–$320 per square foot turnkey, or roughly $450,000–$800,000 for a 2,500 sq ft space. The final number depends on operatory count, equipment package, base building condition, and finish level. Oberizon completed a full 2,500 sq ft dental clinic in White Rock in 90 days end to end.",
+      "A dental clinic in the Lower Mainland typically runs $300–$450 per square foot turnkey, or roughly $750,000–$1,125,000 for a 2,500 sq ft space. The final number depends on operatory count, equipment package, base building condition, and finish level. Oberizon completed a full 2,500 sq ft dental clinic in White Rock in 90 days end to end.",
   },
   {
     question: "How much does a commercial tenant improvement cost in the Lower Mainland?",

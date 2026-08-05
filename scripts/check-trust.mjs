@@ -304,6 +304,59 @@ function checkEvidence(site) {
   }
 }
 
+/**
+ * The portfolio tally is the one figure on the site that is asserted rather than
+ * derived — Oberizon has built far more than the handful of jobs documented in
+ * `projects`, and the stats band publishes the client's own count.
+ *
+ * That makes it the one number a person can quietly break. Two rules keep it
+ * honest in opposite directions: it may never fall below the evidence already
+ * on the page (a visitor counting the project list must never out-count the
+ * headline), and the gap between claim and evidence is reported every build so
+ * the missing case studies stay visible rather than becoming permanent.
+ */
+function checkPortfolioTally(site) {
+  const { portfolioTally: tally, projects } = site;
+  const documented = {
+    delivered: projects.filter((project) => project.status === "Delivered").length,
+    inProgress: projects.filter((project) => project.status === "In progress").length,
+  };
+
+  for (const [key, label] of [["delivered", "delivered"], ["inProgress", "in progress"]]) {
+    if (tally[key] < documented[key]) {
+      fail(
+        "portfolio-tally",
+        `portfolioTally.${key} claims ${tally[key]} ${label} projects but the projects array ` +
+          `already documents ${documented[key]}. The headline figure cannot be lower than the ` +
+          `work the visitor can count on the page.`,
+        "src/lib/site.ts",
+      );
+    }
+  }
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(tally.confirmedOn ?? "")) {
+    fail(
+      "portfolio-tally",
+      "portfolioTally carries no confirmedOn date. This is the site's only asserted number — " +
+        "it stands on the client having said it, on a day, so that has to be recorded.",
+      "src/lib/site.ts",
+    );
+  }
+
+  const undocumented =
+    tally.delivered + tally.inProgress - documented.delivered - documented.inProgress;
+  if (undocumented > 0) {
+    warn(
+      "content-gap",
+      `${tally.delivered + tally.inProgress} projects are claimed (confirmed ${tally.confirmedOn}) ` +
+        `but only ${documented.delivered + documented.inProgress} are documented — ${undocumented} ` +
+        `have no address, city or photograph on the site. The claim is the client's to make; the ` +
+        `case studies are what actually rank.`,
+      "src/lib/site.ts",
+    );
+  }
+}
+
 /** Report the content the client still owes, without blocking on it. */
 function checkContentGaps(site) {
   const missingChallenge = site.projects.filter((project) => !project.challenge);
@@ -407,6 +460,69 @@ function checkRatesAgainstConfig(pricing, sources) {
           `rate ended up as $140–$230 on the cost page and $180–$250 everywhere else.`,
         path,
       );
+    }
+  }
+}
+
+/**
+ * Every published dollar *total* must equal rate × area from the config.
+ *
+ * checkRatesAgainstConfig covers the per-square-foot bands, which is why they
+ * cannot drift. It does nothing about the totals written beside them, and the
+ * cost page carried "$450,000–$800,000 for a 2,500 sq ft space" — a figure that
+ * was correct against the old dental rate and silently wrong the moment the
+ * client revised it. The band and the total sat in the same sentence.
+ *
+ * Both orderings occur in the copy ("$X–$Y for a N sq ft space" and "A N sq ft
+ * pharmacy runs $X–$Y"), and one FAQ prices a *range* of areas, so this works on
+ * whole sentences rather than a fixed shape: take every dollar total and every
+ * square-foot figure in a sentence, and pass if any rate in the config explains
+ * the pair. Under $10,000 is treated as a per-sq-ft rate, not a total.
+ */
+function checkPriceTotals(pricing, sources) {
+  const MONEY_RANGE = /\$\s?([\d,]{4,})\s*[-–—]\s*\$?\s?([\d,]{4,})/g;
+  // The area itself is sometimes a range — "A 2,000–2,500 sq ft office fit-out
+  // is usually $240,000–$550,000" prices the low end at the small area and the
+  // high end at the large one. Capture both or that sentence reads as a defect.
+  const SQ_FT = /([\d,]+)(?:\s*[-–—]\s*([\d,]+))?\s*(?:sq ft|square (?:foot|feet))/gi;
+  const num = (text) => Number(text.replace(/,/g, ""));
+
+  for (const { path, text } of sources) {
+    if (path.endsWith("lib/pricing.ts")) continue;
+
+    for (const sentence of stripComments(text).split(/(?<=[.!?])\s+/)) {
+      const totals = [...sentence.matchAll(MONEY_RANGE)]
+        .map((match) => [num(match[1]), num(match[2])])
+        .filter(([low, high]) => low >= 10_000 && high >= 10_000);
+      if (!totals.length) continue;
+
+      const areas = [...sentence.matchAll(SQ_FT)]
+        .flatMap((match) => [match[1], match[2]])
+        .filter(Boolean)
+        .map(num);
+      if (!areas.length) continue;
+
+      for (const [low, high] of totals) {
+        const explained = pricing.serviceRates.some((rate) =>
+          areas.some((lowArea) =>
+            areas.some(
+              (highArea) =>
+                pricing.roundEstimate(rate.low * lowArea) === low &&
+                pricing.roundEstimate(rate.high * highArea) === high,
+            ),
+          ),
+        );
+        if (explained) continue;
+
+        fail(
+          "price-consistency",
+          `"$${low.toLocaleString("en-CA")}–$${high.toLocaleString("en-CA")}" is published against ` +
+            `${areas.map((area) => `${area.toLocaleString("en-CA")} sq ft`).join(" / ")} but equals ` +
+            `no rate in src/lib/pricing.ts at that area. A total is as citable as a band — derive ` +
+            `it, or update it in the same edit as the rate.`,
+          path,
+        );
+      }
     }
   }
 }
@@ -723,10 +839,12 @@ checkFaqSpecificity(
 );
 checkPriceConsistency(site);
 checkRatesAgainstConfig(pricing, sources);
+checkPriceTotals(pricing, sources);
 checkRatesSignedOff(pricing, site);
 checkCopyDensity(site);
 checkCredentials(site, sources);
 checkEvidence(site);
+checkPortfolioTally(site);
 checkContentGaps(site);
 checkFooter(sources);
 checkKeywordChips(sources);
