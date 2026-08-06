@@ -165,16 +165,20 @@ export function HomeExperience() {
               gap are strongest; commercial is named in the same breath because it
               carries 4.2x the search volume. The previous headline ordered three
               categories with no hierarchy and no specialism.
-            */}
-            {/*
-              The explicit spaces matter: the spans are display:block, so the
-              line breaks are visual, but without them the H1's text content
-              extracts as "British Columbia'sDental & CommercialConstruction".
+
+              The specialism also leads the sentence. This used to open with
+              "British Columbia's", which put the province before the trade and
+              read as a geography claim rather than a capability one. BC now
+              lands at the end, where it qualifies the offer instead of fronting
+              it — and the headline drops from three lines to two.
+
+              The explicit space matters: the span is display:block, so the line
+              break is visual, but without it the H1's text content extracts as
+              "Dental & CommercialConstruction".
             */}
             <h1 className="serif-font mt-5 text-[2.65rem] leading-[1.04] tracking-tight text-black sm:text-6xl lg:text-[5rem]">
-              British Columbia&apos;s{" "}
               <span className="block orange-italic">Dental &amp; Commercial</span>{" "}
-              Construction Specialist.
+              Construction Specialists in BC.
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-lg font-medium leading-8 text-slate-600">
               Clinics, pharmacies and commercial interiors — planned before the site gets busy.
@@ -263,7 +267,7 @@ export function HomeExperience() {
 
       <ExpertiseHub />
 
-      <section className="bg-white px-5 py-24 sm:px-6 lg:px-8">
+      <section className="blueprint-grid bg-white px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="serif-font text-5xl leading-tight text-zinc-950 sm:text-6xl">
@@ -451,7 +455,7 @@ export function HomeExperience() {
         </div>
       </section>
 
-      <section className="bg-slate-50 px-5 py-24 sm:px-6 lg:px-8">
+      <section className="blueprint-grid bg-slate-50 px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-sm font-bold uppercase tracking-[0.24em] text-orange-600">
@@ -515,7 +519,7 @@ export function HomeExperience() {
         </div>
       </section>
 
-      <section className="bg-neutral-50 px-5 py-24 sm:px-6 lg:px-8">
+      <section className="blueprint-grid bg-neutral-50 px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
             <span className="inline-flex items-center gap-2 rounded-full bg-orange-50 px-5 py-2 text-xs font-extrabold uppercase tracking-[0.2em] text-orange-600">
@@ -609,7 +613,7 @@ export function HomeExperience() {
         </div>
       </section>
 
-      <section className="bg-white px-5 py-24 sm:px-6 lg:px-8">
+      <section className="blueprint-grid bg-white px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
           <div className="text-center">
             <p className="text-sm font-bold uppercase tracking-[0.24em] text-orange-600">

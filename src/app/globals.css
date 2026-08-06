@@ -109,6 +109,44 @@ a {
     linear-gradient(180deg, #ffffff, #f8faff);
 }
 
+/*
+  Blueprint grid.
+
+  The flat white and flat grey sections on the homepage had nothing in them, so
+  the page alternated between richly textured bands and blank ones. This gives
+  the empty ones a floor without asking for attention: 4% slate lines on a 64px
+  module, which is graph paper for a builder rather than decoration.
+
+  Two rules keep it subtle. The lines are drawn on the section's own background
+  colour instead of replacing it, so `blueprint-grid` composes with bg-white,
+  bg-slate-50 and bg-neutral-50 alike. And the whole thing fades out top and
+  bottom via a mask, so the grid never collides with a section seam — an abrupt
+  edge is what makes a texture look like a mistake.
+*/
+.blueprint-grid {
+  position: relative;
+  /* Creates a stacking context so the ::before below can sit at z-index -1:
+     above this element's own background, beneath its content. Without it the
+     grid would drop behind the section entirely and never be seen. */
+  isolation: isolate;
+}
+
+.blueprint-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(100, 116, 139, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(100, 116, 139, 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+  /* The mask lives here rather than on the section, because masking the section
+     would fade its headings and copy along with the lines. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+}
+
 .corner-dots::before,
 .corner-dots::after {
   content: "";
@@ -198,7 +236,7 @@ a {
 }
 
 .route-transition[data-state="leaving"] {
-  animation: route-fade-out 180ms ease-in both;
+  animation: route-fade-out 220ms ease-in both;
 }
 
 /*

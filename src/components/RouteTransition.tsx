@@ -23,15 +23,21 @@ import { useCallback, useEffect, useRef, useState } from "react";
  */
 
 /**
- * Long enough to cover the swap, short enough that nobody waits on it.
+ * Long enough for the mark to actually land.
  *
- * This was 420ms + a 220ms fade. Nothing is actually loading — the destination
- * is static and already prefetched — so every one of those milliseconds was
- * spent making an instant site feel slower. A brand beat only has to cover the
- * frame where the page swaps and the scroll snaps.
+ * Nothing is loading here — the destination is static and already prefetched —
+ * so this is a brand beat, not progress, and it should be no longer than it
+ * needs to be. But 140ms was too short for a different reason than speed: the
+ * logo's own entrance animation runs 260ms, so the overlay began fading before
+ * the mark had finished arriving. You saw something move and leave without ever
+ * resolving, which reads as a glitch rather than as a transition.
+ *
+ * 450ms clears the 260ms entrance with room to settle before the fade starts.
+ * The floor for any change here is the entrance duration in globals.css — go
+ * below it and the mark is mid-flight again.
  */
-const MIN_VISIBLE_MS = 140;
-const FADE_MS = 180;
+const MIN_VISIBLE_MS = 450;
+const FADE_MS = 220;
 /** The overlay must never outlive a navigation that fails or never resolves. */
 const SAFETY_MS = 2000;
 
