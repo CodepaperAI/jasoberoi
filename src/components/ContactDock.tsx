@@ -53,6 +53,24 @@ export function ContactDock() {
       */}
       <div className="fixed bottom-5 right-5 z-[80] flex flex-col items-end gap-3 sm:bottom-7 sm:right-7">
         {/*
+          WhatsApp gets its own persistent button rather than living only inside
+          the dialog. Buried one click deep behind "Book a Consultation" it was
+          effectively invisible — you had to open a form to discover the option
+          that exists precisely for people who do not want to fill in a form.
+
+          In WhatsApp's own green, not the site's orange. A messaging channel is
+          recognised by its colour before its label, and an outlined button on a
+          page full of orange reads as secondary chrome. This is also the only
+          non-brand colour on the site, which is the point: it is someone else's
+          product and it should look like it.
+        */}
+        <WhatsAppLink
+          analytics="dock-fab-whatsapp"
+          label=""
+          iconSize={22}
+          className="flex h-13 w-13 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-emerald-900/25 transition duration-300 hover:-translate-y-0.5 hover:bg-[#1eb457] focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2"
+        />
+        {/*
           Icon-only below sm. At full width this pill is ~190x48 and permanently
           parked over the bottom-right of every page — on a 320px phone that is
           60% of the width, and it was sitting on the last ProofBar label, the
@@ -166,7 +184,7 @@ export function ContactDock() {
                 <WhatsAppLink
                   analytics="dock-whatsapp"
                   iconSize={15}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-zinc-900 transition hover:border-[#25D366] hover:text-[#25D366]"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-white shadow-lg shadow-emerald-900/15 transition hover:bg-[#1eb457]"
                 />
                 <a
                   href={siteConfig.phoneHref}

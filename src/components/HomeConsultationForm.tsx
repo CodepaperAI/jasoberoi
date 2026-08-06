@@ -61,10 +61,13 @@ export function HomeConsultationForm() {
       <Send size={15} aria-hidden="true" />
       Book a Consultation
     </button>
+    {/* Filled in WhatsApp's green, not outlined. Against a near-black section
+        an outlined button is the quietest thing on screen, and this option
+        exists for the visitor least likely to hunt for it. */}
     <WhatsAppLink
       analytics="home-form-whatsapp"
       iconSize={15}
-      className="inline-flex items-center justify-center gap-3 rounded-2xl border border-white/25 px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:border-[#25D366] hover:text-[#25D366]"
+      className="inline-flex items-center justify-center gap-3 rounded-2xl bg-[#25D366] px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] text-white shadow-xl shadow-emerald-900/20 transition hover:bg-[#1eb457]"
     />
     <a
       href={siteConfig.phoneHref}
