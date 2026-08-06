@@ -138,9 +138,25 @@ a {
   z-index: -1;
   pointer-events: none;
   background-image:
-    linear-gradient(to right, rgba(100, 116, 139, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(100, 116, 139, 0.04) 1px, transparent 1px);
-  background-size: 64px 64px;
+    /* A warm wash so the band is not a flat grey field. Two soft orange pools at
+       3% pick up the brand colour without tinting the section. */
+    radial-gradient(circle at 12% 18%, rgba(255, 115, 0, 0.05), transparent 26rem),
+    radial-gradient(circle at 88% 82%, rgba(255, 115, 0, 0.04), transparent 24rem),
+    /* Minor lines every 16px, major every 96px — graph paper reads as drawn
+       rather than as a plain mesh, and the heavier line gives the eye something
+       to catch. At the 4% these started on, none of it was visible at all: on a
+       slate-50 section that is roughly one value step, which is nothing. */
+    linear-gradient(to right, rgba(71, 85, 105, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(71, 85, 105, 0.1) 1px, transparent 1px),
+    linear-gradient(to right, rgba(71, 85, 105, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(71, 85, 105, 0.05) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    100% 100%,
+    96px 96px,
+    96px 96px,
+    16px 16px,
+    16px 16px;
   /* The mask lives here rather than on the section, because masking the section
      would fade its headings and copy along with the lines. */
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);

@@ -161,23 +161,31 @@ export function HomeExperience() {
               White Rock · Serving the Lower Mainland
             </p>
             {/*
-              Dental leads because that is where the portfolio and the competitive
-              gap are strongest; commercial is named in the same breath because it
-              carries 4.2x the search volume. The previous headline ordered three
-              categories with no hierarchy and no specialism.
+              Category altitude, deliberately. This said "Dental & Commercial",
+              and before that "British Columbia's Dental & Commercial" — both
+              wrong for a homepage, for two different reasons.
 
-              The specialism also leads the sentence. This used to open with
-              "British Columbia's", which put the province before the trade and
-              read as a geography claim rather than a capability one. BC now
-              lands at the end, where it qualifies the offer instead of fronting
-              it — and the headline drops from three lines to two.
+              Geography first was a location claim before a capability one, so
+              BC moved to the end where it qualifies the offer.
+
+              Dental was the bigger problem: it is a sub-service, and
+              /services/dental-clinic-construction plus fourteen city pages
+              already target that exact term. A homepage repeating its own hubs'
+              keyword competes with the pages built to win it. The homepage sits
+              one level up — Healthcare covers dental, medical, pharmacy, clinic
+              renovation and healthcare construction; Commercial covers the other
+              three. Eight of ten services, and no page fighting another.
+
+              Order still matters: healthcare is the specialism and where the
+              portfolio is strongest, commercial is the volume at 4.2x the search
+              demand. Two categories with a hierarchy, not three with none.
 
               The explicit space matters: the span is display:block, so the line
               break is visual, but without it the H1's text content extracts as
-              "Dental & CommercialConstruction".
+              "Healthcare & CommercialConstruction".
             */}
             <h1 className="serif-font mt-5 text-[2.65rem] leading-[1.04] tracking-tight text-black sm:text-6xl lg:text-[5rem]">
-              <span className="block orange-italic">Dental &amp; Commercial</span>{" "}
+              <span className="block orange-italic">Healthcare &amp; Commercial</span>{" "}
               Construction Specialists in BC.
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-lg font-medium leading-8 text-slate-600">
