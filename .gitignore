@@ -47,4 +47,8 @@ next-env.d.ts
 # iCloud Drive conflict copies. The Desktop is synced, and iCloud writes
 # "file 2.ext" duplicates that break typecheck (duplicate identifiers in
 # .next/types) and pollute the Next.js icon convention in src/app.
+# The first pattern only catches names with an extension; iCloud also duplicates
+# directories ("services 6", "_next 7"), which have none.
 * [0-9].*
+* [0-9]
+.gstack/

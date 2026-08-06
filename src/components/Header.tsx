@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, Menu, Phone } from "lucide-react";
+import { ChevronDown, Phone } from "lucide-react";
 import { ButtonLink } from "@/components/ButtonLink";
+import { MobileNav } from "@/components/MobileNav";
 import { navigation, siteConfig } from "@/lib/site";
 
 export function Header() {
@@ -12,8 +13,11 @@ export function Header() {
           <Image
             src="/oberizon/optimized/oberizon-logo.png"
             alt="Oberizon Construction"
-            width={220}
-            height={74}
+            // The file's true intrinsic size. It was declared 220x74 (2.97:1)
+            // for a 192x88 (2.18:1) image, so the reserved box was the wrong
+            // shape and the header shifted as the logo loaded.
+            width={192}
+            height={88}
             className="h-auto w-32 sm:w-[180px]"
             priority
           />
@@ -80,40 +84,7 @@ export function Header() {
             </ButtonLink>
           </div>
 
-          <details className="relative lg:hidden">
-            <summary className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-xl border border-zinc-200 text-zinc-900">
-              <span className="sr-only">Open navigation</span>
-              <Menu aria-hidden="true" size={21} />
-            </summary>
-          <div className="absolute right-0 top-14 w-80 rounded-2xl border border-orange-100 bg-white p-3 shadow-2xl shadow-orange-950/10">
-            {navigation.map((item) =>
-              item.items ? (
-                <div key={item.label} className="border-b border-zinc-100 py-2 last:border-b-0">
-                  <p className="px-2 pb-1 text-xs font-bold uppercase tracking-[0.18em] text-orange-600">
-                    {item.label}
-                  </p>
-                  {item.items.map((child) => (
-                    <Link
-                      key={child.href}
-                      href={child.href}
-                      className="block rounded-xl px-2 py-2 text-base font-semibold text-zinc-800 hover:bg-orange-50 hover:text-orange-600"
-                    >
-                      {child.label}
-                    </Link>
-                  ))}
-                </div>
-              ) : (
-                <Link
-                  key={item.href}
-                  href={item.href ?? "/"}
-                  className="block rounded-xl px-2 py-2 text-base font-semibold text-zinc-800 hover:bg-orange-50 hover:text-orange-600"
-                >
-                  {item.label}
-                </Link>
-              ),
-            )}
-            </div>
-          </details>
+          <MobileNav />
         </div>
       </div>
     </header>

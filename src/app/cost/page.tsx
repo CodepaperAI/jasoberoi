@@ -163,7 +163,14 @@ export default function CostPage() {
                 budget before design starts, not after.
               </p>
             </div>
-            <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+            {/*
+              overflow-x-auto, not overflow-hidden. The hidden variant was here
+              for the rounded corners and it silently clipped the table on a
+              phone: three columns of px-5 padding plus a nowrap rate band comes
+              to 378px inside 348px, so "Typical total" was cut mid-figure —
+              $1,125,000 rendered as $1,125,00. The radius survives either way.
+            */}
+            <div className="overflow-x-auto rounded-3xl border border-slate-200 bg-white shadow-sm">
               <table className="w-full text-left">
                 <thead className="bg-orange-50/70">
                   <tr>
@@ -253,7 +260,10 @@ export default function CostPage() {
                 line up with construction.
               </p>
             </div>
-            <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+            {/* Same fix as the pricing table above: this one sits exactly at
+                the mobile width today, so it clips the moment a phase name or a
+                duration gets one word longer. */}
+            <div className="overflow-x-auto rounded-3xl border border-slate-200 bg-white shadow-sm">
               <table className="w-full text-left">
                 <tbody className="divide-y divide-slate-200">
                   {TIMELINE.map((row) => (

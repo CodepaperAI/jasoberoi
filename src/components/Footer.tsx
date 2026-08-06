@@ -25,8 +25,8 @@ export function Footer() {
           <Image
             src="/oberizon/optimized/oberizon-logo.png"
             alt="Oberizon Construction"
-            width={220}
-            height={74}
+            width={192}
+            height={88}
             className="h-auto w-44"
           />
           <p className="mt-6 max-w-xs text-sm font-medium leading-7 text-white/58">
@@ -180,10 +180,11 @@ export function Footer() {
         </div>
       ) : null}
 
-      <div className="border-t border-white/10 px-5 py-6">
-        {/* Single line now that the agency credit is gone, so it no longer needs
-            justify-between or the right padding that kept the credit clear of
-            the floating contact dock. */}
+      {/* Extra bottom padding on mobile: the floating contact dock is parked in
+          this corner and was sitting on the copyright line. The dock is
+          icon-only under sm, so the clearance it needs is smaller there than
+          the full pill would require. */}
+      <div className="border-t border-white/10 px-5 pb-24 pt-6 sm:py-6">
         <div className="mx-auto max-w-7xl text-center text-xs font-semibold text-white/40 sm:text-left">
           <p>
             Copyright © {siteConfig.foundedYear}–{new Date().getFullYear()} Oberizon Construction.{" "}

@@ -51,13 +51,21 @@ export function ContactDock() {
         anywhere until you reach the footer.
       */}
       <div className="fixed bottom-5 right-5 z-[80] flex flex-col items-end gap-3 sm:bottom-7 sm:right-7">
+        {/*
+          Icon-only below sm. At full width this pill is ~190x48 and permanently
+          parked over the bottom-right of every page — on a 320px phone that is
+          60% of the width, and it was sitting on the last ProofBar label, the
+          bottom FAQ row and the footer copyright. A circular icon keeps the
+          call to action reachable without covering the words.
+        */}
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="flex items-center gap-2.5 rounded-full bg-orange-600 py-3 pl-4 pr-5 font-bold text-white shadow-lg shadow-orange-900/25 transition duration-300 hover:-translate-y-0.5 hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"
+          aria-label="Book a Consultation"
+          className="flex h-13 w-13 items-center justify-center gap-2.5 rounded-full bg-orange-600 font-bold text-white shadow-lg shadow-orange-900/25 transition duration-300 hover:-translate-y-0.5 hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 sm:h-auto sm:w-auto sm:py-3 sm:pl-4 sm:pr-5"
         >
           <Send size={17} aria-hidden="true" />
-          <span className="text-sm">Book a Consultation</span>
+          <span className="hidden text-sm sm:inline">Book a Consultation</span>
         </button>
       </div>
 

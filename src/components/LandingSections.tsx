@@ -185,7 +185,15 @@ export function ExperienceBlock({ city, items }: { city: ServiceArea; items: Pro
             {siteConfig.foundedYear}. Work near {city.city} runs through the same four stages.
           </p>
 
-          <dl className="mt-10 grid grid-cols-3 gap-4 border-t border-slate-200 pt-8">
+          {/*
+            One column until sm, the same way the homepage ProofBar collapses.
+            Held at three columns this row gave each figure ~101px on a phone
+            while "35+ delivered" needs 168px — the unit ran into the next
+            column and the row rendered as overlapping text on all 140 landing
+            pages. A figure and its unit must never be split or stacked, so the
+            row wraps instead of the number.
+          */}
+          <dl className="mt-10 grid grid-cols-1 gap-6 border-t border-slate-200 pt-8 sm:grid-cols-3 sm:gap-4">
             {figures.map((figure) => (
               <div key={figure.unit}>
                 <dt className="sr-only">{figure.label}</dt>

@@ -4,14 +4,28 @@
     The Oberizon mark: a ring bisected through its exact centre by a horizon line
     that runs past it on both sides — a sun on a horizon, for Ober-izon.
 
-    The line sits on the circle's centre y, not above it. Drawn on a dark tile
-    rather than a transparent field so it holds contrast in both light and dark
-    browser tabs, and strokes are heavier than the wordmark's so the ring
-    survives at 16px, where a hairline would disappear.
+    Geometry is measured from the wordmark artwork rather than approximated. In
+    oberizon-logo.png the mark is a 48px line, 2px thick, through a 24px circle
+    with a 2px stroke: the ring's diameter is exactly half the line's length, and
+    the stroke is 4.2% of it. Scaled to this 57px line that is stroke 2.4, r 14.25.
+
+    The previous version of this file used stroke 5 on the same 57px line — 8.8%,
+    more than twice the artwork's weight — on a dark rounded tile. Right shapes,
+    wrong weight, and the tile made it read as an app sticker rather than as the
+    company's mark.
+
+    Stroke here is 3.4, not the true 2.4. Browsers may serve this SVG at 16px,
+    and rendered at 16px true weight comes out a pale smudge — the ring loses
+    its hole. 3.4 is the lightest weight that still holds a visible ring at 16px,
+    checked against rasters at 2.6 / 3.0 / 3.4 / 3.8 / 4.2. favicon.ico carries
+    per-size versions that go heavier still at 16px and lighter at 48px, since a
+    fixed raster can be tuned to its size in a way one scalable file cannot.
+
+    No tile. #ff4f0a is mid-luminance and holds against both a white and a dark
+    browser chrome, so the dark square was buying nothing.
   -->
-  <rect width="64" height="64" rx="14" fill="#111111" />
-  <g fill="none" stroke="#ff4f0a" stroke-width="5" stroke-linecap="round">
-    <circle cx="32" cy="32" r="15" />
+  <g fill="none" stroke="#ff4f0a" stroke-width="3.4" stroke-linecap="round">
+    <circle cx="32" cy="32" r="14.25" />
     <line x1="3.5" y1="32" x2="60.5" y2="32" />
   </g>
 </svg>

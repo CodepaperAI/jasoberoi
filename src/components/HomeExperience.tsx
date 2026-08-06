@@ -149,8 +149,12 @@ export function HomeExperience() {
         gets the same soft radial wash used elsewhere on the site.
       */}
       <section className="relative overflow-hidden bg-white pt-24">
-        <div className="soft-grid absolute inset-x-0 top-20 h-[610px]" />
-        <div className="absolute inset-x-0 top-20 h-[610px] bg-[#eef8fc]/70" />
+        {/* Taller on mobile. At a flat 610px the wash ended partway down the
+            hero, because the phone layout stacks a four-line H1, a paragraph,
+            two stacked CTAs and a three-item credential list — well past 800px.
+            The seam landed mid-content and read as a rendering fault. */}
+        <div className="soft-grid absolute inset-x-0 top-20 h-[860px] sm:h-[610px]" />
+        <div className="absolute inset-x-0 top-20 h-[860px] bg-[#eef8fc]/70 sm:h-[610px]" />
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl pt-8 text-center">
             <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-orange-600 sm:text-sm">
@@ -466,7 +470,12 @@ export function HomeExperience() {
                 key={project.title}
                 className={[
                   "group relative overflow-hidden bg-zinc-900 shadow-xl shadow-slate-900/10",
-                  index === 0 ? "md:col-span-2 md:row-span-2 min-h-[520px]" : "min-h-[250px]",
+                  // min-h is md:-guarded like the spans beside it. Unprefixed,
+                  // the lead card was 520px tall in a 280px-wide single column
+                  // on a phone — a portrait slab twice the height of the rest.
+                  index === 0
+                    ? "md:col-span-2 md:row-span-2 min-h-[320px] md:min-h-[520px]"
+                    : "min-h-[250px]",
                 ].join(" ")}
               >
                 <Image

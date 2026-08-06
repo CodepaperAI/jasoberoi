@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -21,9 +22,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
  * resets underneath it -> overlay fades out on a fresh page already at the top.
  */
 
-/** Long enough to read as intentional, short enough not to feel like waiting. */
-const MIN_VISIBLE_MS = 420;
-const FADE_MS = 220;
+/**
+ * Long enough to cover the swap, short enough that nobody waits on it.
+ *
+ * This was 420ms + a 220ms fade. Nothing is actually loading — the destination
+ * is static and already prefetched — so every one of those milliseconds was
+ * spent making an instant site feel slower. A brand beat only has to cover the
+ * frame where the page swaps and the scroll snaps.
+ */
+const MIN_VISIBLE_MS = 140;
+const FADE_MS = 180;
 /** The overlay must never outlive a navigation that fails or never resolves. */
 const SAFETY_MS = 2000;
 
@@ -110,33 +118,29 @@ export function RouteTransition() {
       // from queuing a second navigation. Released as soon as it starts fading,
       // so the incoming page is interactive before the overlay is fully gone.
       className={[
-        "route-transition fixed inset-0 z-[200] flex items-center justify-center bg-[#0f1115]",
+        // Near-white, not near-black. The site is a light site, and a full-bleed
+        // dark panel between two light pages was the most violent thing on it.
+        // #f8faff is the same wash the cost page already uses.
+        "route-transition fixed inset-0 z-[200] flex items-center justify-center bg-[#f8faff]",
         phase === "leaving" ? "pointer-events-none" : "",
       ].join(" ")}
     >
-      <div className="route-transition-mark">
-        <svg viewBox="0 0 64 64" className="h-20 w-20" fill="none" aria-hidden="true">
-          {/* The horizon draws outward from the centre, then the sun opens around it. */}
-          <line
-            className="route-transition-horizon"
-            x1="3.5"
-            y1="32"
-            x2="60.5"
-            y2="32"
-            stroke="var(--oberizon-orange)"
-            strokeWidth="5"
-            strokeLinecap="round"
-          />
-          <circle
-            className="route-transition-sun"
-            cx="32"
-            cy="32"
-            r="15"
-            stroke="var(--oberizon-orange)"
-            strokeWidth="5"
-          />
-        </svg>
-      </div>
+      {/*
+        The real wordmark, not a redrawn approximation of its mark. The previous
+        overlay showed an 80px ring with a 5px stroke — the right shapes at more
+        than twice the artwork's weight, which is what made it read as a cartoon
+        rather than as the company's logo.
+        140px wide is a deliberate size: large enough to be legible including the
+        "CONSTRUCTION" line, small enough to sit as a mark rather than a splash.
+      */}
+      <Image
+        src="/oberizon/optimized/oberizon-logo.png"
+        alt=""
+        width={192}
+        height={88}
+        className="route-transition-mark w-[140px]"
+        priority
+      />
     </div>
   );
 }
