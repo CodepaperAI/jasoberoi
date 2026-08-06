@@ -24,18 +24,18 @@ export function FaqAccordion({
     <div className={["divide-y divide-slate-200 border-y border-slate-200", className].join(" ")}>
       {items.map((faq) => (
         <details key={faq.question} className="faq-item group">
-          <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-left transition hover:text-orange-600">
-            <h3 className="text-lg font-bold leading-snug text-zinc-950 group-hover:text-orange-600 sm:text-xl">
+          <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-left transition hover:text-accent">
+            <h3 className="text-lg font-bold leading-snug text-zinc-950 group-hover:text-accent sm:text-xl">
               {faq.question}
             </h3>
             <span
               aria-hidden="true"
-              className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-50 text-orange-600 ring-1 ring-orange-100 transition duration-300 group-open:rotate-45 group-open:bg-orange-600 group-open:text-white"
+              className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-50 text-accent ring-1 ring-orange-100 transition duration-300 group-open:rotate-45 group-open:bg-orange-600 group-open:text-white"
             >
               <Plus size={17} strokeWidth={2.5} />
             </span>
           </summary>
-          <p className="max-w-3xl pb-6 pr-14 text-base font-medium leading-7 text-slate-600">
+          <p className="max-w-3xl pb-6 pr-14 text-base font-medium leading-7 text-muted">
             {faq.answer}
           </p>
         </details>

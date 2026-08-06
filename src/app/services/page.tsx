@@ -88,14 +88,14 @@ export default function ServicesPage() {
             key={group.id}
             className={[
               "px-5 py-20 sm:px-6 lg:px-8",
-              index % 2 === 0 ? "bg-white" : "bg-slate-50",
+              index % 2 === 0 ? "bg-paper" : "bg-raised",
             ].join(" ")}
           >
             <div className="mx-auto max-w-7xl">
-              <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
+              <p className="eyebrow">
                 {group.title}
               </p>
-              <h2 className="serif-font mt-4 max-w-3xl text-4xl leading-tight text-zinc-950 sm:text-5xl">
+              <h2 className="h-section mt-4 max-w-3xl">
                 {group.blurb}
               </h2>
 
@@ -107,7 +107,7 @@ export default function ServicesPage() {
                     className="group flex flex-col justify-between gap-6 rounded-3xl border border-slate-200 bg-white p-6 transition hover:-translate-y-0.5 hover:border-orange-300 hover:shadow-lg"
                   >
                     <div>
-                      <h3 className="flex items-start justify-between gap-3 text-xl font-bold text-zinc-950 group-hover:text-orange-600">
+                      <h3 className="flex items-start justify-between gap-3 text-xl font-bold text-zinc-950 group-hover:text-accent">
                         {hub.service.name}
                         <ArrowRight
                           size={18}
@@ -115,7 +115,7 @@ export default function ServicesPage() {
                           className="mt-1 shrink-0 text-slate-300 group-hover:text-orange-500"
                         />
                       </h3>
-                      <p className="mt-3 text-base leading-7 text-slate-600">
+                      <p className="mt-3 text-base leading-7 text-muted">
                         {hub.service.summary}
                       </p>
                     </div>

@@ -29,7 +29,7 @@ export function Header() {
               <div key={item.label} className="group relative py-6">
                 <button
                   type="button"
-                  className="inline-flex items-center gap-1 text-sm font-semibold tracking-wide text-zinc-800 transition hover:text-orange-600"
+                  className="inline-flex items-center gap-1 text-sm font-semibold tracking-wide text-zinc-800 transition hover:text-accent"
                 >
                   {item.label}
                   <ChevronDown size={15} aria-hidden="true" />
@@ -39,7 +39,7 @@ export function Header() {
                     <Link
                       key={child.href}
                       href={child.href}
-                      className="block rounded-xl px-3 py-3 text-sm font-semibold text-zinc-700 transition hover:bg-orange-50 hover:text-orange-600"
+                      className="block rounded-xl px-3 py-3 text-sm font-semibold text-zinc-700 transition hover:bg-orange-50 hover:text-accent"
                     >
                       {child.label}
                     </Link>
@@ -50,7 +50,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href ?? "/"}
-                className="text-sm font-semibold tracking-wide text-zinc-800 transition hover:text-orange-600"
+                className="text-sm font-semibold tracking-wide text-zinc-800 transition hover:text-accent"
               >
                 {item.label}
               </Link>

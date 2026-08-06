@@ -148,18 +148,26 @@ export function HomeExperience() {
         the screen carries evidence rather than only a claim. And the flat panel
         gets the same soft radial wash used elsewhere on the site.
       */}
-      <section className="relative overflow-hidden bg-white pt-24">
-        {/* Taller on mobile. At a flat 610px the wash ended partway down the
-            hero, because the phone layout stacks a four-line H1, a paragraph,
-            two stacked CTAs and a three-item credential list — well past 800px.
-            The seam landed mid-content and read as a rendering fault. */}
-        <div className="soft-grid absolute inset-x-0 top-20 h-[860px] sm:h-[610px]" />
-        <div className="absolute inset-x-0 top-20 h-[860px] bg-[#eef8fc]/70 sm:h-[610px]" />
+      <section className="relative overflow-hidden bg-paper pt-24">
+        {/*
+          One wash layer, not two.
+
+          A #eef8fc sheet at 70% opacity used to sit on top of this one. Because
+          it was painted over the soft-grid, it multiplied the two orange pools
+          underneath down to 2.4% effective alpha — the hero's only warm element
+          was being erased by a cold sheet laid over it, which is why the whole
+          thing read as grey. Deleting it is the entire fix; the warmth was
+          always there.
+
+          wash-fade replaces the hard cut. The wash used to stop dead at a fixed
+          610px and snap back to the page colour, leaving a visible horizontal
+          seam partway down the hero. It still needs to run taller on mobile,
+          where the stacked layout pushes past 800px.
+        */}
+        <div className="soft-grid wash-fade absolute inset-x-0 top-20 h-[900px] sm:h-[680px]" />
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl pt-8 text-center">
-            <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-orange-600 sm:text-sm">
-              White Rock · Serving the Lower Mainland
-            </p>
+            <p className="eyebrow">White Rock · Serving the Lower Mainland</p>
             {/*
               Category altitude, deliberately. This said "Dental & Commercial",
               and before that "British Columbia's Dental & Commercial" — both
@@ -184,11 +192,11 @@ export function HomeExperience() {
               break is visual, but without it the H1's text content extracts as
               "Healthcare & CommercialConstruction".
             */}
-            <h1 className="serif-font mt-5 text-[2.65rem] leading-[1.04] tracking-tight text-black sm:text-6xl lg:text-[5rem]">
+            <h1 className="h-hero mt-5">
               <span className="block orange-italic">Healthcare &amp; Commercial</span>{" "}
               Construction Specialists in BC.
             </h1>
-            <p className="mx-auto mt-6 max-w-xl text-lg font-medium leading-8 text-slate-600">
+            <p className="mx-auto mt-6 max-w-xl text-lg font-medium leading-8 text-muted">
               Clinics, pharmacies and commercial interiors — planned before the site gets busy.
             </p>
 
@@ -198,7 +206,7 @@ export function HomeExperience() {
               </ButtonLink>
               <a
                 href={siteConfig.phoneHref}
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-zinc-900/15 bg-white/80 px-7 py-3.5 text-base font-bold text-zinc-900 backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:text-orange-600"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-zinc-900/15 bg-white/80 px-7 py-3.5 text-base font-bold text-zinc-900 backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:text-accent"
               >
                 <Phone size={17} strokeWidth={2.4} aria-hidden="true" />
                 {siteConfig.phone}
@@ -207,10 +215,10 @@ export function HomeExperience() {
 
             {/* Credentials, not numbers — the ProofBar below the video already
                 carries the counts, and repeating them here would be noise. */}
-            <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-sm font-semibold text-slate-600">
+            <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-sm font-semibold text-muted">
               {trustItems.slice(0, 3).map((item) => (
                 <li key={item} className="flex items-center gap-2">
-                  <Check size={16} strokeWidth={3} className="text-orange-600" aria-hidden="true" />
+                  <Check size={16} strokeWidth={3} className="text-accent" aria-hidden="true" />
                   {item}
                 </li>
               ))}
@@ -242,7 +250,7 @@ export function HomeExperience() {
         the join with the video read as two unrelated pictures stacked on each
         other, and the statement was harder to read for it.
       */}
-      <section className="relative isolate overflow-hidden bg-[#0b0c0e] px-5 py-28 text-white sm:px-6 lg:px-8">
+      <section className="relative isolate overflow-hidden bg-ink px-5 py-28 text-white sm:px-6 lg:px-8">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(255,79,10,0.12),transparent_28rem)]" />
         <div className="mx-auto max-w-5xl text-center">
           {/*
@@ -250,7 +258,7 @@ export function HomeExperience() {
             builds, with none of the priority keywords in it. Now 9 words, and the
             supporting line names the actual highest-volume services.
           */}
-          <h2 className="serif-font text-4xl leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+          <h2 className="h-section">
             Commercial, Dental &amp; Medical Construction —{" "}
             <span className="orange-italic">Built Right, On Time.</span>
           </h2>
@@ -275,11 +283,11 @@ export function HomeExperience() {
 
       <ExpertiseHub />
 
-      <section className="blueprint-grid bg-white px-5 py-24 sm:px-6 lg:px-8">
+      <section className="blueprint-grid bg-paper px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-4xl text-center">
-            <h2 className="serif-font text-5xl leading-tight text-zinc-950 sm:text-6xl">
-              What We <span className="text-orange-600">Build</span>
+            <h2 className="h-section">
+              What We <span className="text-accent">Build</span>
             </h2>
             <div className="mx-auto mt-5 h-1 w-48 bg-orange-600" />
             <p className="mx-auto mt-7 max-w-3xl text-2xl leading-10 text-black">
@@ -292,7 +300,7 @@ export function HomeExperience() {
               <Link
                 key={item.title}
                 href={item.href}
-                className="group relative min-h-[420px] overflow-hidden rounded-lg bg-zinc-900 shadow-xl shadow-slate-900/10"
+                className="group relative min-h-[420px] overflow-hidden rounded-2xl bg-zinc-900 shadow-xl shadow-slate-900/10"
               >
                 <Image
                   src={item.image}
@@ -322,19 +330,19 @@ export function HomeExperience() {
       {/* overflow-clip, not overflow-hidden: hidden establishes a scroll
           container, which silently disables the sticky image column below.
           clip still contains the corner decoration without that side effect. */}
-      <section className="corner-dots relative overflow-clip bg-gradient-to-b from-[#f8faff] via-white to-[#f8faff] px-5 py-24 sm:px-6 lg:px-8">
+      <section className="corner-dots relative overflow-clip bg-raised px-5 py-24 sm:px-6 lg:px-8">
         {/* items-start, not items-center — sticky positioning needs the column
             to be free to scroll within the grid area rather than be centred. */}
         <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-[1fr_0.95fr] lg:items-start">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.22em] text-orange-600">
+            <p className="text-sm font-bold uppercase tracking-[0.22em] text-accent">
               The Difference
             </p>
             {/* Serif, matching every other section heading on the page. */}
-            <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+            <h2 className="h-section mt-4">
               Why Owners <span className="orange-italic">Choose Oberizon.</span>
             </h2>
-            <p className="mt-4 text-xl leading-8 text-slate-600">
+            <p className="mt-4 text-xl leading-8 text-muted">
               Because the build has to be managed before the site gets busy.
             </p>
             <div className="mt-10 grid gap-4">
@@ -346,7 +354,7 @@ export function HomeExperience() {
                     className="live-card-shadow rounded-3xl bg-white p-6 ring-1 ring-slate-200"
                   >
                     <div className="flex items-start gap-5">
-                      <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-orange-600 ring-1 ring-orange-100">
+                      <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-accent ring-1 ring-orange-100">
                         <Icon size={22} aria-hidden="true" />
                       </span>
                       <div className="min-w-0">
@@ -358,7 +366,7 @@ export function HomeExperience() {
                           </span>
                           {item.title}
                         </h3>
-                        <p className="mt-1.5 text-base leading-7 text-slate-600">{item.text}</p>
+                        <p className="mt-1.5 text-base leading-7 text-muted">{item.text}</p>
                       </div>
                     </div>
                   </article>
@@ -393,12 +401,12 @@ export function HomeExperience() {
         </div>
       </section>
 
-      <section className="bg-gradient-to-b from-white via-orange-50/40 to-white px-5 py-24 sm:px-6 lg:px-8">
+      <section className="bg-paper px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.32em] text-orange-600">
+          <p className="text-sm font-bold uppercase tracking-[0.32em] text-accent">
             Our Process
           </p>
-          <h2 className="serif-font mt-5 text-4xl leading-tight text-zinc-950 sm:text-6xl">
+          <h2 className="h-section mt-5">
             Four Steps. <span className="orange-italic">One Accountable Team.</span>
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-slate-500">
@@ -416,14 +424,14 @@ export function HomeExperience() {
                   {step.number}
                 </span>
                 <h3 className="mt-8 text-2xl font-semibold text-zinc-950">{step.title}</h3>
-                <p className="mt-4 text-sm leading-6 text-slate-600">{step.text}</p>
+                <p className="mt-4 text-sm leading-6 text-muted">{step.text}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="overflow-hidden bg-[#0b0c0e] text-white">
+      <section className="overflow-hidden bg-ink text-white">
         <div className="mx-auto flex max-w-[1440px] flex-col lg:min-h-[720px] lg:flex-row">
           <div className="relative min-h-[380px] lg:w-1/2">
             <Image
@@ -443,7 +451,7 @@ export function HomeExperience() {
               <p className="text-sm font-bold uppercase tracking-[0.32em] text-orange-500">
                 Featured Case Study
               </p>
-              <h2 className="serif-font mt-8 text-5xl leading-tight text-white sm:text-6xl">
+              <h2 className="h-section mt-8 !text-white">
                 Built in <span className="orange-italic">90 days.</span>
               </h2>
               <p className="mt-8 text-2xl font-semibold leading-9 text-white">
@@ -463,16 +471,16 @@ export function HomeExperience() {
         </div>
       </section>
 
-      <section className="blueprint-grid bg-slate-50 px-5 py-24 sm:px-6 lg:px-8">
+      <section className="blueprint-grid bg-stone px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-bold uppercase tracking-[0.24em] text-orange-600">
+            <p className="eyebrow">
               Recent Work
             </p>
-            <h2 className="mt-4 text-5xl font-semibold text-zinc-950">
+            <h2 className="h-section mt-4">
               Selected <span className="orange-italic">Projects.</span>
             </h2>
-            <p className="mt-4 text-lg text-slate-600">
+            <p className="mt-4 text-lg text-muted">
               Healthcare, Commercial, And Residential Projects Across The Lower Mainland.
             </p>
           </div>
@@ -519,7 +527,7 @@ export function HomeExperience() {
           <div className="mt-14 text-center">
             <Link
               href="/projects"
-              className="inline-flex items-center gap-4 rounded-full border border-slate-200 bg-white px-10 py-5 text-sm font-extrabold uppercase tracking-[0.18em] text-zinc-900 shadow-sm transition hover:border-orange-300 hover:text-orange-600"
+              className="inline-flex items-center gap-4 rounded-full border border-slate-200 bg-white px-10 py-5 text-sm font-extrabold uppercase tracking-[0.18em] text-zinc-900 shadow-sm transition hover:border-orange-300 hover:text-accent"
             >
               View All Projects <ArrowRight size={18} aria-hidden="true" />
             </Link>
@@ -527,22 +535,22 @@ export function HomeExperience() {
         </div>
       </section>
 
-      <section className="blueprint-grid bg-neutral-50 px-5 py-24 sm:px-6 lg:px-8">
+      <section className="blueprint-grid bg-raised px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full bg-orange-50 px-5 py-2 text-xs font-extrabold uppercase tracking-[0.2em] text-orange-600">
+            <span className="inline-flex items-center gap-2 rounded-full bg-orange-50 px-5 py-2 text-xs font-extrabold uppercase tracking-[0.2em] text-accent">
               <Sparkles size={14} aria-hidden="true" /> Client Success
             </span>
-            <h2 className="mt-8 text-5xl font-bold tracking-tight text-zinc-950 sm:text-6xl">
-              What Clinic <span className="text-orange-600">Owners</span> Say
+            <h2 className="h-section mt-8">
+              What Clinic <span className="text-accent">Owners</span> Say
             </h2>
-            <p className="mx-auto mt-6 max-w-xl text-xl leading-8 text-slate-600">
+            <p className="mx-auto mt-6 max-w-xl text-xl leading-8 text-muted">
               Real feedback from healthcare professionals who trusted us with their vision.
             </p>
           </div>
           <div className="mt-16 grid gap-8 lg:grid-cols-3">
             {reviews.map((item) => (
-              <article key={item.author} className="live-card-shadow rounded-[2rem] bg-white p-9">
+              <article key={item.author} className="live-card-shadow rounded-3xl bg-white p-9">
                 <div className="flex gap-1 text-orange-500">
                   {Array.from({ length: 5 }).map((_, index) => (
                     <Star key={index} size={16} fill="currentColor" aria-hidden="true" />
@@ -555,7 +563,7 @@ export function HomeExperience() {
                   <ReviewAvatar author={item.author} image={item.image} />
                   <div>
                     <p className="font-bold text-zinc-950">{item.author}</p>
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-orange-600">
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent">
                       {[item.role, item.city].filter(Boolean).join(", ")}
                     </p>
                   </div>
@@ -566,13 +574,13 @@ export function HomeExperience() {
         </div>
       </section>
 
-      <section id="service-areas" className="overflow-hidden bg-white px-5 py-24 sm:px-6 lg:px-8">
+      <section id="service-areas" className="overflow-hidden bg-paper px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.22em] text-orange-600">
+            <p className="text-sm font-bold uppercase tracking-[0.22em] text-accent">
               Service Areas
             </p>
-            <h2 className="mt-4 text-4xl font-semibold leading-tight text-zinc-950 sm:text-5xl">
+            <h2 className="h-section mt-4">
               Construction Services Across The
               <span className="block orange-italic">Lower Mainland</span>
             </h2>
@@ -585,35 +593,35 @@ export function HomeExperience() {
                 <Link
                   key={city.slug}
                   href={`/construction/${city.slug}/commercial-construction`}
-                  className="flex items-center gap-4 text-base font-bold text-zinc-950 transition hover:text-orange-600"
+                  className="flex items-center gap-4 text-base font-bold text-zinc-950 transition hover:text-accent"
                 >
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-50 text-orange-600">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-50 text-accent">
                     <Check size={14} aria-hidden="true" />
                   </span>
                   {city.city}
                 </Link>
               ))}
             </div>
-            <div className="mt-14 flex gap-5 rounded-3xl bg-slate-50 p-8 ring-1 ring-slate-100">
+            <div className="mt-14 flex gap-5 rounded-3xl bg-raised p-8 ring-1 ring-slate-100">
               <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white text-slate-400 ring-1 ring-slate-200">
                 <Globe2 size={26} aria-hidden="true" />
               </span>
               <div>
-                <p className="text-sm font-extrabold uppercase tracking-[0.2em] text-orange-600">
+                <p className="text-sm font-extrabold uppercase tracking-[0.2em] text-accent">
                   HQ White Rock
                 </p>
-                <p className="mt-2 text-base leading-7 text-slate-600">
+                <p className="mt-2 text-base leading-7 text-muted">
                   Centrally located to manage projects from West Vancouver to Chilliwack with
                   senior oversight.
                 </p>
               </div>
             </div>
           </div>
-          <div className="relative rounded-[2rem] border border-orange-100 p-4 shadow-2xl shadow-slate-900/12">
+          <div className="relative rounded-3xl border border-orange-100 p-4 shadow-2xl shadow-slate-900/12">
             <iframe
               title="Oberizon Construction service area map"
               src="https://www.google.com/maps?q=1493%20Foster%20St%20305%20White%20Rock%20BC&output=embed"
-              className="h-[560px] w-full rounded-[1.6rem] bg-slate-100"
+              className="h-[560px] w-full rounded-3xl bg-slate-100"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
@@ -621,16 +629,16 @@ export function HomeExperience() {
         </div>
       </section>
 
-      <section className="blueprint-grid bg-white px-5 py-24 sm:px-6 lg:px-8">
+      <section className="blueprint-grid bg-raised px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
           <div className="text-center">
-            <p className="text-sm font-bold uppercase tracking-[0.24em] text-orange-600">
+            <p className="eyebrow">
               Frequently Asked
             </p>
-            <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+            <h2 className="h-section mt-4">
               What Owners <span className="orange-italic">Ask Us.</span>
             </h2>
-            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-muted">
               Answers to the most common questions about healthcare, dental, medical, and pharmacy
               construction in British Columbia.
             </p>
@@ -639,13 +647,13 @@ export function HomeExperience() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[#0f1115] px-5 py-24 text-white sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden bg-ink px-5 py-24 text-white sm:px-6 lg:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,79,10,0.16),transparent_34rem)]" />
         <div className="relative mx-auto max-w-4xl text-center">
           <span className="inline-flex rounded-full bg-orange-600/15 px-5 py-2 text-xs font-extrabold uppercase tracking-[0.22em] text-orange-500">
             Book a Consultation
           </span>
-          <h2 className="mt-8 text-4xl font-semibold leading-tight text-white sm:text-5xl">
+          <h2 className="h-section mt-8 !text-white">
             Planning a clinic, commercial space, or luxury home?{" "}
             <span className="orange-italic">Book a consultation.</span>
           </h2>

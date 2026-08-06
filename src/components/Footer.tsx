@@ -20,7 +20,7 @@ const socialMarks: Record<string, string> = {
 
 export function Footer() {
   return (
-    <footer className="bg-[#111111] text-white">
+    <footer className="bg-ink text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 pb-14 pt-16 sm:px-6 lg:grid-cols-[1.15fr_0.9fr_0.9fr_0.9fr_0.85fr] lg:px-8">
         <div>
           <Image

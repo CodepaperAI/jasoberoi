@@ -14,22 +14,30 @@ type PageHeroProps = {
 export function PageHero({ eyebrow, heading, subheading, image }: PageHeroProps) {
   return (
     <section className="soft-grid relative overflow-hidden px-5 pb-20 pt-32 sm:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      {/*
+        The headline gets the wider track. It used to be 0.9fr against the
+        image's 1.1fr — the largest type on the page given the smaller half —
+        which put a 72px H1 into a 554px column at roughly twelve characters a
+        line. "A builder for spaces that cannot be improvised." came out as four
+        stacked lines, each two or three words.
+
+        Two fixes together: this flip, and .h-hero-split capping the display size
+        for a two-column hero. `break-words` is gone with them — at display size
+        it splits a word mid-glyph, which looks worse than the overflow it
+        prevents.
+      */}
+      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div>
-          <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
-            {eyebrow}
-          </p>
-          <h1 className="serif-font mt-5 break-words text-5xl leading-tight tracking-tight text-zinc-950 sm:text-6xl lg:text-7xl">
-            {heading}
-          </h1>
-          <p className="mt-6 max-w-2xl text-xl font-medium leading-8 text-slate-600">
+          <p className="eyebrow">{eyebrow}</p>
+          <h1 className="h-hero-split mt-5">{heading}</h1>
+          <p className="mt-6 max-w-2xl text-xl font-medium leading-8 text-muted">
             {subheading}
           </p>
           <ButtonLink href="/contact" className="mt-8">
             Book a Consultation
           </ButtonLink>
         </div>
-        <div className="relative min-h-[420px] overflow-hidden rounded-[2rem] bg-zinc-900 shadow-2xl shadow-slate-900/12">
+        <div className="card-shadow-lg relative min-h-[420px] overflow-hidden rounded-3xl bg-ink">
           <Image
             src={image}
             alt={`${heading} project image`}
@@ -65,13 +73,13 @@ export function ServiceMarquee() {
 
 export function ReviewCta() {
   return (
-    <section className="relative overflow-hidden bg-[#0f1115] px-5 py-20 text-white sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden bg-ink px-5 py-20 text-white sm:px-6 lg:px-8">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,79,10,0.16),transparent_34rem)]" />
       <div className="relative mx-auto max-w-4xl text-center">
         <span className="inline-flex rounded-full bg-orange-600/15 px-5 py-2 text-xs font-extrabold uppercase tracking-[0.22em] text-orange-500">
           Book a Consultation
         </span>
-        <h2 className="mt-8 text-4xl font-semibold leading-tight text-white sm:text-5xl">
+        <h2 className="h-section mt-8 !text-white">
           Planning a clinic, commercial space, or luxury home?{" "}
           <span className="orange-italic">Book a consultation.</span>
         </h2>
@@ -98,16 +106,16 @@ export function ContentPage({ page }: { page: SitePage }) {
         image={page.heroImage}
       />
 
-      <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
+      <section className="bg-paper px-5 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <p className="text-sm font-extrabold uppercase tracking-[0.22em] text-orange-600">
+            <p className="eyebrow">
               {page.eyebrow}
             </p>
-            <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+            <h2 className="h-section mt-4">
               {page.introTitle}
             </h2>
-            <p className="mt-5 text-xl font-medium leading-8 text-slate-600">{page.intro}</p>
+            <p className="mt-5 text-xl font-medium leading-8 text-muted">{page.intro}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               {page.proof.map((item) => (
                 <span
@@ -127,7 +135,7 @@ export function ContentPage({ page }: { page: SitePage }) {
                 className="live-card-shadow rounded-3xl bg-white p-6 ring-1 ring-slate-200"
               >
                 <h3 className="text-2xl font-bold text-zinc-950">{feature.title}</h3>
-                <p className="mt-2 text-base font-medium leading-7 text-slate-600">{feature.text}</p>
+                <p className="mt-2 text-base font-medium leading-7 text-muted">{feature.text}</p>
               </article>
             ))}
           </div>
@@ -135,9 +143,9 @@ export function ContentPage({ page }: { page: SitePage }) {
       </section>
 
       {page.cards ? (
-        <section className="bg-slate-50 px-5 py-20 sm:px-6 lg:px-8">
+        <section className="bg-raised px-5 py-20 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl">
-            <h2 className="serif-font text-4xl text-zinc-950">{page.featureTitle}</h2>
+            <h2 className="h-section">{page.featureTitle}</h2>
             <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               {page.cards.map((card) => (
                 <article key={card.title} className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-200">
@@ -154,7 +162,7 @@ export function ContentPage({ page }: { page: SitePage }) {
                   ) : null}
                   <div className="p-6">
                     <h3 className="text-2xl font-bold text-zinc-950">{card.title}</h3>
-                    <p className="mt-2 text-base font-medium leading-7 text-slate-600">{card.text}</p>
+                    <p className="mt-2 text-base font-medium leading-7 text-muted">{card.text}</p>
                   </div>
                 </article>
               ))}
@@ -171,7 +179,7 @@ export function ContentPage({ page }: { page: SitePage }) {
 
 export function ProcessStrip() {
   return (
-    <section className="bg-gradient-to-b from-white via-orange-50/40 to-white px-5 py-16 sm:px-6 lg:px-8">
+    <section className="bg-paper px-5 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-4">
         {processSteps.map((step) => (
           <article key={step.number} className="relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-orange-100">
@@ -180,7 +188,7 @@ export function ProcessStrip() {
               {step.number}
             </p>
             <h3 className="mt-6 text-2xl font-semibold text-zinc-950">{step.title}</h3>
-            <p className="mt-2 text-sm leading-6 text-slate-600">{step.text}</p>
+            <p className="mt-2 text-sm leading-6 text-muted">{step.text}</p>
           </article>
         ))}
       </div>
@@ -193,7 +201,7 @@ export function ScopeList({ items }: { items: string[] }) {
     <div className="grid gap-4">
       {items.map((item) => (
         <div key={item} className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <CheckCircle2 className="mt-1 shrink-0 text-orange-600" size={24} aria-hidden="true" />
+          <CheckCircle2 className="mt-1 shrink-0 text-accent" size={24} aria-hidden="true" />
           <p className="text-lg font-semibold leading-7 text-slate-700">{item}</p>
         </div>
       ))}
@@ -212,7 +220,7 @@ export function InternalLinkRail({
         <Link
           key={link.href}
           href={link.href}
-          className="flex min-h-16 items-center justify-between rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-extrabold uppercase tracking-[0.08em] text-zinc-900 transition hover:border-orange-300 hover:text-orange-600"
+          className="flex min-h-16 items-center justify-between rounded-2xl border border-slate-200 bg-paper px-5 py-4 text-sm font-extrabold uppercase tracking-[0.08em] text-zinc-900 transition hover:border-orange-300 hover:text-accent"
         >
           <span>{link.label}</span>
           <ArrowRight size={18} aria-hidden="true" />

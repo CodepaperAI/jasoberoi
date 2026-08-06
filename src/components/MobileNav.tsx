@@ -40,14 +40,14 @@ export function MobileNav() {
         {navigation.map((item) =>
           item.items ? (
             <div key={item.label} className="border-b border-zinc-100 py-2 last:border-b-0">
-              <p className="px-2 pb-1 text-xs font-bold uppercase tracking-[0.18em] text-orange-600">
+              <p className="px-2 pb-1 text-xs font-bold uppercase tracking-[0.18em] text-accent">
                 {item.label}
               </p>
               {item.items.map((child) => (
                 <Link
                   key={child.href}
                   href={child.href}
-                  className="block rounded-xl px-2 py-2 text-base font-semibold text-zinc-800 hover:bg-orange-50 hover:text-orange-600"
+                  className="block rounded-xl px-2 py-2 text-base font-semibold text-zinc-800 hover:bg-orange-50 hover:text-accent"
                 >
                   {child.label}
                 </Link>
@@ -57,7 +57,7 @@ export function MobileNav() {
             <Link
               key={item.href}
               href={item.href ?? "/"}
-              className="block rounded-xl px-2 py-2 text-base font-semibold text-zinc-800 hover:bg-orange-50 hover:text-orange-600"
+              className="block rounded-xl px-2 py-2 text-base font-semibold text-zinc-800 hover:bg-orange-50 hover:text-accent"
             >
               {item.label}
             </Link>

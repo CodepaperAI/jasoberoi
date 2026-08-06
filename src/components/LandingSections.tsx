@@ -44,7 +44,7 @@ export function CallLink({ className = "" }: { className?: string }) {
     <a
       href={siteConfig.phoneHref}
       className={[
-        "inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-zinc-900/15 bg-white px-6 py-3 text-sm font-bold text-zinc-900 transition duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400/70",
+        "inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-zinc-900/15 bg-white px-6 py-3 text-sm font-bold text-zinc-900 transition duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:text-accent focus:outline-none focus:ring-2 focus:ring-orange-400/70",
         className,
       ].join(" ")}
     >
@@ -75,13 +75,13 @@ export function TrustStrip({ className = "" }: { className?: string }) {
   return (
     <ul
       className={[
-        "flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold text-slate-600",
+        "flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold text-muted",
         className,
       ].join(" ")}
     >
       {items.map((item) => (
         <li key={item.label} className="flex items-center gap-2">
-          <item.icon className="shrink-0 text-orange-600" size={17} strokeWidth={2.4} aria-hidden="true" />
+          <item.icon className="shrink-0 text-accent" size={17} strokeWidth={2.4} aria-hidden="true" />
           {item.label}
         </li>
       ))}
@@ -105,18 +105,19 @@ export function LandingHero({
 }) {
   return (
     <section className="soft-grid relative overflow-hidden px-5 pb-16 pt-32 sm:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+      {/*
+        Headline track over image track, same fix as PageHero and for the same
+        reason — but this template renders 150 pages, so it was the widest
+        instance of the problem. These H1s are generated as
+        `${service.name} in ${city.city}, BC`, which produces strings like
+        "Luxury Residential Construction in New Westminster, BC": 53 characters,
+        previously set at 72px in a 567px column, so four and five line stacks.
+      */}
+      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
         <div>
-          <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
-            {eyebrow}
-          </p>
-          {/* leading-[1.05], not leading-tight. At 72px a 1.25 line-height opens
-              ~18px of air between lines, which on a three-line display heading
-              reads as a gap rather than a paragraph. Matches the homepage H1. */}
-          <h1 className="serif-font mt-5 break-words text-5xl leading-[1.05] tracking-tight text-zinc-950 sm:text-6xl lg:text-7xl">
-            {heading}
-          </h1>
-          <p className="mt-6 max-w-3xl text-xl font-medium leading-8 text-slate-600">{intro}</p>
+          <p className="eyebrow">{eyebrow}</p>
+          <h1 className="h-hero-split mt-5">{heading}</h1>
+          <p className="mt-6 max-w-3xl text-xl font-medium leading-8 text-muted">{intro}</p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <ButtonLink href="/contact">Book a Consultation</ButtonLink>
@@ -135,7 +136,7 @@ export function LandingHero({
           ) : null}
         </div>
 
-        <div className="relative min-h-[480px] overflow-hidden rounded-[2rem] bg-zinc-900 shadow-2xl shadow-slate-900/12">
+        <div className="card-shadow-lg relative min-h-[480px] overflow-hidden rounded-3xl bg-ink">
           <Image
             src={image}
             alt={`${heading} project image`}
@@ -171,16 +172,16 @@ export function ExperienceBlock({ city, items }: { city: ServiceArea; items: Pro
   const shown = items.find((project) => project.images?.length);
 
   return (
-    <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
+    <section className="bg-paper px-5 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
         <div>
-          <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
+          <p className="eyebrow">
             Experience
           </p>
-          <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+          <h2 className="h-section mt-4">
             The same team, <span className="orange-italic">every build.</span>
           </h2>
-          <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600">
+          <p className="mt-5 max-w-xl text-lg leading-8 text-muted">
             {siteConfig.founderName} has run Oberizon from its White Rock office since{" "}
             {siteConfig.foundedYear}. Work near {city.city} runs through the same four stages.
           </p>
@@ -212,7 +213,7 @@ export function ExperienceBlock({ city, items }: { city: ServiceArea; items: Pro
         </div>
 
         {shown ? (
-          <figure className="relative overflow-hidden rounded-[2rem] bg-zinc-900 shadow-2xl shadow-slate-900/12">
+          <figure className="relative overflow-hidden rounded-3xl bg-zinc-900 shadow-2xl shadow-slate-900/12">
             <div className="relative aspect-[4/3]">
               <Image
                 src={shown.images![0]}
@@ -223,7 +224,7 @@ export function ExperienceBlock({ city, items }: { city: ServiceArea; items: Pro
               />
             </div>
             <figcaption className="absolute inset-x-4 bottom-4 rounded-2xl bg-white/95 px-5 py-4 backdrop-blur">
-              <span className="block text-xs font-extrabold uppercase tracking-[0.14em] text-orange-600">
+              <span className="block text-xs font-extrabold uppercase tracking-[0.14em] text-accent">
                 {shown.discipline} · {shown.status}
               </span>
               <span className="mt-1 block text-base font-bold text-zinc-950">{shown.name}</span>
@@ -241,7 +242,7 @@ export function ExperienceBlock({ city, items }: { city: ServiceArea; items: Pro
               {step.number}
             </span>
             <h3 className="mt-2 text-lg font-bold text-zinc-950">{step.title}</h3>
-            <p className="mt-1.5 text-sm leading-6 text-slate-600">{step.text}</p>
+            <p className="mt-1.5 text-sm leading-6 text-muted">{step.text}</p>
           </li>
         ))}
       </ol>
@@ -282,12 +283,12 @@ export function ProjectProof({
         : "md:grid-cols-2 xl:grid-cols-3";
 
   return (
-    <section className="bg-slate-50 px-5 py-20 sm:px-6 lg:px-8">
+    <section className="bg-raised px-5 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
+        <p className="eyebrow">
           The work
         </p>
-        <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+        <h2 className="h-section mt-4">
           {heading ?? `Builds we have delivered near ${cityName}.`}
         </h2>
 
@@ -324,13 +325,13 @@ export function ProjectProof({
               </div>
 
               <h3 className="mt-4 text-2xl font-bold text-zinc-950">{project.name}</h3>
-              <p className="mt-2 flex items-start gap-2 text-base font-medium leading-7 text-slate-600">
+              <p className="mt-2 flex items-start gap-2 text-base font-medium leading-7 text-muted">
                 <MapPin className="mt-1 shrink-0 text-slate-400" size={16} aria-hidden="true" />
                 {project.address}
               </p>
 
               {project.challenge ? (
-                <p className="mt-4 border-l-2 border-orange-200 pl-4 text-base font-medium leading-7 text-slate-600">
+                <p className="mt-4 border-l-2 border-orange-200 pl-4 text-base font-medium leading-7 text-muted">
                   {project.challenge}
                 </p>
               ) : null}
@@ -356,12 +357,12 @@ export function ReviewsBlock({ items }: { items: Review[] }) {
   }
 
   return (
-    <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
+    <section className="bg-paper px-5 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
+        <p className="eyebrow">
           Reviews
         </p>
-        <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+        <h2 className="h-section mt-4">
           What clinic owners say.
         </h2>
 
@@ -369,9 +370,9 @@ export function ReviewsBlock({ items }: { items: Review[] }) {
           {items.map((review) => (
             <figure
               key={review.author}
-              className="flex flex-col rounded-3xl bg-slate-50 p-6 ring-1 ring-slate-200"
+              className="flex flex-col rounded-3xl bg-raised p-6 ring-1 ring-slate-200"
             >
-              <div className="flex items-center gap-1 text-orange-600" aria-label="Five out of five">
+              <div className="flex items-center gap-1 text-accent" aria-label="Five out of five">
                 {Array.from({ length: 5 }, (_, index) => (
                   <Star key={index} size={15} fill="currentColor" strokeWidth={0} aria-hidden="true" />
                 ))}
@@ -384,7 +385,7 @@ export function ReviewsBlock({ items }: { items: Review[] }) {
                 <ReviewAvatar author={review.author} image={review.image} size="sm" />
                 <span className="min-w-0">
                   <span className="block text-base font-bold text-zinc-950">{review.author}</span>
-                  <span className="block text-xs font-extrabold uppercase tracking-[0.12em] text-orange-600">
+                  <span className="block text-xs font-extrabold uppercase tracking-[0.12em] text-accent">
                     {[review.role, review.city].filter(Boolean).join(", ")}
                   </span>
                 </span>
@@ -406,14 +407,14 @@ export function WhyTheseServices({
   cityName: string;
 }) {
   return (
-    <section className="bg-slate-50 px-5 py-20 sm:px-6 lg:px-8">
+    <section className="bg-raised px-5 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
+        <p className="eyebrow">
           Where to go next
         </p>
         {/* Short. The old heading ran to two lines and repeated the city again;
             the cards underneath already say which city they are for. */}
-        <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+        <h2 className="h-section mt-4">
           Also built <span className="orange-italic">in {cityName}.</span>
         </h2>
 
@@ -422,9 +423,9 @@ export function WhyTheseServices({
             <Link
               key={link.href}
               href={link.href}
-              className="group flex flex-col justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-5 transition hover:border-orange-300"
+              className="group flex flex-col justify-between gap-3 rounded-2xl border border-slate-200 bg-paper px-5 py-5 transition hover:border-orange-300"
             >
-              <span className="flex items-center justify-between gap-3 text-sm font-extrabold uppercase tracking-[0.08em] text-zinc-900 group-hover:text-orange-600">
+              <span className="flex items-center justify-between gap-3 text-sm font-extrabold uppercase tracking-[0.08em] text-zinc-900 group-hover:text-accent">
                 {link.label}
                 <ArrowRight size={18} aria-hidden="true" className="shrink-0" />
               </span>
@@ -448,12 +449,12 @@ export function LandingFaqs({
   heading: string;
 }) {
   return (
-    <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
+    <section className="bg-paper px-5 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
+        <p className="eyebrow">
           Questions
         </p>
-        <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+        <h2 className="h-section mt-4">
           {heading}
         </h2>
         <FaqAccordion items={items} className="mt-10" />
@@ -465,10 +466,10 @@ export function LandingFaqs({
 /** 7 — The ask, last, once the page has earned it. */
 export function LandingCta({ heading, body }: { heading: string; body: string }) {
   return (
-    <section className="relative overflow-hidden bg-[#0f1115] px-5 py-20 text-white sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden bg-ink px-5 py-20 text-white sm:px-6 lg:px-8">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,79,10,0.16),transparent_34rem)]" />
       <div className="relative mx-auto max-w-4xl text-center">
-        <h2 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">{heading}</h2>
+        <h2 className="h-section !text-white">{heading}</h2>
         <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/70">{body}</p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <ButtonLink href="/contact">Book a Consultation</ButtonLink>

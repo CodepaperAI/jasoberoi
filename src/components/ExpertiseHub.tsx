@@ -60,7 +60,7 @@ function Connector({ side, bend }: { side: "left" | "right"; bend: -1 | 0 | 1 })
   // converge on the circle. Larger y is lower on screen, hence the negated bend.
   const from = { x: isLeft ? 0 : 100, y: 50 };
   const to = { x: isLeft ? 100 : 0, y: 50 - bend * 34 };
-  const stroke = isLeft ? "var(--oberizon-orange)" : "#2f5fd6";
+  const stroke = isLeft ? "var(--accent)" : "rgba(20, 18, 15, 0.35)";
 
   return (
     // Fixed width rather than flex-1: the cards absorb the slack instead, so
@@ -114,7 +114,7 @@ function SpokeCard({ spoke, side }: { spoke: Spoke; side: "left" | "right" }) {
         aria-hidden="true"
         className={[
           "absolute inset-y-3 w-1 rounded-full",
-          isLeft ? "left-0 bg-orange-500" : "right-0 bg-blue-600",
+          isLeft ? "left-0 bg-accent" : "right-0 bg-ink/40",
         ].join(" ")}
       />
       <span
@@ -122,8 +122,8 @@ function SpokeCard({ spoke, side }: { spoke: Spoke; side: "left" | "right" }) {
         className={[
           "flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ring-1",
           isLeft
-            ? "bg-orange-50 text-orange-600 ring-orange-100"
-            : "bg-blue-50 text-blue-600 ring-blue-100",
+            ? "bg-orange-50 text-accent ring-orange-100"
+            : "bg-raised text-ink ring-line",
         ].join(" ")}
       >
         <Icon size={21} />
@@ -132,7 +132,7 @@ function SpokeCard({ spoke, side }: { spoke: Spoke; side: "left" | "right" }) {
         <span className="block text-sm font-extrabold uppercase tracking-[0.06em] text-zinc-950">
           {spoke.label}
         </span>
-        <span className="mt-1.5 block text-sm leading-6 text-slate-600">
+        <span className="mt-1.5 block text-sm leading-6 text-muted">
           {summaryFor(spoke.slug)}
         </span>
       </span>
@@ -142,15 +142,15 @@ function SpokeCard({ spoke, side }: { spoke: Spoke; side: "left" | "right" }) {
 
 export function ExpertiseHub() {
   return (
-    <section className="corner-dots relative overflow-hidden bg-[#f8faff] px-5 py-24 sm:px-6 lg:px-8">
+    <section className="corner-dots relative overflow-hidden bg-raised px-5 py-24 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-3xl text-center">
-        <p className="text-sm font-bold uppercase tracking-[0.22em] text-orange-600">
+        <p className="text-sm font-bold uppercase tracking-[0.22em] text-accent">
           Our Expertise
         </p>
-        <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+        <h2 className="h-section mt-4">
           Six services, <span className="orange-italic">one managed process.</span>
         </h2>
-        <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-slate-600">
+        <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-muted">
           Healthcare is the specialism. Commercial is the volume. Both run through the same team,
           from first review to handover.
         </p>

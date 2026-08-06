@@ -52,7 +52,7 @@ const proofPoints = [
 
 export function ProofBar() {
   return (
-    <section className="border-b border-slate-200/80 bg-white px-5 py-16 sm:px-6 lg:px-8">
+    <section className="border-b border-slate-200/80 bg-paper px-5 py-16 sm:px-6 lg:px-8">
       <dl className="mx-auto grid max-w-7xl gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
         {proofPoints.map((point, index) => (
           <div

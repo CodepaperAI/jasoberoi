@@ -140,23 +140,23 @@ export default function CostPage() {
         image={HERO_IMAGE}
       />
 
-      <section className="bg-[#f8faff] px-5 py-20 sm:px-6 lg:px-8">
+      <section className="bg-raised px-5 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <CostCalculator />
         </div>
       </section>
 
-      <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
+      <section className="bg-paper px-5 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
             <div>
-              <p className="text-sm font-extrabold uppercase tracking-[0.22em] text-orange-600">
+              <p className="eyebrow">
                 How to read this page
               </p>
-              <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+              <h2 className="h-section mt-4">
                 Real 2026 numbers, not marketing brackets.
               </h2>
-              <p className="mt-5 text-lg font-medium leading-8 text-slate-600">
+              <p className="mt-5 text-lg font-medium leading-8 text-muted">
                 Every range below reflects current 2026 turnkey pricing across the Lower Mainland
                 &mdash; design, permits, construction, and site connections included. Ranges move
                 with base-building condition, service coordination, and finish level. Use them to
@@ -214,16 +214,16 @@ export default function CostPage() {
         </div>
       </section>
 
-      <section className="bg-slate-50 px-5 py-20 sm:px-6 lg:px-8">
+      <section className="bg-raised px-5 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <p className="text-sm font-extrabold uppercase tracking-[0.22em] text-orange-600">
+            <p className="eyebrow">
               What moves the number
             </p>
-            <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+            <h2 className="h-section mt-4">
               Five factors that decide the final budget.
             </h2>
-            <p className="mt-5 text-lg font-medium leading-8 text-slate-600">
+            <p className="mt-5 text-lg font-medium leading-8 text-muted">
               A range is only useful if you know which end of it your project sits on. These are
               the factors that move a healthcare or commercial project 20–40% inside the same
               square footage.
@@ -236,7 +236,7 @@ export default function CostPage() {
                 className="live-card-shadow rounded-3xl bg-white p-6 ring-1 ring-slate-200"
               >
                 <h3 className="text-2xl font-bold text-zinc-950">{factor.title}</h3>
-                <p className="mt-2 text-base font-medium leading-7 text-slate-600">
+                <p className="mt-2 text-base font-medium leading-7 text-muted">
                   {factor.body}
                 </p>
               </article>
@@ -245,17 +245,17 @@ export default function CostPage() {
         </div>
       </section>
 
-      <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
+      <section className="bg-paper px-5 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
             <div>
-              <p className="text-sm font-extrabold uppercase tracking-[0.22em] text-orange-600">
+              <p className="eyebrow">
                 Typical timeline
               </p>
-              <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+              <h2 className="h-section mt-4">
                 From feasibility to handover.
               </h2>
-              <p className="mt-5 text-lg font-medium leading-8 text-slate-600">
+              <p className="mt-5 text-lg font-medium leading-8 text-muted">
                 A realistic project schedule so lease dates, equipment orders, and opening plans
                 line up with construction.
               </p>
@@ -286,12 +286,12 @@ export default function CostPage() {
         </div>
       </section>
 
-      <section className="bg-slate-50 px-5 py-20 sm:px-6 lg:px-8">
+      <section className="bg-raised px-5 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <p className="text-sm font-extrabold uppercase tracking-[0.22em] text-orange-600">
+          <p className="eyebrow">
             Frequently asked
           </p>
-          <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+          <h2 className="h-section mt-4">
             Cost questions we hear most often.
           </h2>
           <div className="mt-10 grid gap-4 md:grid-cols-2">
@@ -303,7 +303,7 @@ export default function CostPage() {
                 <h3 className="text-xl font-bold leading-snug text-zinc-950">
                   {faq.question}
                 </h3>
-                <p className="mt-4 text-base font-medium leading-7 text-slate-600">
+                <p className="mt-4 text-base font-medium leading-7 text-muted">
                   {faq.answer}
                 </p>
               </article>

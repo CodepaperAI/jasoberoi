@@ -132,14 +132,14 @@ export function CostCalculator() {
   return (
     <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
       <div>
-        <p className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-[0.22em] text-orange-600">
+        <p className="flex items-center gap-2 eyebrow">
           <Calculator size={17} aria-hidden="true" />
           Estimate your build
         </p>
-        <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+        <h2 className="h-section mt-4">
           What will it <span className="orange-italic">actually cost?</span>
         </h2>
-        <p className="mt-5 text-lg leading-8 text-slate-600">
+        <p className="mt-5 text-lg leading-8 text-muted">
           Move the numbers and see a real range. No form, no email required to see the result.
         </p>
 
@@ -208,7 +208,7 @@ export function CostCalculator() {
 
       {estimate ? (
         <div className="overflow-hidden rounded-3xl ring-1 ring-slate-200">
-          <div className="bg-[#0f1115] px-7 py-8 text-white">
+          <div className="bg-ink px-7 py-8 text-white">
             <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-orange-400">
               Estimated build
             </p>
@@ -225,7 +225,7 @@ export function CostCalculator() {
 
           <div className="bg-white p-7">
             <div className="flex items-baseline justify-between gap-4 border-b border-slate-200 pb-4">
-              <span className="text-sm font-semibold text-slate-600">
+              <span className="text-sm font-semibold text-muted">
                 Plus {Math.round(contingency.low * 100)}–{Math.round(contingency.high * 100)}%
                 contingency, which is standard on a clinic build
               </span>
@@ -253,7 +253,7 @@ export function CostCalculator() {
               <ButtonLink href="/contact">Book a Consultation</ButtonLink>
               <a
                 href={mailto}
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-zinc-900/15 px-6 py-3 text-sm font-bold text-zinc-900 transition hover:border-orange-300 hover:text-orange-600"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-zinc-900/15 px-6 py-3 text-sm font-bold text-zinc-900 transition hover:border-orange-300 hover:text-accent"
               >
                 <Mail size={16} aria-hidden="true" />
                 Email me this estimate

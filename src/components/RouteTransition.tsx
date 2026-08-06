@@ -127,7 +127,7 @@ export function RouteTransition() {
         // Near-white, not near-black. The site is a light site, and a full-bleed
         // dark panel between two light pages was the most violent thing on it.
         // #f8faff is the same wash the cost page already uses.
-        "route-transition fixed inset-0 z-[200] flex items-center justify-center bg-[#f8faff]",
+        "route-transition fixed inset-0 z-[200] flex items-center justify-center bg-paper",
         phase === "leaving" ? "pointer-events-none" : "",
       ].join(" ")}
     >

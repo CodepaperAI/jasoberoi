@@ -1,22 +1,60 @@
 @import "tailwindcss";
 
+/*
+  The surface palette.
+
+  What was here before had nine variables of which one was ever referenced, and
+  the markup used raw Tailwind greys instead. The result was 73 near-white
+  surfaces and 9 dark ones with nothing in between — and the four "different"
+  whites (#ffffff, #fafafa, #f8fafc, #f8faff) sat inside 3% luminance of each
+  other, so two adjacent sections could differ by two RGB points. That is what
+  reads as flat grey-and-white: not a lack of colour, a lack of separation.
+
+  Five values, each with a job, each visibly different from its neighbour:
+
+    paper   the default page surface — warm bone, not white
+    raised  the alternating band, a real step up from paper
+    stone   the mid-tone that did not exist at all
+    ink     one charcoal, replacing #0b0c0e / #0f1115 / #111111
+    accent  one orange, replacing #ff4f0a / orange-600 / rgb(255,115,0)
+
+  Warm on purpose. The brand accent is orange, and the old surfaces were cool
+  blue-greys pulling against it.
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --oberizon-orange: #ff4f0a;
-  --oberizon-orange-dark: #ea4300;
-  --ink: #171717;
-  --muted: #667085;
-  --paper: #ffffff;
-  --soft-blue: #f8faff;
-  --line: rgba(15, 23, 42, 0.1);
+  --paper: #fdfbf7;
+  --raised: #f5f0e8;
+  --stone: #e8e0d5;
+  --ink: #14120f;
+  --ink-soft: #1f1c17;
+  --accent: #ff4f0a;
+  --accent-dark: #ea4300;
+  --muted: #6b6358;
+  --line: rgba(20, 18, 15, 0.1);
+
+  --background: var(--paper);
+  --foreground: var(--ink);
 }
 
+/*
+  Registered with Tailwind, not just declared. The previous block declared these
+  in :root only, so no utility could reach them — which is exactly why the
+  markup fell back to slate/neutral/zinc. Now `bg-paper`, `bg-stone`, `text-ink`
+  and `text-accent` exist.
+*/
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-paper: var(--paper);
+  --color-raised: var(--raised);
+  --color-stone: var(--stone);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-accent: var(--accent);
+  --color-accent-dark: var(--accent-dark);
+  --color-muted: var(--muted);
   --font-sans: var(--font-barlow);
-  --font-display: Georgia, "Times New Roman", serif;
+  --font-display: var(--font-display);
 }
 
 * {
@@ -34,23 +72,103 @@ a {
 }
 
 ::selection {
-  background: var(--oberizon-orange);
+  background: var(--accent);
   color: #fff;
 }
 
-.display-font {
-  font-family: Georgia, "Times New Roman", serif;
-  letter-spacing: 0;
-}
-
+.display-font,
 .serif-font {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-display), Georgia, serif;
 }
 
 .orange-italic {
-  color: var(--oberizon-orange);
-  font-family: Georgia, "Times New Roman", serif;
+  color: var(--accent);
+  font-family: var(--font-display), Georgia, serif;
   font-style: italic;
+}
+
+/*
+  Heading roles.
+
+  Twenty-four section headings previously carried the byte-identical string
+  "serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl", and about
+  twenty more set no line-height at all — which matters because Tailwind's
+  built-in leading differs per size, so two sibling headings could disagree by
+  12px for no reason anyone chose.
+
+  Four roles instead, each with an explicit measure. `balance` is what stops a
+  headline dropping one orphaned word onto its own line.
+*/
+.h-hero,
+.h-hero-split,
+.h-section,
+.h-card {
+  font-family: var(--font-display), Georgia, serif;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+/* H1 in a full-width container: the homepage and /construction. */
+.h-hero {
+  font-size: clamp(2.75rem, 6vw, 5rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+/*
+  H1 inside a two-column hero, which is 156 of the 165 pages.
+
+  These ran at 72px inside a 554px column — twelve characters a line, four-line
+  blocks. The cap is the fix: at this size the same column takes ~22 characters
+  and two or three lines. Paired with the grid flip in PageHero and LandingHero.
+*/
+.h-hero-split {
+  font-size: clamp(2.5rem, 4.2vw, 3.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+}
+
+.h-section {
+  font-size: clamp(2.125rem, 3.2vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.012em;
+}
+
+.h-card {
+  font-size: clamp(1.25rem, 1.6vw, 1.5rem);
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+}
+
+/*
+  The kicker above a heading. Eleven different letter-spacings were in use for
+  this one role, from 0.06em to 0.35em.
+*/
+.eyebrow {
+  font-family: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/*
+  One shadow pair, replacing five parallel systems. The old `live-card-shadow`
+  was a single wide 8% blur with no contact layer, which is why cards read as
+  decals printed on the page rather than as objects resting on it. The first
+  line here is that missing contact shadow.
+*/
+.card-shadow {
+  box-shadow:
+    0 1px 2px rgba(20, 18, 15, 0.06),
+    0 12px 32px -8px rgba(20, 18, 15, 0.1);
+}
+
+.card-shadow-lg {
+  box-shadow:
+    0 2px 4px rgba(20, 18, 15, 0.07),
+    0 28px 64px -16px rgba(20, 18, 15, 0.16);
 }
 
 .steel-shadow {
@@ -70,7 +188,7 @@ a {
 .industrial-surface {
   position: relative;
   isolation: isolate;
-  background: #0f1115;
+  background: var(--ink);
 }
 
 .blueprint-band {
@@ -102,11 +220,34 @@ a {
   animation: service-scroll 34s linear infinite;
 }
 
+/*
+  The hero wash, used by every hero on the site.
+
+  It used to ramp #ffffff to #f8faff — a cool blue-white on a white page, so a
+  seven-step shift nobody could see. On the homepage a #eef8fc sheet at 70% was
+  then painted on top of it, which multiplied the two orange pools underneath
+  down to 2.4% effective alpha: the one warm element in the hero was being
+  cancelled by a cold sheet sitting over it.
+
+  Now it ramps within the warm palette and the accent pools are strong enough to
+  actually register. The gradient runs to `raised` so the wash has somewhere to
+  go, instead of ending on a value indistinguishable from where it started.
+*/
 .soft-grid {
   background:
-    radial-gradient(circle at 8% 15%, rgba(255, 115, 0, 0.08), transparent 18rem),
-    radial-gradient(circle at 92% 0%, rgba(255, 115, 0, 0.08), transparent 20rem),
-    linear-gradient(180deg, #ffffff, #f8faff);
+    radial-gradient(circle at 6% 12%, rgba(255, 79, 10, 0.13), transparent 26rem),
+    radial-gradient(circle at 94% 4%, rgba(255, 79, 10, 0.09), transparent 24rem),
+    linear-gradient(180deg, var(--paper) 0%, var(--raised) 100%);
+}
+
+/*
+  The fade the hero wash needs at its bottom edge. It used to hard-terminate at
+  a fixed 610px straight back to white, which left a visible horizontal seam
+  partway down the hero.
+*/
+.wash-fade {
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
 }
 
 /*
@@ -138,18 +279,18 @@ a {
   z-index: -1;
   pointer-events: none;
   background-image:
-    /* A warm wash so the band is not a flat grey field. Two soft orange pools at
-       3% pick up the brand colour without tinting the section. */
-    radial-gradient(circle at 12% 18%, rgba(255, 115, 0, 0.05), transparent 26rem),
-    radial-gradient(circle at 88% 82%, rgba(255, 115, 0, 0.04), transparent 24rem),
+    /* Warm pools, matched to the accent rather than the old rgb(255,115,0),
+       which was a third orange nobody had chosen. */
+    radial-gradient(circle at 12% 18%, rgba(255, 79, 10, 0.06), transparent 26rem),
+    radial-gradient(circle at 88% 82%, rgba(255, 79, 10, 0.05), transparent 24rem),
     /* Minor lines every 16px, major every 96px — graph paper reads as drawn
        rather than as a plain mesh, and the heavier line gives the eye something
-       to catch. At the 4% these started on, none of it was visible at all: on a
-       slate-50 section that is roughly one value step, which is nothing. */
-    linear-gradient(to right, rgba(71, 85, 105, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(71, 85, 105, 0.1) 1px, transparent 1px),
-    linear-gradient(to right, rgba(71, 85, 105, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(71, 85, 105, 0.05) 1px, transparent 1px);
+       to catch. Ink-tinted now, not slate, so the grid belongs to the warm
+       palette instead of dragging it back towards blue-grey. */
+    linear-gradient(to right, rgba(20, 18, 15, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 18, 15, 0.07) 1px, transparent 1px),
+    linear-gradient(to right, rgba(20, 18, 15, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 18, 15, 0.035) 1px, transparent 1px);
   background-size:
     100% 100%,
     100% 100%,

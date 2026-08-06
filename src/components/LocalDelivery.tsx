@@ -42,18 +42,18 @@ export function LocalDelivery({ page }: { page: ConstructionPseoPage }) {
   const [priceFigure, ...priceRest] = page.pricingBrief.split(/\s+(?=depending|turnkey|—)/);
 
   return (
-    <section className="bg-white px-5 py-20 sm:px-6 lg:px-8">
+    <section className="bg-paper px-5 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div>
-            <p className="text-sm font-extrabold uppercase tracking-[0.24em] text-orange-600">
+            <p className="eyebrow">
               Local planning
             </p>
-            <h2 className="serif-font mt-4 text-4xl leading-tight text-zinc-950 sm:text-5xl">
+            <h2 className="h-section mt-4">
               How it runs <span className="orange-italic">in {page.city.city}.</span>
             </h2>
-            <p className="mt-5 text-lg leading-8 text-slate-600">{page.localProof}</p>
-            <p className="mt-4 text-lg leading-8 text-slate-600">{page.marketContext}</p>
+            <p className="mt-5 text-lg leading-8 text-muted">{page.localProof}</p>
+            <p className="mt-4 text-lg leading-8 text-muted">{page.marketContext}</p>
 
             <div className="mt-7 flex flex-wrap gap-2">
               {page.city.neighborhoods.map((area) => (
@@ -69,7 +69,7 @@ export function LocalDelivery({ page }: { page: ConstructionPseoPage }) {
 
           {/* The price, given the weight it deserves, with the scope beneath it. */}
           <div className="overflow-hidden rounded-3xl ring-1 ring-slate-200">
-            <div className="bg-[#0f1115] px-7 py-8 text-white">
+            <div className="bg-ink px-7 py-8 text-white">
               <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.2em] text-orange-400">
                 <Banknote size={16} aria-hidden="true" />
                 2026 range
@@ -88,7 +88,7 @@ export function LocalDelivery({ page }: { page: ConstructionPseoPage }) {
                 {page.service.scope.map((item) => (
                   <li key={item} className="flex gap-3">
                     <CheckCircle2
-                      className="mt-0.5 shrink-0 text-orange-600"
+                      className="mt-0.5 shrink-0 text-accent"
                       size={19}
                       aria-hidden="true"
                     />
@@ -106,13 +106,13 @@ export function LocalDelivery({ page }: { page: ConstructionPseoPage }) {
             return (
               <article
                 key={item.title}
-                className="rounded-2xl bg-slate-50 p-6 ring-1 ring-slate-200/70"
+                className="rounded-2xl bg-raised p-6 ring-1 ring-slate-200/70"
               >
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-orange-600 ring-1 ring-orange-100">
+                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-accent ring-1 ring-orange-100">
                   <Icon size={20} aria-hidden="true" />
                 </span>
                 <h3 className="mt-4 text-lg font-bold text-zinc-950">{item.title}</h3>
-                <p className="mt-2 text-base leading-7 text-slate-600">{item.text}</p>
+                <p className="mt-2 text-base leading-7 text-muted">{item.text}</p>
               </article>
             );
           })}

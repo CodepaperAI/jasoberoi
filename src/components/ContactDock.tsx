@@ -19,7 +19,7 @@ import { siteConfig } from "@/lib/site";
  */
 
 const FIELD =
-  "rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium normal-case text-zinc-900 outline-none placeholder:text-slate-400 focus:border-orange-400 focus:bg-white";
+  "rounded-xl border border-slate-200 bg-raised px-4 py-3 text-sm font-medium normal-case text-zinc-900 outline-none placeholder:text-slate-400 focus:border-orange-400 focus:bg-white";
 const LABEL =
   "grid gap-2 text-[11px] font-extrabold uppercase tracking-wide text-slate-500";
 
@@ -98,17 +98,17 @@ export function ContactDock() {
             if (event.target === event.currentTarget) close();
           }}
         >
-          <div className="relative w-full max-w-2xl rounded-[2rem] bg-white p-6 shadow-2xl shadow-black/30 sm:p-8">
+          <div className="relative w-full max-w-2xl rounded-3xl bg-white p-6 shadow-2xl shadow-black/30 sm:p-8">
             <button
               type="button"
               onClick={close}
-              className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition hover:bg-orange-50 hover:text-orange-600"
+              className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition hover:bg-orange-50 hover:text-accent"
               aria-label="Close"
             >
               <X size={17} aria-hidden="true" />
             </button>
 
-            <h2 className="serif-font pr-10 text-3xl text-zinc-950">
+            <h2 className="h-section pr-10">
               Book a <span className="orange-italic">consultation.</span>
             </h2>
             <p className="mt-2 text-sm leading-6 text-slate-500">
@@ -189,7 +189,7 @@ export function ContactDock() {
                 <a
                   href={siteConfig.phoneHref}
                   data-analytics="dock-call"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-zinc-900 transition hover:border-orange-300 hover:text-orange-600"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-zinc-900 transition hover:border-orange-300 hover:text-accent"
                 >
                   <Phone size={15} aria-hidden="true" />
                   Call

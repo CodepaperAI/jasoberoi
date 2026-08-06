@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo_Black, Barlow } from "next/font/google";
+import { Barlow, Instrument_Serif } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
 import { ConversionTracking } from "@/components/ConversionTracking";
 import { Footer } from "@/components/Footer";
@@ -12,10 +12,28 @@ import { absoluteUrl, buildMetadata } from "@/lib/seo";
 import { homePage } from "@/lib/site";
 import "./globals.css";
 
-const archivoBlack = Archivo_Black({
-  variable: "--font-archivo-black",
+/**
+ * The display face.
+ *
+ * Every heading on this site used to be Georgia — not a choice, a fallback. No
+ * display webfont was loaded at all, so on Android and most Linux, where Georgia
+ * does not exist, the site rendered in whatever generic serif was to hand. The
+ * headline type was the one thing never art-directed.
+ *
+ * Instrument Serif is a display face: high contrast, tight fit, made to be set
+ * large. It ships one weight, which is correct here — display type wants a size
+ * ramp, not a weight ramp, and the previous `font-bold` on Georgia was rendering
+ * as synthetic faux-bold anyway. The italic is loaded because the orange accent
+ * inside headlines depends on it.
+ *
+ * Archivo Black used to be imported here and referenced nowhere — a font
+ * downloaded on every page load for nothing. Removed.
+ */
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-display",
   subsets: ["latin"],
   weight: "400",
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -47,7 +65,7 @@ export default function RootLayout({
       // — an animated glide rather than a jump. The attribute lets Next switch
       // to `auto` for that one reset and restore smooth afterwards.
       data-scroll-behavior="smooth"
-      className={`${archivoBlack.variable} ${barlow.variable} h-full scroll-smooth antialiased`}
+      className={`${instrumentSerif.variable} ${barlow.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full bg-background text-foreground">
         <JsonLd data={organizationJsonLd(absoluteUrl("/"))} />
