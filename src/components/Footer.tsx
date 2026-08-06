@@ -138,7 +138,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h2 className="text-xs font-extrabold uppercase tracking-[0.28em] text-orange-500">Connect</h2>
+          <h2 className="text-xs font-extrabold uppercase tracking-[0.28em] text-white">Connect</h2>
           <div className="mt-6 flex flex-wrap gap-3">
             {socialLinks.map((link) => (
               <a

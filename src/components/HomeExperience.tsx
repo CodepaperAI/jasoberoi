@@ -451,7 +451,7 @@ export function HomeExperience() {
               <p className="text-sm font-bold uppercase tracking-[0.32em] text-orange-500">
                 Featured Case Study
               </p>
-              <h2 className="h-section mt-8 !text-white">
+              <h2 className="h-section mt-8">
                 Built in <span className="orange-italic">90 days.</span>
               </h2>
               <p className="mt-8 text-2xl font-semibold leading-9 text-white">
@@ -653,7 +653,7 @@ export function HomeExperience() {
           <span className="inline-flex rounded-full bg-orange-600/15 px-5 py-2 text-xs font-extrabold uppercase tracking-[0.22em] text-orange-500">
             Book a Consultation
           </span>
-          <h2 className="h-section mt-8 !text-white">
+          <h2 className="h-section mt-8">
             Planning a clinic, commercial space, or luxury home?{" "}
             <span className="orange-italic">Book a consultation.</span>
           </h2>

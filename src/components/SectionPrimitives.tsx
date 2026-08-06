@@ -79,7 +79,7 @@ export function ReviewCta() {
         <span className="inline-flex rounded-full bg-orange-600/15 px-5 py-2 text-xs font-extrabold uppercase tracking-[0.22em] text-orange-500">
           Book a Consultation
         </span>
-        <h2 className="h-section mt-8 !text-white">
+        <h2 className="h-section mt-8">
           Planning a clinic, commercial space, or luxury home?{" "}
           <span className="orange-italic">Book a consultation.</span>
         </h2>

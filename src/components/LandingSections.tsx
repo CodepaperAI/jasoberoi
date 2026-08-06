@@ -469,7 +469,7 @@ export function LandingCta({ heading, body }: { heading: string; body: string })
     <section className="relative overflow-hidden bg-ink px-5 py-20 text-white sm:px-6 lg:px-8">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,79,10,0.16),transparent_34rem)]" />
       <div className="relative mx-auto max-w-4xl text-center">
-        <h2 className="h-section !text-white">{heading}</h2>
+        <h2 className="h-section">{heading}</h2>
         <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/70">{body}</p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <ButtonLink href="/contact">Book a Consultation</ButtonLink>

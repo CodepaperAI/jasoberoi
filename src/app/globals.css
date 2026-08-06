@@ -99,39 +99,70 @@ a {
   Four roles instead, each with an explicit measure. `balance` is what stops a
   headline dropping one orphaned word onto its own line.
 */
+/*
+  No `color` here, deliberately.
+
+  This rule used to set `color: var(--ink)`, and that made the homepage
+  statement heading invisible: dark text on a dark section, contrast ratio 1.0.
+  Those headings carry no colour class of their own — they inherit `text-white`
+  from the section around them, and an explicit colour on the role overrode it.
+
+  Patching each dark heading with `!text-white` was the wrong fix and it showed:
+  four got the override and a fifth was missed. A typography role owns size,
+  leading, tracking and family. Colour belongs to the surface — light sections
+  inherit ink from `body`, dark sections declare white — so the failure mode
+  cannot come back.
+*/
 .h-hero,
 .h-hero-split,
 .h-section,
 .h-card {
   font-family: var(--font-display), Georgia, serif;
   text-wrap: balance;
-  color: var(--ink);
 }
 
-/* H1 in a full-width container: the homepage and /construction. */
+/*
+  Sizes are set for Gelasio, which measures 1.082x the condensed face that was
+  briefly here. Tracking is looser than it was for the same reason: negative
+  letter-spacing was compensating for a tightly-fitted display face, and Georgia's
+  proportions are wide and open with a large x-height. Squeezing them fights the
+  drawing.
+*/
+
+/*
+  H1 in a full-width container: the homepage and /construction.
+
+  The 2.125rem floor is for 320px phones. Gelasio sets wider than the face this
+  replaced, and at the previous 2.625rem floor the homepage headline ran to five
+  lines in a 280px column. The clamp's middle term never reaches the floor on
+  anything above ~380px wide, so this costs nothing on real phones and rescues
+  the smallest ones.
+*/
 .h-hero {
-  font-size: clamp(2.75rem, 6vw, 5rem);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.125rem, 5.6vw, 4.75rem);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
 }
 
 /*
   H1 inside a two-column hero, which is 156 of the 165 pages.
 
   These ran at 72px inside a 554px column — twelve characters a line, four-line
-  blocks. The cap is the fix: at this size the same column takes ~22 characters
-  and two or three lines. Paired with the grid flip in PageHero and LandingHero.
+  blocks. The cap is the fix, paired with the grid flip in PageHero and
+  LandingHero. 52px is measured, not chosen: the longest headline the site can
+  generate — "Luxury Residential Construction in New Westminster, BC" — still
+  holds two lines in a 665px column at this size.
 */
 .h-hero-split {
-  font-size: clamp(2.5rem, 4.2vw, 3.5rem);
-  line-height: 1.06;
-  letter-spacing: -0.015em;
+  font-size: clamp(2.25rem, 3.9vw, 3.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
 }
 
 .h-section {
-  font-size: clamp(2.125rem, 3.2vw, 2.75rem);
-  line-height: 1.1;
-  letter-spacing: -0.012em;
+  font-size: clamp(2rem, 3.1vw, 2.625rem);
+  line-height: 1.12;
+  letter-spacing: -0.008em;
 }
 
 .h-card {

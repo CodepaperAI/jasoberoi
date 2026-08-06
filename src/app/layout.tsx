@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Barlow, Instrument_Serif } from "next/font/google";
+import { Barlow, Gelasio } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
 import { ConversionTracking } from "@/components/ConversionTracking";
 import { Footer } from "@/components/Footer";
@@ -15,21 +15,33 @@ import "./globals.css";
 /**
  * The display face.
  *
- * Every heading on this site used to be Georgia — not a choice, a fallback. No
- * display webfont was loaded at all, so on Android and most Linux, where Georgia
- * does not exist, the site rendered in whatever generic serif was to hand. The
- * headline type was the one thing never art-directed.
+ * This is Georgia, made safe to ship.
  *
- * Instrument Serif is a display face: high contrast, tight fit, made to be set
- * large. It ships one weight, which is correct here — display type wants a size
- * ramp, not a weight ramp, and the previous `font-bold` on Georgia was rendering
- * as synthetic faux-bold anyway. The italic is loaded because the orange accent
- * inside headlines depends on it.
+ * oberizonconstruction.ca sets its hero in 72px Georgia and loads no display
+ * webfont at all — which is where this site's Georgia came from, and it is the
+ * look the client chose. The problem was never the typeface, it was that Georgia
+ * is a system font: on Android and most Linux it does not exist, so those
+ * visitors got whatever generic serif the device happened to have. The site
+ * rendered differently depending on who opened it.
+ *
+ * Gelasio is a webfont drawn as a metric-compatible Georgia substitute.
+ * Measured against Georgia on this site's own headline it comes out at exactly
+ * 1.000x the width, and side by side the two are indistinguishable. Same look,
+ * loaded properly, identical on every device.
+ *
+ * A short detour through Instrument Serif is worth recording so nobody repeats
+ * it: it is a *condensed* display face, and Georgia is wide and open. Opposite
+ * ends of the serif spectrum, which is why it read as wrong rather than as a
+ * choice. If this ever needs replacing, match Georgia's proportions.
+ *
+ * Weight 400 only — display type wants a size ramp, not a weight ramp, and a
+ * `font-bold` on this family would render as synthetic faux-bold. The italic is
+ * loaded because `.orange-italic` is the accent inside every headline.
  *
  * Archivo Black used to be imported here and referenced nowhere — a font
  * downloaded on every page load for nothing. Removed.
  */
-const instrumentSerif = Instrument_Serif({
+const gelasio = Gelasio({
   variable: "--font-display",
   subsets: ["latin"],
   weight: "400",
@@ -65,7 +77,7 @@ export default function RootLayout({
       // — an animated glide rather than a jump. The attribute lets Next switch
       // to `auto` for that one reset and restore smooth afterwards.
       data-scroll-behavior="smooth"
-      className={`${instrumentSerif.variable} ${barlow.variable} h-full scroll-smooth antialiased`}
+      className={`${gelasio.variable} ${barlow.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full bg-background text-foreground">
         <JsonLd data={organizationJsonLd(absoluteUrl("/"))} />
