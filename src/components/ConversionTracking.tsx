@@ -31,6 +31,17 @@ export function ConversionTracking() {
         return;
       }
 
+      // Checked before mailto so the ordering reads with the funnel, and kept
+      // separate from call_click: WhatsApp is a distinct channel and lumping it
+      // in with tel: would hide whether it is the thing actually earning leads.
+      const whatsapp = target.closest<HTMLElement>('a[href*="wa.me/"]');
+      if (whatsapp) {
+        send("whatsapp_click", {
+          whatsapp_source: whatsapp.getAttribute("data-analytics") ?? "generic-whatsapp",
+        });
+        return;
+      }
+
       const email = target.closest<HTMLElement>('a[href^="mailto:"]');
       if (email) {
         send("email_click", {

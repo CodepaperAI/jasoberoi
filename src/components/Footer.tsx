@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Calculator, Mail, MapPin, Phone } from "lucide-react";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
 import {
   constructionServices,
   credentials,
@@ -108,6 +109,13 @@ export function Footer() {
                 <Phone size={16} aria-hidden="true" />
                 {siteConfig.phone}
               </a>
+            </li>
+            <li>
+              <WhatsAppLink
+                analytics="footer-whatsapp"
+                label={siteConfig.whatsapp}
+                className="flex items-center gap-3 transition hover:text-[#25D366]"
+              />
             </li>
             <li>
               <a className="flex items-center gap-3 transition hover:text-orange-500" href={`mailto:${siteConfig.email}`}>

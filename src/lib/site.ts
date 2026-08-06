@@ -143,6 +143,20 @@ export const siteConfig = {
   email: "jo@oberizon.ca",
   phone: "(604) 385-3770",
   phoneHref: "tel:+16043853770",
+  /**
+   * WhatsApp is a separate line from the main office number, and it matters more
+   * than it looks: the enquiry forms compose a mailto because the site is a
+   * static export with no server to POST to, which silently loses any visitor
+   * whose phone has no mail client configured. WhatsApp gives that visitor a
+   * route that always works, so it sits beside every form rather than replacing
+   * one. See the note in src/lib/contact.ts.
+   *
+   * wa.me wants the number in full international form with no punctuation.
+   */
+  whatsapp: "(778) 994-7450",
+  whatsappHref:
+    "https://wa.me/17789947450?text=" +
+    encodeURIComponent("Hi Oberizon, I'd like to talk about a construction project."),
   address: "Suite 305, 1493 Foster St, White Rock, BC V4B 0C4",
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=1493+Foster+St+305+White+Rock+BC",
@@ -949,7 +963,12 @@ export const mainPages: SitePage[] = [
     introTitle: "Book a consultation.",
     intro:
       "Oberizon will help you understand scope, permits, services, budget risks, schedule pressure, and what needs to be planned before construction starts.",
-    proof: [siteConfig.phone, siteConfig.email, "Suite 305, 1493 Foster St"],
+    proof: [
+      siteConfig.phone,
+      `WhatsApp ${siteConfig.whatsapp}`,
+      siteConfig.email,
+      "Suite 305, 1493 Foster St",
+    ],
     featureTitle: "What to bring",
     features: [
       {

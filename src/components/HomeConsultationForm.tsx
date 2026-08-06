@@ -1,6 +1,7 @@
 "use client";
 
 import { Phone, Send } from "lucide-react";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { composeConsultationMailto } from "@/lib/contact";
 import { siteConfig } from "@/lib/site";
 
@@ -47,8 +48,11 @@ export function HomeConsultationForm() {
     Tell us more about your project
     <textarea name="details" className="min-h-32 rounded-2xl border border-white/10 bg-white/10 px-5 py-4 text-sm text-white outline-none placeholder:text-white/40 focus:border-orange-500" placeholder="City, target open date, budget range, and scope. Anything else we should know - say it here." />
   </label>
-  {/* Calling sits beside the submit, not instead of it: filling six fields is a
-      bigger ask than dialling, and most contractor leads arrive as calls. */}
+  {/* Calling and WhatsApp sit beside the submit, not instead of it: filling six
+      fields is a bigger ask than dialling or sending a message, and most
+      contractor leads arrive as calls. WhatsApp also covers the visitor this
+      form cannot reach at all — the submit composes a mailto, which does nothing
+      on a phone with no mail client configured. */}
   <div className="flex flex-wrap justify-center gap-4 sm:col-span-2">
     <button
       type="submit"
@@ -57,8 +61,14 @@ export function HomeConsultationForm() {
       <Send size={15} aria-hidden="true" />
       Book a Consultation
     </button>
+    <WhatsAppLink
+      analytics="home-form-whatsapp"
+      iconSize={15}
+      className="inline-flex items-center justify-center gap-3 rounded-2xl border border-white/25 px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:border-[#25D366] hover:text-[#25D366]"
+    />
     <a
       href={siteConfig.phoneHref}
+      data-analytics="home-form-call"
       className="inline-flex items-center justify-center gap-3 rounded-2xl border border-white/25 px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:border-orange-400 hover:text-orange-400"
     >
       <Phone size={15} aria-hidden="true" />

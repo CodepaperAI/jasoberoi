@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Phone, Send, X } from "lucide-react";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { composeConsultationMailto } from "@/lib/contact";
 import { siteConfig } from "@/lib/site";
 
@@ -150,7 +151,11 @@ export function ContactDock() {
                 />
               </label>
 
-              <div className="grid gap-3 sm:col-span-2 sm:grid-cols-[1fr_auto]">
+              {/* Three ways out of this dialog, because the primary one is the
+                  least reliable: "Send request" composes a mailto, which does
+                  nothing on a phone with no mail client. WhatsApp and the phone
+                  number always work. */}
+              <div className="grid gap-3 sm:col-span-2 sm:grid-cols-[1fr_auto_auto]">
                 <button
                   type="submit"
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-white shadow-xl shadow-orange-600/25 transition hover:bg-orange-500"
@@ -158,12 +163,18 @@ export function ContactDock() {
                   <Send size={15} aria-hidden="true" />
                   Send request
                 </button>
+                <WhatsAppLink
+                  analytics="dock-whatsapp"
+                  iconSize={15}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-zinc-900 transition hover:border-[#25D366] hover:text-[#25D366]"
+                />
                 <a
                   href={siteConfig.phoneHref}
+                  data-analytics="dock-call"
                   className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-zinc-900 transition hover:border-orange-300 hover:text-orange-600"
                 >
                   <Phone size={15} aria-hidden="true" />
-                  Call instead
+                  Call
                 </a>
               </div>
             </form>
