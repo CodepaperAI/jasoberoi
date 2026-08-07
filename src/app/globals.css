@@ -149,6 +149,17 @@ a {
   The 2.125rem floor is for 320px phones, where the clamp's middle term takes
   over long before the cap matters.
 */
+/*
+  600 on both hero roles, 400 everywhere else. This is a drawn weight in Gelasio,
+  not a `font-bold` utility smearing a single-weight face — see the note in
+  layout.tsx. Heroes carry it and section headings do not, so the step from a
+  hero to the headings under it is weight as well as size.
+*/
+.h-hero,
+.h-hero-split {
+  font-weight: 600;
+}
+
 .h-hero {
   font-size: clamp(2.125rem, 5.4vw, 4.5rem);
   line-height: 1.04;
@@ -167,8 +178,15 @@ a {
   lines in a 665px column. The failure being avoided was four and five line
   stacks at twelve characters a line.
 */
+/*
+  3.5rem now these heroes are full-bleed. The old 48px cap existed because the
+  headline was trapped in a 665px column beside an image; across the full width
+  it has a 768px measure, where even 60px at weight 600 still holds two lines on
+  the longest headline the site can generate. 56px takes the step up with
+  headroom left rather than sitting on the limit.
+*/
 .h-hero-split {
-  font-size: clamp(2.125rem, 3.6vw, 3rem);
+  font-size: clamp(2.125rem, 4.2vw, 3.5rem);
   line-height: 1.08;
   letter-spacing: -0.012em;
 }

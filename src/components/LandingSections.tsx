@@ -134,12 +134,12 @@ export function LandingHero({
       pages, so it is where the treatment matters most: the photograph of real
       work fills the hero and the keyword headline sits on it.
 
-      68svh — slightly taller than PageHero's 62 because this hero carries more:
+      82svh — slightly taller than PageHero's 76 because this hero carries more:
       a headline, an intro paragraph, two CTAs, a trust row and sometimes an
       evidence note. Still short of full height, because the seven trust sections
       below are what these pages exist to show.
     */
-    <section className="relative flex min-h-[68svh] items-center overflow-hidden bg-ink px-5 pb-20 pt-36 sm:px-6 lg:px-8">
+    <section className="relative flex min-h-[82svh] items-center overflow-hidden bg-ink px-5 pb-20 pt-36 sm:px-6 lg:px-8">
       <Image
         src={image}
         alt=""

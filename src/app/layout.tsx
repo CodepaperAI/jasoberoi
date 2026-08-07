@@ -34,9 +34,14 @@ import "./globals.css";
  * ends of the serif spectrum, which is why it read as wrong rather than as a
  * choice. If this ever needs replacing, match Georgia's proportions.
  *
- * Weight 400 only — display type wants a size ramp, not a weight ramp, and a
- * `font-bold` on this family would render as synthetic faux-bold. The italic is
- * loaded because `.orange-italic` is the accent inside every headline.
+ * 400 and 600. Body headings stay at 400; the two hero roles use 600, which is a
+ * real drawn weight in this family rather than the synthetic faux-bold a
+ * `font-bold` utility would have produced on a single-weight face. That
+ * distinction is the whole reason the weight is loaded rather than faked — a
+ * browser-smeared bold on a serif at 72px looks exactly as bad as it sounds.
+ *
+ * The italic is loaded because `.orange-italic` is the accent inside every
+ * headline.
  *
  * Archivo Black used to be imported here and referenced nowhere — a font
  * downloaded on every page load for nothing. Removed.
@@ -44,7 +49,7 @@ import "./globals.css";
 const gelasio = Gelasio({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "600"],
   style: ["normal", "italic"],
   display: "swap",
 });

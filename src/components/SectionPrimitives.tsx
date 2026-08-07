@@ -22,13 +22,13 @@ export function PageHero({ eyebrow, heading, subheading, image }: PageHeroProps)
       width and the photograph read as an illustration next to it. The image now
       fills the section and the headline sits on it.
 
-      62svh, not the full viewport. This runs on About, Projects, Contact, Cost
+      76svh, not the full viewport. This runs on About, Projects, Contact, Cost
       and Services, where a full-height hero would push the actual page content
       off the first screen on every one of them. An interior hero announces the
       page; it does not need to be the page. svh rather than vh because on mobile
       vh counts browser chrome that is not there.
     */
-    <section className="relative flex min-h-[62svh] items-center overflow-hidden bg-ink px-5 pb-20 pt-36 sm:px-6 lg:px-8">
+    <section className="relative flex min-h-[76svh] items-center overflow-hidden bg-ink px-5 pb-20 pt-36 sm:px-6 lg:px-8">
       <Image
         src={image}
         alt=""
