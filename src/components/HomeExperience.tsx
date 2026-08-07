@@ -19,7 +19,6 @@ import { FaqAccordion } from "@/components/FaqAccordion";
 import { HomeConsultationForm } from "@/components/HomeConsultationForm";
 import { ProofBar } from "@/components/ProofBar";
 import { ReviewAvatar } from "@/components/ReviewAvatar";
-import { ScrollExpandVideo } from "@/components/ScrollExpandVideo";
 import { aiFaqs, processSteps, reviews, serviceAreas, siteConfig, trustItems } from "@/lib/site";
 
 const verticals = [
@@ -148,38 +147,61 @@ export function HomeExperience() {
         the screen carries evidence rather than only a claim. And the flat panel
         gets the same soft radial wash used elsewhere on the site.
       */}
-      <section className="relative overflow-hidden bg-paper pt-24">
+      {/*
+        A full-bleed hero: the work behind the headline, not beside it.
+
+        This used to be a pale wash with the headline on it and the video
+        following underneath in a rounded card that grew on scroll — two separate
+        things, and the reason the hero never felt like much. The video is now
+        the background and the headline sits on it, so the first screen is one
+        composition instead of a stack.
+
+        min-h uses svh, not vh. On mobile browsers vh is the tallest possible
+        viewport including the chrome that hides on scroll, so a 100vh hero is
+        cut off on arrival — svh is the height actually visible.
+      */}
+      <section className="relative flex min-h-[92svh] items-center overflow-hidden bg-ink pt-24">
         {/*
-          One wash layer, not two.
+          Desktop gets the video, phones get its poster frame.
 
-          A #eef8fc sheet at 70% opacity used to sit on top of this one. Because
-          it was painted over the soft-grid, it multiplied the two orange pools
-          underneath down to 2.4% effective alpha — the hero's only warm element
-          was being erased by a cold sheet laid over it, which is why the whole
-          thing read as grey. Deleting it is the entire fix; the warmth was
-          always there.
-
-          wash-fade replaces the hard cut. The wash used to stop dead at a fixed
-          610px and snap back to the page colour, leaving a visible horizontal
-          seam partway down the hero. It still needs to run taller on mobile,
-          where the stacked layout pushes past 800px.
+          preload="none" plus the media query means a phone never fetches
+          1920x1080 of video for a background it would barely resolve. The
+          poster is a still from the same clinic, so the composition is identical
+          either way.
         */}
-        <div className="soft-grid wash-fade absolute inset-x-0 top-20 h-[900px] sm:h-[680px]" />
-        <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-          {/*
-            max-w-7xl, not max-w-6xl, and more air above.
+        <video
+          className="absolute inset-0 hidden h-full w-full object-cover md:block"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          poster="/oberizon/optimized/project-dental-1.jpg"
+          aria-hidden="true"
+        >
+          <source src={siteConfig.heroVideo} type="video/mp4" />
+        </video>
+        <Image
+          src="/oberizon/optimized/project-dental-1.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          priority
+          className="object-cover md:hidden"
+        />
 
-            The headline is capped by whatever track it sits in. Inside the old
-            1152px wrapper its first line stopped fitting past 96px; the full
-            track takes 100px, which is what turns a two-line 155px block into a
-            three-line 306px one. The container width was silently setting the
-            ceiling on how large the hero could ever be.
+        {/*
+          Two scrims, not one. A flat overlay dark enough to carry white text
+          kills the footage; this darkens hardest where the words actually sit
+          and lets the top and bottom of the frame stay legible as an image. The
+          second layer is a plain floor so the brightest frames of the clinic —
+          it is a white room — can never wash the headline out.
+        */}
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/85 via-ink/65 to-ink/90" />
+        <div className="absolute inset-0 bg-ink/25" />
 
-            pt-16 because the headline used to start 166px down the page against
-            the live site's 240px — it read as tucked under the header rather
-            than given the top of the page.
-          */}
-          <div className="mx-auto max-w-7xl pt-8 text-center sm:pt-16">
+        <div className="relative mx-auto w-full max-w-7xl px-5 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-5xl text-center">
             <p className="eyebrow">White Rock · Serving the Lower Mainland</p>
             {/*
               Category altitude, deliberately. This said "Dental & Commercial",
@@ -205,7 +227,7 @@ export function HomeExperience() {
               break is visual, but without it the H1's text content extracts as
               "Healthcare & CommercialConstruction".
             */}
-            <h1 className="h-hero mt-5">
+            <h1 className="h-hero mt-5 text-white">
               <span className="block orange-italic">Healthcare &amp; Commercial</span>{" "}
               Construction Specialists in BC.
             </h1>
@@ -219,7 +241,7 @@ export function HomeExperience() {
               headline: one tight measure directly beneath it rather than a wide
               band of body copy.
             */}
-            <p className="mx-auto mt-7 max-w-lg text-lg font-medium leading-8 text-muted">
+            <p className="mx-auto mt-7 max-w-lg text-lg font-medium leading-8 text-white/75">
               Clinics, pharmacies and commercial interiors — planned before the site gets busy.
             </p>
 
@@ -227,18 +249,25 @@ export function HomeExperience() {
               <ButtonLink href="/contact" className="px-9 py-4 text-base">
                 Book a Consultation
               </ButtonLink>
+              {/*
+                Glass rather than the white pill it was. On a pale hero a solid
+                white button read as secondary; over footage it would read as a
+                hole punched in the image. A translucent border with a blur sits
+                on the video instead of covering it.
+              */}
               <a
                 href={siteConfig.phoneHref}
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-zinc-900/15 bg-white/80 px-7 py-3.5 text-base font-bold text-zinc-900 backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:text-accent"
+                data-analytics="hero-call"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 px-7 py-3.5 text-base font-bold text-white backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-white/60 hover:bg-white/20"
               >
                 <Phone size={17} strokeWidth={2.4} aria-hidden="true" />
                 {siteConfig.phone}
               </a>
             </div>
 
-            {/* Credentials, not numbers — the ProofBar below the video already
+            {/* Credentials, not numbers — the ProofBar below the hero already
                 carries the counts, and repeating them here would be noise. */}
-            <ul className="mt-9 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-xs font-semibold uppercase tracking-[0.08em] text-muted/80">
+            <ul className="mt-9 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-xs font-semibold uppercase tracking-[0.08em] text-white/70">
               {trustItems.slice(0, 3).map((item) => (
                 <li key={item} className="flex items-center gap-2">
                   <Check size={14} strokeWidth={3} className="text-accent" aria-hidden="true" />
@@ -249,15 +278,6 @@ export function HomeExperience() {
           </div>
         </div>
 
-        {/*
-          Deliberately outside the max-w-7xl container above. The whole point is
-          that it reaches the viewport edges, and it cannot do that from inside a
-          padded, width-capped wrapper.
-        */}
-        <ScrollExpandVideo
-          poster="/oberizon/optimized/project-dental-1.jpg"
-          src={siteConfig.heroVideo}
-        />
       </section>
 
       {/*
