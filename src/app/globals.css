@@ -53,6 +53,14 @@
   --color-accent: var(--accent);
   --color-accent-dark: var(--accent-dark);
   --color-muted: var(--muted);
+  /*
+    --line was declared in :root and never registered here, so `border-line`
+    and `bg-line` were not real utilities. Tailwind emitted nothing, the border
+    fell back to currentColor, and every hairline rule on the recomposed
+    homepage rendered as a hard near-black line instead of a 10% one. Eight
+    usages, all wrong, all fixed by this line existing.
+  */
+  --color-line: var(--line);
   --font-sans: var(--font-barlow);
   --font-display: var(--font-display);
 }

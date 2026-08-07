@@ -353,33 +353,35 @@ export function HomeExperience() {
         </div>
 
         {/*
-          Every service, as rows rather than cards.
+          Every service, as names only.
 
-          The diagram this replaces linked six of the ten. A plain list carries
-          all ten, which is better for internal linking as well as calmer to
-          look at — hairline rules instead of ten more boxes with rings.
+          This carried a full sentence of summary under each of the ten names —
+          ten headings plus ten paragraphs, which is how a list meant to feel
+          calm turned into the densest block on the page. The descriptions live
+          on the service pages these link to; repeating them here bought nothing
+          and cost about 120 words.
+
+          gap-x-16 matters more than it looks. Without a column gap the left
+          cell's arrow — pushed to its right edge by justify-between — landed
+          flush against the right cell's heading, so every right-hand service
+          read as "→Commercial Renovation" with a stray arrow prefixed to it.
         */}
         <div className="mx-auto mt-20 max-w-7xl px-5 sm:px-6 lg:px-8">
           <p className="eyebrow">Every service</p>
-          <div className="mt-6 grid border-t border-line md:grid-cols-2">
+          <div className="mt-6 grid border-t border-line md:grid-cols-2 md:gap-x-16">
             {constructionServices.map((service) => (
               <Link
                 key={service.slug}
                 href={`/services/${service.slug}`}
-                className="group flex items-baseline justify-between gap-6 border-b border-line py-6 transition hover:bg-raised/60"
+                className="group flex items-center justify-between gap-6 border-b border-line py-5 transition hover:text-accent"
               >
-                <span>
-                  <span className="h-card block text-ink transition group-hover:text-accent">
-                    {service.name}
-                  </span>
-                  <span className="mt-1.5 block max-w-md text-sm leading-6 text-muted">
-                    {service.summary}
-                  </span>
+                <span className="h-card text-ink transition group-hover:text-accent">
+                  {service.name}
                 </span>
                 <ArrowRight
                   size={18}
                   aria-hidden="true"
-                  className="mt-1 shrink-0 text-line transition group-hover:translate-x-1 group-hover:text-accent"
+                  className="shrink-0 text-ink/25 transition group-hover:translate-x-1 group-hover:text-accent"
                 />
               </Link>
             ))}
