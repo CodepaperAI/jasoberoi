@@ -8,19 +8,25 @@ import {
   Globe2,
   Phone,
   Receipt,
-  Sparkles,
   Star,
   Users,
   Workflow,
 } from "lucide-react";
 import { ButtonLink } from "@/components/ButtonLink";
-import { ExpertiseHub } from "@/components/ExpertiseHub";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { HomeConsultationForm } from "@/components/HomeConsultationForm";
 import { ProofBar } from "@/components/ProofBar";
 import { ReviewAvatar } from "@/components/ReviewAvatar";
 import { ScrollExpandVideo } from "@/components/ScrollExpandVideo";
-import { aiFaqs, processSteps, reviews, serviceAreas, siteConfig, trustItems } from "@/lib/site";
+import {
+  aiFaqs,
+  constructionServices,
+  processSteps,
+  reviews,
+  serviceAreas,
+  siteConfig,
+  trustItems,
+} from "@/lib/site";
 
 const verticals = [
   {
@@ -273,77 +279,108 @@ export function HomeExperience() {
         the join with the video read as two unrelated pictures stacked on each
         other, and the statement was harder to read for it.
       */}
-      <section className="relative isolate overflow-hidden bg-ink px-5 py-28 text-white sm:px-6 lg:px-8">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(255,79,10,0.12),transparent_28rem)]" />
-        <div className="mx-auto max-w-5xl text-center">
+      {/*
+        One services block, replacing three.
+
+        This was a dark statement band, then a radial diagram, then "What We
+        Build" — three sections in a row answering the same question, roughly
+        2,500px of page. The diagram was the worst of it: an orange circle with
+        dashed SVG connectors radiating to icon chips, with the right-hand column
+        set `text-right` so its body copy was ragged-left. It read as a slide,
+        not a page.
+
+        What replaces it is composed rather than decorated. A left-aligned
+        header against an intro on the right, the three verticals as full-bleed
+        photography, then every service as a plain linked row. No circle, no
+        connectors, no icon chips, no mirrored columns.
+      */}
+      <section className="bg-paper py-24">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           {/*
-            Was 24 words fronting six abstract nouns before saying what Oberizon
-            builds, with none of the priority keywords in it. Now 9 words, and the
-            supporting line names the actual highest-volume services.
+            Asymmetric, not centred. Eight of the eleven section headings on this
+            page were centred with a centred subheading under them — that repeated
+            eleven times is what read as a template. Heading left, supporting copy
+            in the opposite column.
           */}
-          <h2 className="h-section">
-            Commercial, Dental &amp; Medical Construction —{" "}
-            <span className="orange-italic">Built Right, On Time.</span>
-          </h2>
-          <div className="mx-auto mt-8 h-1 w-20 bg-orange-600" />
-          <p className="mx-auto mt-8 max-w-3xl text-lg font-medium leading-8 text-white/88">
-            From commercial renovations and tenant improvements to dental clinics, medical offices
-            and pharmacies — we manage permits, trades and timelines so your space opens on
-            schedule.
-          </p>
-          {/* ButtonLink, not a bespoke square block — every other call to action
-              on the site is a rounded pill with the same arrow affordance. */}
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <ButtonLink href="/contact" className="px-8 py-4 text-base">
-              Book a Consultation
-            </ButtonLink>
-          </div>
-          <p className="mt-10 border-t border-white/35 pt-6 text-sm font-semibold uppercase tracking-[0.35em] text-white/70">
-            Serving {serviceAreas.map((area) => area.city).join(" . ")}
-          </p>
-        </div>
-      </section>
-
-      <ExpertiseHub />
-
-      <section className="blueprint-grid bg-paper px-5 py-24 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="h-section">
-              What We <span className="text-accent">Build</span>
-            </h2>
-            <div className="mx-auto mt-5 h-1 w-48 bg-orange-600" />
-            <p className="mx-auto mt-7 max-w-3xl text-2xl leading-10 text-black">
-              We focus on healthcare, commercial, and luxury residential projects where planning
-              and execution matter.
+          <div className="grid gap-8 lg:grid-cols-[1fr_0.85fr] lg:items-end">
+            <div>
+              <p className="eyebrow">What we build</p>
+              <h2 className="h-section mt-4">
+                Healthcare, commercial and{" "}
+                <span className="orange-italic">luxury residential.</span>
+              </h2>
+            </div>
+            <p className="text-lg font-medium leading-8 text-muted">
+              Healthcare is the specialism. Commercial is the volume. Both run through the same
+              team, from first review to handover.
             </p>
           </div>
-          <div className="mt-20 grid gap-10 lg:grid-cols-3">
-            {verticals.map((item) => (
+        </div>
+
+        {/*
+          Full-bleed. This row deliberately sits outside the max-w-7xl wrapper —
+          the photography is the strongest asset on the site and every image on
+          the page was inside a padded, rounded container. Edge to edge is the
+          thing the reference site does that this one never did.
+        */}
+        <div className="mt-16 grid gap-px bg-line md:grid-cols-3">
+          {verticals.map((item) => (
+            <Link
+              key={item.title}
+              href={item.href}
+              className="group relative flex min-h-[440px] items-end overflow-hidden bg-ink"
+            >
+              <Image
+                src={item.image}
+                alt={item.title}
+                fill
+                sizes="(min-width: 768px) 33vw, 100vw"
+                className="object-cover transition duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/35 to-ink/10" />
+              <div className="relative p-8 text-white">
+                <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-accent">
+                  {item.label}
+                </p>
+                <h3 className="h-card mt-3 !text-white">{item.title}</h3>
+                <p className="mt-3 max-w-sm text-base leading-7 text-white/80">{item.text}</p>
+                <span className="mt-5 inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition group-hover:gap-3">
+                  Explore <ArrowRight size={15} aria-hidden="true" />
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/*
+          Every service, as rows rather than cards.
+
+          The diagram this replaces linked six of the ten. A plain list carries
+          all ten, which is better for internal linking as well as calmer to
+          look at — hairline rules instead of ten more boxes with rings.
+        */}
+        <div className="mx-auto mt-20 max-w-7xl px-5 sm:px-6 lg:px-8">
+          <p className="eyebrow">Every service</p>
+          <div className="mt-6 grid border-t border-line md:grid-cols-2">
+            {constructionServices.map((service) => (
               <Link
-                key={item.title}
-                href={item.href}
-                className="group relative min-h-[420px] overflow-hidden rounded-2xl bg-zinc-900 shadow-xl shadow-slate-900/10"
+                key={service.slug}
+                href={`/services/${service.slug}`}
+                className="group flex items-baseline justify-between gap-6 border-b border-line py-6 transition hover:bg-raised/60"
               >
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  sizes="(min-width: 1024px) 33vw, 100vw"
-                  className="object-cover transition duration-700 group-hover:scale-110"
+                <span>
+                  <span className="h-card block text-ink transition group-hover:text-accent">
+                    {service.name}
+                  </span>
+                  <span className="mt-1.5 block max-w-md text-sm leading-6 text-muted">
+                    {service.summary}
+                  </span>
+                </span>
+                <ArrowRight
+                  size={18}
+                  aria-hidden="true"
+                  className="mt-1 shrink-0 text-line transition group-hover:translate-x-1 group-hover:text-accent"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-8 text-white">
-                  <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-orange-400">
-                    {item.label}
-                  </p>
-                  <h3 className="mt-2 text-3xl font-bold leading-tight">{item.title}</h3>
-                  <div className="mt-4 h-1 w-14 bg-orange-500" />
-                  <p className="mt-4 text-base font-medium leading-7 text-white/90">{item.text}</p>
-                  <p className="mt-5 inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.18em] text-orange-300">
-                    Explore <ArrowRight size={16} aria-hidden="true" />
-                  </p>
-                </div>
               </Link>
             ))}
           </div>
@@ -353,103 +390,84 @@ export function HomeExperience() {
       {/* overflow-clip, not overflow-hidden: hidden establishes a scroll
           container, which silently disables the sticky image column below.
           clip still contains the corner decoration without that side effect. */}
-      <section className="corner-dots relative overflow-clip bg-raised px-5 py-24 sm:px-6 lg:px-8">
-        {/* items-start, not items-center — sticky positioning needs the column
-            to be free to scroll within the grid area rather than be centred. */}
-        <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-[1fr_0.95fr] lg:items-start">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.22em] text-accent">
-              The Difference
-            </p>
-            {/* Serif, matching every other section heading on the page. */}
-            <h2 className="h-section mt-4">
-              Why Owners <span className="orange-italic">Choose Oberizon.</span>
-            </h2>
-            <p className="mt-4 text-xl leading-8 text-muted">
-              Because the build has to be managed before the site gets busy.
-            </p>
-            <div className="mt-10 grid gap-4">
-              {difference.map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <article
-                    key={item.title}
-                    className="live-card-shadow rounded-3xl bg-white p-6 ring-1 ring-slate-200"
-                  >
-                    <div className="flex items-start gap-5">
-                      <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-accent ring-1 ring-orange-100">
-                        <Icon size={22} aria-hidden="true" />
-                      </span>
-                      <div className="min-w-0">
-                        {/* The number sits inline with the title. Absolutely
-                            positioned, it landed on top of the icon tile. */}
-                        <h3 className="flex items-baseline gap-3 text-2xl font-bold text-zinc-950">
-                          <span className="text-sm font-extrabold tabular-nums text-orange-300">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                          {item.title}
-                        </h3>
-                        <p className="mt-1.5 text-base leading-7 text-muted">{item.text}</p>
-                      </div>
-                    </div>
-                  </article>
-                );
-              })}
+      {/*
+        One "how we work" block, replacing two.
+
+        "Why Owners Choose Oberizon" and "Four Steps. One Accountable Team." sat
+        back to back answering the same question, roughly 1,850px between them,
+        each with its own centred-ish header and its own set of ringed cards.
+
+        The five reasons are now plain rows on hairline rules rather than five
+        shadowed cards with icon tiles, and the four process steps follow as a
+        numbered strip. Same content, one header, and far fewer boxes — the card
+        density was most of what made this page read as decorated.
+      */}
+      <section className="bg-raised py-24">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="grid gap-8 lg:grid-cols-[1fr_0.85fr] lg:items-end">
+            <div>
+              <p className="eyebrow">The Difference</p>
+              <h2 className="h-section mt-4">
+                Why owners <span className="orange-italic">choose Oberizon.</span>
+              </h2>
             </div>
+            <p className="text-lg font-medium leading-8 text-muted">
+              Because the build has to be managed before the site gets busy — review, scope,
+              services, sequencing and handover, run by one team.
+            </p>
           </div>
 
-          {/*
-            The image grid is shorter than the five cards beside it, so it used
-            to leave a large void. Sticking it to the viewport keeps it beside
-            whichever card you are reading and removes the dead space.
-          */}
-          <div className="lg:sticky lg:top-28">
-            <div className="grid grid-cols-2 gap-3 rounded-3xl border border-slate-200 bg-white p-3">
-              {differenceImages.map((image, index) => (
-                <div
-                  key={image}
-                  className="relative aspect-square overflow-hidden rounded-2xl bg-slate-100"
-                >
-                  <Image
-                    src={image}
-                    alt={`Oberizon clinic planning detail ${index + 1}`}
-                    fill
-                    sizes="(min-width: 1024px) 25vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
+          <div className="mt-16 grid gap-16 lg:grid-cols-[1fr_0.9fr] lg:items-start">
+            <div className="border-t border-line">
+              {difference.map((item, index) => (
+                <article key={item.title} className="border-b border-line py-6">
+                  <h3 className="flex items-baseline gap-4">
+                    <span className="text-sm font-extrabold tabular-nums text-accent">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="h-card text-ink">{item.title}</span>
+                  </h3>
+                  <p className="mt-2 pl-9 text-base leading-7 text-muted">{item.text}</p>
+                </article>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
 
-      <section className="bg-paper px-5 py-24 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.32em] text-accent">
-            Our Process
-          </p>
-          <h2 className="h-section mt-5">
-            Four Steps. <span className="orange-italic">One Accountable Team.</span>
-          </h2>
-          <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-slate-500">
-            A streamlined construction process designed to keep your project efficient,
-            transparent, and stress-free from start to finish.
-          </p>
-          <div className="mt-16 grid gap-6 md:grid-cols-4">
-            {processSteps.map((step) => (
-              <article
-                key={step.number}
-                className="relative overflow-hidden rounded-2xl bg-white p-8 text-left shadow-sm ring-1 ring-orange-100"
-              >
-                <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-orange-50" />
-                <span className="relative flex h-14 w-14 items-center justify-center rounded-xl bg-orange-600 text-lg font-bold text-white shadow-lg shadow-orange-600/20">
-                  {step.number}
-                </span>
-                <h3 className="mt-8 text-2xl font-semibold text-zinc-950">{step.title}</h3>
-                <p className="mt-4 text-sm leading-6 text-muted">{step.text}</p>
-              </article>
-            ))}
+            {/*
+              Four images, tiled tight and unframed. This was a 2x2 grid inside a
+              bordered white card with rounded tiles inside it — a frame around a
+              frame around a photograph.
+            */}
+            <div className="lg:sticky lg:top-28">
+              <div className="grid grid-cols-2 gap-px bg-line">
+                {differenceImages.map((image, index) => (
+                  <div key={image} className="relative aspect-square overflow-hidden bg-stone">
+                    <Image
+                      src={image}
+                      alt={`Oberizon clinic planning detail ${index + 1}`}
+                      fill
+                      sizes="(min-width: 1024px) 25vw, 50vw"
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* The four process steps, as a strip rather than a second section. */}
+          <div className="mt-20 border-t border-line pt-10">
+            <p className="eyebrow">Four steps, one accountable team</p>
+            <div className="mt-8 grid gap-10 md:grid-cols-4">
+              {processSteps.map((step) => (
+                <article key={step.number}>
+                  <span className="text-sm font-extrabold tabular-nums text-accent">
+                    {step.number}
+                  </span>
+                  <h3 className="mt-3 text-lg font-bold text-ink">{step.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-muted">{step.text}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -494,12 +512,10 @@ export function HomeExperience() {
         </div>
       </section>
 
-      <section className="blueprint-grid bg-stone px-5 py-24 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="eyebrow">
-              Recent Work
-            </p>
+      <section className="blueprint-grid bg-stone py-24">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <p className="eyebrow">Recent Work</p>
             <h2 className="h-section mt-4">
               Selected <span className="orange-italic">Projects.</span>
             </h2>
@@ -507,7 +523,16 @@ export function HomeExperience() {
               Healthcare, Commercial, And Residential Projects Across The Lower Mainland.
             </p>
           </div>
-          <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        </div>
+        {/*
+          Full-bleed, and gap-px rather than gap-6.
+
+          These sixteen photographs are the strongest asset the site has and
+          every one of them was sitting inside a padded, width-capped container
+          with rounded corners and six pixels of air between. Edge to edge, tiled
+          tight, they read as a body of work instead of as five thumbnails.
+        */}
+        <div className="mt-16 grid gap-px bg-line md:grid-cols-2 lg:grid-cols-4">
             {projects.map((project, index) => (
               <article
                 key={project.title}
@@ -547,24 +572,30 @@ export function HomeExperience() {
               </article>
             ))}
           </div>
-          <div className="mt-14 text-center">
-            <Link
-              href="/projects"
-              className="inline-flex items-center gap-4 rounded-full border border-slate-200 bg-white px-10 py-5 text-sm font-extrabold uppercase tracking-[0.18em] text-zinc-900 shadow-sm transition hover:border-orange-300 hover:text-accent"
-            >
-              View All Projects <ArrowRight size={18} aria-hidden="true" />
-            </Link>
-          </div>
+        <div className="mx-auto mt-14 max-w-7xl px-5 sm:px-6 lg:px-8">
+          {/* A text link with an arrow, not a bordered pill. The reference site
+              ends every block this way, and it is one less box. */}
+          <Link
+            href="/projects"
+            className="group inline-flex items-center gap-3 border-b border-ink/25 pb-2 text-sm font-extrabold uppercase tracking-[0.16em] text-ink transition hover:border-accent hover:text-accent"
+          >
+            View All Projects
+            <ArrowRight
+              size={17}
+              aria-hidden="true"
+              className="transition group-hover:translate-x-1"
+            />
+          </Link>
         </div>
       </section>
 
       <section className="blueprint-grid bg-raised px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full bg-orange-50 px-5 py-2 text-xs font-extrabold uppercase tracking-[0.2em] text-accent">
-              <Sparkles size={14} aria-hidden="true" /> Client Success
-            </span>
-            <h2 className="h-section mt-8">
+          <div className="max-w-3xl">
+            {/* A plain eyebrow, not a pill. The chip was one more decorated
+                container on a page that had one around almost everything. */}
+            <p className="eyebrow">Client Success</p>
+            <h2 className="h-section mt-4">
               What Clinic <span className="text-accent">Owners</span> Say
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-xl leading-8 text-muted">
@@ -644,7 +675,7 @@ export function HomeExperience() {
             <iframe
               title="Oberizon Construction service area map"
               src="https://www.google.com/maps?q=1493%20Foster%20St%20305%20White%20Rock%20BC&output=embed"
-              className="h-[560px] w-full rounded-3xl bg-slate-100"
+              className="h-[380px] w-full rounded-2xl bg-stone"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
@@ -654,10 +685,8 @@ export function HomeExperience() {
 
       <section className="blueprint-grid bg-raised px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
-          <div className="text-center">
-            <p className="eyebrow">
-              Frequently Asked
-            </p>
+          <div className="max-w-3xl">
+            <p className="eyebrow">Frequently Asked</p>
             <h2 className="h-section mt-4">
               What Owners <span className="orange-italic">Ask Us.</span>
             </h2>
