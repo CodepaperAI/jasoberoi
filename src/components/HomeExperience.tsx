@@ -339,7 +339,11 @@ export function HomeExperience() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/35 to-ink/10" />
               <div className="relative p-8 text-white">
-                <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-accent">
+                {/* White, not accent. Brand orange at 12px over a bright clinic
+                    photograph is barely legible — the contrast scan that caught
+                    the invisible dark heading only checked headings, so these
+                    slipped through. White holds against every frame under it. */}
+                <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/85">
                   {item.label}
                 </p>
                 <h3 className="h-card mt-3 !text-white">{item.title}</h3>
