@@ -70,24 +70,20 @@
 }
 
 /*
-  Serif to read, sans to click.
+  Serif headings, sans everything else — the split oberizonconstruction.ca uses.
 
-  The page default is now the same Georgia stack as the headings, so body copy,
-  intros and card text are set in it — that is the editorial pairing premium
-  sites use, and it is the change that is actually visible. Swapping the
-  headings from Gelasio to Georgia was invisible by design: Gelasio is drawn as
-  a Georgia clone and measured identically, so nothing moved.
+  Body copy was briefly set in Georgia too. Measured against the reference, that
+  was the deviation: its paragraphs are ui-sans-serif at 400 and only its
+  headings are Georgia. Serif body is a legitimate editorial choice, but it is
+  not the look that was approved, so reading text is back on the sans.
 
-  Interface stays Barlow. Buttons, navigation, form controls and the small
-  tracked-out labels are things you operate rather than read, and a serif at
-  12-14px in those roles reads dated rather than premium — it is also harder to
-  scan. The rule below is by element so it cannot drift: anything interactive
-  gets the sans without a component having to remember to ask.
+  The element rule below still stands for the same reason it always did:
+  anything interactive gets the sans without a component having to ask.
 */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Georgia, var(--font-display), "Times New Roman", serif;
+  font-family: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
 }
 
 button,
@@ -199,14 +195,19 @@ a {
   over long before the cap matters.
 */
 /*
-  600 on both hero roles, 400 everywhere else. This is a drawn weight in Gelasio,
-  not a `font-bold` utility smearing a single-weight face — see the note in
-  layout.tsx. Heroes carry it and section headings do not, so the step from a
-  hero to the headings under it is weight as well as size.
+  400, matching oberizonconstruction.ca exactly.
+
+  This was 600, chosen when the display face was Gelasio — where 600 is a real
+  drawn intermediate weight and looked right. Georgia has no 600 cut. It ships
+  Regular and Bold only, so 600 resolves to Bold, and Georgia Bold sets 16%
+  wider than Regular at the same size: 1090px against 937px on this site's own
+  "Construction Services By City". That extra width is what read as stretched.
+
+  The reference sets its headline in Georgia 400. So does this now.
 */
 .h-hero,
 .h-hero-split {
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .h-hero {
