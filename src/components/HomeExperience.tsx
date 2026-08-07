@@ -518,7 +518,7 @@ export function HomeExperience() {
         </div>
       </section>
 
-      <section className="blueprint-grid bg-stone py-24">
+      <section className="bg-stone py-24">
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <p className="eyebrow">Recent Work</p>
@@ -543,7 +543,7 @@ export function HomeExperience() {
               <article
                 key={project.title}
                 className={[
-                  "group relative overflow-hidden bg-zinc-900 shadow-xl shadow-slate-900/10",
+                  "group relative overflow-hidden bg-ink",
                   // min-h is md:-guarded like the spans beside it. Unprefixed,
                   // the lead card was 520px tall in a 280px-wide single column
                   // on a phone — a portrait slab twice the height of the rest.
@@ -595,7 +595,7 @@ export function HomeExperience() {
         </div>
       </section>
 
-      <section className="blueprint-grid bg-raised px-5 py-24 sm:px-6 lg:px-8">
+      <section className="bg-raised px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
             {/* A plain eyebrow, not a pill. The chip was one more decorated
@@ -610,7 +610,7 @@ export function HomeExperience() {
           </div>
           <div className="mt-16 grid gap-8 lg:grid-cols-3">
             {reviews.map((item) => (
-              <article key={item.author} className="live-card-shadow rounded-3xl bg-white p-9">
+              <article key={item.author} className="border-t border-line pt-8">
                 <div className="flex gap-1 text-orange-500">
                   {Array.from({ length: 5 }).map((_, index) => (
                     <Star key={index} size={16} fill="currentColor" aria-hidden="true" />
@@ -655,15 +655,15 @@ export function HomeExperience() {
                   href={`/construction/${city.slug}/commercial-construction`}
                   className="flex items-center gap-4 text-base font-bold text-zinc-950 transition hover:text-accent"
                 >
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-50 text-accent">
+                  <span className="flex h-6 w-6 items-center justify-center text-accent">
                     <Check size={14} aria-hidden="true" />
                   </span>
                   {city.city}
                 </Link>
               ))}
             </div>
-            <div className="mt-14 flex gap-5 rounded-3xl bg-raised p-8 ring-1 ring-slate-100">
-              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white text-slate-400 ring-1 ring-slate-200">
+            <div className="mt-14 flex gap-5 border-t border-line pt-8">
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center text-accent">
                 <Globe2 size={26} aria-hidden="true" />
               </span>
               <div>
@@ -677,7 +677,7 @@ export function HomeExperience() {
               </div>
             </div>
           </div>
-          <div className="relative rounded-3xl border border-orange-100 p-4 shadow-2xl shadow-slate-900/12">
+          <div className="relative">
             <iframe
               title="Oberizon Construction service area map"
               src="https://www.google.com/maps?q=1493%20Foster%20St%20305%20White%20Rock%20BC&output=embed"
@@ -689,7 +689,7 @@ export function HomeExperience() {
         </div>
       </section>
 
-      <section className="blueprint-grid bg-raised px-5 py-24 sm:px-6 lg:px-8">
+      <section className="bg-raised px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
           <div className="max-w-3xl">
             <p className="eyebrow">Frequently Asked</p>

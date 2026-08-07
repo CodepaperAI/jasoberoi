@@ -249,10 +249,6 @@ a {
     0 28px 64px -16px rgba(20, 18, 15, 0.16);
 }
 
-.steel-shadow {
-  text-shadow: 0 14px 34px rgba(0, 0, 0, 0.3);
-}
-
 .amber-button {
   background: linear-gradient(135deg, #ff7a1a, #ff4f0a);
   box-shadow: 0 16px 34px rgba(255, 79, 10, 0.28);
@@ -267,15 +263,6 @@ a {
   position: relative;
   isolation: isolate;
   background: var(--ink);
-}
-
-.blueprint-band {
-  min-height: 88px;
-  background: linear-gradient(135deg, #ff7a1a, #ff4f0a);
-}
-
-.diagonal-cut {
-  clip-path: polygon(0 0, 100% 0, 94% 100%, 0% 100%);
 }
 
 .reveal-up {
@@ -326,137 +313,6 @@ a {
 .wash-fade {
   -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
-}
-
-/*
-  Blueprint grid.
-
-  The flat white and flat grey sections on the homepage had nothing in them, so
-  the page alternated between richly textured bands and blank ones. This gives
-  the empty ones a floor without asking for attention: 4% slate lines on a 64px
-  module, which is graph paper for a builder rather than decoration.
-
-  Two rules keep it subtle. The lines are drawn on the section's own background
-  colour instead of replacing it, so `blueprint-grid` composes with bg-white,
-  bg-slate-50 and bg-neutral-50 alike. And the whole thing fades out top and
-  bottom via a mask, so the grid never collides with a section seam — an abrupt
-  edge is what makes a texture look like a mistake.
-*/
-.blueprint-grid {
-  position: relative;
-  /* Creates a stacking context so the ::before below can sit at z-index -1:
-     above this element's own background, beneath its content. Without it the
-     grid would drop behind the section entirely and never be seen. */
-  isolation: isolate;
-}
-
-.blueprint-grid::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image:
-    /* Warm pools, matched to the accent rather than the old rgb(255,115,0),
-       which was a third orange nobody had chosen. */
-    radial-gradient(circle at 12% 18%, rgba(255, 79, 10, 0.06), transparent 26rem),
-    radial-gradient(circle at 88% 82%, rgba(255, 79, 10, 0.05), transparent 24rem),
-    /* Minor lines every 16px, major every 96px — graph paper reads as drawn
-       rather than as a plain mesh, and the heavier line gives the eye something
-       to catch. Ink-tinted now, not slate, so the grid belongs to the warm
-       palette instead of dragging it back towards blue-grey. */
-    linear-gradient(to right, rgba(20, 18, 15, 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(20, 18, 15, 0.07) 1px, transparent 1px),
-    linear-gradient(to right, rgba(20, 18, 15, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(20, 18, 15, 0.035) 1px, transparent 1px);
-  background-size:
-    100% 100%,
-    100% 100%,
-    96px 96px,
-    96px 96px,
-    16px 16px,
-    16px 16px;
-  /* The mask lives here rather than on the section, because masking the section
-     would fade its headings and copy along with the lines. */
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
-  mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
-}
-
-.corner-dots::before,
-.corner-dots::after {
-  content: "";
-  position: absolute;
-  width: 84px;
-  height: 84px;
-  background-image: radial-gradient(rgba(148, 163, 184, 0.22) 2px, transparent 2px);
-  background-size: 14px 14px;
-  pointer-events: none;
-}
-
-.corner-dots::before {
-  left: 44px;
-  top: 44px;
-}
-
-.corner-dots::after {
-  right: 44px;
-  bottom: 44px;
-}
-
-.live-card-shadow {
-  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
-}
-
-@keyframes reveal-up {
-  from {
-    opacity: 0;
-    transform: translateY(22px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes service-scroll {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-/*
-  Hero video that expands to full-bleed on scroll.
-
-  `--expand` runs 0 -> 1 and is set by ScrollExpandVideo. Everything below is
-  derived from it, so the scroll handler writes one value and CSS does the rest.
-  Width, height and corner radius all interpolate together: a contained,
-  heavily-rounded letterbox becomes a full-width 16:9 frame with square corners.
-*/
-.scroll-expand-frame {
-  --expand: 0;
-  display: flex;
-  justify-content: center;
-}
-
-.scroll-expand-media {
-  /* 78% of the container out to the full viewport width. */
-  width: calc(78% + 22% * var(--expand));
-  max-width: calc(1180px + (100vw - 1180px) * var(--expand));
-  /* Letterbox (2.9:1) opening out to 16:9. */
-  aspect-ratio: calc(2.9 - 1.12 * var(--expand));
-  border-radius: calc(5rem * (1 - var(--expand))) calc(5rem * (1 - var(--expand))) 0 0;
-  will-change: width, aspect-ratio;
-}
-
-@media (max-width: 1180px) {
-  .scroll-expand-media {
-    max-width: 100vw;
-  }
 }
 
 /*

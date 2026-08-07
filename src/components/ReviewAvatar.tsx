@@ -41,7 +41,7 @@ export function ReviewAvatar({
     <span className={["relative shrink-0", box].join(" ")}>
       <span
         aria-hidden="true"
-        className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-orange-50 to-orange-100 text-accent ring-1 ring-orange-200"
+        className="flex h-full w-full items-center justify-center rounded-full bg-raised text-accent"
       >
         <UserRound size={size === "sm" ? 22 : 26} strokeWidth={1.9} />
       </span>
