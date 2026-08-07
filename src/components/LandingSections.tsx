@@ -322,7 +322,7 @@ export function ProjectProof({
           {items.map((project) => (
             <article
               key={project.slug}
-              className="live-card-shadow flex flex-col overflow-hidden rounded-3xl bg-white ring-1 ring-slate-200"
+              className="card-shadow flex flex-col overflow-hidden rounded-3xl bg-white ring-1 ring-slate-200"
             >
               {project.images?.length ? (
                 <div className="relative aspect-[16/10]">

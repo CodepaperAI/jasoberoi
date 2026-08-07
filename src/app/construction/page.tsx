@@ -58,7 +58,7 @@ export default function ConstructionIndexPage() {
             {serviceAreas.map((city) => (
               <article
                 key={city.slug}
-                className="live-card-shadow rounded-3xl bg-white p-6 ring-1 ring-slate-200"
+                className="card-shadow rounded-3xl bg-white p-6 ring-1 ring-slate-200"
               >
                 <div className="flex items-start gap-3">
                   <MapPin className="mt-1 shrink-0 text-accent" size={22} aria-hidden="true" />

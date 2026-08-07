@@ -84,14 +84,29 @@ a {
   color: #fff;
 }
 
+/*
+  Georgia first, by request — it is what oberizonconstruction.ca sets its
+  headings in and it is the look that was signed off.
+
+  Gelasio sits behind it rather than in front. Georgia is a system font: it
+  ships with macOS and Windows but not with Android or most Linux, where a
+  Georgia-only stack falls through to whatever generic serif the device has and
+  the site renders differently depending on who opens it. Gelasio is drawn as a
+  metric-compatible Georgia substitute — measured at exactly 1.000x its width on
+  this site's own headline — so those visitors get the same shapes rather than a
+  lucky guess.
+
+  Order matters and is deliberate: Georgia where it exists, Gelasio everywhere
+  else, Times only if both somehow fail. Nobody sees a fallback that looks wrong.
+*/
 .display-font,
 .serif-font {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: Georgia, var(--font-display), "Times New Roman", serif;
 }
 
 .orange-italic {
   color: var(--accent);
-  font-family: var(--font-display), Georgia, serif;
+  font-family: Georgia, var(--font-display), "Times New Roman", serif;
   font-style: italic;
 }
 
@@ -125,7 +140,7 @@ a {
 .h-hero-split,
 .h-section,
 .h-card {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: Georgia, var(--font-display), "Times New Roman", serif;
   text-wrap: balance;
 }
 
@@ -265,20 +280,14 @@ a {
   background: var(--ink);
 }
 
-.reveal-up {
-  animation: reveal-up 720ms ease both;
-}
+@keyframes service-scroll {
+  from {
+    transform: translateX(0);
+  }
 
-.reveal-delay-1 {
-  animation-delay: 120ms;
-}
-
-.reveal-delay-2 {
-  animation-delay: 240ms;
-}
-
-.reveal-delay-3 {
-  animation-delay: 360ms;
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .service-track {
@@ -313,6 +322,36 @@ a {
 .wash-fade {
   -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+}
+
+/*
+  Hero video that expands to full-bleed on scroll.
+
+  `--expand` runs 0 -> 1 and is set by ScrollExpandVideo. Everything below is
+  derived from it, so the scroll handler writes one value and CSS does the rest.
+  Width, height and corner radius all interpolate together: a contained,
+  heavily-rounded letterbox becomes a full-width 16:9 frame with square corners.
+*/
+.scroll-expand-frame {
+  --expand: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.scroll-expand-media {
+  /* 78% of the container out to the full viewport width. */
+  width: calc(78% + 22% * var(--expand));
+  max-width: calc(1180px + (100vw - 1180px) * var(--expand));
+  /* Letterbox (2.9:1) opening out to 16:9. */
+  aspect-ratio: calc(2.9 - 1.12 * var(--expand));
+  border-radius: calc(5rem * (1 - var(--expand))) calc(5rem * (1 - var(--expand))) 0 0;
+  will-change: width, aspect-ratio;
+}
+
+@media (max-width: 1180px) {
+  .scroll-expand-media {
+    max-width: 100vw;
+  }
 }
 
 /*

@@ -141,7 +141,7 @@ export function ContentPage({ page }: { page: SitePage }) {
             {page.features.map((feature) => (
               <article
                 key={feature.title}
-                className="live-card-shadow rounded-3xl bg-white p-6 ring-1 ring-slate-200"
+                className="card-shadow rounded-3xl bg-white p-6 ring-1 ring-slate-200"
               >
                 <h3 className="text-2xl font-bold text-zinc-950">{feature.title}</h3>
                 <p className="mt-2 text-base font-medium leading-7 text-muted">{feature.text}</p>
