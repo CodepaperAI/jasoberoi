@@ -235,7 +235,7 @@ export function HomeExperience() {
               </ButtonLink>
               <a
                 href={siteConfig.phoneHref}
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-zinc-900/15 bg-white/80 px-7 py-3.5 text-base font-bold text-zinc-900 backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:text-accent"
+                className="ui-font inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-zinc-900/15 bg-white/80 px-7 py-3.5 text-base font-bold text-zinc-900 backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:text-accent"
               >
                 <Phone size={17} strokeWidth={2.4} aria-hidden="true" />
                 {siteConfig.phone}
@@ -244,7 +244,7 @@ export function HomeExperience() {
 
             {/* Credentials, not numbers — the ProofBar below the video already
                 carries the counts, and repeating them here would be noise. */}
-            <ul className="mt-9 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-xs font-semibold uppercase tracking-[0.08em] text-muted/80">
+            <ul className="ui-font mt-9 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-xs font-semibold uppercase tracking-[0.08em] text-muted/80">
               {trustItems.slice(0, 3).map((item) => (
                 <li key={item} className="flex items-center gap-2">
                   <Check size={14} strokeWidth={3} className="text-accent" aria-hidden="true" />
@@ -343,12 +343,12 @@ export function HomeExperience() {
                     photograph is barely legible — the contrast scan that caught
                     the invisible dark heading only checked headings, so these
                     slipped through. White holds against every frame under it. */}
-                <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/85">
+                <p className="ui-font text-xs font-extrabold uppercase tracking-[0.22em] text-white/85">
                   {item.label}
                 </p>
                 <h3 className="h-card mt-3 !text-white">{item.title}</h3>
                 <p className="mt-3 max-w-sm text-base leading-7 text-white/80">{item.text}</p>
-                <span className="mt-5 inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition group-hover:gap-3">
+                <span className="ui-font mt-5 inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition group-hover:gap-3">
                   Explore <ArrowRight size={15} aria-hidden="true" />
                 </span>
               </div>
@@ -490,12 +490,12 @@ export function HomeExperience() {
             />
             <div className="absolute left-6 top-10 flex h-28 w-28 flex-col items-center justify-center bg-orange-600 text-white sm:left-12">
               <span className="serif-font text-6xl font-bold italic leading-none">90</span>
-              <span className="text-sm font-extrabold uppercase tracking-[0.28em]">Days</span>
+              <span className="ui-font text-sm font-extrabold uppercase tracking-[0.28em]">Days</span>
             </div>
           </div>
           <div className="flex items-center px-6 py-20 sm:px-12 lg:w-1/2 lg:px-20">
             <div className="max-w-2xl">
-              <p className="text-sm font-bold uppercase tracking-[0.32em] text-orange-500">
+              <p className="ui-font text-sm font-bold uppercase tracking-[0.32em] text-orange-500">
                 Featured Case Study
               </p>
               <h2 className="h-section mt-8">
@@ -569,7 +569,7 @@ export function HomeExperience() {
                 */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/55 to-black/25" />
                 <div className="absolute inset-x-0 bottom-0 p-7 text-white">
-                  <p className="text-xs font-bold uppercase tracking-[0.24em] text-orange-300">
+                  <p className="ui-font text-xs font-bold uppercase tracking-[0.24em] text-orange-300">
                     {project.label}
                   </p>
                   <h3 className="mt-2 text-xl font-bold">{project.title}</h3>
@@ -583,7 +583,7 @@ export function HomeExperience() {
               ends every block this way, and it is one less box. */}
           <Link
             href="/projects"
-            className="group inline-flex items-center gap-3 border-b border-ink/25 pb-2 text-sm font-extrabold uppercase tracking-[0.16em] text-ink transition hover:border-accent hover:text-accent"
+            className="ui-font group inline-flex items-center gap-3 border-b border-ink/25 pb-2 text-sm font-extrabold uppercase tracking-[0.16em] text-ink transition hover:border-accent hover:text-accent"
           >
             View All Projects
             <ArrowRight
@@ -623,7 +623,7 @@ export function HomeExperience() {
                   <ReviewAvatar author={item.author} image={item.image} />
                   <div>
                     <p className="font-bold text-zinc-950">{item.author}</p>
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent">
+                    <p className="ui-font text-xs font-bold uppercase tracking-[0.16em] text-accent">
                       {[item.role, item.city].filter(Boolean).join(", ")}
                     </p>
                   </div>
@@ -637,7 +637,7 @@ export function HomeExperience() {
       <section id="service-areas" className="overflow-hidden bg-paper px-5 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.22em] text-accent">
+            <p className="ui-font text-sm font-bold uppercase tracking-[0.22em] text-accent">
               Service Areas
             </p>
             <h2 className="h-section mt-4">
@@ -667,7 +667,7 @@ export function HomeExperience() {
                 <Globe2 size={26} aria-hidden="true" />
               </span>
               <div>
-                <p className="text-sm font-extrabold uppercase tracking-[0.2em] text-accent">
+                <p className="ui-font text-sm font-extrabold uppercase tracking-[0.2em] text-accent">
                   HQ White Rock
                 </p>
                 <p className="mt-2 text-base leading-7 text-muted">
@@ -708,7 +708,7 @@ export function HomeExperience() {
       <section className="relative overflow-hidden bg-ink px-5 py-24 text-white sm:px-6 lg:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,79,10,0.16),transparent_34rem)]" />
         <div className="relative mx-auto max-w-4xl text-center">
-          <span className="inline-flex rounded-full bg-orange-600/15 px-5 py-2 text-xs font-extrabold uppercase tracking-[0.22em] text-orange-500">
+          <span className="ui-font inline-flex rounded-full bg-orange-600/15 px-5 py-2 text-xs font-extrabold uppercase tracking-[0.22em] text-orange-500">
             Book a Consultation
           </span>
           <h2 className="h-section mt-8">

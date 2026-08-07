@@ -54,34 +54,53 @@ export default function ConstructionIndexPage() {
 
       <section className="bg-paper px-5 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-x-12 gap-y-16 md:grid-cols-2 xl:grid-cols-3">
+            {/*
+              Rows on rules, not 140 pills.
+
+              Each of the fourteen cities listed its ten services as a rounded,
+              bordered, filled pill — boxes inside a box, 140 of them on one
+              page. The labels were also uppercase, bold and letterspaced, which
+              is fine on a three-word chip and hostile on "Dental Clinic
+              Construction in New Westminster": at that length uppercase kills
+              word shape, and the strings wrapped mid-phrase leaving orphans
+              like "ROCK" and "VANCOUVER" alone on a second line.
+
+              Sentence case, hairline rules, one arrow. The city name is the
+              heading and the services are simply its list.
+
+              h-full plus flex-col also fixes the alignment: the cards used to
+              size to their own content, so a city with a three-line description
+              pushed its list down and none of the columns lined up.
+            */}
             {serviceAreas.map((city) => (
-              <article
-                key={city.slug}
-                className="card-shadow rounded-3xl bg-white p-6 ring-1 ring-slate-200"
-              >
+              <article key={city.slug} className="flex h-full flex-col">
                 <div className="flex items-start gap-3">
-                  <MapPin className="mt-1 shrink-0 text-accent" size={22} aria-hidden="true" />
+                  <MapPin className="mt-2 shrink-0 text-accent" size={20} aria-hidden="true" />
                   <div>
-                    <h2 className="h-section">{city.city}</h2>
-                    <p className="mt-2 text-base font-medium leading-6 text-muted">
+                    <h2 className="h-card text-ink">{city.city}</h2>
+                    <p className="mt-2 text-sm leading-6 text-muted">
                       {city.regionNote}. Common project conversations include{" "}
                       {city.neighborhoods.slice(0, 3).join(", ")}.
                     </p>
                   </div>
                 </div>
 
-                <div className="mt-6 grid gap-2">
+                <div className="mt-6 border-t border-line">
                   {constructionServices.map((service) => (
                     <Link
                       key={service.slug}
                       href={`/construction/${city.slug}/${service.slug}`}
-                      className="flex min-h-12 items-center justify-between rounded-2xl border border-slate-200 bg-raised px-4 py-3 text-sm font-extrabold uppercase tracking-[0.06em] text-zinc-800 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700"
+                      className="group flex items-center justify-between gap-4 border-b border-line py-3 text-sm font-semibold text-ink transition hover:text-accent"
                     >
                       <span>
                         {service.name} in {city.city}
                       </span>
-                      <ArrowRight size={17} aria-hidden="true" />
+                      <ArrowRight
+                        size={15}
+                        aria-hidden="true"
+                        className="shrink-0 text-ink/25 transition group-hover:translate-x-0.5 group-hover:text-accent"
+                      />
                     </Link>
                   ))}
                 </div>

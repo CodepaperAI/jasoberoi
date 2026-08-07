@@ -127,7 +127,7 @@ export function CostCalculator() {
 
   const field =
     "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base font-semibold text-zinc-900 outline-none focus:border-orange-400";
-  const label = "block text-xs font-extrabold uppercase tracking-[0.16em] text-slate-500";
+  const label = "ui-font block text-xs font-extrabold uppercase tracking-[0.16em] text-slate-500";
 
   return (
     <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
@@ -209,7 +209,7 @@ export function CostCalculator() {
       {estimate ? (
         <div className="overflow-hidden rounded-3xl ring-1 ring-slate-200">
           <div className="bg-ink px-7 py-8 text-white">
-            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-orange-400">
+            <p className="ui-font text-xs font-extrabold uppercase tracking-[0.2em] text-orange-400">
               Estimated build
             </p>
             <p className="serif-font mt-4 text-4xl leading-none sm:text-5xl">
@@ -231,7 +231,7 @@ export function CostCalculator() {
               </span>
             </div>
             <div className="flex items-baseline justify-between gap-4 pt-4">
-              <span className="text-xs font-extrabold uppercase tracking-[0.16em] text-slate-500">
+              <span className="ui-font text-xs font-extrabold uppercase tracking-[0.16em] text-slate-500">
                 All-in
               </span>
               <span className="text-2xl font-bold text-zinc-950">

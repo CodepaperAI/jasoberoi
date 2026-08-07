@@ -47,7 +47,7 @@ export function WhatsAppLink({
       rel="noopener noreferrer"
       data-analytics={analytics}
       aria-label={`Message Oberizon Construction on WhatsApp at ${siteConfig.whatsapp}`}
-      className={className}
+      className={`ui-font ${className}`}
     >
       <WhatsAppIcon size={iconSize} />
       {label}

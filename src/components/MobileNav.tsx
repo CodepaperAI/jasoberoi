@@ -40,7 +40,7 @@ export function MobileNav() {
         {navigation.map((item) =>
           item.items ? (
             <div key={item.label} className="border-b border-zinc-100 py-2 last:border-b-0">
-              <p className="px-2 pb-1 text-xs font-bold uppercase tracking-[0.18em] text-accent">
+              <p className="ui-font px-2 pb-1 text-xs font-bold uppercase tracking-[0.18em] text-accent">
                 {item.label}
               </p>
               {item.items.map((child) => (

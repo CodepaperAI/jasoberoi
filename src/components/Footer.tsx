@@ -20,7 +20,7 @@ const socialMarks: Record<string, string> = {
 
 export function Footer() {
   return (
-    <footer className="bg-ink text-white">
+    <footer className="ui-font bg-ink text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 pb-14 pt-16 sm:px-6 lg:grid-cols-[1.15fr_0.9fr_0.9fr_0.9fr_0.85fr] lg:px-8">
         <div>
           <Image
@@ -45,7 +45,7 @@ export function Footer() {
           <dl className="mt-8 grid max-w-xs gap-5">
             {credentials.map((item) => (
               <div key={item.label}>
-                <dt className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-orange-400">
+                <dt className="ui-font text-[10px] font-extrabold uppercase tracking-[0.2em] text-orange-400">
                   {item.label}
                 </dt>
                 <dd className="mt-1.5 text-sm font-medium leading-6 text-white/70">{item.value}</dd>
@@ -55,7 +55,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h2 className="text-xs font-extrabold uppercase tracking-[0.28em] text-white">Services</h2>
+          <h2 className="ui-font text-xs font-extrabold uppercase tracking-[0.28em] text-white">Services</h2>
           {/*
             Every service, not a slice. The previous slice(4, 10) silently hid
             Commercial Construction and Commercial Renovation — at 1,000 and 880
@@ -80,7 +80,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h2 className="text-xs font-extrabold uppercase tracking-[0.28em] text-white">Service Areas</h2>
+          <h2 className="ui-font text-xs font-extrabold uppercase tracking-[0.28em] text-white">Service Areas</h2>
           {/*
             Rendered from serviceAreas so the footer and the Service Areas page
             can never disagree — previously a hardcoded 10 against a list of 14.
@@ -102,7 +102,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h2 className="text-xs font-extrabold uppercase tracking-[0.28em] text-white">Contact</h2>
+          <h2 className="ui-font text-xs font-extrabold uppercase tracking-[0.28em] text-white">Contact</h2>
           <ul className="mt-6 space-y-3 text-sm font-semibold text-white/55">
             <li>
               <a className="flex items-center gap-3 transition hover:text-orange-500" href={siteConfig.phoneHref}>
@@ -138,7 +138,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h2 className="text-xs font-extrabold uppercase tracking-[0.28em] text-white">Connect</h2>
+          <h2 className="ui-font text-xs font-extrabold uppercase tracking-[0.28em] text-white">Connect</h2>
           <div className="mt-6 flex flex-wrap gap-3">
             {socialLinks.map((link) => (
               <a
@@ -149,7 +149,7 @@ export function Footer() {
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white/70 transition hover:-translate-y-0.5 hover:border-orange-500 hover:bg-orange-600 hover:text-white"
                 aria-label={link.label}
               >
-                <span aria-hidden="true" className="text-xs font-extrabold uppercase">
+                <span aria-hidden="true" className="ui-font text-xs font-extrabold uppercase">
                   {socialMarks[link.label] ?? link.label.slice(0, 2)}
                 </span>
               </a>

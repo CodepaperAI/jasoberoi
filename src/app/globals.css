@@ -69,9 +69,35 @@
   box-sizing: border-box;
 }
 
+/*
+  Serif to read, sans to click.
+
+  The page default is now the same Georgia stack as the headings, so body copy,
+  intros and card text are set in it — that is the editorial pairing premium
+  sites use, and it is the change that is actually visible. Swapping the
+  headings from Gelasio to Georgia was invisible by design: Gelasio is drawn as
+  a Georgia clone and measured identically, so nothing moved.
+
+  Interface stays Barlow. Buttons, navigation, form controls and the small
+  tracked-out labels are things you operate rather than read, and a serif at
+  12-14px in those roles reads dated rather than premium — it is also harder to
+  scan. The rule below is by element so it cannot drift: anything interactive
+  gets the sans without a component having to remember to ask.
+*/
 body {
   background: var(--background);
   color: var(--foreground);
+  font-family: Georgia, var(--font-display), "Times New Roman", serif;
+}
+
+button,
+input,
+select,
+textarea,
+nav,
+header,
+.eyebrow,
+.ui-font {
   font-family: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
 }
 

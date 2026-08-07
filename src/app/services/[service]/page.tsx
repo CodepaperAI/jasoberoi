@@ -117,7 +117,7 @@ export default async function ServiceHubPage({ params }: HubProps) {
 
           <div className="overflow-hidden rounded-3xl ring-1 ring-slate-200">
             <div className="bg-ink px-7 py-8 text-white">
-              <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.2em] text-orange-400">
+              <p className="ui-font flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.2em] text-orange-400">
                 <Banknote size={16} aria-hidden="true" />
                 2026 range
               </p>

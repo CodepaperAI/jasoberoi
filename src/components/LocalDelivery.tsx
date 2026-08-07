@@ -59,7 +59,7 @@ export function LocalDelivery({ page }: { page: ConstructionPseoPage }) {
               {page.city.neighborhoods.map((area) => (
                 <span
                   key={area}
-                  className="rounded-full border border-slate-200 px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-[0.12em] text-slate-500"
+                  className="ui-font rounded-full border border-slate-200 px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-[0.12em] text-slate-500"
                 >
                   {area}
                 </span>
@@ -70,7 +70,7 @@ export function LocalDelivery({ page }: { page: ConstructionPseoPage }) {
           {/* The price, given the weight it deserves, with the scope beneath it. */}
           <div className="overflow-hidden rounded-3xl ring-1 ring-slate-200">
             <div className="bg-ink px-7 py-8 text-white">
-              <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.2em] text-orange-400">
+              <p className="ui-font flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.2em] text-orange-400">
                 <Banknote size={16} aria-hidden="true" />
                 2026 range
               </p>
@@ -81,7 +81,7 @@ export function LocalDelivery({ page }: { page: ConstructionPseoPage }) {
             </div>
 
             <div className="bg-white p-7">
-              <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-slate-400">
+              <p className="ui-font text-xs font-extrabold uppercase tracking-[0.2em] text-slate-400">
                 What that covers
               </p>
               <ul className="mt-5 grid gap-3">

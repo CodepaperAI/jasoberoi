@@ -56,7 +56,7 @@ export function HomeConsultationForm() {
   <div className="flex flex-wrap justify-center gap-4 sm:col-span-2">
     <button
       type="submit"
-      className="inline-flex items-center justify-center gap-3 rounded-2xl bg-orange-600 px-12 py-5 text-xs font-bold uppercase tracking-[0.2em] text-white shadow-xl shadow-orange-600/20 transition hover:bg-orange-500"
+      className="ui-font inline-flex items-center justify-center gap-3 rounded-2xl bg-orange-600 px-12 py-5 text-xs font-bold uppercase tracking-[0.2em] text-white shadow-xl shadow-orange-600/20 transition hover:bg-orange-500"
     >
       <Send size={15} aria-hidden="true" />
       Book a Consultation
@@ -67,12 +67,12 @@ export function HomeConsultationForm() {
     <WhatsAppLink
       analytics="home-form-whatsapp"
       iconSize={15}
-      className="inline-flex items-center justify-center gap-3 rounded-2xl bg-[#25D366] px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] text-white shadow-xl shadow-emerald-900/20 transition hover:bg-[#1eb457]"
+      className="ui-font inline-flex items-center justify-center gap-3 rounded-2xl bg-[#25D366] px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] text-white shadow-xl shadow-emerald-900/20 transition hover:bg-[#1eb457]"
     />
     <a
       href={siteConfig.phoneHref}
       data-analytics="home-form-call"
-      className="inline-flex items-center justify-center gap-3 rounded-2xl border border-white/25 px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:border-orange-400 hover:text-orange-400"
+      className="ui-font inline-flex items-center justify-center gap-3 rounded-2xl border border-white/25 px-10 py-5 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:border-orange-400 hover:text-orange-400"
     >
       <Phone size={15} aria-hidden="true" />
       {siteConfig.phone}

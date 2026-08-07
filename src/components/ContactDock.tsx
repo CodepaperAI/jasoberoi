@@ -176,7 +176,7 @@ export function ContactDock() {
               <div className="grid gap-3 sm:col-span-2 sm:grid-cols-[1fr_auto_auto]">
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-white shadow-xl shadow-orange-600/25 transition hover:bg-orange-500"
+                  className="ui-font inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-white shadow-xl shadow-orange-600/25 transition hover:bg-orange-500"
                 >
                   <Send size={15} aria-hidden="true" />
                   Send request
@@ -184,12 +184,12 @@ export function ContactDock() {
                 <WhatsAppLink
                   analytics="dock-whatsapp"
                   iconSize={15}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-white shadow-lg shadow-emerald-900/15 transition hover:bg-[#1eb457]"
+                  className="ui-font inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-white shadow-lg shadow-emerald-900/15 transition hover:bg-[#1eb457]"
                 />
                 <a
                   href={siteConfig.phoneHref}
                   data-analytics="dock-call"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-zinc-900 transition hover:border-orange-300 hover:text-accent"
+                  className="ui-font inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-zinc-900 transition hover:border-orange-300 hover:text-accent"
                 >
                   <Phone size={15} aria-hidden="true" />
                   Call

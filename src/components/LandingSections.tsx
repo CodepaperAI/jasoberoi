@@ -59,7 +59,7 @@ export function CallLink({
     <a
       href={siteConfig.phoneHref}
       className={[
-        "inline-flex min-h-11 items-center justify-center gap-2 rounded-full border px-6 py-3 text-sm font-bold transition duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-orange-400/70",
+        "ui-font inline-flex min-h-11 items-center justify-center gap-2 rounded-full border px-6 py-3 text-sm font-bold transition duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-orange-400/70",
         onDark
           ? "border-white/30 bg-white/10 text-white backdrop-blur hover:border-white/60 hover:bg-white/20"
           : "border-zinc-900/15 bg-white text-zinc-900 hover:border-orange-300 hover:text-accent",
@@ -250,7 +250,7 @@ export function ExperienceBlock({ city, items }: { city: ServiceArea; items: Pro
               />
             </div>
             <figcaption className="absolute inset-x-4 bottom-4 rounded-2xl bg-white/95 px-5 py-4 backdrop-blur">
-              <span className="block text-xs font-extrabold uppercase tracking-[0.14em] text-accent">
+              <span className="ui-font block text-xs font-extrabold uppercase tracking-[0.14em] text-accent">
                 {shown.discipline} · {shown.status}
               </span>
               <span className="mt-1 block text-base font-bold text-zinc-950">{shown.name}</span>
@@ -264,7 +264,7 @@ export function ExperienceBlock({ city, items }: { city: ServiceArea; items: Pro
       <ol className="mx-auto mt-14 grid max-w-7xl gap-px overflow-hidden rounded-2xl bg-slate-200 md:grid-cols-4">
         {processSteps.map((step) => (
           <li key={step.number} className="bg-white p-6">
-            <span className="text-xs font-extrabold tracking-[0.18em] text-orange-500">
+            <span className="ui-font text-xs font-extrabold tracking-[0.18em] text-orange-500">
               {step.number}
             </span>
             <h3 className="mt-2 text-lg font-bold text-zinc-950">{step.title}</h3>
@@ -337,12 +337,12 @@ export function ProjectProof({
               ) : null}
               <div className="flex flex-col p-6">
               <div className="flex items-center justify-between gap-3">
-                <span className="rounded-full bg-orange-50 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.12em] text-orange-700">
+                <span className="ui-font rounded-full bg-orange-50 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.12em] text-orange-700">
                   {project.discipline}
                 </span>
                 <span
                   className={[
-                    "text-xs font-extrabold uppercase tracking-[0.12em]",
+                    "ui-font text-xs font-extrabold uppercase tracking-[0.12em]",
                     project.status === "Delivered" ? "text-emerald-600" : "text-slate-400",
                   ].join(" ")}
                 >
@@ -363,7 +363,7 @@ export function ProjectProof({
               ) : null}
 
               {project.timeline ? (
-                <p className="mt-4 text-sm font-bold uppercase tracking-[0.1em] text-zinc-900">
+                <p className="ui-font mt-4 text-sm font-bold uppercase tracking-[0.1em] text-zinc-900">
                   {project.timeline}
                 </p>
               ) : null}
@@ -411,7 +411,7 @@ export function ReviewsBlock({ items }: { items: Review[] }) {
                 <ReviewAvatar author={review.author} image={review.image} size="sm" />
                 <span className="min-w-0">
                   <span className="block text-base font-bold text-zinc-950">{review.author}</span>
-                  <span className="block text-xs font-extrabold uppercase tracking-[0.12em] text-accent">
+                  <span className="ui-font block text-xs font-extrabold uppercase tracking-[0.12em] text-accent">
                     {[review.role, review.city].filter(Boolean).join(", ")}
                   </span>
                 </span>
@@ -451,7 +451,7 @@ export function WhyTheseServices({
               href={link.href}
               className="group flex flex-col justify-between gap-3 rounded-2xl border border-slate-200 bg-paper px-5 py-5 transition hover:border-orange-300"
             >
-              <span className="flex items-center justify-between gap-3 text-sm font-extrabold uppercase tracking-[0.08em] text-zinc-900 group-hover:text-accent">
+              <span className="ui-font flex items-center justify-between gap-3 text-sm font-extrabold uppercase tracking-[0.08em] text-zinc-900 group-hover:text-accent">
                 {link.label}
                 <ArrowRight size={18} aria-hidden="true" className="shrink-0" />
               </span>

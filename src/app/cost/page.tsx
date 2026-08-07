@@ -174,13 +174,13 @@ export default function CostPage() {
               <table className="w-full text-left">
                 <thead className="bg-orange-50/70">
                   <tr>
-                    <th className="px-5 py-4 text-xs font-extrabold uppercase tracking-[0.14em] text-orange-700">
+                    <th className="ui-font px-5 py-4 text-xs font-extrabold uppercase tracking-[0.14em] text-orange-700">
                       Project type
                     </th>
-                    <th className="px-5 py-4 text-xs font-extrabold uppercase tracking-[0.14em] text-orange-700">
+                    <th className="ui-font px-5 py-4 text-xs font-extrabold uppercase tracking-[0.14em] text-orange-700">
                       Per sq ft
                     </th>
-                    <th className="px-5 py-4 text-xs font-extrabold uppercase tracking-[0.14em] text-orange-700">
+                    <th className="ui-font px-5 py-4 text-xs font-extrabold uppercase tracking-[0.14em] text-orange-700">
                       Typical total
                     </th>
                   </tr>
@@ -312,7 +312,7 @@ export default function CostPage() {
 
           <div className="mt-14 flex flex-col items-start gap-4 rounded-3xl border border-orange-200 bg-orange-50 p-8 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-sm font-extrabold uppercase tracking-[0.2em] text-orange-700">
+              <p className="ui-font text-sm font-extrabold uppercase tracking-[0.2em] text-orange-700">
                 Next step
               </p>
               <p className="mt-2 text-2xl font-bold text-zinc-950">

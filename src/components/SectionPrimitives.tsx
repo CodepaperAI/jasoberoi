@@ -70,7 +70,7 @@ export function ServiceMarquee() {
         {doubled.map((service, index) => (
           <span
             key={`${service.slug}-${index}`}
-            className="rounded-full border border-orange-100 bg-orange-50 px-5 py-3 text-xs font-extrabold uppercase tracking-[0.18em] text-orange-700"
+            className="ui-font rounded-full border border-orange-100 bg-orange-50 px-5 py-3 text-xs font-extrabold uppercase tracking-[0.18em] text-orange-700"
           >
             {service.name}
           </span>
@@ -85,7 +85,7 @@ export function ReviewCta() {
     <section className="relative overflow-hidden bg-ink px-5 py-20 text-white sm:px-6 lg:px-8">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,79,10,0.16),transparent_34rem)]" />
       <div className="relative mx-auto max-w-4xl text-center">
-        <span className="inline-flex rounded-full bg-orange-600/15 px-5 py-2 text-xs font-extrabold uppercase tracking-[0.22em] text-orange-500">
+        <span className="ui-font inline-flex rounded-full bg-orange-600/15 px-5 py-2 text-xs font-extrabold uppercase tracking-[0.22em] text-orange-500">
           Book a Consultation
         </span>
         <h2 className="h-section mt-8">
@@ -129,7 +129,7 @@ export function ContentPage({ page }: { page: SitePage }) {
               {page.proof.map((item) => (
                 <span
                   key={item}
-                  className="rounded-full border border-orange-100 bg-orange-50 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.12em] text-orange-700"
+                  className="ui-font rounded-full border border-orange-100 bg-orange-50 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.12em] text-orange-700"
                 >
                   {item}
                 </span>
@@ -229,7 +229,7 @@ export function InternalLinkRail({
         <Link
           key={link.href}
           href={link.href}
-          className="flex min-h-16 items-center justify-between rounded-2xl border border-slate-200 bg-paper px-5 py-4 text-sm font-extrabold uppercase tracking-[0.08em] text-zinc-900 transition hover:border-orange-300 hover:text-accent"
+          className="ui-font flex min-h-16 items-center justify-between rounded-2xl border border-slate-200 bg-paper px-5 py-4 text-sm font-extrabold uppercase tracking-[0.08em] text-zinc-900 transition hover:border-orange-300 hover:text-accent"
         >
           <span>{link.label}</span>
           <ArrowRight size={18} aria-hidden="true" />
