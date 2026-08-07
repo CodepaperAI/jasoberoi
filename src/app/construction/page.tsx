@@ -39,7 +39,7 @@ export default function ConstructionIndexPage() {
           <p className="eyebrow">
             Location + Service SEO
           </p>
-          <h1 className="h-hero mt-5 max-w-5xl">
+          <h1 className="h-hero mt-5">
             Construction Services By City
           </h1>
           <p className="mt-6 max-w-3xl text-xl font-medium leading-8 text-muted">

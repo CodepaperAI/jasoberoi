@@ -166,7 +166,20 @@ export function HomeExperience() {
         */}
         <div className="soft-grid wash-fade absolute inset-x-0 top-20 h-[900px] sm:h-[680px]" />
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl pt-8 text-center">
+          {/*
+            max-w-7xl, not max-w-6xl, and more air above.
+
+            The headline is capped by whatever track it sits in. Inside the old
+            1152px wrapper its first line stopped fitting past 96px; the full
+            track takes 100px, which is what turns a two-line 155px block into a
+            three-line 306px one. The container width was silently setting the
+            ceiling on how large the hero could ever be.
+
+            pt-16 because the headline used to start 166px down the page against
+            the live site's 240px — it read as tucked under the header rather
+            than given the top of the page.
+          */}
+          <div className="mx-auto max-w-7xl pt-8 text-center sm:pt-16">
             <p className="eyebrow">White Rock · Serving the Lower Mainland</p>
             {/*
               Category altitude, deliberately. This said "Dental & Commercial",
@@ -196,7 +209,17 @@ export function HomeExperience() {
               <span className="block orange-italic">Healthcare &amp; Commercial</span>{" "}
               Construction Specialists in BC.
             </h1>
-            <p className="mx-auto mt-6 max-w-xl text-lg font-medium leading-8 text-muted">
+            {/*
+              Deliberately narrow and quiet. The hero carries six elements where
+              the reference site carries three, and the failure was not that any
+              one of them is wrong — it is that they all read at the same weight,
+              so nothing led. These stay, because between them they hold the
+              location keyword, the credentials and the click-to-call that most
+              contractor leads arrive through. They just stop competing with the
+              headline: one tight measure directly beneath it rather than a wide
+              band of body copy.
+            */}
+            <p className="mx-auto mt-7 max-w-lg text-lg font-medium leading-8 text-muted">
               Clinics, pharmacies and commercial interiors — planned before the site gets busy.
             </p>
 
@@ -215,10 +238,10 @@ export function HomeExperience() {
 
             {/* Credentials, not numbers — the ProofBar below the video already
                 carries the counts, and repeating them here would be noise. */}
-            <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-sm font-semibold text-muted">
+            <ul className="mt-9 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-xs font-semibold uppercase tracking-[0.08em] text-muted/80">
               {trustItems.slice(0, 3).map((item) => (
                 <li key={item} className="flex items-center gap-2">
-                  <Check size={16} strokeWidth={3} className="text-accent" aria-hidden="true" />
+                  <Check size={14} strokeWidth={3} className="text-accent" aria-hidden="true" />
                   {item}
                 </li>
               ))}

@@ -132,16 +132,25 @@ a {
 /*
   H1 in a full-width container: the homepage and /construction.
 
-  The 2.125rem floor is for 320px phones. Gelasio sets wider than the face this
-  replaced, and at the previous 2.625rem floor the homepage headline ran to five
-  lines in a 280px column. The clamp's middle term never reaches the floor on
-  anything above ~380px wide, so this costs nothing on real phones and rescues
-  the smallest ones.
+  6.25rem, and the number is the point.
+
+  The headline used to be 76px — larger in points than the live site's 72px, and
+  yet visibly weaker, because it wrapped to two lines against the live site's
+  three. 76px over two lines is a 155px block; the live site's is 216px. Point
+  size was never what made a hero feel big; occupied height is.
+
+  At 100px in the full max-w-7xl track this runs three lines and a 306px block,
+  which is 42% more mass than the site it is being compared against. 100 is also
+  a ceiling rather than a preference: past ~104px the first line stops fitting
+  the track and the headline breaks badly.
+
+  The 2.125rem floor is for 320px phones, where the clamp's middle term takes
+  over long before the cap matters.
 */
 .h-hero {
-  font-size: clamp(2.125rem, 5.6vw, 4.75rem);
-  line-height: 1.06;
-  letter-spacing: -0.015em;
+  font-size: clamp(2.125rem, 7vw, 6.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
 }
 
 /*
@@ -149,24 +158,34 @@ a {
 
   These ran at 72px inside a 554px column — twelve characters a line, four-line
   blocks. The cap is the fix, paired with the grid flip in PageHero and
-  LandingHero. 52px is measured, not chosen: the longest headline the site can
-  generate — "Luxury Residential Construction in New Westminster, BC" — still
-  holds two lines in a 665px column at this size.
+  LandingHero. 56px is measured, not chosen: the longest headline the site can
+  generate — "Luxury Residential Construction in New Westminster, BC" — takes
+  three lines in a 665px column at this size, which is what the live site's own
+  hero does and is where a headline gets its mass. Everything shorter holds at
+  two. The failure being avoided was four and five line stacks at twelve
+  characters a line, not three comfortable ones.
 */
 .h-hero-split {
-  font-size: clamp(2.25rem, 3.9vw, 3.25rem);
-  line-height: 1.08;
-  letter-spacing: -0.01em;
+  font-size: clamp(2.25rem, 4.2vw, 3.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.012em;
 }
 
+/*
+  Section headings were 42px against the live site's 48-60px, and that gap is
+  most of why the type read as small across every page rather than only in the
+  hero. 52px sits inside that range. Checked against the narrowest column a
+  section heading occupies on the site — 624px, in the two-column blocks — where
+  it takes two lines.
+*/
 .h-section {
-  font-size: clamp(2rem, 3.1vw, 2.625rem);
-  line-height: 1.12;
-  letter-spacing: -0.008em;
+  font-size: clamp(2rem, 3.6vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.012em;
 }
 
 .h-card {
-  font-size: clamp(1.25rem, 1.6vw, 1.5rem);
+  font-size: clamp(1.3125rem, 1.8vw, 1.625rem);
   line-height: 1.25;
   letter-spacing: -0.005em;
 }
