@@ -38,13 +38,31 @@ const yearsBuilding = new Date().getFullYear() - siteConfig.foundedYear;
 // only the count is the client's figure.
 const { delivered: deliveredCount, inProgress: inProgressCount } = portfolioTally;
 
-/** Click-to-call. Roughly two thirds of contractor leads arrive as phone calls, so this is never buried. */
-export function CallLink({ className = "" }: { className?: string }) {
+/**
+ * Click-to-call. Roughly two thirds of contractor leads arrive as phone calls,
+ * so this is never buried.
+ *
+ * `onDark` rather than passing colour classes in. Both variants set the same
+ * properties, so appending overrides would leave the winner down to which
+ * utility Tailwind happens to emit last — order in a className string decides
+ * nothing. The caller states which surface it is on and the component owns both
+ * answers.
+ */
+export function CallLink({
+  className = "",
+  onDark = false,
+}: {
+  className?: string;
+  onDark?: boolean;
+}) {
   return (
     <a
       href={siteConfig.phoneHref}
       className={[
-        "inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-zinc-900/15 bg-white px-6 py-3 text-sm font-bold text-zinc-900 transition duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:text-accent focus:outline-none focus:ring-2 focus:ring-orange-400/70",
+        "inline-flex min-h-11 items-center justify-center gap-2 rounded-full border px-6 py-3 text-sm font-bold transition duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-orange-400/70",
+        onDark
+          ? "border-white/30 bg-white/10 text-white backdrop-blur hover:border-white/60 hover:bg-white/20"
+          : "border-zinc-900/15 bg-white text-zinc-900 hover:border-orange-300 hover:text-accent",
         className,
       ].join(" ")}
     >
@@ -65,7 +83,13 @@ export function CallLink({ className = "" }: { className?: string }) {
  * to three tracked-out lines. Short single-line labels fit across without
  * wrapping, and match the credential row on the homepage hero.
  */
-export function TrustStrip({ className = "" }: { className?: string }) {
+export function TrustStrip({
+  className = "",
+  onDark = false,
+}: {
+  className?: string;
+  onDark?: boolean;
+}) {
   const items = [
     { icon: CalendarDays, label: `Building since ${siteConfig.foundedYear}` },
     { icon: BadgeCheck, label: "Licensed & fully insured" },
@@ -75,7 +99,8 @@ export function TrustStrip({ className = "" }: { className?: string }) {
   return (
     <ul
       className={[
-        "flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold text-muted",
+        "flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold",
+        onDark ? "text-white/75" : "text-muted",
         className,
       ].join(" ")}
     >
@@ -104,48 +129,49 @@ export function LandingHero({
   evidenceNote?: string;
 }) {
   return (
-    <section className="soft-grid relative overflow-hidden px-5 pb-16 pt-32 sm:px-6 lg:px-8">
-      {/*
-        Headline track over image track, same fix as PageHero and for the same
-        reason — but this template renders 150 pages, so it was the widest
-        instance of the problem. These H1s are generated as
-        `${service.name} in ${city.city}, BC`, which produces strings like
-        "Luxury Residential Construction in New Westminster, BC": 53 characters,
-        previously set at 72px in a 567px column, so four and five line stacks.
-      */}
-      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
-        <div>
+    /*
+      Full-bleed, matching PageHero. This template renders 150 of the site's 165
+      pages, so it is where the treatment matters most: the photograph of real
+      work fills the hero and the keyword headline sits on it.
+
+      68svh — slightly taller than PageHero's 62 because this hero carries more:
+      a headline, an intro paragraph, two CTAs, a trust row and sometimes an
+      evidence note. Still short of full height, because the seven trust sections
+      below are what these pages exist to show.
+    */
+    <section className="relative flex min-h-[68svh] items-center overflow-hidden bg-ink px-5 pb-20 pt-36 sm:px-6 lg:px-8">
+      <Image
+        src={image}
+        alt=""
+        fill
+        sizes="100vw"
+        priority
+        className="object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/70 to-ink/85" />
+      <div className="absolute inset-0 bg-ink/20" />
+
+      <div className="relative mx-auto w-full max-w-7xl">
+        <div className="max-w-3xl">
           <p className="eyebrow">{eyebrow}</p>
-          <h1 className="h-hero-split mt-5">{heading}</h1>
-          <p className="mt-6 max-w-3xl text-xl font-medium leading-8 text-muted">{intro}</p>
+          <h1 className="h-hero-split mt-5 text-white">{heading}</h1>
+          <p className="mt-6 max-w-2xl text-xl font-medium leading-8 text-white/75">{intro}</p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <ButtonLink href="/contact">Book a Consultation</ButtonLink>
-            <CallLink />
+            <CallLink onDark />
           </div>
 
-          <TrustStrip className="mt-8" />
+          <TrustStrip className="mt-8" onDark />
 
           {/* An honesty note, so it should read as an aside rather than as a
               claim. The rule and muted type keep it clearly subordinate to the
               trust row above it. */}
           {evidenceNote ? (
-            <p className="mt-7 max-w-xl border-l-2 border-slate-200 pl-4 text-sm leading-6 text-slate-500">
+            <p className="mt-7 max-w-xl border-l-2 border-white/25 pl-4 text-sm leading-6 text-white/60">
               {evidenceNote}
             </p>
           ) : null}
-        </div>
-
-        <div className="card-shadow-lg relative min-h-[480px] overflow-hidden rounded-3xl bg-ink">
-          <Image
-            src={image}
-            alt={`${heading} project image`}
-            fill
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            priority
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-black/20" />
         </div>
       </div>
     </section>
@@ -473,7 +499,7 @@ export function LandingCta({ heading, body }: { heading: string; body: string })
         <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/70">{body}</p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <ButtonLink href="/contact">Book a Consultation</ButtonLink>
-          <CallLink className="border-white/25 bg-transparent text-white hover:border-orange-400 hover:text-orange-400" />
+          <CallLink onDark />
         </div>
       </div>
     </section>

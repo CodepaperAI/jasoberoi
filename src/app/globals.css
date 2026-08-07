@@ -141,17 +141,16 @@ a {
   at similar weight, not because the headline lacked points; the fix was quieting
   the supporting stack, which is done and stays done.
 
-  5rem now the hero is full-bleed. The old constraint was that the headline had
-  to leave room for the video below it; the video is the background now, so that
-  ceiling is gone. White type on footage also carries more presence than dark
-  type on a pale wash at the same size, which is the other half of why 80px sits
-  right here and 80px would have been too much before.
+  At 72px the headline runs two lines and the whole hero — eyebrow, headline,
+  subheading, both CTAs, credentials — still fits one screen with the project
+  video visible beneath it. That last part is the constraint worth protecting:
+  anything much past 80px costs the video its place above the fold.
 
   The 2.125rem floor is for 320px phones, where the clamp's middle term takes
   over long before the cap matters.
 */
 .h-hero {
-  font-size: clamp(2.125rem, 5.8vw, 5rem);
+  font-size: clamp(2.125rem, 5.4vw, 4.5rem);
   line-height: 1.04;
   letter-spacing: -0.018em;
 }
@@ -401,6 +400,36 @@ a {
 
   to {
     transform: translateX(-50%);
+  }
+}
+
+/*
+  Hero video that expands to full-bleed on scroll.
+
+  `--expand` runs 0 -> 1 and is set by ScrollExpandVideo. Everything below is
+  derived from it, so the scroll handler writes one value and CSS does the rest.
+  Width, height and corner radius all interpolate together: a contained,
+  heavily-rounded letterbox becomes a full-width 16:9 frame with square corners.
+*/
+.scroll-expand-frame {
+  --expand: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.scroll-expand-media {
+  /* 78% of the container out to the full viewport width. */
+  width: calc(78% + 22% * var(--expand));
+  max-width: calc(1180px + (100vw - 1180px) * var(--expand));
+  /* Letterbox (2.9:1) opening out to 16:9. */
+  aspect-ratio: calc(2.9 - 1.12 * var(--expand));
+  border-radius: calc(5rem * (1 - var(--expand))) calc(5rem * (1 - var(--expand))) 0 0;
+  will-change: width, aspect-ratio;
+}
+
+@media (max-width: 1180px) {
+  .scroll-expand-media {
+    max-width: 100vw;
   }
 }
 

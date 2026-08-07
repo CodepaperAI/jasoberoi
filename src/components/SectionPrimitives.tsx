@@ -13,40 +13,49 @@ type PageHeroProps = {
 
 export function PageHero({ eyebrow, heading, subheading, image }: PageHeroProps) {
   return (
-    <section className="soft-grid relative overflow-hidden px-5 pb-20 pt-32 sm:px-6 lg:px-8">
-      {/*
-        The headline gets the wider track. It used to be 0.9fr against the
-        image's 1.1fr — the largest type on the page given the smaller half —
-        which put a 72px H1 into a 554px column at roughly twelve characters a
-        line. "A builder for spaces that cannot be improvised." came out as four
-        stacked lines, each two or three words.
+    /*
+      Full-bleed: the project photograph is the background, not a card beside
+      the words.
 
-        Two fixes together: this flip, and .h-hero-split capping the display size
-        for a two-column hero. `break-words` is gone with them — at display size
-        it splits a word mid-glyph, which looks worse than the overflow it
-        prevents.
+      This was a two-column split — headline left, image right in a rounded
+      frame — which meant the largest type on the page was confined to half the
+      width and the photograph read as an illustration next to it. The image now
+      fills the section and the headline sits on it.
+
+      62svh, not the full viewport. This runs on About, Projects, Contact, Cost
+      and Services, where a full-height hero would push the actual page content
+      off the first screen on every one of them. An interior hero announces the
+      page; it does not need to be the page. svh rather than vh because on mobile
+      vh counts browser chrome that is not there.
+    */
+    <section className="relative flex min-h-[62svh] items-center overflow-hidden bg-ink px-5 pb-20 pt-36 sm:px-6 lg:px-8">
+      <Image
+        src={image}
+        alt=""
+        fill
+        sizes="100vw"
+        priority
+        className="object-cover"
+      />
+      {/*
+        Two scrims. The gradient darkens hardest through the middle where the
+        words sit; the flat layer under it is a floor, because several of these
+        heroes are bright white clinic interiors that would otherwise wash the
+        headline out.
       */}
-      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-        <div>
+      <div className="absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/70 to-ink/85" />
+      <div className="absolute inset-0 bg-ink/20" />
+
+      <div className="relative mx-auto w-full max-w-7xl">
+        <div className="max-w-3xl">
           <p className="eyebrow">{eyebrow}</p>
-          <h1 className="h-hero-split mt-5">{heading}</h1>
-          <p className="mt-6 max-w-2xl text-xl font-medium leading-8 text-muted">
+          <h1 className="h-hero-split mt-5 text-white">{heading}</h1>
+          <p className="mt-6 max-w-2xl text-xl font-medium leading-8 text-white/75">
             {subheading}
           </p>
           <ButtonLink href="/contact" className="mt-8">
             Book a Consultation
           </ButtonLink>
-        </div>
-        <div className="card-shadow-lg relative min-h-[420px] overflow-hidden rounded-3xl bg-ink">
-          <Image
-            src={image}
-            alt={`${heading} project image`}
-            fill
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            priority
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-black/22" />
         </div>
       </div>
     </section>
