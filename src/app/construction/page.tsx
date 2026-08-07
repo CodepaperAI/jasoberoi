@@ -2,10 +2,20 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, MapPin, Plus } from "lucide-react";
 import { ButtonLink } from "@/components/ButtonLink";
+import { CallLink, ProjectProof, ReviewsBlock } from "@/components/LandingSections";
+import { PageHero, ReviewCta } from "@/components/SectionPrimitives";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
-import { constructionServices, projects, serviceAreas } from "@/lib/site";
+import {
+  constructionServices,
+  portfolioTally,
+  projects,
+  reviews,
+  serviceAreas,
+} from "@/lib/site";
+
+const HERO_IMAGE = "/oberizon/optimized/project-skinholic-lobby-live.jpg";
 
 const pageTitle = "Construction Services by City | Oberizon Construction";
 const pageDescription =
@@ -34,26 +44,98 @@ export default function ConstructionIndexPage() {
         ])}
       />
 
-      <section className="soft-grid relative overflow-hidden px-5 pb-20 pt-32 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <p className="eyebrow">
-            Location + Service SEO
-          </p>
-          <h1 className="h-hero mt-5">
-            Construction Services By City
-          </h1>
-          <p className="mt-6 max-w-3xl text-xl font-medium leading-8 text-muted">
-            Healthcare, dental, medical, pharmacy, commercial renovation, office renovation, and
-            luxury residential construction pages for Lower Mainland service areas.
-          </p>
-          <ButtonLink href="/contact" className="mt-8">
-            Book a Consultation
-          </ButtonLink>
+      {/*
+        The same full-bleed hero every other interior page uses. This page was
+        the one left on the old flat beige band, which is a large part of why it
+        read as unfinished next to the rest of the site.
+      */}
+      <PageHero
+        eyebrow="Service areas"
+        heading="Construction Services By City"
+        subheading="Healthcare, dental, medical, pharmacy, commercial renovation, office renovation, and luxury residential construction across 14 Lower Mainland cities."
+        image={HERO_IMAGE}
+      />
+
+      {/*
+        Coverage, before the index.
+
+        Every guide to this page type says the same thing and this page had none
+        of it: show the area on a map, say where the boundary is and why, prove
+        you have worked there, then let people navigate. What was here was the
+        navigation on its own — a list of fourteen places with no map, no proof
+        and no reason to believe any of it.
+      */}
+      <section className="bg-paper px-5 py-20 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+          <div>
+            <p className="eyebrow">Where we work</p>
+            <h2 className="h-section mt-4">
+              {serviceAreas.length} cities, run from{" "}
+              <span className="orange-italic">one White Rock office.</span>
+            </h2>
+            <p className="mt-5 text-lg font-medium leading-8 text-muted">
+              The boundary is deliberate. Everything here is inside a working drive of the
+              White Rock office, which is what lets the same team run permits, trades and
+              inspections rather than handing a job to whoever is nearest.
+            </p>
+
+            <dl className="mt-10 grid grid-cols-3 gap-6 border-t border-line pt-8">
+              <div>
+                <dt className="ui-font text-xs font-extrabold uppercase tracking-[0.14em] text-muted">
+                  Cities
+                </dt>
+                <dd className="h-card mt-2 text-ink">{serviceAreas.length}</dd>
+              </div>
+              <div>
+                <dt className="ui-font text-xs font-extrabold uppercase tracking-[0.14em] text-muted">
+                  Head office
+                </dt>
+                <dd className="h-card mt-2 text-ink">White Rock</dd>
+              </div>
+              <div>
+                <dt className="ui-font text-xs font-extrabold uppercase tracking-[0.14em] text-muted">
+                  Delivered
+                </dt>
+                <dd className="h-card mt-2 text-ink">{portfolioTally.delivered}+</dd>
+              </div>
+            </dl>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <ButtonLink href="/contact">Book a Consultation</ButtonLink>
+              <CallLink />
+            </div>
+          </div>
+
+          <div className="overflow-hidden rounded-2xl border border-line">
+            {/* z=9, not the office pin's default street zoom — this map has to
+                show the coverage, so it is framed on the Lower Mainland with
+                White Rock marked rather than on one block of Foster St. */}
+            <iframe
+              title="Oberizon Construction service area map"
+              src="https://www.google.com/maps?q=White%20Rock%2C%20BC&z=9&output=embed"
+              loading="lazy"
+              className="h-[320px] w-full bg-stone sm:h-[460px]"
+            />
+          </div>
         </div>
       </section>
 
-      <section className="bg-paper px-5 py-20 sm:px-6 lg:px-8">
+      {/*
+        Proof before navigation. These are the delivered jobs that sit inside the
+        service area, with the addresses attached — the difference between
+        claiming to serve a city and having built there.
+      */}
+      <ProjectProof
+        items={projects.filter((project) => project.citySlug && project.images?.length)}
+        heading="Delivered across the Lower Mainland."
+      />
+
+      <section className="bg-raised px-5 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
+          <p className="eyebrow">Every city, every service</p>
+          <h2 className="h-section mt-4 mb-12">
+            Find your city.
+          </h2>
           {/*
             Fourteen cities, not a hundred and forty rows.
 
@@ -131,6 +213,8 @@ export default function ConstructionIndexPage() {
           </div>
         </div>
       </section>
+      <ReviewsBlock items={reviews} />
+      <ReviewCta />
     </>
   );
 }
