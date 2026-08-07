@@ -132,25 +132,27 @@ a {
 /*
   H1 in a full-width container: the homepage and /construction.
 
-  6.25rem, and the number is the point.
+  4.5rem, which is the reference site's 72px, and the history here is worth
+  keeping because it was two wrong answers in a row.
 
-  The headline used to be 76px — larger in points than the live site's 72px, and
-  yet visibly weaker, because it wrapped to two lines against the live site's
-  three. 76px over two lines is a 155px block; the live site's is 216px. Point
-  size was never what made a hero feel big; occupied height is.
+  It sat at 76px and read as small, so the size went up — to 100px, which read
+  as enormous and pushed the video off the first screen entirely. Size was the
+  wrong lever both times. The hero felt weak because six elements were competing
+  at similar weight, not because the headline lacked points; the fix was quieting
+  the supporting stack, which is done and stays done.
 
-  At 100px in the full max-w-7xl track this runs three lines and a 306px block,
-  which is 42% more mass than the site it is being compared against. 100 is also
-  a ceiling rather than a preference: past ~104px the first line stops fitting
-  the track and the headline breaks badly.
+  At 72px the headline runs two lines and the whole hero — eyebrow, headline,
+  subheading, both CTAs, credentials — still fits one screen with the project
+  video visible beneath it. That last part is the constraint worth protecting:
+  anything much past 80px costs the video its place above the fold.
 
   The 2.125rem floor is for 320px phones, where the clamp's middle term takes
   over long before the cap matters.
 */
 .h-hero {
-  font-size: clamp(2.125rem, 7vw, 6.25rem);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.125rem, 5.4vw, 4.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.018em;
 }
 
 /*
@@ -158,16 +160,16 @@ a {
 
   These ran at 72px inside a 554px column — twelve characters a line, four-line
   blocks. The cap is the fix, paired with the grid flip in PageHero and
-  LandingHero. 56px is measured, not chosen: the longest headline the site can
-  generate — "Luxury Residential Construction in New Westminster, BC" — takes
-  three lines in a 665px column at this size, which is what the live site's own
-  hero does and is where a headline gets its mass. Everything shorter holds at
-  two. The failure being avoided was four and five line stacks at twelve
-  characters a line, not three comfortable ones.
+  LandingHero. 48px keeps these in proportion with the 72px homepage hero —
+  two thirds of it — so the 156 pages on this template read as the same site
+  rather than as a different one. It also keeps the longest headline the site can
+  generate, "Luxury Residential Construction in New Westminster, BC", at two
+  lines in a 665px column. The failure being avoided was four and five line
+  stacks at twelve characters a line.
 */
 .h-hero-split {
-  font-size: clamp(2.25rem, 4.2vw, 3.5rem);
-  line-height: 1.06;
+  font-size: clamp(2.125rem, 3.6vw, 3rem);
+  line-height: 1.08;
   letter-spacing: -0.012em;
 }
 
