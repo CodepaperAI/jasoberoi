@@ -170,7 +170,7 @@ export function HomeExperience() {
           seam partway down the hero. It still needs to run taller on mobile,
           where the stacked layout pushes past 800px.
         */}
-        <div className="soft-grid wash-fade absolute inset-x-0 top-20 h-[900px] sm:h-[680px]" />
+        <div className="soft-grid wash-fade absolute inset-x-0 top-20 h-[900px] sm:top-24 sm:h-[680px]" />
         <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           {/*
             max-w-7xl, not max-w-6xl, and more air above.

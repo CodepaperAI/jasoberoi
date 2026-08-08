@@ -24,7 +24,7 @@ export function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-5 pb-14 pt-16 sm:px-6 lg:grid-cols-[1.15fr_0.9fr_0.9fr_0.9fr_0.85fr] lg:px-8">
         <div>
           <Image
-            src="/oberizon/optimized/oberizon-logo.png"
+            src="/oberizon/oberizon-logo.svg"
             alt="Oberizon Construction"
             width={192}
             height={88}

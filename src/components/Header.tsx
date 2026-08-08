@@ -8,17 +8,25 @@ import { navigation, siteConfig } from "@/lib/site";
 export function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-orange-100 bg-white/95 shadow-sm backdrop-blur-xl">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:h-24 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-3" aria-label="Oberizon Construction home">
+          {/*
+            Vector, and sized to fit inside the bar rather than fill it.
+
+            At 180px wide this lockup rendered 83px tall in an 81px header — it
+            overflowed, touching the top edge and the bottom border with no
+            breathing room at all. It is a stacked lockup (mark over wordmark
+            over "CONSTRUCTION"), so it needs vertical space to read as one
+            thing; 140px gives it ~16px of air top and bottom in the 96px bar.
+          */}
           <Image
-            src="/oberizon/optimized/oberizon-logo.png"
+            src="/oberizon/oberizon-logo.svg"
             alt="Oberizon Construction"
-            // The file's true intrinsic size. It was declared 220x74 (2.97:1)
-            // for a 192x88 (2.18:1) image, so the reserved box was the wrong
-            // shape and the header shifted as the logo loaded.
+            // The artwork's own coordinate system, so the reserved box matches
+            // the 192x88 (2.18:1) aspect and the header does not shift on load.
             width={192}
             height={88}
-            className="h-auto w-32 sm:w-[180px]"
+            className="h-auto w-[104px] sm:w-[140px]"
             priority
           />
         </Link>

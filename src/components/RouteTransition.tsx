@@ -140,7 +140,7 @@ export function RouteTransition() {
         "CONSTRUCTION" line, small enough to sit as a mark rather than a splash.
       */}
       <Image
-        src="/oberizon/optimized/oberizon-logo.png"
+        src="/oberizon/oberizon-logo.svg"
         alt=""
         width={192}
         height={88}
