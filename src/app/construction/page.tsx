@@ -84,19 +84,19 @@ export default function ConstructionIndexPage() {
                 <dt className="ui-font text-xs font-extrabold uppercase tracking-[0.14em] text-muted">
                   Cities
                 </dt>
-                <dd className="h-card mt-2 text-ink">{serviceAreas.length}</dd>
+                <dd className="h-card-lg mt-2 text-ink">{serviceAreas.length}</dd>
               </div>
               <div>
                 <dt className="ui-font text-xs font-extrabold uppercase tracking-[0.14em] text-muted">
                   Head office
                 </dt>
-                <dd className="h-card mt-2 text-ink">White Rock</dd>
+                <dd className="h-card-lg mt-2 text-ink">White Rock</dd>
               </div>
               <div>
                 <dt className="ui-font text-xs font-extrabold uppercase tracking-[0.14em] text-muted">
                   Delivered
                 </dt>
-                <dd className="h-card mt-2 text-ink">{portfolioTally.delivered}+</dd>
+                <dd className="h-card-lg mt-2 text-ink">{portfolioTally.delivered}+</dd>
               </div>
             </dl>
 
@@ -153,59 +153,86 @@ export default function ConstructionIndexPage() {
             display face so the eye lands on the place first and the ten
             services under it read as its contents.
 
-            Anchor text stays "{service} in {city}" rather than the shorter
-            "{service}" the heading would allow. This page exists for
-            location+service search and the anchor is the strongest signal on
-            it, so the redundancy is deliberate.
+            The type was then measured against the reference this was designed
+            from. Scaled to our container, its heading is ~50px and its city
+            names ~22px — sizes this page already had. What made ours read as
+            small was 140 rows of 14px link text, which the reference has none
+            of. So the rows go to 17px and the city names to 30px, and the
+            trade that makes that possible is in the card comment below.
           */}
-          <div className="mt-14 grid gap-x-10 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {serviceAreas.map((city) => {
               const delivered = projects.filter(
                 (project) => project.citySlug === city.slug,
               ).length;
+              const headingId = `city-${city.slug}`;
 
               return (
                 /*
-                  Subgrid, so the rules line up across columns.
+                  A white card on the cream section, and subgrid inside it.
 
                   Region notes run 29 to 60 characters, which is one line in
                   some columns and two in others, and that pushed each city's
                   service list to a different height — the horizontal rules
-                  stopped agreeing across the row and the whole grid read as
-                  untidy. Subgrid makes the three bands (name, note, list)
-                  share rows with every other card, at every breakpoint. A
-                  fixed min-height would only be correct at one width.
+                  stopped agreeing across the row. Subgrid makes the three bands
+                  (name, note, list) share rows with every other card, at every
+                  breakpoint, and the card edge makes that alignment more
+                  visible rather than less. A fixed min-height would only ever
+                  be correct at one width.
+
+                  Lifted rather than outlined: a soft shadow, no border. That is
+                  what separates a card that reads as an object from the ringed
+                  boxes this site had everywhere before.
+
+                  No arrow on the card itself, though the reference has one.
+                  There it means the whole card is a link; here it would point
+                  nowhere, because /construction/{city}/ does not exist yet.
                 */
-                <div key={city.slug} className="row-span-3 grid grid-rows-subgrid gap-0">
+                <div
+                  key={city.slug}
+                  className="row-span-3 grid grid-rows-subgrid gap-0 rounded-2xl bg-white p-5 shadow-[0_1px_2px_rgba(20,18,15,0.04),0_10px_28px_-14px_rgba(20,18,15,0.16)] sm:p-7"
+                >
                   <div className="flex items-baseline gap-3">
                     <MapPin
-                      className="shrink-0 translate-y-0.5 text-accent"
-                      size={17}
+                      className="shrink-0 translate-y-1 text-accent"
+                      size={18}
                       aria-hidden="true"
                     />
-                    <h3 className="h-card text-ink">{city.city}</h3>
+                    <h3 id={headingId} className="h-card-lg text-ink">
+                      {city.city}
+                    </h3>
                     {delivered > 0 ? (
                       <span className="ui-font ml-auto shrink-0 text-xs font-extrabold uppercase tracking-[0.14em] text-accent">
                         {delivered} built
                       </span>
                     ) : null}
                   </div>
-                  <p className="mt-1.5 pl-8 text-sm leading-6 text-muted">
+                  <p className="mt-2 text-base leading-7 text-muted">
                     {city.regionNote}.
                   </p>
 
-                  <ul className="mt-4 border-t border-line pl-8">
+                  {/*
+                    The city is the heading now, not part of every link.
+
+                    "Luxury Residential Construction in New Westminster" measures
+                    386px in Barlow at this size and a three-column card has
+                    about 302px of text width, so the long ones wrapped — which
+                    is the raggedness this whole change exists to remove. The
+                    location still reads from the heading above, the URL slug and
+                    the target page's own title; aria-labelledby keeps it in the
+                    accessible name, so a screen reader still announces
+                    "Commercial Construction, White Rock".
+                  */}
+                  <ul aria-labelledby={headingId} className="mt-5 border-t border-line">
                     {constructionServices.map((service) => (
                       <li key={service.slug}>
                         <Link
                           href={`/construction/${city.slug}/${service.slug}`}
-                          className="group/link flex items-center justify-between gap-3 border-b border-line py-2 text-sm leading-6 text-ink transition hover:text-accent"
+                          className="group/link flex items-center justify-between gap-3 border-b border-line py-2.5 text-[1.0625rem] leading-6 text-ink transition hover:text-accent"
                         >
-                          <span>
-                            {service.name} in {city.city}
-                          </span>
+                          <span>{service.name}</span>
                           <ArrowRight
-                            size={14}
+                            size={15}
                             aria-hidden="true"
                             className="shrink-0 text-ink/20 transition group-hover/link:translate-x-0.5 group-hover/link:text-accent"
                           />

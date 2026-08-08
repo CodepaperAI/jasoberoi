@@ -161,7 +161,8 @@ a {
 .h-hero,
 .h-hero-split,
 .h-section,
-.h-card {
+.h-card,
+.h-card-lg {
   font-family: Georgia, var(--font-display), "Times New Roman", serif;
   text-wrap: balance;
 }
@@ -270,6 +271,26 @@ a {
   font-size: clamp(1.3125rem, 1.8vw, 1.625rem);
   line-height: 1.25;
   letter-spacing: -0.005em;
+}
+
+/*
+  The card heading a step up, for when the card is the unit being scanned.
+
+  The clamp is load-bearing rather than decorative. "New Westminster" in Georgia
+  Bold measures 276px at 30px, and a three-column card at the lg breakpoint has
+  only 242px of content width — so the widest city name would wrap there. The
+  22px floor holds it on one line at 1024px — and at 320px, where the card is
+  the full width of a very small screen — while 30px only arrives once the
+  container is wide enough to take it.
+
+  Separate from .h-card rather than widening it: .h-card is also carrying three
+  blocks on the homepage that are sized correctly already.
+*/
+.h-card-lg {
+  font-weight: 700;
+  font-size: clamp(1.375rem, 2.1vw, 1.875rem);
+  line-height: 1.2;
+  letter-spacing: -0.008em;
 }
 
 /*
