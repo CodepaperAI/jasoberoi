@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, MapPin, Plus } from "lucide-react";
+import { ArrowRight, MapPin } from "lucide-react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { CallLink, ProjectProof, ReviewsBlock } from "@/components/LandingSections";
 import { PageHero, ReviewCta } from "@/components/SectionPrimitives";
@@ -131,88 +131,95 @@ export default function ConstructionIndexPage() {
       />
 
       <section className="bg-raised px-5 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-7xl">
           <p className="eyebrow">Every city, every service</p>
-          <h2 className="h-section mt-4 mb-12">
-            Find your city.
-          </h2>
+          <h2 className="h-section mt-4">Find your city.</h2>
+          <p className="mt-5 max-w-2xl text-lg font-medium leading-8 text-muted">
+            Every service in every city we cover — all {serviceAreas.length * constructionServices.length}{" "}
+            of them, on the page. Nothing to open.
+          </p>
+
           {/*
-            Fourteen cities, not a hundred and forty rows.
+            All open, in columns.
 
-            Every city listed the identical ten services in full, so this page
-            was the same block repeated fourteen times — 140 rows over 4,686px,
-            with no imagery and nothing to distinguish one city from the next.
-            Styling could not fix that; the repetition was the design.
+            This was fourteen <details> rows. Collapsing it did solve the
+            repetition, but it also put every destination one click away, and
+            the point of this page is that a visitor lands on it and sees their
+            own city immediately.
 
-            <details> rather than a JS accordion: every one of the 140 links stays
-            in the delivered HTML, so nothing changes for crawlers, and the page
-            works with JavaScript off. What changes is that a visitor scans
-            fourteen places instead of reading the same list fourteen times.
+            Columns are what make that possible without a 4,700px wall: the
+            same 140 links laid out three-up read as fourteen scannable blocks
+            rather than one long scroll. City names are bold and set in the
+            display face so the eye lands on the place first and the ten
+            services under it read as its contents.
 
-            The delivered-project count is the one thing that genuinely differs
-            between these cities, so it is the one thing shown on the closed row.
+            Anchor text stays "{service} in {city}" rather than the shorter
+            "{service}" the heading would allow. This page exists for
+            location+service search and the anchor is the strongest signal on
+            it, so the redundancy is deliberate.
           */}
-          <div className="border-t border-line">
+          <div className="mt-14 grid gap-x-10 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
             {serviceAreas.map((city) => {
               const delivered = projects.filter(
                 (project) => project.citySlug === city.slug,
               ).length;
 
               return (
-                <details key={city.slug} className="group border-b border-line">
-                  <summary className="flex cursor-pointer list-none items-baseline gap-4 py-6 transition hover:text-accent">
+                /*
+                  Subgrid, so the rules line up across columns.
+
+                  Region notes run 29 to 60 characters, which is one line in
+                  some columns and two in others, and that pushed each city's
+                  service list to a different height — the horizontal rules
+                  stopped agreeing across the row and the whole grid read as
+                  untidy. Subgrid makes the three bands (name, note, list)
+                  share rows with every other card, at every breakpoint. A
+                  fixed min-height would only be correct at one width.
+                */
+                <div key={city.slug} className="row-span-3 grid grid-rows-subgrid gap-0">
+                  <div className="flex items-baseline gap-3">
                     <MapPin
-                      className="shrink-0 translate-y-1 text-accent"
-                      size={18}
+                      className="shrink-0 translate-y-0.5 text-accent"
+                      size={17}
                       aria-hidden="true"
                     />
-                    <span className="min-w-0 flex-1">
-                      <span className="h-card block text-ink transition group-hover:text-accent">
-                        {city.city}
-                      </span>
-                      <span className="mt-1 block text-sm leading-6 text-muted">
-                        {city.regionNote}. {city.neighborhoods.slice(0, 3).join(", ")}.
-                      </span>
-                    </span>
+                    <h3 className="h-card text-ink">{city.city}</h3>
                     {delivered > 0 ? (
-                      <span className="ui-font hidden shrink-0 text-xs font-extrabold uppercase tracking-[0.14em] text-accent sm:block">
-                        {delivered} delivered
+                      <span className="ui-font ml-auto shrink-0 text-xs font-extrabold uppercase tracking-[0.14em] text-accent">
+                        {delivered} built
                       </span>
                     ) : null}
-                    <Plus
-                      size={18}
-                      strokeWidth={2.5}
-                      aria-hidden="true"
-                      className="shrink-0 translate-y-1 text-ink/30 transition duration-300 group-open:rotate-45 group-hover:text-accent"
-                    />
-                  </summary>
-
-                  {/* Two columns so ten services read as a set rather than a
-                      column of ten more full-width rows. */}
-                  <div className="grid gap-x-10 pb-8 pl-9 sm:grid-cols-2">
-                    {constructionServices.map((service) => (
-                      <Link
-                        key={service.slug}
-                        href={`/construction/${city.slug}/${service.slug}`}
-                        className="group/link flex items-center justify-between gap-3 border-b border-line py-2.5 text-sm text-ink transition hover:text-accent"
-                      >
-                        <span>
-                          {service.name} in {city.city}
-                        </span>
-                        <ArrowRight
-                          size={14}
-                          aria-hidden="true"
-                          className="shrink-0 text-ink/20 transition group-hover/link:translate-x-0.5 group-hover/link:text-accent"
-                        />
-                      </Link>
-                    ))}
                   </div>
-                </details>
+                  <p className="mt-1.5 pl-8 text-sm leading-6 text-muted">
+                    {city.regionNote}.
+                  </p>
+
+                  <ul className="mt-4 border-t border-line pl-8">
+                    {constructionServices.map((service) => (
+                      <li key={service.slug}>
+                        <Link
+                          href={`/construction/${city.slug}/${service.slug}`}
+                          className="group/link flex items-center justify-between gap-3 border-b border-line py-2 text-sm leading-6 text-ink transition hover:text-accent"
+                        >
+                          <span>
+                            {service.name} in {city.city}
+                          </span>
+                          <ArrowRight
+                            size={14}
+                            aria-hidden="true"
+                            className="shrink-0 text-ink/20 transition group-hover/link:translate-x-0.5 group-hover/link:text-accent"
+                          />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               );
             })}
           </div>
         </div>
       </section>
+
       <ReviewsBlock items={reviews} />
       <ReviewCta />
     </>

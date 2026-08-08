@@ -248,13 +248,25 @@ a {
   section heading occupies on the site — 624px, in the two-column blocks — where
   it takes two lines.
 */
+/*
+  Bold from here down; the heroes stay at 400.
+
+  Georgia ships Regular and Bold and nothing between, which is the whole reason
+  600 went wrong on the heroes — it resolved to Bold and set 16% wider, and at
+  72px that extra width is what read as stretched. None of that argument
+  applies at section and card sizes: 52px and 26px carry Georgia Bold without
+  distorting, and the weight is what separates a heading from the paragraph
+  under it. So .h-hero and .h-hero-split keep 400 and these take 700.
+*/
 .h-section {
+  font-weight: 700;
   font-size: clamp(2rem, 3.6vw, 3.25rem);
   line-height: 1.1;
   letter-spacing: -0.012em;
 }
 
 .h-card {
+  font-weight: 700;
   font-size: clamp(1.3125rem, 1.8vw, 1.625rem);
   line-height: 1.25;
   letter-spacing: -0.005em;
