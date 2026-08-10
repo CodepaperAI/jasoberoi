@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: HubProps): Promise<Metadata> 
     description: hub.description,
     path: hub.path,
     image: hub.service.image,
-    keywords: [hub.service.primaryKeyword, ...hub.service.relatedKeywords],
+    keywords: hub.keywords,
   });
 }
 

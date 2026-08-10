@@ -18,8 +18,11 @@ import {
 const HERO_IMAGE = "/oberizon/optimized/project-skinholic-lobby-live.jpg";
 
 const pageTitle = "Construction Services by City | Oberizon Construction";
+// Not one of the consultant's 30 rows, but it had the same fault his sheet was
+// written to fix: 238 characters, so Google truncated it. Same wording, cut to
+// fit, with the city count doing the work the removed list was doing.
 const pageDescription =
-  "Find Oberizon Construction service pages for healthcare construction, dental clinic construction, medical clinic construction, pharmacy construction, commercial renovation, office renovation, and luxury residential construction across BC.";
+  "Find Oberizon Construction service pages for healthcare, dental, medical, pharmacy, commercial, office and luxury residential construction across 14 BC cities.";
 
 export const metadata: Metadata = buildMetadata({
   title: pageTitle,

@@ -106,18 +106,17 @@ export const metadata: Metadata = buildMetadata({
   // visitor to generate a figure and hold you to it, so the page stays live and
   // testable but does not ask to rank until the numbers are confirmed.
   index: ratesConfirmedByClient,
-  title: "Cost of Construction in BC — 2026 Guide | Oberizon Construction",
+  title: "Construction Cost Per Square Foot in BC | 2026 Guide",
   description:
-    "Real 2026 cost ranges for healthcare, dental, medical, pharmacy, commercial, and luxury residential construction across White Rock and the Lower Mainland — from Oberizon Construction.",
+    "Construction cost per square foot for healthcare, dental, medical, pharmacy, commercial & luxury residential builds across the Lower Mainland — 2026 guide.",
   path: "/cost",
   image: HERO_IMAGE,
   keywords: [
-    "cost of dental clinic construction BC",
-    "medical clinic construction cost Lower Mainland",
-    "commercial tenant improvement cost Vancouver",
-    "pharmacy construction cost BC",
-    "luxury home construction cost per square foot BC",
-    "healthcare construction cost per sq ft",
+    "construction cost per square foot",
+    "construction cost calculator",
+    "commercial construction cost BC",
+    "2026 construction cost guide",
+    "Lower Mainland building costs",
   ],
 });
 

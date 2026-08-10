@@ -1,5 +1,6 @@
 import { constructionServices, serviceAreas, type ConstructionService } from "@/lib/site";
 import { formatMoney, getRate, pricingSentence, roundEstimate } from "@/lib/pricing";
+import { serviceMeta } from "@/lib/seoCopy";
 
 /**
  * Service hub pages — the missing middle of the funnel.
@@ -24,6 +25,8 @@ export type ServiceHub = {
   path: string;
   title: string;
   description: string;
+  /** The consultant's keyword set, primary first. */
+  keywords: string[];
   h1: string;
   /** Answer-first: the technical detail that separates us, below the price. */
   shortAnswer: string;
@@ -196,8 +199,21 @@ export function getServiceHub(slug: string): ServiceHub | undefined {
   return {
     service,
     path: `/services/${slug}`,
-    title: `${service.name} in BC | Oberizon Construction`,
-    description: `${service.summary} Oberizon delivers ${service.primaryKeyword} across the Lower Mainland from a White Rock head office.`,
+    // Consultant copy where it exists, template behind it. All ten services are
+    // covered by the sheet today, so the fallback is only load-bearing if an
+    // eleventh service is added before he supplies a row for it — at which point
+    // a generated title beats a missing one.
+    //
+    // What the template produced was not wrong so much as too long: every one of
+    // these descriptions ran 203-224 characters, so Google truncated all ten.
+    title: serviceMeta[slug]?.title ?? `${service.name} in BC | Oberizon Construction`,
+    description:
+      serviceMeta[slug]?.description ??
+      `${service.summary} Oberizon delivers ${service.primaryKeyword} across the Lower Mainland from a White Rock head office.`,
+    keywords: serviceMeta[slug]?.keywords ?? [
+      service.primaryKeyword,
+      ...service.relatedKeywords,
+    ],
     h1: service.name,
     lead: hubLead[slug] ?? service.summary,
     // pricingSentence already carries the typical total, so this does not repeat it.

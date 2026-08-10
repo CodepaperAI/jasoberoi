@@ -1,4 +1,5 @@
 import { pricingSentence, ratesConfirmedByClient } from "@/lib/pricing";
+import { cityCommercialMeta, cityDescription, cityTitle } from "@/lib/seoCopy";
 
 export type NavItem = {
   label: string;
@@ -227,24 +228,20 @@ export const credentials = [
 ];
 
 export const homePage = {
-  title: "Medical, Dental & Commercial Construction BC | Oberizon Construction",
+  // Consultant copy. His note: "Commercial Construction" (bare term) is the
+  // highest-volume keyword on the whole site at 1000/mo CA, so the title leads
+  // with it. "Commercial Renovation" and "Healthcare Construction" are
+  // deliberately kept off this page so it does not compete with their own hubs.
+  title: "Commercial Construction Company in BC | Oberizon Construction",
   description:
-    "Oberizon Construction builds healthcare, commercial, dental, pharmacy, clinic, office, and luxury residential projects across White Rock and the Lower Mainland.",
+    "Commercial construction company in White Rock & the Lower Mainland — healthcare, dental, medical, pharmacy, office & luxury residential builds. Free quotes.",
   canonicalPath: "/",
   keywords: [
-    "commercial construction",
+    "Commercial Construction",
     "commercial construction company",
+    "Commercial Builders",
     "commercial general contractor",
-    "commercial builders",
-    "healthcare construction",
-    "healthcare construction company",
-    "dental clinic construction",
-    "medical clinic construction",
-    "pharmacy construction",
-    "commercial renovation",
-    "office renovation contractor",
-    "luxury residential construction",
-    "Lower Mainland construction company",
+    "construction company Lower Mainland",
   ],
 };
 
@@ -827,10 +824,16 @@ export function getProjectsForCity(citySlug: string, limit = 3): Project[] {
 export const mainPages: SitePage[] = [
   {
     slug: "about",
-    title: "About Oberizon Construction | Trusted BC Builders",
+    title: "General Contractor in BC | About Oberizon Construction",
     description:
-      "Meet Oberizon Construction, a White Rock-based construction company managing healthcare, commercial, and luxury residential projects across the Lower Mainland.",
-    keywords: ["Oberizon Construction", "construction company White Rock", "commercial builders BC"],
+      "General contractor based in White Rock, BC — meet the team behind Oberizon Construction's healthcare, commercial & residential projects across the Lower Mainland.",
+    keywords: [
+      "general contractor BC",
+      "construction company White Rock",
+      "BC builders",
+      "Lower Mainland contractor",
+      "Oberizon Construction team",
+    ],
     eyebrow: "About Oberizon",
     heading: "A builder for spaces that cannot be improvised.",
     subheading:
@@ -882,10 +885,16 @@ export const mainPages: SitePage[] = [
   },
   {
     slug: "projects",
-    title: "Our Construction Projects | Oberizon Construction",
+    title: "Construction Projects in BC | Oberizon Construction Portfolio",
     description:
-      "View selected Oberizon Construction projects including dental clinics, medical spa interiors, private offices, commercial interiors, and luxury residential construction.",
-    keywords: ["construction projects BC", "dental clinic construction project", "commercial interior projects"],
+      "See completed dental, medical, commercial & luxury residential construction projects across the Lower Mainland — the Oberizon Construction portfolio.",
+    keywords: [
+      "construction projects BC",
+      "commercial construction portfolio",
+      "Lower Mainland construction projects",
+      "dental clinic construction projects",
+      "Oberizon Construction portfolio",
+    ],
     eyebrow: "Projects",
     heading: "Selected projects across the Lower Mainland.",
     subheading:
@@ -951,10 +960,16 @@ export const mainPages: SitePage[] = [
   },
   {
     slug: "contact",
-    title: "Contact Oberizon Construction | Book a Free Consultation",
+    title: "Tenant Improvement Contractor BC | Oberizon Construction",
     description:
-      "Contact Oberizon Construction in White Rock, BC to review a healthcare, dental, medical, pharmacy, commercial, office, or luxury residential construction project.",
-    keywords: ["contact Oberizon Construction", "construction consultation White Rock", "commercial contractor consultation"],
+      "Tenant improvement contractor serving White Rock & the Lower Mainland — contact Oberizon Construction to book a free consultation for your next project.",
+    keywords: [
+      "tenant improvement contractor",
+      "contact construction company BC",
+      "free construction quote Lower Mainland",
+      "book construction consultation",
+      "White Rock contractor contact",
+    ],
     eyebrow: "Book a Consultation",
     heading: "Planning a clinic, commercial space, or luxury home?",
     subheading:
@@ -1148,14 +1163,40 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
       const keywords = buildKeywordCluster(service, city);
       const pricing = buildPricingBrief(service);
 
+      /*
+        The description this replaces was ungrammatical on all 140 pages:
+
+          "Need commercial construction in White Rock, BC? Oberizon Construction
+           manages hire a commercial construction company with clear scope,
+           budget, and schedule control across White Rock and the Semiahmoo
+           Peninsula."
+
+        `service.intent` is a verb phrase, written for "…if you need to {intent}"
+        where it is used elsewhere, so dropping it after "manages" produced
+        "manages hire a". 216 characters too, so Google truncated whatever
+        survived. The SEO consultant caught this on the fourteen pages his sheet
+        covers; it was running on every one of the 140.
+
+        His formula replaces it. Where he wrote the copy himself — the fourteen
+        commercial-construction pages — his exact strings win, because his
+        wording varies per city in ways a template cannot reproduce.
+      */
+      const seo =
+        service.slug === "commercial-construction" ? cityCommercialMeta[city.slug] : undefined;
+
       return {
         city,
         service,
         path,
-        title: `${service.name} in ${city.city}, BC | Oberizon Construction`,
-        description: `Need ${primary}? Oberizon Construction manages ${service.intent} across ${city.regionNote}.`,
+        title: seo?.title ?? cityTitle(service.name, city.city),
+        description:
+          seo?.description ??
+          cityDescription(service.name, city.city, service.slug, city.regionNote),
         h1: `${service.name} in ${city.city}, BC`,
-        keywords,
+        // His researched set where he supplied one, our generated cluster
+        // otherwise. Metadata only — the trust gate blocks these from being
+        // rendered into the page body.
+        keywords: seo?.keywords ?? keywords,
         intro: `${serviceLead[service.slug] ?? ""} We plan that before the site gets busy. Drawings, permits and trades are sequenced by one team out of White Rock.`.trim(),
         quickFacts: buildQuickFacts(service, city, pricing),
         pricingBrief: pricing,

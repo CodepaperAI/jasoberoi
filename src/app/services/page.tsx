@@ -49,14 +49,15 @@ const GROUPS = [
 export const metadata: Metadata = buildMetadata({
   title: "Construction Services in BC | Oberizon Construction",
   description:
-    "Healthcare, commercial and luxury residential construction across the Lower Mainland — with 2026 cost ranges for every service, from Oberizon Construction in White Rock.",
+    "Construction services for healthcare, dental, medical, commercial & luxury residential projects, with 2026 cost guides — from Oberizon Construction.",
   path: "/services",
   image: HERO_IMAGE,
   keywords: [
+    "construction services",
     "construction services BC",
-    "healthcare construction Lower Mainland",
-    "commercial construction company BC",
-    "dental clinic construction BC",
+    "commercial construction services",
+    "turnkey construction BC",
+    "Lower Mainland construction services",
   ],
 });
 
