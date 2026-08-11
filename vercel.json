@@ -1,0 +1,55 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/residential-projects",
+      "destination": "/services/luxury-residential-construction/",
+      "permanent": true
+    },
+    {
+      "source": "/residential-projects/",
+      "destination": "/services/luxury-residential-construction/",
+      "permanent": true
+    },
+    {
+      "source": "/commercial-projects",
+      "destination": "/services/commercial-construction/",
+      "permanent": true
+    },
+    {
+      "source": "/commercial-projects/",
+      "destination": "/services/commercial-construction/",
+      "permanent": true
+    },
+    {
+      "source": "/service-vancouver",
+      "destination": "/construction/vancouver/commercial-construction/",
+      "permanent": true
+    },
+    {
+      "source": "/service-vancouver/",
+      "destination": "/construction/vancouver/commercial-construction/",
+      "permanent": true
+    },
+    {
+      "source": "/landing-page",
+      "destination": "/services/dental-clinic-construction/",
+      "permanent": true
+    },
+    {
+      "source": "/landing-page/",
+      "destination": "/services/dental-clinic-construction/",
+      "permanent": true
+    },
+    {
+      "source": "/thank-you",
+      "destination": "/contact/",
+      "permanent": true
+    },
+    {
+      "source": "/thank-you/",
+      "destination": "/contact/",
+      "permanent": true
+    }
+  ]
+}
