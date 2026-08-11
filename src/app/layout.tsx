@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Barlow, Gelasio } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
+import {
+  GoogleTagManager,
+  GoogleTagManagerNoScript,
+} from "@/components/GoogleTagManager";
 import { ConversionTracking } from "@/components/ConversionTracking";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -84,7 +88,16 @@ export default function RootLayout({
       className={`${gelasio.variable} ${barlow.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full bg-background text-foreground">
+        {/* First in the body, where GTM expects its fallback. */}
+        <GoogleTagManagerNoScript />
         <JsonLd data={organizationJsonLd(absoluteUrl("/"))} />
+        <GoogleTagManager />
+        {/*
+          Analytics stays, and stays second. It renders nothing unless
+          NEXT_PUBLIC_GA_ID is set, which it is not — GA4 arrives through the
+          container above. If a standalone GA4 property is ever wanted here,
+          check first that the container is not already firing one.
+        */}
         <Analytics />
         <ConversionTracking />
         <RouteTransition />
