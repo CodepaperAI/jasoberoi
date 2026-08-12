@@ -92,5 +92,11 @@
       "destination": "/",
       "permanent": true
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/dc73b00b-1e16-48e3-a48b-2b7cd5d3e38e.html",
+      "destination": "/dc73b00b-1e16-48e3-a48b-2b7cd5d3e38e/"
+    }
   ]
 }
