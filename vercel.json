@@ -3,7 +3,12 @@
   "redirects": [
     {
       "source": "/(.*)",
-      "has": [{ "type": "host", "value": "jasoberoi-pied.vercel.app" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "jasoberoi-pied.vercel.app"
+        }
+      ],
       "destination": "https://www.oberizonconstruction.ca/$1",
       "permanent": true
     },
@@ -65,26 +70,6 @@
     {
       "source": "/about-us/",
       "destination": "/about/",
-      "permanent": true
-    },
-    {
-      "source": "/blog",
-      "destination": "/projects/",
-      "permanent": true
-    },
-    {
-      "source": "/blog/",
-      "destination": "/projects/",
-      "permanent": true
-    },
-    {
-      "source": "/blog/:path*",
-      "destination": "/projects/",
-      "permanent": true
-    },
-    {
-      "source": "/blog/:path*/",
-      "destination": "/projects/",
       "permanent": true
     },
     {

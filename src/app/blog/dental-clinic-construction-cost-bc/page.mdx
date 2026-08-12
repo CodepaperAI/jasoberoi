@@ -1,11 +1,120 @@
+import { BlogArticle } from "@/components/BlogArticle";
 import { blogMetadata } from "@/lib/blog";
 
 export const metadata = blogMetadata("dental-clinic-construction-cost-bc");
 
-# Pilot
+export const faqs = [
+  {
+    question: "How much does it cost to build a dental clinic in BC?",
+    answer:
+      "Dental clinic construction in BC typically costs $300 to $450 per square foot, with total project costs running from about $450,000 for a small 2–3 operatory clinic to $1.8 million for a large 4,000 sq ft multi-operatory facility. That covers construction only, not dental equipment.",
+  },
+  {
+    question: "Is dental equipment included in construction cost estimates?",
+    answer:
+      "No. Dental equipment is almost always budgeted separately from construction. Chairs, imaging systems and sterilization equipment can add $150,000 to $450,000 or more on top of the construction cost, depending on how much is new rather than relocated from a previous practice.",
+  },
+  {
+    question: "Why is dental clinic construction more expensive than a regular office build-out?",
+    answer:
+      "Dental clinics need dedicated plumbing, vacuum and compressed air lines at every operatory, heavier electrical service for imaging equipment, and HVAC that meets health care facility standards under CSA Z8000. Those healthcare-specific systems are what push cost per square foot well above a typical commercial office build.",
+  },
+  {
+    question: "How long does it take to build a dental clinic in BC?",
+    answer:
+      "Most dental clinic construction projects in BC take 3 to 9 months from permit approval to opening day, depending on size. Small clinics with 2–3 operatories often complete in 3–4 months, while large multi-operatory facilities can take 6–9 months.",
+  },
+  {
+    question: "Does CSA Z8000 affect dental clinic construction costs?",
+    answer:
+      "Yes. CSA Z8000 guidelines for health care facility design influence corridor widths, mechanical ventilation, finishes and infection control measures, all of which add cost compared with a non-healthcare commercial build. Working with a contractor who applies CSA Z8000 from the design stage avoids costly rework later.",
+  },
+  {
+    question: "Can I renovate an existing space instead of building from a shell?",
+    answer:
+      "Yes, and many BC dental practices do exactly that. Renovation cost depends heavily on whether the existing plumbing and electrical can be reused or have to be relocated to match a new operatory layout.",
+  },
+];
 
-Checking that MDX composes with `output: "export"`.
+<BlogArticle slug="dental-clinic-construction-cost-bc" faqs={faqs}>
 
-| Line item | Cost |
-| --- | --- |
-| Test | $1 |
+# How Much Does Dental Clinic Construction Cost in BC? (2026 Price Guide)
+
+If you are a dentist planning to open or expand a practice in the Lower Mainland or Fraser Valley, the first question is almost always the same: what is this actually going to cost? Dental clinic construction in BC typically runs from around $450,000 to $1.8 million depending on size, operatory count and finish level — and that is before dental equipment. After building clinics across the region, the thing that surprises new clients is rarely the total. It is *why* dental construction costs more per square foot than a retail or office build-out.
+
+> **Key takeaway.** Dental clinic construction in BC generally costs **$300 to $450 per square foot** for the tenant improvement work alone, putting a small 1,500 sq ft clinic around $450,000–$675,000 and a large 4,000 sq ft multi-operatory facility at $1.2–$1.8 million. Dental equipment — chairs, imaging, sterilization — is a separate budget line and adds roughly $150,000 to $450,000 on top.
+
+## Why Dental Clinic Construction Costs More Than a Standard Commercial Build
+
+Most commercial tenant improvements involve drywall, flooring and a few electrical outlets. Dental clinics are a different animal. Every operatory needs dedicated plumbing — water, drain, vacuum and compressed air lines running to one specific chair location — heavier electrical loads for imaging and sterilization, and HVAC that can carry infection control requirements.
+
+On top of that, health care facilities in BC fall under CSA Z8000 guidance for the design and construction of health care facilities, which affects everything from corridor widths to finishes to mechanical systems. We build project budgets around CSA Z8000 from day one, because retrofitting a clinic that missed a compliance requirement costs far more than building it right the first time.
+
+## Dental Clinic Construction Cost by Clinic Size (2026)
+
+These ranges apply the $300–$450 per square foot band we publish on our [dental clinic construction](/services/dental-clinic-construction/) service page. Actual cost moves with the condition of the shell, whether it is a ground-floor retail unit or a purpose-built medical building, and the municipality's own requirements.
+
+| Clinic size | Operatories | Typical construction cost | Typical timeline |
+| --- | --- | --- | --- |
+| Small — 1,500 sq ft | 2–3 | $450,000 – $675,000 | 3–4 months |
+| Mid-size — 2,500 sq ft | 4–6 | $750,000 – $1,125,000 | 4–6 months |
+| Large — 4,000 sq ft | 7+ | $1,200,000 – $1,800,000 | 6–9 months |
+
+These figures cover construction — the tenant improvement — only. Dental equipment, furniture, signage and IT are budgeted separately.
+
+If you are sizing a five-operatory clinic specifically, we have published a full line-item breakdown for exactly that size in [5-Operatory Dental Clinic Cost in BC](/blog/5-operatory-dental-clinic-cost-bc/).
+
+## What a Full Dental Construction Scope Actually Includes
+
+Terminology gets used loosely in this industry, so it is worth being clear about what a full scope covers rather than a lighter "dental office construction" package:
+
+1. **Shell and base building work** — if you are leasing raw space, framing, ceiling grid, and bringing utilities to the unit.
+2. **Operatory plumbing and electrical** — dedicated lines for each chair, sinks, vacuum systems and compressed air.
+3. **Sterilization centre build-out** — a dedicated room or area with the ventilation and plumbing CSA Z8000 expects.
+4. **HVAC and infection control** — air changes, filtration and zoning appropriate to a health care occupancy.
+5. **Millwork and casework** — custom cabinetry at each operatory, reception and sterilization.
+6. **Flooring, finishes and lighting** — durable, cleanable surfaces that meet health authority expectations.
+7. **Final inspections and occupancy** — building, plumbing, electrical and fire inspections before you can open.
+
+A quote that skips items 2, 3 and 4 is not comparable to a full dental scope. It is the most common reason a first-time clinic owner accepts a low bid that balloons mid-project.
+
+## What Drives the Number Up
+
+Six factors move the cost most:
+
+1. **Operatory count.** Each chair position adds roughly $8,000–$15,000 in plumbing and electrical rough-in alone, before any finishes.
+2. **Imaging equipment.** Panoramic and CBCT units need reinforced walls, shielding in some cases, and dedicated power.
+3. **Shell condition.** A raw vanilla box costs less to build out than retrofitting an old retail space whose existing plumbing and electrical are in the wrong places.
+4. **HVAC upgrades.** Older buildings often need mechanical work to meet ventilation standards for a health care occupancy.
+5. **Municipal review.** Requirements differ between municipalities, and a longer review adds cost through extended design fees and holding costs.
+6. **Finish level.** Quartz against laminate, premium flooring and higher-end reception finishes can shift cost per square foot by $30–$60.
+
+## A Realistic Way to Budget
+
+Rather than fixating on a single number, budget in three buckets:
+
+1. **Construction (tenant improvement)** — the ranges in the table above.
+2. **Dental equipment** — chairs, delivery units, sterilization, imaging. Typically $150,000–$450,000 depending on how much is new rather than relocated.
+3. **Contingency** — a minimum of 10% on the construction budget for unforeseen conditions, and more in an older building.
+
+We walk every prospective client through this three-bucket budget before drawings start, because it prevents the mid-project sticker shock that derails so many dental build-outs.
+
+## Frequently Asked Questions
+
+**How much does it cost to build a dental clinic in BC?** Dental clinic construction in BC typically costs $300 to $450 per square foot, with total project costs running from about $450,000 for a small 2–3 operatory clinic to $1.8 million for a large 4,000 sq ft multi-operatory facility. That covers construction only, not dental equipment.
+
+**Is dental equipment included in construction cost estimates?** No. Dental equipment is almost always budgeted separately from construction. Chairs, imaging systems and sterilization equipment can add $150,000 to $450,000 or more on top of the construction cost, depending on how much is new rather than relocated from a previous practice.
+
+**Why is dental clinic construction more expensive than a regular office build-out?** Dental clinics need dedicated plumbing, vacuum and compressed air lines at every operatory, heavier electrical service for imaging equipment, and HVAC that meets health care facility standards under CSA Z8000. Those healthcare-specific systems are what push cost per square foot well above a typical commercial office build.
+
+**How long does it take to build a dental clinic in BC?** Most dental clinic construction projects in BC take 3 to 9 months from permit approval to opening day, depending on size. Small clinics with 2–3 operatories often complete in 3–4 months, while large multi-operatory facilities can take 6–9 months.
+
+**Does CSA Z8000 affect dental clinic construction costs?** Yes. CSA Z8000 guidelines for health care facility design influence corridor widths, mechanical ventilation, finishes and infection control measures, all of which add cost compared with a non-healthcare commercial build. Working with a contractor who applies CSA Z8000 from the design stage avoids costly rework later.
+
+**Can I renovate an existing space instead of building from a shell?** Yes, and many BC dental practices do exactly that. Renovation cost depends heavily on whether the existing plumbing and electrical can be reused or have to be relocated to match a new operatory layout.
+
+## Conclusion
+
+Dental clinic construction is one of the more complex commercial build types, because it combines healthcare-grade infrastructure with the everyday realities of running a small business. Whether you are planning a two-operatory start-up or a large multi-operatory facility, the numbers here give you a realistic starting point — though every site has quirks that move the final figure. We have built dental clinics across the Lower Mainland and Fraser Valley, and we would rather show you where your specific space adds or removes cost than hand you an average.
+
+</BlogArticle>

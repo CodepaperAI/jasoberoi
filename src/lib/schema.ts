@@ -6,6 +6,7 @@ import {
   type SitePage,
 } from "@/lib/site";
 import { absoluteUrl } from "@/lib/seo";
+import { postPath, type BlogPost } from "@/lib/blog";
 
 export function organizationJsonLd(url: string) {
   return {
@@ -142,6 +143,39 @@ export function constructionWebPageJsonLd(page: ConstructionPseoPage) {
       "@id": `${absoluteUrl(page.path)}#service`,
     },
     primaryImageOfPage: absoluteUrl(page.service.image),
+  };
+}
+
+/**
+ * BlogPosting rather than Article: these are dated posts on an identified blog,
+ * and the narrower type is the one Google documents for that.
+ *
+ * publisher points at the existing organization node rather than restating the
+ * company — the two would otherwise drift, and an inconsistent publisher is
+ * worth less than none.
+ */
+export function blogPostingJsonLd(post: BlogPost) {
+  const url = absoluteUrl(postPath(post.slug));
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${url}#post`,
+    url,
+    mainEntityOfPage: url,
+    headline: post.title,
+    description: post.description,
+    datePublished: post.published,
+    dateModified: post.published,
+    inLanguage: "en-CA",
+    author: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      "@id": `${absoluteUrl("/")}#organization`,
+    },
+    publisher: { "@id": `${absoluteUrl("/")}#organization` },
+    isPartOf: { "@id": `${absoluteUrl("/")}#website` },
+    about: { "@id": `${absoluteUrl(`/services/${post.service}`)}#service` },
   };
 }
 
