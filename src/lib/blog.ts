@@ -38,7 +38,7 @@ export const blogPosts: BlogPost[] = [
     title: "How Much Does It Cost to Build a Dental Clinic in BC? (2026)",
     description:
       "What a dental clinic costs to build in BC in 2026, broken down by clinic size, with the line items that move the number most.",
-    published: "2026-08-04",
+    published: "2026-08-14",
     service: "dental-clinic-construction",
     cardTitle: "Dental clinic construction cost in BC",
     minutes: 8,
@@ -48,7 +48,7 @@ export const blogPosts: BlogPost[] = [
     title: "5-Operatory Dental Clinic Cost in BC: A 2026 Line-Item Breakdown",
     description:
       "A real line-item cost breakdown for a 5-operatory dental clinic in BC: square footage, per-operatory costs, plumbing, electrical and equipment.",
-    published: "2026-08-05",
+    published: "2026-08-13",
     service: "dental-clinic-construction",
     cardTitle: "5-operatory dental clinic cost",
     minutes: 9,
@@ -59,7 +59,7 @@ export const blogPosts: BlogPost[] = [
     title: "Dental Clinic Build Timeline: From Lease Signing to First Patient",
     description:
       "A realistic dental clinic build timeline for BC, phase by phase from lease signing to opening day, plus the delays that push it back.",
-    published: "2026-08-06",
+    published: "2026-08-11",
     service: "dental-clinic-construction",
     cardTitle: "Dental clinic build timeline",
     minutes: 8,
@@ -69,7 +69,7 @@ export const blogPosts: BlogPost[] = [
     title: "12 Things to Check Before You Sign a Commercial Lease for a Clinic",
     description:
       "A 12-point clinic lease checklist covering the buildout issues that cost the most when they surface after signing rather than before.",
-    published: "2026-08-07",
+    published: "2026-08-12",
     service: "healthcare-construction",
     cardTitle: "Clinic lease checklist",
     minutes: 9,
@@ -79,7 +79,7 @@ export const blogPosts: BlogPost[] = [
     title: "Tenant Improvement Allowance Explained: What It Covers",
     description:
       "What a tenant improvement allowance actually covers, what it rarely does, and how to price your buildout against it before signing.",
-    published: "2026-08-08",
+    published: "2026-08-06",
     service: "office-renovation-contractor",
     cardTitle: "Tenant improvement allowance",
     minutes: 7,
@@ -89,7 +89,7 @@ export const blogPosts: BlogPost[] = [
     title: "Base Building vs. Tenant Improvement: What Your Landlord Is Responsible For",
     description:
       "Where the landlord's base building scope ends and your tenant improvement begins — and why the boundary decides your budget.",
-    published: "2026-08-09",
+    published: "2026-08-05",
     service: "commercial-renovation",
     cardTitle: "Base building vs tenant improvement",
     minutes: 7,
@@ -99,7 +99,7 @@ export const blogPosts: BlogPost[] = [
     title: "How Long Does It Take to Renovate a Dental Office?",
     description:
       "A realistic dental office renovation timeline for BC practices, including how to keep seeing patients while the work runs.",
-    published: "2026-08-10",
+    published: "2026-08-08",
     service: "dental-office-renovation",
     cardTitle: "Dental office renovation timeline",
     minutes: 7,
@@ -109,7 +109,7 @@ export const blogPosts: BlogPost[] = [
     title: "Dental Office Renovation Checklist: 12 Steps",
     description:
       "A 12-step dental office renovation checklist for BC practices, ordered the way the work actually has to happen.",
-    published: "2026-08-11",
+    published: "2026-08-07",
     service: "dental-office-renovation",
     cardTitle: "Dental office renovation checklist",
     minutes: 8,
@@ -119,7 +119,7 @@ export const blogPosts: BlogPost[] = [
     title: "Medical Clinic Construction Permits in BC: A Step-by-Step Guide",
     description:
       "The permits a medical clinic build needs in BC — municipal, health authority, Technical Safety BC — and the order to pursue them in.",
-    published: "2026-08-12",
+    published: "2026-08-10",
     service: "medical-clinic-construction",
     cardTitle: "Medical clinic permits in BC",
     minutes: 9,
@@ -129,7 +129,7 @@ export const blogPosts: BlogPost[] = [
     title: "Commercial Renovation vs. New Construction: Which Is Right for You?",
     description:
       "How to decide between renovating an existing commercial space and building new, on cost, timeline and risk.",
-    published: "2026-08-13",
+    published: "2026-08-09",
     service: "commercial-construction",
     cardTitle: "Renovation vs new construction",
     minutes: 8,
@@ -139,7 +139,7 @@ export const blogPosts: BlogPost[] = [
     title: "Luxury Home Builder vs. General Contractor: What's the Real Difference?",
     description:
       "What separates a luxury home builder from a general contractor, and which one a high-finish BC build actually needs.",
-    published: "2026-08-14",
+    published: "2026-08-04",
     service: "luxury-residential-construction",
     cardTitle: "Luxury builder vs general contractor",
     minutes: 7,

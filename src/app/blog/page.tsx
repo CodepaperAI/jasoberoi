@@ -40,8 +40,14 @@ export default function BlogIndex() {
         image="/oberizon/optimized/project-healthcare-3.jpg"
       />
 
-      <section className="mx-auto w-full max-w-5xl px-5 pb-24 sm:px-6">
-        <ul className="flex flex-col gap-4">
+      {/* max-w-7xl and the same padding as PageHero. At max-w-5xl the cards sat
+          152px inside the hero's left edge, so the page read as two different
+          layouts stacked on each other. Two columns because eleven full-width
+          cards each carrying one line of description is a lot of scrolling for
+          very little information. */}
+      <section className="px-5 pb-24 pt-14 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-7xl">
+        <ul className="grid gap-4 lg:grid-cols-2">
           {posts.map((post) => {
             const service = constructionServices.find(
               (item) => item.slug === post.service,
@@ -69,6 +75,7 @@ export default function BlogIndex() {
             );
           })}
         </ul>
+        </div>
       </section>
     </>
   );
