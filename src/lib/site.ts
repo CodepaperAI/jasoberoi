@@ -254,7 +254,10 @@ export const socialLinks = [
  * visitor who reaches the calculator from here can generate a figure Oberizon
  * has not yet agreed to be held to.
  */
-export const resourceLinks = [{ label: "2026 Cost Guide & Calculator", href: "/cost" }];
+export const resourceLinks = [
+  { label: "2026 Cost Guide & Calculator", href: "/cost" },
+  { label: "Construction Guides & Cost Breakdowns", href: "/blog" },
+];
 
 
 export const trustItems = [
@@ -549,6 +552,10 @@ export const navigation: NavItem[] = [
   },
   { label: "Projects", href: "/projects" },
   { label: "Service Areas", href: "/construction" },
+  // Eleven posts shipped with nothing linking to them, so the only way in was
+  // typing the URL. A page reachable solely from the sitemap gets crawled and
+  // never read, and Google discounts a section the site itself does not link to.
+  { label: "Guides", href: "/blog" },
   // Top level rather than buried under Services: it carries the cost calculator,
   // which is the only page on the site a visitor might arrive wanting to use.
   // Gated so nothing links to unconfirmed rates.
