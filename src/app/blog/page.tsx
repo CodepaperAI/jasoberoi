@@ -57,7 +57,12 @@ export default function BlogIndex() {
               <li key={post.slug}>
                 <Link
                   href={postPath(post.slug)}
-                  className="group block rounded-2xl border border-zinc-200 bg-white p-6 transition hover:border-zinc-300 hover:shadow-sm sm:p-8"
+                  /* h-full, not block: the grid stretches each <li> to the tallest
+                     card in the row, but the <a> inside only grew to its own
+                     content, so a two-line title next to a three-line one left a
+                     32px step along the bottom edge. flex-col keeps the eyebrow,
+                     title and description stacked while the card fills the cell. */
+                  className="group flex h-full flex-col rounded-2xl border border-zinc-200 bg-white p-6 transition hover:border-zinc-300 hover:shadow-sm sm:p-8"
                 >
                   <p className="eyebrow">
                     {service?.name ?? "Construction"}
