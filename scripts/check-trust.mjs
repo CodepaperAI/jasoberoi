@@ -76,7 +76,11 @@ async function readSource() {
     for (const entry of await readdir(dir, { withFileTypes: true })) {
       const full = join(dir, entry.name);
       if (entry.isDirectory()) await walk(full);
-      else if (/\.tsx?$/.test(entry.name)) files.push(full);
+      // .mdx included deliberately. The blog is now the largest surface of
+      // price and CTA claims on the site, and every gate below reads this list
+      // — leaving posts out would mean the checks quietly stopped covering the
+      // place they matter most.
+      else if (/\.(tsx?|mdx)$/.test(entry.name)) files.push(full);
     }
   }
   await walk(SRC);
@@ -358,6 +362,52 @@ function checkPortfolioTally(site) {
 }
 
 /** Report the content the client still owes, without blocking on it. */
+/**
+ * Every registered post must have a page, and every page must be registered.
+ *
+ * The registry drives the sitemap, so an entry without an .mdx file submits a
+ * URL to Google that returns 404 — and the build would not otherwise complain,
+ * because nothing imports the missing file. The reverse is quieter but also
+ * wrong: a post that exists and is not registered is never linked from the
+ * index, never submitted, and never found.
+ */
+async function checkBlogRegistry(blog) {
+  const dir = join(SRC, "app", "blog");
+  const onDisk = new Set();
+
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    if (!entry.isDirectory() || /\s\d+$/.test(entry.name)) continue;
+    try {
+      await readFile(join(dir, entry.name, "page.mdx"), "utf8");
+      onDisk.add(entry.name);
+    } catch {
+      // A directory without a page.mdx is not a post.
+    }
+  }
+
+  for (const post of blog.blogPosts) {
+    if (!onDisk.has(post.slug)) {
+      fail(
+        "blog-registry",
+        `"${post.slug}" is in blogPosts and therefore in the sitemap, but ` +
+          `src/app/blog/${post.slug}/page.mdx does not exist — the sitemap would submit a 404.`,
+        "src/lib/blog.ts",
+      );
+    }
+  }
+
+  for (const slug of onDisk) {
+    if (!blog.blogPosts.some((post) => post.slug === slug)) {
+      fail(
+        "blog-registry",
+        `src/app/blog/${slug}/page.mdx exists but is not in blogPosts — ` +
+          `it renders but is never linked from the index or submitted in the sitemap.`,
+        "src/lib/blog.ts",
+      );
+    }
+  }
+}
+
 function checkContentGaps(site) {
   const missingChallenge = site.projects.filter((project) => !project.challenge);
   const missingImages = site.projects.filter((project) => !project.images?.length);
@@ -490,7 +540,13 @@ function checkPriceTotals(pricing, sources) {
   for (const { path, text } of sources) {
     if (path.endsWith("lib/pricing.ts")) continue;
 
-    for (const sentence of stripComments(text).split(/(?<=[.!?])\s+/)) {
+    // Split on line breaks as well as sentence ends. A markdown table contains
+    // no full stops, so the whole thing arrived here as one "sentence" and
+    // every figure in it got checked against every square footage in it —
+    // pricing dental chairs against a construction rate, and reporting six
+    // failures for one honest table. Row by row, each claim is checked against
+    // the area on its own row, which is the comparison a reader actually makes.
+    for (const sentence of stripComments(text).split(/(?<=[.!?])\s+|\n/)) {
       const totals = [...sentence.matchAll(MONEY_RANGE)]
         .map((match) => [num(match[1]), num(match[2])])
         .filter(([low, high]) => low >= 10_000 && high >= 10_000);
@@ -827,6 +883,7 @@ const sources = await readSource();
 const site = await import("../src/lib/site.ts");
 const pricing = await import("../src/lib/pricing.ts");
 const hubs = await import("../src/lib/hubs.ts");
+const blog = await import("../src/lib/blog.ts");
 
 checkCopy(sources);
 checkCopyrightYear(sources);
@@ -846,6 +903,7 @@ checkCredentials(site, sources);
 checkEvidence(site);
 checkPortfolioTally(site);
 checkContentGaps(site);
+await checkBlogRegistry(blog);
 checkFooter(sources);
 checkKeywordChips(sources);
 checkSchema(site, sources);
