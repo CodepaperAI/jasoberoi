@@ -22,6 +22,17 @@ export function absoluteUrl(path: string) {
   return `${base}${normalizedPath}`;
 }
 
+/**
+ * Page URLs only — never assets. trailingSlash is true, so the URL a page is
+ * actually served at ends in "/". Next applies that normalisation to the
+ * canonical tag for you, but not to sitemap entries, which are emitted
+ * verbatim. Without this the sitemap advertises 86 URLs that all 308 to their
+ * canonical, and Search Console files every one under "Page with redirect".
+ */
+export function canonicalPageUrl(path: string) {
+  return absoluteUrl(path.endsWith("/") ? path : `${path}/`);
+}
+
 export function buildMetadata({
   title,
   description,

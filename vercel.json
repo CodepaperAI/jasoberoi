@@ -50,6 +50,36 @@
       "source": "/thank-you/",
       "destination": "/contact/",
       "permanent": true
+    },
+    {
+      "source": "/about-us",
+      "destination": "/about/",
+      "permanent": true
+    },
+    {
+      "source": "/about-us/",
+      "destination": "/about/",
+      "permanent": true
+    },
+    {
+      "source": "/blog",
+      "destination": "/projects/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/",
+      "destination": "/projects/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:path*",
+      "destination": "/projects/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:path*/",
+      "destination": "/projects/",
+      "permanent": true
     }
   ]
 }

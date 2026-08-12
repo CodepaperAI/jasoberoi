@@ -25,12 +25,12 @@ Primary service area is the Lower Mainland of British Columbia: White Rock, Surr
 ## Key content
 
 - [Home](https://www.oberizonconstruction.ca/)
-- [About Oberizon](https://www.oberizonconstruction.ca/about)
-- [Services](https://www.oberizonconstruction.ca/services)
-- [Projects](https://www.oberizonconstruction.ca/projects)
-- [Cost guide](https://www.oberizonconstruction.ca/cost)
-- [Contact](https://www.oberizonconstruction.ca/contact)
-- [Service areas](https://www.oberizonconstruction.ca/construction)
+- [About Oberizon](https://www.oberizonconstruction.ca/about/)
+- [Services](https://www.oberizonconstruction.ca/services/)
+- [Projects](https://www.oberizonconstruction.ca/projects/)
+- [Cost guide](https://www.oberizonconstruction.ca/cost/)
+- [Contact](https://www.oberizonconstruction.ca/contact/)
+- [Service areas](https://www.oberizonconstruction.ca/construction/)
 - [Sitemap](https://www.oberizonconstruction.ca/sitemap.xml)
 
 ## Signature project
