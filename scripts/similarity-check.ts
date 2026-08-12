@@ -103,21 +103,33 @@ async function loadFromExport(root: string): Promise<Page[]> {
   return pages;
 }
 
-async function loadFromUrl(origin: string): Promise<Page[]> {
-  const { serviceAreas, constructionServices } = await import("../src/lib/site.ts");
-  const pages: Page[] = [];
-  for (const city of serviceAreas) {
-    for (const service of constructionServices) {
-      const res = await fetch(`${origin}/construction/${city.slug}/${service.slug}/`);
-      if (!res.ok) continue;
-      const html = await res.text();
-      pages.push({
-        city: city.slug,
-        service: service.slug,
-        text: visibleText(html),
-        indexed: isIndexed(html),
-      });
+/**
+ * The route list comes from the build output rather than from importing
+ * site.ts. Importing the data module would make this script part of the app's
+ * type graph — and `next build` typechecks scripts/, so a `.ts`-extension
+ * import fails the production build. The directory walk needs no import and
+ * cannot drift from what actually shipped.
+ */
+async function routePairs(root: string): Promise<Array<[string, string]>> {
+  const base = join(root, "construction");
+  const pairs: Array<[string, string]> = [];
+  for (const city of await readdir(base, { withFileTypes: true })) {
+    if (!city.isDirectory() || /\s\d+$/.test(city.name)) continue;
+    for (const service of await readdir(join(base, city.name), { withFileTypes: true })) {
+      if (!service.isDirectory() || /\s\d+$/.test(service.name)) continue;
+      pairs.push([city.name, service.name]);
     }
+  }
+  return pairs;
+}
+
+async function loadFromUrl(origin: string, root: string): Promise<Page[]> {
+  const pages: Page[] = [];
+  for (const [city, service] of await routePairs(root)) {
+    const res = await fetch(`${origin}/construction/${city}/${service}/`);
+    if (!res.ok) continue;
+    const html = await res.text();
+    pages.push({ city, service, text: visibleText(html), indexed: isIndexed(html) });
   }
   return pages;
 }
@@ -131,7 +143,8 @@ async function main() {
   const threshold = Number(at("--threshold") ?? DEFAULT_THRESHOLD);
   const origin = at("--url");
 
-  const pages = origin ? await loadFromUrl(origin) : await loadFromExport(at("--dir") ?? "out");
+  const root = at("--dir") ?? "out";
+  const pages = origin ? await loadFromUrl(origin, root) : await loadFromExport(root);
   if (!pages.length) {
     console.error("No pages found. Run `npm run build` first, or pass --url.");
     process.exit(2);

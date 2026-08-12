@@ -2,10 +2,9 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
-      "//": "The production alias serves the whole site a second time, with its own robots.txt saying Allow: / and no X-Robots-Tag — Vercel only adds that to preview deployments, and this is aliased as production. Every page is duplicated on a domain Google can crawl. Sending the host to the real one consolidates it instead of merely hiding it. next.config headers and middleware are both ignored under output: export, so this is the only layer that can do it.",
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "jasoberoi-pied.vercel.app" }],
-      "destination": "https://www.oberizonconstruction.ca/:path*",
+      "destination": "https://www.oberizonconstruction.ca/$1",
       "permanent": true
     },
     {
