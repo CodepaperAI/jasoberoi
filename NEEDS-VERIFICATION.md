@@ -8,6 +8,27 @@ Every item here is a field currently set to `null` in `src/lib/site.ts`. Null re
 
 ---
 
+## 0. ⚠️ The site now runs two standards on permit timelines
+
+**Accepted deliberately by Jenish on 2026-08-12. Recorded here so it does not disappear.**
+
+The blog publishes specific permit timelines:
+
+- `/blog/medical-clinic-construction-permits-bc/` — "3–6 months from permit application to occupancy", plus a permit-by-authority table (municipal 4–12 weeks, health authority 2–8 weeks, Technical Safety BC 1–3 weeks)
+- `/blog/dental-clinic-build-timeline/` — "permit submission & approval 4–10 weeks"
+- `/blog/dental-office-renovation-timeline/` — "some municipalities 4–6 weeks, others 10–12 weeks"
+
+The **city pages state no timeline at all**, because none could be sourced from a municipal website (see item 1 below).
+
+So the same site asserts review windows in one place and declines to in another. Nobody has verified the blog's figures — they arrived in the consultant's content package without citations.
+
+**To resolve, pick one:**
+
+1. **Jas confirms the blog's numbers from his own jobs.** Best outcome: they stay in the blog *and* fill the null `permitTimeline` fields in `src/lib/site.ts`, clearing item 1 below. One standard, one source of truth.
+2. **Jas cannot stand behind them.** Then they come out of the blog, because a licensed contractor's site should not publish a review window it will not defend.
+
+---
+
 ## 1. Commercial permit review timelines — every city
 
 **None of the fourteen municipalities publishes a commercial permit review window on its public pages.** They publish what an application must *contain*, not how long it takes. This was checked directly, not assumed.
