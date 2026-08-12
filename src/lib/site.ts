@@ -62,6 +62,45 @@ export type CityEvidence =
   /** Neither. Noindex until one of the above is true. */
   | "none";
 
+/**
+ * How much unique substance a city page actually carries.
+ *
+ * `evidence` answers "may this page ask to rank"; `tier` answers "does it have
+ * enough of its own to be worth reading". They are close but not the same, and
+ * Richmond is why: no delivered project, so evidence is "none", but a named
+ * client review and its own permit requirements — enough to stand up as B.
+ *
+ * A: delivered project with photography.
+ * B: real local substance — a review, measured demand, sourced permit detail.
+ * C: nothing yet that a competitor could not also write. noindex, follow.
+ */
+export type CityTier = "A" | "B" | "C";
+
+/**
+ * Municipal permit facts, each traceable to the municipality's own page.
+ *
+ * Every field is nullable and every populated field carries a source. This is a
+ * licensed contractor's site: a wrong permit timeline is a liability long before
+ * it is an SEO problem, so nothing here may be inferred, averaged or written
+ * from memory. Null renders nothing and appears in NEEDS-VERIFICATION.md.
+ *
+ * `timeline` is null almost everywhere on purpose. BC municipalities publish
+ * what a commercial application must contain; they do not publish how long
+ * review takes. That gap is real and is Jas's to fill from experience.
+ */
+export type CityPermitInfo = {
+  /** The municipality's own name for the department. */
+  authority: string | null;
+  /** The commercial / tenant-improvement pathway, as the municipality describes it. */
+  pathway: string | null;
+  /** Commercial review window. Null unless the municipality publishes one. */
+  timeline: string | null;
+  /** What is specific about building commercially here. Sourced, not inferred. */
+  notes: string | null;
+  /** Pages the above was read from. Required whenever any field is non-null. */
+  sources: string[];
+};
+
 export type ServiceArea = {
   city: string;
   slug: string;
@@ -71,6 +110,27 @@ export type ServiceArea = {
   evidence: CityEvidence;
   /** Shown on the page when evidence is "measured-demand" — honest adjacent-market labelling. */
   evidenceNote?: string;
+  tier: CityTier;
+  /** 2–3 sentences that open this city's pages. Written per city, not templated. */
+  heroIntro: string | null;
+  /** 3–4 sentences on the commercial and healthcare landscape here. */
+  localContext: string | null;
+  /**
+   * Why this city's cost sits where it does. Prose only — the numeric range
+   * stays single and site-wide until Jas confirms it. Varying a per-square-foot
+   * band by city without a source would be inventing the one number an owner
+   * actually acts on.
+   */
+  costRationale: string | null;
+  permits: CityPermitInfo;
+};
+
+const NO_PERMIT_DATA: CityPermitInfo = {
+  authority: null,
+  pathway: null,
+  timeline: null,
+  notes: null,
+  sources: [],
 };
 
 export type Project = {
@@ -504,6 +564,22 @@ export const serviceAreas: ServiceArea[] = [
     neighborhoods: ["Uptown White Rock", "Five Corners", "Marine Drive", "East Beach"],
     localSignals: "tight commercial footprints, healthcare demand, coastal retail, and high-finish residential expectations",
     evidence: "project",
+    tier: "A",
+    heroIntro:
+      "Our office is in White Rock, which means a site visit here costs you a phone call rather than a scheduled trip. The commercial stock on and around Marine Drive and Five Corners is small-footprint and largely older, so the constraint is rarely the design — it is what the building will actually support once a wall comes down.",
+    localContext:
+      "White Rock's commercial space is concentrated in the uptown blocks around Johnston Road and Five Corners, with the Marine Drive strip running retail and hospitality. It is a compact market with an older population, which is why dental, denture, physiotherapy and optometry practices take up so much of the professional tenancy. Units are small and often sit above or behind retail, so servicing and access are the first questions, not the last. The city is geographically enclaved within Surrey but permits separately, under its own Building Division.",
+    costRationale:
+      "White Rock sits at the middle of the range: no travel cost from our office, but the older small-footprint stock means base-building surprises are more common than in newer buildings.",
+    permits: {
+      authority: "City of White Rock Building Division",
+      pathway:
+        "White Rock issues a distinct Commercial Tenant Improvement permit, separate from the residential stream.",
+      timeline: null,
+      notes:
+        "White Rock permits independently of Surrey despite being surrounded by it — a Surrey approval carries no weight here. The Building Division reviews against the City's Zoning Bylaw and Official Community Plan as well as the provincial construction regulations, so a use that is permitted in a neighbouring municipality still has to clear White Rock's own zoning.",
+      sources: ["https://www.whiterockcity.ca/941/Building-Permits"],
+    },
   },
   {
     city: "Surrey",
@@ -512,6 +588,14 @@ export const serviceAreas: ServiceArea[] = [
     neighborhoods: ["City Centre", "Guildford", "Fleetwood", "Newton"],
     localSignals: "population growth, healthcare access needs, transit-oriented commercial nodes, and tenant improvement activity",
     evidence: "project",
+    tier: "A",
+    heroIntro:
+      "We have two clinics in progress in Surrey right now — a pharmacy on 156 Street and a dental build on Whalley Boulevard. Surrey is a different problem from the smaller municipalities around it: the corridors are newer, the buildings are bigger, and the approval path runs through a city that processes a very high volume of commercial applications.",
+    localContext:
+      "Surrey's commercial activity spreads across several distinct centres rather than one downtown — City Centre around Whalley and King George, Guildford, Fleetwood and Newton each carry their own professional and retail tenancy. Much of the healthcare space is in newer mixed-use and strata buildings, which usually means better base-building services than the older Fraser Valley stock but tighter strata rules about noise, hours and shared systems. The city has been adding population faster than almost anywhere in the province, and clinic demand has followed it into the suburban centres rather than staying downtown.",
+    costRationale:
+      "Surrey generally prices at the lower-middle of the range: newer base buildings mean fewer structural surprises, and there is no travel premium from White Rock.",
+    permits: NO_PERMIT_DATA,
   },
   {
     city: "Vancouver",
@@ -520,6 +604,14 @@ export const serviceAreas: ServiceArea[] = [
     neighborhoods: ["Mount Pleasant", "Kitsilano", "Cambie", "Downtown"],
     localSignals: "limited space, complex building coordination, strict schedules, and high finish standards",
     evidence: "project",
+    tier: "A",
+    heroIntro:
+      "We delivered a residential project on West Cordova, so we know what a downtown Vancouver build actually costs in coordination time. The work here is rarely about the trades — it is about elevator bookings, loading bay windows, strata approvals and the fact that nothing arrives on site whenever it is convenient.",
+    localContext:
+      "Vancouver's professional and clinical tenancy is spread thin across the city — Cambie and Mount Pleasant carry a lot of the medical and dental space, Kitsilano and the West Side run smaller practices, and downtown is mostly office and retail. Buildings are older and denser than anywhere else in the region, and a large share of commercial space is strata-owned, which adds an approval layer before the city is even involved. Access is the recurring cost: limited loading, restricted work hours in mixed residential buildings, and material handling that has to be scheduled rather than assumed.",
+    costRationale:
+      "Vancouver sits at the top of the range. Access restrictions, strata coordination and older base buildings add time that does not show up on a drawing, and trade rates downtown run higher than the Fraser Valley.",
+    permits: NO_PERMIT_DATA,
   },
   {
     city: "Burnaby",
@@ -530,6 +622,14 @@ export const serviceAreas: ServiceArea[] = [
     evidence: "measured-demand",
     evidenceNote:
       "Burnaby is an adjacent market served from the White Rock office. Oberizon has not yet delivered a Burnaby project.",
+    tier: "B",
+    heroIntro:
+      "We have not built in Burnaby yet, and we would rather say so than imply otherwise. What we can tell you is what a Burnaby clinic or office fit-out involves, because the building types here — transit-oriented towers at Metrotown, Brentwood and Lougheed — are the same ones we work in across the region.",
+    localContext:
+      "Burnaby's commercial space clusters around four town centres rather than a single core, and the newer supply at Metrotown, Brentwood and Lougheed is largely podium retail and professional space beneath residential towers. That building type dictates most of the work: shared services, strata rules, and mechanical routing that has to respect the residential floors above. Older stock around Edmonds and Hastings runs smaller and closer to the Vancouver pattern. The clinic demand here is steady rather than spiking, tied to the residential density arriving with each tower completion.",
+    costRationale:
+      "Burnaby prices near Vancouver rather than the Fraser Valley: podium space under occupied residential means restricted hours and more coordination than a standalone building.",
+    permits: NO_PERMIT_DATA,
   },
   {
     city: "Richmond",
@@ -538,6 +638,29 @@ export const serviceAreas: ServiceArea[] = [
     neighborhoods: ["Brighouse", "Steveston", "Cambie", "Ironwood"],
     localSignals: "retail density, airport access, medical offices, and business parks with specialized improvement needs",
     evidence: "none",
+    // Indexed at B on the strength of a named client review and Richmond's own
+    // published commercial requirements — not on a project, which there is not
+    // one of. If the unattributed Kanwarveer clinic turns out to be Richmond,
+    // this becomes an A. See NEEDS-VERIFICATION.md.
+    tier: "B",
+    heroIntro:
+      "Richmond is the one municipality in the region that publishes exactly what a commercial application has to contain before it will be accepted at all. That is useful, and it changes how we prepare a Richmond submission: the drawing set is assembled to their list first, because an incomplete package is not queued, it is refused.",
+    localContext:
+      "Richmond's commercial space runs from the Brighouse city centre through the Ironwood and Bridgeport business parks out to the older Steveston village stock, and the mix is unusually varied for one municipality. A large share of the medical and dental tenancy sits in mid-rise professional buildings around No. 3 Road, while the business parks carry the light-industrial and lab-adjacent work. Much of the city is built on delta soil, which is why structural changes get engineering attention earlier here than in most Lower Mainland municipalities.",
+    costRationale:
+      "Richmond sits mid-range. The documentation bar is higher than average, which front-loads drawing cost, but the newer No. 3 Road stock is generally straightforward once approved.",
+    permits: {
+      authority: "City of Richmond — Building Approvals",
+      pathway:
+        "Commercial applications are submitted through the MyPermit portal and are assessed against a published document checklist.",
+      timeline: null,
+      notes:
+        "Richmond will not accept an incomplete commercial application — its own guidance states that applications require all documentation and drawings listed on the form, and that incomplete applications will not be accepted. The commercial set has to include a site plan showing the whole building and the tenant location, a dimensioned floor plan with exits and fire separations, and a plumbing layout sized to the current BC Plumbing Code. Where exterior alterations are involved and the property sits in a development permit area, a Development Permit may be required before the building permit.",
+      sources: [
+        "https://www.richmond.ca/business-development/building-approvals/permits.htm",
+        "https://www.richmond.ca/business-development/e-plan/mypermit.htm",
+      ],
+    },
   },
   {
     city: "Langley",
@@ -546,6 +669,14 @@ export const serviceAreas: ServiceArea[] = [
     neighborhoods: ["Willoughby", "Walnut Grove", "Murrayville", "Brookswood"],
     localSignals: "new residential growth, professional services expansion, healthcare demand, and custom home activity",
     evidence: "project",
+    tier: "A",
+    heroIntro:
+      "We have two dental builds in progress on 272 Street in Langley, in the same complex. Langley splits into the City and the Township, and which one your address falls in decides who reviews the permit — a distinction that catches people out more often than any technical detail on the drawings.",
+    localContext:
+      "Langley's professional space has followed its residential growth outward, so much of the newer clinic and office tenancy sits in Willoughby and along the 200 Street corridor rather than in the older City core. A lot of it is recent construction in mixed-use or standalone commercial buildings, which generally means adequate base-building services and fewer structural surprises than the older municipalities. Walnut Grove, Murrayville and Brookswood carry smaller neighbourhood practices. The market skews toward family healthcare — dental, medical and pharmacy — tracking the young families that have driven the area's growth.",
+    costRationale:
+      "Langley prices at the lower-middle of the range: newer buildings, straightforward access, and a short trip from White Rock keep coordination cost down.",
+    permits: NO_PERMIT_DATA,
   },
   {
     city: "Abbotsford",
@@ -554,6 +685,25 @@ export const serviceAreas: ServiceArea[] = [
     neighborhoods: ["Historic Downtown", "Clearbrook", "McMillan", "Auguston"],
     localSignals: "Fraser Valley growth, clinic and pharmacy demand, industrial access, and value-focused commercial build-outs",
     evidence: "project",
+    tier: "A",
+    heroIntro:
+      "We have delivered two projects in Abbotsford — a dental clinic on Marshall Road and the Skinholic Aesthetics interior — and both are photographed on this site. Abbotsford runs its permits through Planning and Development Services, and tenant improvements are a defined permit category here rather than something folded into the general commercial stream.",
+    localContext:
+      "Abbotsford's commercial base is split between the historic downtown, the Clearbrook and McMillan corridors, and a substantial industrial and agricultural-processing sector that most Lower Mainland municipalities do not have. Healthcare tenancy concentrates near Abbotsford Regional Hospital and along the main arterials, with clinic and pharmacy demand tracking the city's steady residential growth. Building stock is a genuine mix — mid-century commercial downtown alongside newer suburban construction — so the base-building condition varies more here than in a newer municipality, and it is the thing worth checking before pricing.",
+    costRationale:
+      "Abbotsford is typically the lowest-cost city on our range: trade rates in the Fraser Valley run below Metro Vancouver and most sites have straightforward access and parking. The offset is travel time from White Rock on larger jobs.",
+    permits: {
+      authority: "City of Abbotsford — Planning and Development Services",
+      pathway:
+        "Abbotsford treats Tenant Improvement Permits as a distinct permit category, separate from the residential and complex-project streams.",
+      timeline: null,
+      notes:
+        "Tenant improvements are their own application type in Abbotsford rather than a subset of a general commercial permit, so the submission route differs from a new-build. The city publishes building permit wait times separately from the application pages, which is worth checking at the point of application rather than assumed from a previous job.",
+      sources: [
+        "https://www.abbotsford.ca/buildingpermits",
+        "https://www.abbotsford.ca/permits",
+      ],
+    },
   },
   {
     city: "Chilliwack",
@@ -561,7 +711,15 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "Chilliwack and the eastern Fraser Valley",
     neighborhoods: ["Downtown Chilliwack", "Sardis", "Promontory", "Vedder"],
     localSignals: "expanding residential communities, healthcare access needs, commercial renewal, and new service businesses",
-    evidence: "none",
+        evidence: "none",
+    // Tier C: no delivered project, no measured demand, and no sourced permit
+    // detail yet. Built and linkable, but noindex — a page that says only what
+    // a competitor could also say is the failure mode strategy 3.2 measures.
+    tier: "C",
+    heroIntro: null,
+    localContext: null,
+    costRationale: null,
+    permits: NO_PERMIT_DATA,
   },
   {
     city: "Coquitlam",
@@ -569,7 +727,15 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "Coquitlam and the northeast Metro Vancouver market",
     neighborhoods: ["Town Centre", "Austin Heights", "Burquitlam", "Maillardville"],
     localSignals: "mixed-use growth, clinic demand, strata commercial spaces, and office renovation opportunities",
-    evidence: "none",
+        evidence: "none",
+    // Tier C: no delivered project, no measured demand, and no sourced permit
+    // detail yet. Built and linkable, but noindex — a page that says only what
+    // a competitor could also say is the failure mode strategy 3.2 measures.
+    tier: "C",
+    heroIntro: null,
+    localContext: null,
+    costRationale: null,
+    permits: NO_PERMIT_DATA,
   },
   {
     city: "North Vancouver",
@@ -580,6 +746,14 @@ export const serviceAreas: ServiceArea[] = [
     evidence: "measured-demand",
     evidenceNote:
       "North Vancouver is an adjacent market served from the White Rock office. Oberizon has not yet delivered a North Shore project.",
+    tier: "B",
+    heroIntro:
+      "We have not built on the North Shore yet. What we can be straight about is the constraint that defines work here: the North Shore is reached by two bridges, and every delivery, trade call and inspection is scheduled around them. That is a real cost on a fixed-price build, and it belongs in the number rather than in a change order.",
+    localContext:
+      "North Vancouver's commercial space runs along Lonsdale from the waterfront up through Central Lonsdale, with Edgemont and Lynn Valley carrying smaller neighbourhood tenancy. The Lower Lonsdale redevelopment has added newer podium commercial space, while Central Lonsdale professional buildings house much of the medical and dental practice. Finish expectations run high across the North Shore, and site access is genuinely tighter than in the suburbs — narrow lots, steep grades and limited staging area are normal rather than exceptional.",
+    costRationale:
+      "The North Shore carries a travel and access premium: bridge-dependent scheduling, constrained sites and higher finish expectations all push toward the upper half of the range.",
+    permits: NO_PERMIT_DATA,
   },
   {
     city: "West Vancouver",
@@ -587,7 +761,15 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "West Vancouver and premium North Shore properties",
     neighborhoods: ["Dundarave", "Ambleside", "Park Royal", "Caulfeild"],
     localSignals: "luxury residential expectations, boutique healthcare spaces, premium finishes, and careful site coordination",
-    evidence: "none",
+        evidence: "none",
+    // Tier C: no delivered project, no measured demand, and no sourced permit
+    // detail yet. Built and linkable, but noindex — a page that says only what
+    // a competitor could also say is the failure mode strategy 3.2 measures.
+    tier: "C",
+    heroIntro: null,
+    localContext: null,
+    costRationale: null,
+    permits: NO_PERMIT_DATA,
   },
   {
     city: "Delta",
@@ -595,7 +777,15 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "Delta and the Ladner and Tsawwassen communities",
     neighborhoods: ["Tsawwassen", "Ladner", "North Delta", "Sunshine Hills"],
     localSignals: "family communities, medical and dental access, commercial renewal, and suburban service businesses",
-    evidence: "none",
+        evidence: "none",
+    // Tier C: no delivered project, no measured demand, and no sourced permit
+    // detail yet. Built and linkable, but noindex — a page that says only what
+    // a competitor could also say is the failure mode strategy 3.2 measures.
+    tier: "C",
+    heroIntro: null,
+    localContext: null,
+    costRationale: null,
+    permits: NO_PERMIT_DATA,
   },
   {
     city: "New Westminster",
@@ -603,7 +793,15 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "New Westminster's historic and high-density commercial areas",
     neighborhoods: ["Uptown", "Downtown", "Sapperton", "Queensborough"],
     localSignals: "older building conditions, healthcare tenancy, mixed-use projects, and tight urban construction sequencing",
-    evidence: "none",
+        evidence: "none",
+    // Tier C: no delivered project, no measured demand, and no sourced permit
+    // detail yet. Built and linkable, but noindex — a page that says only what
+    // a competitor could also say is the failure mode strategy 3.2 measures.
+    tier: "C",
+    heroIntro: null,
+    localContext: null,
+    costRationale: null,
+    permits: NO_PERMIT_DATA,
   },
   {
     city: "Tri-Cities",
@@ -611,7 +809,15 @@ export const serviceAreas: ServiceArea[] = [
     regionNote: "Coquitlam and the Port Moody corridor",
     neighborhoods: ["Port Moody", "Port Coquitlam", "Coquitlam Centre", "Burke Mountain"],
     localSignals: "rapid growth, family healthcare demand, strata commercial units, and service-business build-outs",
-    evidence: "none",
+        evidence: "none",
+    // Tier C: no delivered project, no measured demand, and no sourced permit
+    // detail yet. Built and linkable, but noindex — a page that says only what
+    // a competitor could also say is the failure mode strategy 3.2 measures.
+    tier: "C",
+    heroIntro: null,
+    localContext: null,
+    costRationale: null,
+    permits: NO_PERMIT_DATA,
   },
 ];
 
@@ -814,11 +1020,29 @@ export const reviews: Review[] = [
  * unconfirmed Skinholic entry never renders as local proof.
  */
 export function getProjectsForCity(citySlug: string, limit = 3): Project[] {
-  const located = projects.filter((project) => project.citySlug !== "");
-  const local = located.filter((project) => project.citySlug === citySlug);
-  const rest = located.filter((project) => project.citySlug !== citySlug);
+  // Local work only. This used to top the list up from other cities whenever a
+  // city had fewer than three, so a Chilliwack page presented White Rock and
+  // Abbotsford clinics under a "near Chilliwack" heading. That is the padding
+  // an owner checks and catches. A city with no delivered work returns nothing,
+  // the proof block renders nothing, and the page keeps the process detail and
+  // the cost calculator instead — which are at least true.
+  return projects
+    .filter((project) => project.citySlug === citySlug)
+    .slice(0, limit);
+}
 
-  return [...local, ...rest].slice(0, limit);
+/**
+ * Reviews for a city page, nearest-first.
+ *
+ * A review that names this city is the strongest thing on the page, so it leads.
+ * The rest follow in their original order — nothing is invented, relocated or
+ * relabelled, only reordered.
+ */
+export function getReviewsForCity(citySlug: string, cityName: string): Review[] {
+  const isLocal = (review: Review) =>
+    review.city === cityName || review.city?.toLowerCase() === citySlug;
+
+  return [...reviews.filter(isLocal), ...reviews.filter((r) => !isLocal(r))];
 }
 
 export const mainPages: SitePage[] = [
@@ -1197,11 +1421,26 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
         // otherwise. Metadata only — the trust gate blocks these from being
         // rendered into the page body.
         keywords: seo?.keywords ?? keywords,
-        intro: `${serviceLead[service.slug] ?? ""} We plan that before the site gets busy. Drawings, permits and trades are sequenced by one team out of White Rock.`.trim(),
+        // The service lead states the constraint for this build type; the city's
+        // own opener states what is true here. Where a city has no written
+        // opener it falls back to the old shared sentence, which is honest
+        // about there being nothing city-specific to say yet.
+        intro: [
+          serviceLead[service.slug] ?? "",
+          city.heroIntro ??
+            "We plan that before the site gets busy. Drawings, permits and trades are sequenced by one team out of White Rock.",
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .trim(),
         quickFacts: buildQuickFacts(service, city, pricing),
         pricingBrief: pricing,
-        localProof: `Oberizon works across the Lower Mainland, including ${city.regionNote}. Every project is planned around site access, inspection windows and how the finished space has to run.`,
-        marketContext: `${city.city} work is shaped by ${firstClauses(city.localSignals, 2)}. We use that to set scope and sequence before demolition starts.`,
+        localProof:
+          city.permits.notes ??
+          `Oberizon works across the Lower Mainland, including ${city.regionNote}. Every project is planned around site access, inspection windows and how the finished space has to run.`,
+        marketContext:
+          city.localContext ??
+          `${city.city} work is shaped by ${firstClauses(city.localSignals, 2)}. We use that to set scope and sequence before demolition starts.`,
         serviceFocus: buildServiceFocus(service),
         faqs: buildPseoFaqs(service, city, primary, pricing),
         internalLinks: [
@@ -1216,6 +1455,28 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
               href: `/construction/${city.slug}/${item.slug}`,
               why: `Choose this if you need to ${item.intent}.`,
             })),
+          // White Rock is an enclave inside Surrey and the head office is in
+          // White Rock, so these two pages chase the same searcher. Pointing
+          // them at each other with the reason stated settles which is which,
+          // rather than leaving Google to pick between two near-equals.
+          ...(city.slug === "white-rock"
+            ? [
+                {
+                  label: `${service.name} in Surrey`,
+                  href: `/construction/surrey/${service.slug}`,
+                  why: "Surrey permits separately and covers the corridors beyond the peninsula — start there if your address is outside White Rock.",
+                },
+              ]
+            : []),
+          ...(city.slug === "surrey"
+            ? [
+                {
+                  label: `${service.name} in White Rock`,
+                  href: `/construction/white-rock/${service.slug}`,
+                  why: "White Rock is an enclave inside Surrey with its own Building Division, and our office is there — start there if your address is on the peninsula.",
+                },
+              ]
+            : []),
           {
             label: "All service areas",
             href: "/construction",
@@ -1235,8 +1496,11 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
           },
         ],
         projects: getProjectsForCity(city.slug),
-        reviews,
-        indexable: city.evidence !== "none",
+        reviews: getReviewsForCity(city.slug, city.city),
+        // Tier, not evidence. Richmond has no project but does have a named
+        // client review and its own sourced permit requirements, which is
+        // enough to be worth reading; a page graduates by gaining substance.
+        indexable: city.tier !== "C",
       };
     }),
   );
@@ -1275,12 +1539,47 @@ function buildQuickFacts(
         ? "Base-building services rarely match what the drawings assume. We verify the electrical capacity and the make-up air before pricing, because discovering a shortfall after demolition is what turns a fixed price into a change order."
         : "Long-lead millwork and imported fixtures set the critical path. We order them against the framing schedule, so the trades are not waiting on a countertop.";
 
+  // Where the city publishes its own permit route, say that instead of
+  // repeating the head-office sentence on all fourteen pages.
+  const opening = city.permits.authority
+    ? `${city.permits.pathway ?? `Permits here are issued by ${city.permits.authority}.`} We prepare the submission to that route, from a White Rock head office.`
+    : `Oberizon delivers ${service.name.toLowerCase()} from a White Rock head office. Work runs across ${city.regionNote}.`;
+
+  // The cost band is site-wide and unconfirmed, so the number never varies by
+  // city. What legitimately varies is why a city sits where it does in it.
+  const priced = `2026 pricing is ${pricing.toLowerCase().replace(/\.$/, "")}. The final number moves with base-building condition and finish level.`;
+
   return [
-    `Oberizon delivers ${service.name.toLowerCase()} from a White Rock head office. Work runs across ${city.regionNote}.`,
-    `2026 pricing is ${pricing.toLowerCase().replace(/\.$/, "")}. The final number moves with base-building condition and finish level.`,
+    opening,
+    city.costRationale ? `${priced} ${city.costRationale}` : priced,
     `${constraint} Projects here typically sit around ${neighborhoodList}.`,
     technical,
   ];
+}
+
+/**
+ * "Do you work here?" answered with what is actually true of this city.
+ *
+ * Three genuinely different answers — delivered work, work in progress, or no
+ * work yet — rather than one sentence with the city name swapped in. The
+ * no-work-yet answer says so plainly. A page that implies local delivery it
+ * cannot show is the claim an owner rings up to check.
+ */
+function cityAnswer(city: ServiceArea, service: ConstructionService) {
+  const label = service.name.toLowerCase();
+  const local = getProjectsForCity(city.slug);
+  const delivered = local.filter((project) => project.status === "Delivered");
+  const active = local.filter((project) => project.status === "In progress");
+
+  if (delivered.length) {
+    return `Yes — we have delivered ${delivered.length === 1 ? "a project" : `${delivered.length} projects`} in ${city.city}, including ${delivered[0].name}. We run ${label} across the Lower Mainland from a White Rock head office.`;
+  }
+
+  if (active.length) {
+    return `Yes — we have ${active.length === 1 ? "a project" : `${active.length} projects`} in progress in ${city.city} right now, including ${active[0].name}. We run ${label} across the Lower Mainland from a White Rock head office.`;
+  }
+
+  return `Yes, though we should be straight with you: we have not completed a ${city.city} project yet. We run ${label} across the Lower Mainland from a White Rock head office, and ${city.regionNote} is inside the area we serve.`;
 }
 
 function buildPseoFaqs(
@@ -1292,7 +1591,17 @@ function buildPseoFaqs(
   return [
     {
       question: `Does Oberizon handle ${service.name.toLowerCase()} in ${city.city}?`,
-      answer: `Yes. We run ${service.name.toLowerCase()} across the Lower Mainland from a White Rock head office, ${city.regionNote} included.`,
+      answer: cityAnswer(city, service),
+    },
+    {
+      question: `Who issues the building permit for ${service.name.toLowerCase()} in ${city.city}?`,
+      answer: city.permits.authority
+        ? `The building permit is issued by ${city.permits.authority}, reviewed against the BC Building Code and the city's own zoning. ${city.permits.pathway ?? ""}${
+            city.permits.timeline
+              ? ` Review typically runs ${city.permits.timeline}.`
+              : " We confirm the current review window with the city at application rather than quoting one from a previous job."
+          }`.trim()
+        : `${city.city} issues its own building permit, reviewed against the BC Building Code and the city's zoning bylaw, and the route differs from neighbouring municipalities. We confirm the current requirements with the city at the start of every job rather than working from the last one.`,
     },
     {
       question: `How much does ${service.primaryKeyword} cost in ${city.city}?`,
