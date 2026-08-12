@@ -5,7 +5,11 @@ import { canonicalPageUrl } from "@/lib/seo";
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date("2026-07-30T00:00:00-04:00");
+  // The date the page content itself last changed — the SEO consultant's title
+  // and description rewrite, which touched every page. Bump this when copy
+  // changes, not on every deploy: a lastmod that moves without the content
+  // moving is the signal Google learns to stop trusting.
+  const lastModified = new Date("2026-08-10T00:00:00-04:00");
 
   return allStaticPaths.map((path) => ({
     url: canonicalPageUrl(path),
