@@ -91,6 +91,46 @@
       "source": "/_not-found/",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/private-office-white-rock",
+      "destination": "/construction/white-rock/office-renovation-contractor/",
+      "permanent": true
+    },
+    {
+      "source": "/private-office-white-rock/",
+      "destination": "/construction/white-rock/office-renovation-contractor/",
+      "permanent": true
+    },
+    {
+      "source": "/private-office-surrey",
+      "destination": "/construction/surrey/office-renovation-contractor/",
+      "permanent": true
+    },
+    {
+      "source": "/private-office-surrey/",
+      "destination": "/construction/surrey/office-renovation-contractor/",
+      "permanent": true
+    },
+    {
+      "source": "/medical",
+      "destination": "/services/medical-clinic-construction/",
+      "permanent": true
+    },
+    {
+      "source": "/medical/",
+      "destination": "/services/medical-clinic-construction/",
+      "permanent": true
+    },
+    {
+      "source": "/residential",
+      "destination": "/services/luxury-residential-construction/",
+      "permanent": true
+    },
+    {
+      "source": "/residential/",
+      "destination": "/services/luxury-residential-construction/",
+      "permanent": true
     }
   ],
   "rewrites": [
