@@ -34,3 +34,34 @@ export function composeConsultationMailto(form: HTMLFormElement) {
 
   return `mailto:${siteConfig.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
+
+/** Where a completed enquiry lands. GTM matches on "URL contains /thank-you". */
+export const THANK_YOU_PATH = "/thank-you/";
+
+/**
+ * Opens the prefilled email, then sends the visitor to the thank-you page.
+ *
+ * The Google Ads conversion 4peQCKv4psYcEIXTsKU_ fires on a trigger whose
+ * condition is "Page URL contains /thank-you". That page existed on the old
+ * site; after the cutover it redirected to /contact/, so the trigger stopped
+ * matching and the conversion has reported zero ever since — while the campaign
+ * kept spending. Landing a submitted enquiry on a real /thank-you/ restores it
+ * without touching the Ads or GTM account.
+ *
+ * The two navigations have to be sequenced. A mailto: hands off to the OS mail
+ * handler and leaves the document in place, but assigning location.href twice in
+ * the same tick means the second assignment wins and the mail client never
+ * opens. The timeout lets the handoff start before the page navigates away.
+ *
+ * What this measures is an enquiry composed, not an email confirmed sent — the
+ * browser cannot see whether the visitor pressed send. That is the same thing
+ * the old site's thank-you page measured, so the conversion stays comparable to
+ * its own history rather than to an ideal.
+ */
+export function submitConsultation(form: HTMLFormElement) {
+  window.location.href = composeConsultationMailto(form);
+
+  window.setTimeout(() => {
+    window.location.assign(THANK_YOU_PATH);
+  }, 600);
+}

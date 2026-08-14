@@ -53,16 +53,6 @@
       "permanent": true
     },
     {
-      "source": "/thank-you",
-      "destination": "/contact/",
-      "permanent": true
-    },
-    {
-      "source": "/thank-you/",
-      "destination": "/contact/",
-      "permanent": true
-    },
-    {
       "source": "/about-us",
       "destination": "/about/",
       "permanent": true

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Phone, Send, X } from "lucide-react";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
-import { composeConsultationMailto } from "@/lib/contact";
+import { submitConsultation } from "@/lib/contact";
 import { siteConfig } from "@/lib/site";
 
 /**
@@ -120,7 +120,7 @@ export function ContactDock() {
               className="mt-7 grid gap-4 sm:grid-cols-2"
               onSubmit={(event) => {
                 event.preventDefault();
-                window.location.href = composeConsultationMailto(event.currentTarget);
+                submitConsultation(event.currentTarget);
                 close();
               }}
             >

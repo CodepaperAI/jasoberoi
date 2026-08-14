@@ -2,7 +2,7 @@
 
 import { Phone, Send } from "lucide-react";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
-import { composeConsultationMailto } from "@/lib/contact";
+import { submitConsultation } from "@/lib/contact";
 import { siteConfig } from "@/lib/site";
 
 /**
@@ -16,7 +16,7 @@ export function HomeConsultationForm() {
   return (
 <form className="mt-12 grid gap-5 text-left sm:grid-cols-2" onSubmit={(event) => {
         event.preventDefault();
-        window.location.href = composeConsultationMailto(event.currentTarget);
+        submitConsultation(event.currentTarget);
       }}>
   <label className="grid gap-2 text-xs font-bold text-white">
     Full Name
