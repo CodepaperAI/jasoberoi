@@ -1056,15 +1056,28 @@ export const reviews: Review[] = [
  * any other delivered work. Returns only projects with a recorded city, so the
  * unconfirmed Skinholic entry never renders as local proof.
  */
-export function getProjectsForCity(citySlug: string, limit = 3): Project[] {
+export function getProjectsForCity(
+  citySlug: string,
+  vertical?: ConstructionService["vertical"],
+  limit = 3,
+): Project[] {
   // Local work only. This used to top the list up from other cities whenever a
   // city had fewer than three, so a Chilliwack page presented White Rock and
   // Abbotsford clinics under a "near Chilliwack" heading. That is the padding
   // an owner checks and catches. A city with no delivered work returns nothing,
   // the proof block renders nothing, and the page keeps the process detail and
   // the cost calculator instead — which are at least true.
+  //
+  // Vertical matters as much as the city. Without it the Vancouver commercial
+  // renovation page showed a "Luxury residential · Delivered" card, and its FAQ
+  // answered "we have delivered a project in Vancouver, including West Cordova
+  // residential build" — residential work offered as evidence for commercial
+  // renovation, in the visible text and in the FAQPage markup Google reads.
   return projects
-    .filter((project) => project.citySlug === citySlug)
+    .filter(
+      (project) =>
+        project.citySlug === citySlug && (!vertical || project.vertical === vertical),
+    )
     .slice(0, limit);
 }
 
@@ -1842,7 +1855,7 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
           },
         ],
         heroImage: heroImageFor(city, service),
-        projects: getProjectsForCity(city.slug),
+        projects: getProjectsForCity(city.slug, service.vertical),
         reviews: getReviewsForCity(city.slug, city.city),
         // Tier, not evidence. Richmond has no project but does have a named
         // client review and its own sourced permit requirements, which is
@@ -1926,7 +1939,7 @@ function buildQuickFacts(
  */
 function cityAnswer(city: ServiceArea, service: ConstructionService) {
   const label = service.name.toLowerCase();
-  const local = getProjectsForCity(city.slug);
+  const local = getProjectsForCity(city.slug, service.vertical);
   const delivered = local.filter((project) => project.status === "Delivered");
   const active = local.filter((project) => project.status === "In progress");
 
