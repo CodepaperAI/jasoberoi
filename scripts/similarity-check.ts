@@ -150,10 +150,20 @@ async function main() {
     process.exit(2);
   }
 
+  // Two groupings, because the first one alone missed the worse problem.
+  // Grouping by service compares cities; grouping by city compares services.
+  // Only the first existed, so a pair of pages in one city measuring 83%
+  // identical went unmeasured while this gate reported passing.
   const byService = new Map<string, Page[]>();
   for (const page of pages) {
     if (!byService.has(page.service)) byService.set(page.service, []);
     byService.get(page.service)!.push(page);
+  }
+
+  const byCity = new Map<string, Page[]>();
+  for (const page of pages) {
+    if (!byCity.has(page.city)) byCity.set(page.city, []);
+    byCity.get(page.city)!.push(page);
   }
 
   const cache = new Map<string, Set<string>>();
@@ -169,21 +179,31 @@ async function main() {
   let worst = 0;
   let total = 0;
 
-  for (const [service, group] of byService) {
-    for (let i = 0; i < group.length; i++) {
-      for (let j = i + 1; j < group.length; j++) {
-        const score = jaccard(shingleFor(group[i]), shingleFor(group[j]));
-        compared++;
-        total += score;
-        worst = Math.max(worst, score);
-        if (score > threshold) {
-          const bothIndexed = group[i].indexed && group[j].indexed;
-          const row = { service, a: group[i].city, b: group[j].city, score };
-          (bothIndexed ? failures : noindexOver).push(row);
+  const sweep = (
+    groups: Map<string, Page[]>,
+    label: (key: string, a: Page, b: Page) => { service: string; a: string; b: string },
+  ) => {
+    for (const [key, group] of groups) {
+      for (let i = 0; i < group.length; i++) {
+        for (let j = i + 1; j < group.length; j++) {
+          const score = jaccard(shingleFor(group[i]), shingleFor(group[j]));
+          compared++;
+          total += score;
+          worst = Math.max(worst, score);
+          if (score > threshold) {
+            const bothIndexed = group[i].indexed && group[j].indexed;
+            const row = { ...label(key, group[i], group[j]), score };
+            (bothIndexed ? failures : noindexOver).push(row);
+          }
         }
       }
     }
-  }
+  };
+
+  // Same service, different cities.
+  sweep(byService, (service, a, b) => ({ service, a: a.city, b: b.city }));
+  // Same city, different services — the comparison this gate used to skip.
+  sweep(byCity, (city, a, b) => ({ service: city, a: a.service, b: b.service }));
 
   const pct = (n: number) => `${(n * 100).toFixed(1)}%`;
   const indexedPages = pages.filter((p) => p.indexed).length;

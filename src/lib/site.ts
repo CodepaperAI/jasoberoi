@@ -630,10 +630,10 @@ export const serviceAreas: ServiceArea[] = [
     localSignals: "transit-linked growth, professional office demand, mixed-use buildings, and clinic build-out opportunities",
     evidence: "measured-demand",
     evidenceNote:
-      "Burnaby is an adjacent market served from the White Rock office. Oberizon has not yet delivered a Burnaby project.",
+      "No Burnaby project on the books yet. The tower-podium buildings described here are ones we work in elsewhere in the region.",
     tier: "B",
     heroIntro:
-      "We have not built in Burnaby yet, and we would rather say so than imply otherwise. What we can tell you is what a Burnaby clinic or office fit-out involves, because the building types here — transit-oriented towers at Metrotown, Brentwood and Lougheed — are the same ones we work in across the region.",
+      "Almost every commercial suite in Burnaby sits underneath somebody's apartment. That single fact governs the work here: restricted hours, strata approval before the city sees anything, and mechanical routing that has to respect the floors above. We have not delivered a Burnaby project yet, and would rather say so than imply a local record we do not have.",
     localContext:
       "Burnaby's commercial space clusters around four town centres rather than a single core, and the newer supply at Metrotown, Brentwood and Lougheed is largely podium retail and professional space beneath residential towers. That building type dictates most of the work: shared services, strata rules, and mechanical routing that has to respect the residential floors above. Older stock around Edmonds and Hastings runs smaller and closer to the Vancouver pattern. The clinic demand here is steady rather than spiking, tied to the residential density arriving with each tower completion.",
     costRationale:
@@ -754,10 +754,10 @@ export const serviceAreas: ServiceArea[] = [
     localSignals: "high-finish expectations, limited access windows, healthcare demand, and boutique commercial spaces",
     evidence: "measured-demand",
     evidenceNote:
-      "North Vancouver is an adjacent market served from the White Rock office. Oberizon has not yet delivered a North Shore project.",
+      "No North Shore project on the books yet. What follows comes from clinics and offices built to the same standards on the other side of the bridges.",
     tier: "B",
     heroIntro:
-      "We have not built on the North Shore yet. What we can be straight about is the constraint that defines work here: the North Shore is reached by two bridges, and every delivery, trade call and inspection is scheduled around them. That is a real cost on a fixed-price build, and it belongs in the number rather than in a change order.",
+      "Two bridges decide the schedule on the North Shore. Every delivery, trade call and inspection is booked around them, and on a fixed price that cost belongs in the number rather than turning up later as a change order. We have not delivered a North Shore project yet; this is what we would plan for if you asked us to.",
     localContext:
       "North Vancouver's commercial space runs along Lonsdale from the waterfront up through Central Lonsdale, with Edgemont and Lynn Valley carrying smaller neighbourhood tenancy. The Lower Lonsdale redevelopment has added newer podium commercial space, while Central Lonsdale professional buildings house much of the medical and dental practice. Finish expectations run high across the North Shore, and site access is genuinely tighter than in the suburbs — narrow lots, steep grades and limited staging area are normal rather than exceptional.",
     costRationale:
@@ -1918,45 +1918,156 @@ function buildKeywordCluster(service: ConstructionService, city: ServiceArea) {
 // No longer takes a city: these three cards describe how the work is run, which
 // does not change between Surrey and Langley. Injecting the city name into each
 // of them was part of what pushed one page to twelve mentions.
+/**
+ * The two cards that follow "Project review", per service.
+ *
+ * These replaced a card shared by all 140 pages ("Managed execution") and one
+ * chosen by vertical, which meant six healthcare services showed the same
+ * "Clinical workflow" text in the same city. Replacement rather than removal:
+ * the page keeps three cards of the same length, and generic becomes specific.
+ * Nothing indexed is deleted, which is the part of this work that carries risk
+ * while pages are ranking.
+ */
+const serviceFocusCards: Record<string, [Feature, Feature]> = {
+  "commercial-construction": [
+    {
+      title: "Servicing confirmed",
+      text: "Capacity at the property line is verified before the price is fixed. A utility upgrade is a timeline nobody on site can compress.",
+    },
+    {
+      title: "Approvals in parallel",
+      text: "Development permit, building permit and servicing agreements run alongside each other wherever the municipality allows it.",
+    },
+  ],
+  "commercial-renovation": [
+    {
+      title: "Trading protected",
+      text: "Noisy work runs outside opening hours. The unit keeps trading and the neighbouring tenants are not the ones complaining.",
+    },
+    {
+      title: "Landlord approvals",
+      text: "Drawing sign-off is scheduled with a defined response window written into the programme rather than assumed.",
+    },
+  ],
+  "office-renovation-contractor": [
+    {
+      title: "Acoustic separation",
+      text: "Partitions are taken to the deck where privacy matters. Correcting that after handover means reopening the ceiling.",
+    },
+    {
+      title: "Cabling density",
+      text: "Data and low-voltage are counted at drawing stage rather than discovered on the day the desks arrive.",
+    },
+  ],
+  "healthcare-construction": [
+    {
+      title: "Two reviews, one package",
+      text: "The set is built to CSA Z8000 expectations so the health authority and the building department read the same drawings.",
+    },
+    {
+      title: "Infection control zoning",
+      text: "Clean and soiled routes are separated on the plan before a single wall is priced.",
+    },
+  ],
+  "dental-clinic-construction": [
+    {
+      title: "Chair-side services",
+      text: "Vacuum, air and drain run to each chair position, sized for the final operatory count rather than the opening one.",
+    },
+    {
+      title: "Sterilization flow",
+      text: "Dirty to clean runs one direction. The corridor is set before any millwork is ordered.",
+    },
+  ],
+  "dental-office-renovation": [
+    {
+      title: "Sterilization kept live",
+      text: "A temporary route is in service before the permanent one comes offline. Losing sterilization closes the practice, not one room.",
+    },
+    {
+      title: "Zone by zone",
+      text: "Operatories come out of service in planned groups, with weekend cutovers for anything that would otherwise cost a weekday.",
+    },
+  ],
+  "medical-clinic-construction": [
+    {
+      title: "Room naming fixed early",
+      text: "Exam, treatment and procedure rooms carry different requirements. The names are agreed before the drawing set is sealed.",
+    },
+    {
+      title: "Health authority review",
+      text: "Fraser Health or Vancouver Coastal Health depending on the address, confirmed before drawings start rather than after.",
+    },
+  ],
+  "pharmacy-construction": [
+    {
+      title: "Dispensary boundary",
+      text: "Sightlines, counter and secure storage are set first. Every other wall on the plan follows from them.",
+    },
+    {
+      title: "Compounding standard",
+      text: "Where compounding is planned the room is built to the applicable USP 795 or USP 797 requirements from drawing stage.",
+    },
+  ],
+  "clinic-renovation-contractor": [
+    {
+      title: "Barriers before demolition",
+      text: "Hoardings and negative air go in first. IPAC expectations apply to the site during the work, not only to the finished space.",
+    },
+    {
+      title: "Separated circulation",
+      text: "The construction route is agreed with the practice in writing before the first wall is opened.",
+    },
+  ],
+  "luxury-residential-construction": [
+    {
+      title: "Long-lead ordered early",
+      text: "Stone, custom millwork and specialty glazing are ordered against framing dates rather than at finishing stage.",
+    },
+    {
+      title: "Site protection",
+      text: "Protection is installed to a standard that assumes the finishes are already in. Most damage happens after delivery.",
+    },
+  ],
+};
+
 function buildServiceFocus(service: ConstructionService): Feature[] {
-  const shared = [
-    {
-      title: "Project review",
-      text: `We walk the space and price the risk before you commit to ${service.primaryKeyword}. Permits and services are the two that bite.`,
-    },
-    {
-      title: "Managed execution",
-      text: "One team holds the trades, the inspections and the deficiency list. You get one number to call.",
-    },
-  ];
+  // "Project review" stays: it already carries the service keyword, and it is
+  // the card a visitor reads first. The two behind it are now per service
+  // rather than one shared by every page and one chosen by vertical.
+  const review: Feature = {
+    title: "Project review",
+    text: `We walk the space and price the risk before you commit to ${service.primaryKeyword}. Permits and services are the two that bite.`,
+  };
 
-  if (service.vertical === "Healthcare") {
+  const cards = serviceFocusCards[service.slug];
+  if (!cards) {
+    // A service with no entry falls back to the vertical text rather than
+    // rendering one card where the layout expects three.
     return [
-      ...shared,
+      review,
       {
-        title: "Clinical workflow",
-        text: "Operatory clearances, suction runs and sterilization separation are planned first. Patient and staff flow follow from them.",
+        title: "Managed execution",
+        text: "One team holds the trades, the inspections and the deficiency list. You get one number to call.",
       },
+      service.vertical === "Healthcare"
+        ? {
+            title: "Clinical workflow",
+            text: "Operatory clearances, suction runs and sterilization separation are planned first. Patient and staff flow follow from them.",
+          }
+        : service.vertical === "Commercial"
+          ? {
+              title: "Business operation",
+              text: "Reception, storage and customer flow are set against your opening date. The build is sequenced to protect it.",
+            }
+          : {
+              title: "Finish control",
+              text: "Millwork and fixtures are long-lead items. They are ordered before framing closes, not after.",
+            },
     ];
   }
 
-  if (service.vertical === "Commercial") {
-    return [
-      ...shared,
-      {
-        title: "Business operation",
-        text: "Reception, storage and customer flow are set against your opening date. The build is sequenced to protect it.",
-      },
-    ];
-  }
-
-  return [
-    ...shared,
-    {
-      title: "Finish control",
-      text: "Millwork and fixtures are long-lead items. They are ordered before framing closes, not after.",
-    },
-  ];
+  return [review, ...cards];
 }
 
 function formatList(items: string[]) {
