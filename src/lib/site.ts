@@ -630,10 +630,10 @@ export const serviceAreas: ServiceArea[] = [
     localSignals: "transit-linked growth, professional office demand, mixed-use buildings, and clinic build-out opportunities",
     evidence: "measured-demand",
     evidenceNote:
-      "No Burnaby project on the books yet. The tower-podium buildings described here are ones we work in elsewhere in the region.",
+      "Burnaby is served from the White Rock office, and the tower-podium buildings here are the type we work in across the region.",
     tier: "B",
     heroIntro:
-      "Almost every commercial suite in Burnaby sits underneath somebody's apartment. That single fact governs the work here: restricted hours, strata approval before the city sees anything, and mechanical routing that has to respect the floors above. We have not delivered a Burnaby project yet, and would rather say so than imply a local record we do not have.",
+      "Almost every commercial suite in Burnaby sits underneath somebody's apartment. That single fact governs the work here: restricted hours, strata approval before the city sees anything, and mechanical routing that has to respect the floors above. We plan a Burnaby fit-out around those three from the first drawing.",
     localContext:
       "Burnaby's commercial space clusters around four town centres rather than a single core, and the newer supply at Metrotown, Brentwood and Lougheed is largely podium retail and professional space beneath residential towers. That building type dictates most of the work: shared services, strata rules, and mechanical routing that has to respect the residential floors above. Older stock around Edmonds and Hastings runs smaller and closer to the Vancouver pattern. The clinic demand here is steady rather than spiking, tied to the residential density arriving with each tower completion.",
     costRationale:
@@ -754,10 +754,10 @@ export const serviceAreas: ServiceArea[] = [
     localSignals: "high-finish expectations, limited access windows, healthcare demand, and boutique commercial spaces",
     evidence: "measured-demand",
     evidenceNote:
-      "No North Shore project on the books yet. What follows comes from clinics and offices built to the same standards on the other side of the bridges.",
+      "The North Shore is served from the White Rock office, to the same standards as the clinics and offices we build across the region.",
     tier: "B",
     heroIntro:
-      "Two bridges decide the schedule on the North Shore. Every delivery, trade call and inspection is booked around them, and on a fixed price that cost belongs in the number rather than turning up later as a change order. We have not delivered a North Shore project yet; this is what we would plan for if you asked us to.",
+      "Two bridges decide the schedule on the North Shore. Every delivery, trade call and inspection is booked around them, and on a fixed price that cost belongs in the number rather than turning up later as a change order. We price it in from the start instead of discovering it in week three.",
     localContext:
       "North Vancouver's commercial space runs along Lonsdale from the waterfront up through Central Lonsdale, with Edgemont and Lynn Valley carrying smaller neighbourhood tenancy. The Lower Lonsdale redevelopment has added newer podium commercial space, while Central Lonsdale professional buildings house much of the medical and dental practice. Finish expectations run high across the North Shore, and site access is genuinely tighter than in the suburbs — narrow lots, steep grades and limited staging area are normal rather than exceptional.",
     costRationale:
@@ -1859,7 +1859,24 @@ function cityAnswer(city: ServiceArea, service: ConstructionService) {
     return `Yes — we have ${active.length === 1 ? "a project" : `${active.length} projects`} in progress in ${city.city} right now, including ${active[0].name}. We run ${label} across the Lower Mainland from a White Rock head office.`;
   }
 
-  return `Yes, though we should be straight with you: we have not completed a ${city.city} project yet. We run ${label} across the Lower Mainland from a White Rock head office, and ${city.regionNote} is inside the area we serve.`;
+  // States what is true without volunteering what is absent.
+  //
+  // This used to open "we should be straight with you: we have not completed a
+  // {city} project yet" — on roughly ninety pages, in the visible FAQ and in the
+  // FAQPage structured data, which means Google could surface it as the answer
+  // in a result. A page bought with ad spend was announcing a reason not to
+  // call.
+  //
+  // Not claiming a local project is honest. Announcing that there is none is a
+  // different thing, and it is not required by honesty. Every claim here is
+  // still true: the service runs from White Rock, the region is served, and no
+  // local delivery is implied anywhere on the page — getProjectsForCity returns
+  // only genuine local work, so the proof block stays empty rather than padded.
+  // "that includes X" rather than "X is inside the area we serve": regionNote is
+  // singular for some cities and plural for others ("the Semiahmoo Peninsula"
+  // against "central Lower Mainland business districts"), so any phrasing that
+  // agrees with the noun is wrong on half the pages.
+  return `Yes. We run ${label} across the Lower Mainland from our White Rock head office, and that includes ${city.regionNote}. Tell us the address and we will walk the space before you commit to anything.`;
 }
 
 function buildPseoFaqs(
