@@ -113,6 +113,18 @@ export type ServiceArea = {
   tier: CityTier;
   /** 2–3 sentences that open this city's pages. Written per city, not templated. */
   heroIntro: string | null;
+  /**
+   * The local-proof sentence, shown only on pages of a matching vertical.
+   *
+   * Surrey's opener named two clinics, which is right on its dental and
+   * pharmacy pages and wrong on its commercial construction page — a page about
+   * commercial builds led with healthcare work. The claim is true; it was just
+   * being made everywhere rather than where it applies.
+   *
+   * Split out of heroIntro so the city-general half still opens all ten
+   * services and the proof half only appears where the vertical matches.
+   */
+  heroProof?: Partial<Record<ConstructionService["vertical"], string>>;
   /** 3–4 sentences on the commercial and healthcare landscape here. */
   localContext: string | null;
   /**
@@ -599,7 +611,11 @@ export const serviceAreas: ServiceArea[] = [
     evidence: "project",
     tier: "A",
     heroIntro:
-      "We have two clinics in progress in Surrey right now — a pharmacy on 156 Street and a dental build on Whalley Boulevard. Surrey is a different problem from the smaller municipalities around it: the corridors are newer, the buildings are bigger, and the approval path runs through a city that processes a very high volume of commercial applications.",
+      "Surrey is a different problem from the smaller municipalities around it: the corridors are newer, the buildings are bigger, and the approval path runs through a city that processes a very high volume of commercial applications.",
+    heroProof: {
+      Healthcare:
+        "We have two clinics in progress in Surrey right now — a pharmacy on 156 Street and a dental build on Whalley Boulevard.",
+    },
     localContext:
       "Surrey's commercial activity spreads across several distinct centres rather than one downtown — City Centre around Whalley and King George, Guildford, Fleetwood and Newton each carry their own professional and retail tenancy. Much of the healthcare space is in newer mixed-use and strata buildings, which usually means better base-building services than the older Fraser Valley stock but tighter strata rules about noise, hours and shared systems. The city has been adding population faster than almost anywhere in the province, and clinic demand has followed it into the suburban centres rather than staying downtown.",
     costRationale:
@@ -615,7 +631,11 @@ export const serviceAreas: ServiceArea[] = [
     evidence: "project",
     tier: "A",
     heroIntro:
-      "We delivered a residential project on West Cordova, so we know what a downtown Vancouver build actually costs in coordination time. The work here is rarely about the trades — it is about elevator bookings, loading bay windows, strata approvals and the fact that nothing arrives on site whenever it is convenient.",
+      "The work here is rarely about the trades — it is about elevator bookings, loading bay windows, strata approvals and the fact that nothing arrives on site whenever it is convenient.",
+    heroProof: {
+      Residential:
+        "We delivered a residential project on West Cordova, so we know what a downtown Vancouver build actually costs in coordination time.",
+    },
     localContext:
       "Vancouver's professional and clinical tenancy is spread thin across the city — Cambie and Mount Pleasant carry a lot of the medical and dental space, Kitsilano and the West Side run smaller practices, and downtown is mostly office and retail. Buildings are older and denser than anywhere else in the region, and a large share of commercial space is strata-owned, which adds an approval layer before the city is even involved. Access is the recurring cost: limited loading, restricted work hours in mixed residential buildings, and material handling that has to be scheduled rather than assumed.",
     costRationale:
@@ -680,7 +700,11 @@ export const serviceAreas: ServiceArea[] = [
     evidence: "project",
     tier: "A",
     heroIntro:
-      "We have two dental builds in progress on 272 Street in Langley, in the same complex. Langley splits into the City and the Township, and which one your address falls in decides who reviews the permit — a distinction that catches people out more often than any technical detail on the drawings.",
+      "Langley splits into the City and the Township, and which one your address falls in decides who reviews the permit — a distinction that catches people out more often than any technical detail on the drawings.",
+    heroProof: {
+      Healthcare:
+        "We have two dental builds in progress on 272 Street in Langley, in the same complex.",
+    },
     localContext:
       "Langley's professional space has followed its residential growth outward, so much of the newer clinic and office tenancy sits in Willoughby and along the 200 Street corridor rather than in the older City core. A lot of it is recent construction in mixed-use or standalone commercial buildings, which generally means adequate base-building services and fewer structural surprises than the older municipalities. Walnut Grove, Murrayville and Brookswood carry smaller neighbourhood practices. The market skews toward family healthcare — dental, medical and pharmacy — tracking the young families that have driven the area's growth.",
     costRationale:
@@ -696,7 +720,11 @@ export const serviceAreas: ServiceArea[] = [
     evidence: "project",
     tier: "A",
     heroIntro:
-      "We have delivered two projects in Abbotsford — a dental clinic on Marshall Road and the Skinholic Aesthetics interior — and both are photographed on this site. Abbotsford runs its permits through Planning and Development Services, and tenant improvements are a defined permit category here rather than something folded into the general commercial stream.",
+      "Abbotsford runs its permits through Planning and Development Services, and tenant improvements are a defined permit category here rather than something folded into the general commercial stream.",
+    heroProof: {
+      Healthcare:
+        "We have delivered two projects in Abbotsford — a dental clinic on Marshall Road and the Skinholic Aesthetics interior — and both are photographed on this site.",
+    },
     localContext:
       "Abbotsford's commercial base is split between the historic downtown, the Clearbrook and McMillan corridors, and a substantial industrial and agricultural-processing sector that most Lower Mainland municipalities do not have. Healthcare tenancy concentrates near Abbotsford Regional Hospital and along the main arterials, with clinic and pharmacy demand tracking the city's steady residential growth. Building stock is a genuine mix — mid-century commercial downtown alongside newer suburban construction — so the base-building condition varies more here than in a newer municipality, and it is the thing worth checking before pricing.",
     costRationale:
@@ -1741,6 +1769,10 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
         // about there being nothing city-specific to say yet.
         intro: [
           serviceLead[service.slug] ?? "",
+          // Local proof only where the vertical matches. Surrey's two clinics
+          // belong on its dental and pharmacy pages, not on the page about
+          // commercial construction.
+          city.heroProof?.[service.vertical] ?? "",
           city.heroIntro ??
             "We plan that before the site gets busy. Drawings, permits and trades are sequenced by one team out of White Rock.",
         ]
