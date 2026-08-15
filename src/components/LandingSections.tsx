@@ -238,12 +238,27 @@ export function ExperienceBlock({ city, items }: { city: ServiceArea; items: Pro
             pages. A figure and its unit must never be split or stacked, so the
             row wraps instead of the number.
           */}
-          <dl className="mt-10 grid grid-cols-1 gap-6 border-t border-slate-200 pt-8 sm:grid-cols-3 sm:gap-4">
+          {/* Flex, not a three-column grid.
+​
+              Equal columns forced every figure to the same width, and "35+
+              delivered" does not fit it: measured, the text overflowed its cell
+              by 8px at 1600px wide and 19px at 1280px, against a 16px gap. The
+              overflow ate the gap and the figure ran into "90 days", so the
+              band read as "35+ delivered 90 days" — one blob, on all 140 pages.
+
+              Sizing each figure to its own content removes the constraint that
+              caused it, and gap-x-12 leaves room that a longer figure cannot
+              swallow. Wrapping is allowed; splitting a value from its unit is
+              not, which is why each figure stays one flex item. */}
+          <dl className="mt-10 flex flex-wrap gap-x-12 gap-y-6 border-t border-slate-200 pt-8">
             {figures.map((figure) => (
               <div key={figure.unit}>
                 <dt className="sr-only">{figure.label}</dt>
                 <dd>
-                  <span className="serif-font block text-4xl leading-none text-zinc-950 sm:text-5xl">
+                  {/* whitespace-nowrap so a figure never breaks between its
+                      number and its unit — "35+" on one line and "delivered"
+                      on the next is worse than either fix. */}
+                  <span className="serif-font block whitespace-nowrap text-4xl leading-none text-zinc-950 sm:text-5xl">
                     {figure.value}
                     <span className="orange-italic ml-1.5 text-2xl sm:text-3xl">{figure.unit}</span>
                   </span>
