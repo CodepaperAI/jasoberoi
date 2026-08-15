@@ -1,0 +1,9 @@
+# Build output is produced on Vercel, never uploaded from here.
+#
+# This machine syncs the Desktop to iCloud, which duplicates directories
+# mid-operation ("out/blog 7", ".next/build 3"). A production deploy failed
+# with ENOENT when one of those copies vanished between the CLI listing the
+# file and reading it. Excluding generated output removes the race and makes
+# the upload smaller.
+out
+.next
