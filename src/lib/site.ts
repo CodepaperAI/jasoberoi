@@ -1372,6 +1372,201 @@ const serviceLead: Record<string, string> = {
 };
 
 /**
+ * What is hard about each build type — keyed on the service, not its vertical.
+ *
+ * The page already carries a `constraint` and a `technical` paragraph, but both
+ * are chosen by vertical: three variants covering ten services. Six healthcare
+ * services therefore rendered the same two paragraphs, which is most of why two
+ * services in one city measured 83% identical.
+ *
+ * These render *in addition to* those, not instead of them. Removing indexed
+ * text from pages that rank is the risky half of this work and is gated on
+ * Search Console data; adding distinct text is not, and similarity is a ratio.
+ */
+const serviceConstraint: Record<string, string> = {
+  "commercial-construction":
+    "A ground-up commercial build is a servicing problem before it is a building problem. Power, water and storm capacity to the lot decide the schedule long before anyone prices drywall.",
+  "commercial-renovation":
+    "The building keeps trading while you work in it. Every noisy hour, every shared corridor and every fire-alarm isolation has to be agreed with a landlord who has other tenants to answer to.",
+  "office-renovation-contractor":
+    "Staff stay in the building, so the work is measured in decibels and dust as much as in square feet. Data cabling density is usually the item that has been under-scoped.",
+  "healthcare-construction":
+    "Clinical space is reviewed twice — once by the municipality and once by the health authority — and the two ask for different things. Drawings that satisfy a building department can still come back from a clinical reviewer.",
+  "dental-clinic-construction":
+    "Chair positions fix the plumbing. Once vacuum, air and drain are in the slab, moving an operatory is a concrete job, not a drawing revision.",
+  "dental-office-renovation":
+    "The practice keeps seeing patients, so the clinic is rebuilt in zones with a working sterilization route maintained throughout. Losing sterilization for a day closes the whole practice, not one operatory.",
+  "medical-clinic-construction":
+    "Exam and procedure rooms carry different requirements, and which one a room is called on the drawings decides its ventilation, clearances and finishes. Renaming a room after permit is a redesign.",
+  "pharmacy-construction":
+    "A pharmacy is a secure area wrapped in a retail space. The dispensary boundary, sightlines and controlled-substance storage are fixed early, because they dictate where every wall can go.",
+  "clinic-renovation-contractor":
+    "Construction happens inside a live clinical environment, so infection control governs the site, not just the finished space. Barriers, negative air and route separation are part of the build, not the cleanup.",
+  "luxury-residential-construction":
+    "The finish schedule is the critical path. Stone, millwork and specialty glazing are ordered against framing dates, because a six-week lead time discovered late is a six-week delay.",
+};
+
+/**
+ * The detail someone who has actually built one would volunteer, per service.
+ *
+ * Deliberately not lifted from `hubDetail` in hubs.ts, which covers the same ten
+ * services for the hub pages. Copying it would move the duplication from
+ * city-vs-city to city-vs-hub, and the all-pairs measurement would find it.
+ */
+const serviceDetail: Record<string, string> = {
+  "commercial-construction":
+    "We confirm the service capacity at the property line before pricing the build. An upgrade to the transformer or the water service runs on the utility's timeline rather than the site's. No amount of crew recovers those weeks once they are lost.",
+  "commercial-renovation":
+    "Work is sequenced against the tenancy schedule: demolition and anything that breaks the fire-alarm loop happens after hours, finishing trades run in the day. The programme is written around the landlord's approval turnaround, which is the item most often assumed rather than confirmed.",
+  "office-renovation-contractor":
+    "Acoustic separation between meeting rooms and open floor is specified at drawing stage — a partition taken to the ceiling tile instead of the deck is the single most common complaint after handover, and it cannot be fixed without reopening the ceiling.",
+  "healthcare-construction":
+    "We produce the drawing set against CSA Z8000 expectations before it goes to the municipality, so the clinical reviewer and the building department are looking at the same package. Two review cycles run in parallel rather than one after the other.",
+  "dental-clinic-construction":
+    "Vacuum and compressed-air runs follow the chair layout, and the compressor and pump are sized for the final operatory count, not the opening one. A five-chair clinic plumbed for five cannot take a sixth without new trunk lines.",
+  "dental-office-renovation":
+    "The clinic is split into zones and rebuilt one at a time, with dust barriers and a temporary sterilization route kept in service. Weekend cutovers cover anything that would take an operatory offline mid-week.",
+  "medical-clinic-construction":
+    "Room naming is fixed with the practice before the drawings are sealed, because a procedure room, an exam room and a treatment room carry different air-change and clearance expectations under health authority review.",
+  "pharmacy-construction":
+    "The dispensary is laid out for sightlines and separation first — counter, consultation area and secure storage — and the millwork follows that. Where compounding is planned, the room is built to the USP 795 or USP 797 standard that applies, which cannot be retrofitted into a finished space.",
+  "clinic-renovation-contractor":
+    "Hoardings, negative air machines and a separated construction route go in before demolition starts, and staff and patient circulation is agreed with the practice in writing. IPAC expectations apply to the site during the work, not only to the space at handover.",
+  "luxury-residential-construction":
+    "Long-lead items are ordered against the framing schedule rather than at finishing stage, and the site is protected to a standard that assumes the finishes are already installed. Most damage on a high-finish build happens after the expensive material arrives.",
+};
+
+/**
+ * Two questions per service that only apply to that build type.
+ *
+ * Written to satisfy checkFaqSpecificity in scripts/check-trust.mjs: any
+ * question matching cost / how long / permits has to answer with a figure or a
+ * named standard, never "it depends on scope".
+ */
+const serviceFaqs: Record<string, Array<{ question: string; answer: string }>> = {
+  "commercial-construction": [
+    {
+      question: "What decides the schedule on a ground-up commercial build?",
+      answer:
+        "Servicing capacity at the property line. Power, water and storm have to carry the finished building, and a utility upgrade runs on the utility's timeline rather than the site's — which is why we confirm it before pricing rather than during construction.",
+    },
+    {
+      question: "What is checked before a fixed price is given?",
+      answer:
+        "Electrical capacity, make-up air and the condition of anything being kept. A fixed price given without verifying those is a fixed price with a change order already in it.",
+    },
+  ],
+  "commercial-renovation": [
+    {
+      question: "Can the business keep trading during a commercial renovation?",
+      answer:
+        "Usually yes. Work is split into zones, with demolition and anything affecting the fire-alarm loop scheduled after hours. Phasing around an operating business typically extends the programme by roughly a third against an empty unit, and protects the revenue that would otherwise stop.",
+    },
+    {
+      question: "Who approves the work in a leased commercial unit?",
+      answer:
+        "The landlord approves the drawings before the building permit is applied for, and that approval window is the most commonly underestimated part of the schedule. We ask for a defined response time in writing rather than assuming one.",
+    },
+  ],
+  "office-renovation-contractor": [
+    {
+      question: "How is noise handled when staff stay in the building?",
+      answer:
+        "Demolition, coring and anything percussive runs outside working hours, and finishing trades run during the day behind sealed hoardings. The programme is built around the tenancy's quiet hours rather than the trades' preference.",
+    },
+    {
+      question: "What is most often under-scoped in an office fit-out?",
+      answer:
+        "Data and low-voltage density, and acoustic separation. Partitions stopped at the ceiling tile rather than the deck are the most common post-handover complaint, and correcting them means reopening the ceiling.",
+    },
+  ],
+  "healthcare-construction": [
+    {
+      question: "Why does a clinical fit-out get reviewed twice?",
+      answer:
+        "The municipality reviews the building permit and the regional health authority reviews the clinical layout, and they assess different things. We prepare one package against CSA Z8000 expectations so both reviews can run in parallel instead of sequentially.",
+    },
+    {
+      question: "What does CSA Z8000 change about a clinic build?",
+      answer:
+        "It shapes infection control zoning, ventilation, clearances and finishes — coved base, sealed joints, cleanable surfaces. Applying it from the drawing stage avoids the redesign that follows a reviewer sending a package back.",
+    },
+  ],
+  "dental-clinic-construction": [
+    {
+      question: "Why do operatory positions have to be final before construction?",
+      answer:
+        "Each chair needs its own vacuum line, compressed-air line and dedicated drain, and those run in or under the slab. Moving an operatory after the rough-in is concrete work, not a drawing revision.",
+    },
+    {
+      question: "Should the compressor be sized for the chairs being installed now?",
+      answer:
+        "Size for the final operatory count, not the opening one. A clinic plumbed for five chairs cannot take a sixth without new trunk lines, and the cost difference at rough-in stage is far smaller than the retrofit.",
+    },
+  ],
+  "dental-office-renovation": [
+    {
+      question: "Can a dental practice keep seeing patients during a renovation?",
+      answer:
+        "Yes, by rebuilding in zones and keeping a working sterilization route in service throughout. Phasing around live patient hours typically adds 30 to 50% to the programme against a full closure, and protects production days that would otherwise be lost.",
+    },
+    {
+      question: "What has to stay running while a clinic is renovated?",
+      answer:
+        "Sterilization, above everything. Losing it for a day closes the practice rather than one operatory, so a temporary route is established before the permanent one comes offline.",
+    },
+  ],
+  "medical-clinic-construction": [
+    {
+      question: "Does it matter what a room is called on the drawings?",
+      answer:
+        "Yes. An exam room, a treatment room and a procedure room carry different air-change, clearance and finish expectations under health authority review, so the names are fixed with the practice before the set is sealed. Renaming a room after permit is a redesign.",
+    },
+    {
+      question: "Which health authority reviews a Lower Mainland clinic?",
+      answer:
+        "Fraser Health or Vancouver Coastal Health, depending on the address, and the review applies where there are procedure rooms, sterilization or diagnostic imaging. We confirm which applies before drawings start.",
+    },
+  ],
+  "pharmacy-construction": [
+    {
+      question: "What has to be settled first in a pharmacy fit-out?",
+      answer:
+        "The dispensary boundary, sightlines and secure storage. Those decide where walls can go and where the millwork lands, so they are fixed before layout rather than adjusted around a finished plan.",
+    },
+    {
+      question: "What changes if the pharmacy will compound?",
+      answer:
+        "Compounding brings the applicable USP 795 or USP 797 requirements into the build — a dedicated room with its own ventilation and finishes. It cannot be retrofitted into a completed space, so it is decided before drawings.",
+    },
+  ],
+  "clinic-renovation-contractor": [
+    {
+      question: "How is infection control handled while a clinic is under construction?",
+      answer:
+        "Hoardings, negative air machines and a construction route separated from patient circulation go in before demolition. IPAC expectations apply to the site during the work, not only to the finished space.",
+    },
+    {
+      question: "Can renovation happen around treatment hours?",
+      answer:
+        "Yes. The clinic is divided into zones and the disruptive work is scheduled outside clinical hours, with the route between them agreed with the practice in writing before the first barrier goes up.",
+    },
+  ],
+  "luxury-residential-construction": [
+    {
+      question: "What sets the schedule on a high-finish home?",
+      answer:
+        "The finish schedule, not the framing. Stone, custom millwork and specialty glazing carry the longest lead times, so they are ordered against framing dates rather than at finishing stage.",
+    },
+    {
+      question: "When does site protection start on a luxury build?",
+      answer:
+        "Before the expensive material arrives, and to a standard that assumes it is already installed. Most damage on a high-finish build happens after delivery, not during construction.",
+    },
+  ],
+};
+
+/**
  * Keeps the first `count` comma-separated clauses of a string.
  *
  * Several `localSignals` entries are four-item noun strings. Rendered whole they
@@ -1628,9 +1823,18 @@ function buildQuickFacts(
   return [
     opening,
     city.costRationale ? `${priced} ${city.costRationale}` : priced,
+    // The service-specific pair leads, because it is the part that differs
+    // between two services in the same city — which is what a reader comparing
+    // them actually needs. The vertical-keyed pair follows rather than being
+    // replaced: those sentences are indexed on pages that rank.
+    serviceConstraint[service.slug],
+    serviceDetail[service.slug],
     `${constraint} Projects here typically sit around ${neighborhoodList}.`,
     technical,
-  ];
+    // A service with no entry in the maps above would otherwise render an empty
+    // card. Filtering here rather than defaulting to "" keeps the gap visible
+    // in the data instead of shipping a blank block to a visitor.
+  ].filter((fact): fact is string => Boolean(fact));
 }
 
 /**
@@ -1691,6 +1895,10 @@ function buildPseoFaqs(
       question: `What should I prepare before starting ${service.name.toLowerCase()} in ${city.city}?`,
       answer: `The address, your lease stage and a target opening date. Drawings and a budget range help. The more we know early, the tighter the feasibility comes back.`,
     },
+    // Service-specific questions, appended rather than replacing the city set.
+    // Two services in one city now answer different questions, which is the
+    // difference a reader comparing them is looking for.
+    ...(serviceFaqs[service.slug] ?? []),
     {
       question: `Can Oberizon review my ${city.city} space before I commit?`,
       answer: `Yes. A review finds the permit and service risks before you sign a lease or a design. That is the cheapest point to find them — a change after drawings are sealed costs weeks, not hours.`,
