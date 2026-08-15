@@ -100,6 +100,24 @@ export function LocalDelivery({ page }: { page: ConstructionPseoPage }) {
           </div>
         </div>
 
+        {/* What is hard about this specific build type.
+​
+            page.quickFacts was computed in getAllConstructionPages and typed on
+            ConstructionPseoPage, but no component ever read it — dead data. The
+            first two entries are the per-service constraint and detail, which
+            is the material that separates two services within one city, so
+            leaving them unrendered defeated the point of writing them. */}
+        {page.quickFacts.slice(2, 4).length > 0 && (
+          <div className="mt-14 max-w-3xl border-t border-line pt-8">
+            <p className="eyebrow">What decides this build</p>
+            {page.quickFacts.slice(2, 4).map((fact) => (
+              <p key={fact} className="mt-4 text-lg leading-8 text-muted">
+                {fact}
+              </p>
+            ))}
+          </div>
+        )}
+
         <div className="mt-14 grid gap-4 md:grid-cols-3">
           {page.serviceFocus.map((item) => {
             const Icon = focusIcons[item.title] ?? ClipboardList;
