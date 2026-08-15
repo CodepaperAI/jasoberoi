@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: ConstructionProps): Promise<M
     title: page.title,
     description: page.description,
     path: page.path,
-    image: page.service.image,
+    image: page.heroImage,
     keywords: page.keywords,
     index: page.indexable,
   });
@@ -81,8 +81,9 @@ export default async function ConstructionRoute({ params }: ConstructionProps) {
         eyebrow={`${page.city.city} Construction`}
         heading={page.h1}
         intro={page.intro}
-        image={page.service.image}
+        image={page.heroImage}
         evidenceNote={page.city.evidenceNote}
+        compact
       />
 
       {/* 2 — Experience. */}

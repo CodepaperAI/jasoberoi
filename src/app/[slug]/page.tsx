@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContentPage } from "@/components/SectionPrimitives";
+import { ProjectProof } from "@/components/LandingSections";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd, pageJsonLd } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
-import { getMainPage, mainPages } from "@/lib/site";
+import { getMainPage, mainPages, projects } from "@/lib/site";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -51,6 +52,18 @@ export default async function MainPage({ params }: PageProps) {
       />
       <JsonLd data={pageJsonLd(page)} />
       <ContentPage page={page} />
+      {/* The portfolio page rendered text cards and exactly one photograph,
+          while the projects array carried twenty. ProjectProof already renders
+          project.images[0] with the grid handling, so this is reuse rather than
+          a new component — and a contractor's portfolio finally shows the work.
+          Placed after ContentPage so nothing above it moves: the h1, title and
+          canonical are untouched. */}
+      {slug === "projects" && (
+        <ProjectProof
+          items={projects}
+          heading="The work, as delivered."
+        />
+      )}
     </>
   );
 }

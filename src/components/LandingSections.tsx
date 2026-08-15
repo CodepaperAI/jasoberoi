@@ -121,12 +121,22 @@ export function LandingHero({
   intro,
   image,
   evidenceNote,
+  compact = false,
 }: {
   eyebrow: string;
   heading: string;
   intro: string;
   image: string;
   evidenceNote?: string;
+  /**
+   * Shorter hero, opted into rather than applied.
+   *
+   * This component is shared with /services/[service], and those pages are
+   * currently ranking — so their markup has to stay byte-identical. A default
+   * of false means the service hubs render exactly as before and only the city
+   * template asks for the change.
+   */
+  compact?: boolean;
 }) {
   return (
     /*
@@ -138,8 +148,16 @@ export function LandingHero({
       a headline, an intro paragraph, two CTAs, a trust row and sometimes an
       evidence note. Still short of full height, because the seven trust sections
       below are what these pages exist to show.
+
+      Measured at 1440x900 that came out at 738px, 82% of the first screen, so a
+      visitor scrolled past a photograph before reading a sentence of the page.
+      `compact` takes it to 64svh for the city pages, which puts the opening
+      paragraph above the fold without shrinking the photograph enough to lose
+      the effect.
     */
-    <section className="relative flex min-h-[82svh] items-center overflow-hidden bg-ink px-5 pb-20 pt-36 sm:px-6 lg:px-8">
+    <section
+      className={`relative flex ${compact ? "min-h-[64svh] pt-32" : "min-h-[82svh] pt-36"} items-center overflow-hidden bg-ink px-5 pb-20 sm:px-6 lg:px-8`}
+    >
       <Image
         src={image}
         alt=""

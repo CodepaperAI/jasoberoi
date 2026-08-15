@@ -191,6 +191,8 @@ export type ConstructionPseoPage = {
   reviews: Review[];
   /** False when the city has no project and no measured demand — page renders noindex. */
   indexable: boolean;
+  /** Resolved per city × service so neighbouring pages do not open alike. */
+  heroImage: string;
 };
 
 
@@ -1386,6 +1388,72 @@ function firstClauses(text: string, count: number) {
   return kept.join(", ");
 }
 
+/**
+ * Photography pools by vertical, for pages with no local project to show.
+ *
+ * Every one of these sits in public/oberizon/optimized already; three of them
+ * (clinic-11, clinic-12, healthcare-5) had never been referenced by anything.
+ */
+const heroPool: Record<ConstructionService["vertical"], string[]> = {
+  Healthcare: [
+    `${imageBase}/project-clinic-9.jpg`,
+    `${imageBase}/project-clinic-10.jpg`,
+    `${imageBase}/project-clinic-11.jpg`,
+    `${imageBase}/project-clinic-12.jpg`,
+    `${imageBase}/project-healthcare-3.jpg`,
+    `${imageBase}/project-healthcare-4.jpg`,
+    `${imageBase}/project-healthcare-5.jpg`,
+    `${imageBase}/dental-clinic.jpg`,
+    `${imageBase}/project-dental-1.jpg`,
+    `${imageBase}/project-med-spa.jpg`,
+  ],
+  Commercial: [
+    `${imageBase}/project-office.jpg`,
+    `${imageBase}/project-commercial-2.jpg`,
+    `${imageBase}/project-commercial-13.jpg`,
+    `${imageBase}/hero-commercial.webp`,
+    `${imageBase}/reception.jpg`,
+  ],
+  Residential: [
+    `${imageBase}/project-residential.jpg`,
+    `${imageBase}/project-luxury-live.jpg`,
+  ],
+};
+
+/**
+ * The photograph a city × service page opens on.
+ *
+ * Every one of these pages used `service.image`, so all fourteen cities opened
+ * on the same picture — ten images carrying a hundred and forty pages, one of
+ * them heading thirty. Pages that read alike and look alike are the same
+ * problem twice, and the fix costs nothing but wiring: thirty-six photographs
+ * were already on disk and twelve were in use.
+ *
+ * A delivered local project wins, because then the page opens on work actually
+ * done in that city rather than on stock from somewhere else. The index shift
+ * by service keeps the ten services within one city from repeating a frame.
+ *
+ * Deliberately not the OG image alone — this is the hero a visitor sees. It
+ * changes no title, description, h1, canonical or robots directive, so it
+ * carries no ranking risk.
+ */
+export function heroImageFor(city: ServiceArea, service: ConstructionService) {
+  const cityIndex = serviceAreas.findIndex((area) => area.slug === city.slug);
+  const serviceIndex = constructionServices.findIndex((item) => item.slug === service.slug);
+
+  const local = projects
+    .filter((project) => project.citySlug === city.slug && project.images?.length)
+    .filter((project) => project.vertical === service.vertical);
+
+  if (local.length) {
+    const shots = local.flatMap((project) => project.images ?? []);
+    return shots[serviceIndex % shots.length];
+  }
+
+  const pool = heroPool[service.vertical];
+  return pool[(cityIndex + serviceIndex) % pool.length] ?? service.image;
+}
+
 export function getAllConstructionPages(): ConstructionPseoPage[] {
   return serviceAreas.flatMap((city) =>
     constructionServices.map((service) => {
@@ -1502,6 +1570,7 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
             why: "Set your own square footage and see the range.",
           },
         ],
+        heroImage: heroImageFor(city, service),
         projects: getProjectsForCity(city.slug),
         reviews: getReviewsForCity(city.slug, city.city),
         // Tier, not evidence. Richmond has no project but does have a named
