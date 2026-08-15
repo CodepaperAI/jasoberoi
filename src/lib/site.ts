@@ -1041,6 +1041,50 @@ export function getProjectsForCity(citySlug: string, limit = 3): Project[] {
 }
 
 /**
+ * Which service a project's discipline actually demonstrates.
+ *
+ * Deliberately narrow. A dental clinic proves we build dental clinics; it does
+ * not prove we build pharmacies, and mapping by vertical instead would have
+ * let one Abbotsford clinic justify six indexed healthcare pages. The whole
+ * point of this gate is that a page may ask to rank only where there is
+ * something behind it, so the mapping has to be as strict as the claim.
+ */
+const disciplineEvidence: Record<string, string[]> = {
+  "Dental clinic": ["dental-clinic-construction"],
+  "Med spa": ["healthcare-construction"],
+  Pharmacy: ["pharmacy-construction"],
+  "Commercial office": ["office-renovation-contractor"],
+  "Luxury residential": ["luxury-residential-construction"],
+};
+
+/**
+ * May this city × service page ask Google to rank it?
+ *
+ * The old rule was `city.tier !== "C"`, which indexed 80 pages on the strength
+ * of the city alone. Measured, those pages carried 1.6% content that appeared
+ * nowhere else on the site — because a page built by joining one city block to
+ * one service block contains nothing specific to the pair. 140 pages generated
+ * from 24 pieces cannot be distinct, and Google's scaled-content guidance
+ * describes exactly that shape.
+ *
+ * Evidence is per combination, not per city and not per vertical. Eight pages
+ * qualify. The other 132 stay live, linked and noindex — they lose nothing a
+ * visitor uses, and stop asking for a position they cannot win.
+ *
+ * Richmond was previously indexed on a named client review rather than a
+ * project. Under this rule it is not. That reverses an earlier call, and it is
+ * the right way round: a review is a reason to trust the company, not evidence
+ * that this service was delivered in that city.
+ */
+export function hasProjectEvidence(city: ServiceArea, service: ConstructionService) {
+  return projects.some(
+    (project) =>
+      project.citySlug === city.slug &&
+      (disciplineEvidence[project.discipline] ?? []).includes(service.slug),
+  );
+}
+
+/**
  * Reviews for a city page, nearest-first.
  *
  * A review that names this city is the strongest thing on the page, so it leads.
@@ -1771,7 +1815,10 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
         // Tier, not evidence. Richmond has no project but does have a named
         // client review and its own sourced permit requirements, which is
         // enough to be worth reading; a page graduates by gaining substance.
-        indexable: city.tier !== "C",
+        // Evidence for this exact combination, not the city's tier. `tier` still
+        // describes how much a city has to say and still drives its written
+        // content; it just no longer decides whether a page asks to rank.
+        indexable: hasProjectEvidence(city, service),
       };
     }),
   );
