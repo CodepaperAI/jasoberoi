@@ -1500,7 +1500,7 @@ const serviceConstraint: Record<string, string> = {
  */
 const serviceDetail: Record<string, string> = {
   "commercial-construction":
-    "We confirm the service capacity at the property line before pricing the build. An upgrade to the transformer or the water service runs on the utility's timeline rather than the site's. No amount of crew recovers those weeks once they are lost.",
+    "Inspections are booked against the trade schedule rather than after it. A framing inspection missed by a day can idle three trades, because the next available slot is rarely the next morning.",
   "commercial-renovation":
     "Work is sequenced against the tenancy schedule: demolition and anything that breaks the fire-alarm loop happens after hours, finishing trades run in the day. The programme is written around the landlord's approval turnaround, which is the item most often assumed rather than confirmed.",
   "office-renovation-contractor":
@@ -1508,17 +1508,48 @@ const serviceDetail: Record<string, string> = {
   "healthcare-construction":
     "We produce the drawing set against CSA Z8000 expectations before it goes to the municipality, so the clinical reviewer and the building department are looking at the same package. Two review cycles run in parallel rather than one after the other.",
   "dental-clinic-construction":
-    "Vacuum and compressed-air runs follow the chair layout, and the compressor and pump are sized for the final operatory count, not the opening one. A five-chair clinic plumbed for five cannot take a sixth without new trunk lines.",
+    "Imaging shielding is specified at drawing stage, not chosen later from a catalogue. Adding lead to a finished wall means opening it again, so the imaging room is decided while the drawings are still cheap to change.",
   "dental-office-renovation":
     "The clinic is split into zones and rebuilt one at a time, with dust barriers and a temporary sterilization route kept in service. Weekend cutovers cover anything that would take an operatory offline mid-week.",
   "medical-clinic-construction":
-    "Room naming is fixed with the practice before the drawings are sealed, because a procedure room, an exam room and a treatment room carry different air-change and clearance expectations under health authority review.",
+    "Door widths and turning clearances are checked against the equipment that has to pass through them. A treatment bed or a portable imaging unit sets a corridor dimension that no finish schedule can recover later.",
   "pharmacy-construction":
-    "The dispensary is laid out for sightlines and separation first — counter, consultation area and secure storage — and the millwork follows that. Where compounding is planned, the room is built to the USP 795 or USP 797 standard that applies, which cannot be retrofitted into a finished space.",
+    "The queue is designed before the casework. Where people wait decides where the consultation area can sit, and a counter placed without that in mind puts a private conversation in the middle of the shop.",
   "clinic-renovation-contractor":
-    "Hoardings, negative air machines and a separated construction route go in before demolition starts, and staff and patient circulation is agreed with the practice in writing. IPAC expectations apply to the site during the work, not only to the space at handover.",
+    "Shared ductwork is isolated before the first wall opens. Dust travelling through a return that serves treatment rooms is the failure nobody sees until it has already happened.",
   "luxury-residential-construction":
-    "Long-lead items are ordered against the framing schedule rather than at finishing stage, and the site is protected to a standard that assumes the finishes are already installed. Most damage on a high-finish build happens after the expensive material arrives.",
+    "Tolerances are agreed with the trades before the work starts. A cabinet run that assumes a level floor and a floor built to standard tolerance will not meet, and the argument about whose millimetre it was helps nobody.",
+};
+
+/**
+ * What to have ready before the first conversation, per build type.
+ *
+ * The generic version — "the address, your lease stage and a target opening
+ * date" — was byte-identical on all 140 pages and one of the ten sentences that
+ * appeared on every one of them. What a dentist should bring is not what a
+ * pharmacy owner should bring, and saying so is the whole value of the answer.
+ */
+const servicePrep: Record<string, string> = {
+  "commercial-construction":
+    "The site address, the zoning, and what the building has to do once it opens. If a utility upgrade might be involved, say so early — that is the item most likely to set your date.",
+  "commercial-renovation":
+    "Your lease, your trading hours, and which parts of the space have to stay open. The landlord's approval process matters as much as the drawings, so bring that too.",
+  "office-renovation-contractor":
+    "Headcount, how many enclosed rooms you need, and where privacy actually matters. A rough seating plan is worth more than a mood board at this stage.",
+  "healthcare-construction":
+    "The clinical services you will offer, room by room. That list drives the ventilation, the clearances and the health authority review, so it is the first thing we ask for.",
+  "dental-clinic-construction":
+    "Your operatory count — including the ones you will add later — and whether imaging is going in. Those two decide the plumbing, the compressor sizing and the electrical before anything else.",
+  "dental-office-renovation":
+    "Your patient schedule and which operatories can come offline together. A renovation around a live clinic is planned backwards from the days you cannot lose.",
+  "medical-clinic-construction":
+    "A room-by-room list with each room named the way you will use it. Exam, treatment and procedure carry different requirements, and the naming is what the reviewer reads.",
+  "pharmacy-construction":
+    "Your dispensary layout, whether you will compound, and what has to be secured. Compounding decides the room before it decides the finishes, so it cannot come up late.",
+  "clinic-renovation-contractor":
+    "Your treatment schedule and the routes patients take through the space. Both decide where the barriers go and when the noisy work can run.",
+  "luxury-residential-construction":
+    "Your drawings if you have them, and the finishes you have already fallen for. Long-lead items set the schedule, so knowing them early is worth more than deciding them perfectly.",
 };
 
 /**
@@ -1883,46 +1914,28 @@ function buildQuickFacts(
 ): string[] {
   const neighborhoodList = formatList(city.neighborhoods.slice(0, 3));
 
-  // What each vertical is actually hard about. This replaces three near-identical
-  // sentences that differed only in the word before "project neighborhoods".
-  const constraint =
-    service.vertical === "Healthcare"
-      ? "Equipment, services and shielding are set before a single wall goes up. Getting that order wrong is what pushes an opening date."
-      : service.vertical === "Commercial"
-        ? "Tenant improvement timing is agreed with the landlord before demolition. Late approvals cost more days than any trade does."
-        : "Finish schedules drive the sequence. Long-lead millwork and fixtures are ordered before framing is closed in.";
-
-  // The detail a contractor who has actually built one would volunteer. This is
-  // the §5.2 rule applied to the page body: content no competitor can copy
-  // because they have not done the work.
-  const technical =
-    service.vertical === "Healthcare"
-      ? "Operatory clearances and the sterilization corridor are set before millwork is ordered. Suction and compressed-air runs follow the chair layout, not the other way round. Imaging rooms need their shielding specified at drawing stage, because retrofitting lead is a demolition job."
-      : service.vertical === "Commercial"
-        ? "Base-building services rarely match what the drawings assume. We verify the electrical capacity and the make-up air before pricing, because discovering a shortfall after demolition is what turns a fixed price into a change order."
-        : "Long-lead millwork and imported fixtures set the critical path. We order them against the framing schedule, so the trades are not waiting on a countertop.";
-
   // Where the city publishes its own permit route, say that instead of
   // repeating the head-office sentence on all fourteen pages.
-  const opening = city.permits.authority
-    ? `${city.permits.pathway ?? `Permits here are issued by ${city.permits.authority}.`} We prepare the submission to that route, from a White Rock head office.`
-    : `Oberizon delivers ${service.name.toLowerCase()} from a White Rock head office. Work runs across ${city.regionNote}.`;
+  const opening = `Oberizon delivers ${service.name.toLowerCase()} from a White Rock head office. Work runs across ${city.regionNote}.`;
 
   // The cost band is site-wide and unconfirmed, so the number never varies by
-  // city. What legitimately varies is why a city sits where it does in it.
-  const priced = `2026 pricing is ${pricing.toLowerCase().replace(/\.$/, "")}. The final number moves with base-building condition and finish level.`;
-
+  // city. What legitimately varies is why a city sits where it does in it. The
+  // figures themselves are quoted once, in the FAQ that asks for them — this
+  // line used to restate them and the page gave the same range twice.
   return [
     opening,
-    city.costRationale ? `${priced} ${city.costRationale}` : priced,
-    // The service-specific pair leads, because it is the part that differs
-    // between two services in the same city — which is what a reader comparing
-    // them actually needs. The vertical-keyed pair follows rather than being
-    // replaced: those sentences are indexed on pages that rank.
+    // Per service, and only per service.
+    //
+    // A vertical-keyed `constraint` and `technical` pair used to follow these,
+    // 73 words of the 208 on a dental page. They said what serviceConstraint
+    // and serviceDetail already say — three blocks stating that suction runs
+    // follow the chair layout — and because they keyed on vertical, all six
+    // healthcare services shared them. They were kept while removing indexed
+    // text was gated on Search Console data; with 8 pages indexed rather than
+    // 80, the duplication costs more than the deletion risks.
     serviceConstraint[service.slug],
     serviceDetail[service.slug],
-    `${constraint} Projects here typically sit around ${neighborhoodList}.`,
-    technical,
+    `Projects here typically sit around ${neighborhoodList}.`,
     // A service with no entry in the maps above would otherwise render an empty
     // card. Filtering here rather than defaulting to "" keeps the gap visible
     // in the data instead of shipping a blank block to a visitor.
@@ -1994,24 +2007,20 @@ function buildPseoFaqs(
     },
     {
       question: `How much does ${service.primaryKeyword} cost in ${city.city}?`,
-      answer: `${pricing}. Base-building condition and finish level move that number most. The full 2026 breakdown is in the cost guide at /cost.`,
+      answer: `${pricing}.${city.costRationale ? ` ${city.costRationale}` : ""}`,
     },
     {
       question: `What areas near ${city.city} does Oberizon serve for ${service.name.toLowerCase()}?`,
-      answer: `Most conversations start around ${formatList(city.neighborhoods.slice(0, 3))}. We travel further when the scope justifies it.`,
+      answer: `Most conversations start around ${formatList(city.neighborhoods.slice(0, 3))}. The work runs across ${city.regionNote}.`,
     },
     {
       question: `What should I prepare before starting ${service.name.toLowerCase()} in ${city.city}?`,
-      answer: `The address, your lease stage and a target opening date. Drawings and a budget range help. The more we know early, the tighter the feasibility comes back.`,
+      answer: servicePrep[service.slug] ?? "The address, your lease stage and a target opening date.",
     },
     // Service-specific questions, appended rather than replacing the city set.
     // Two services in one city now answer different questions, which is the
     // difference a reader comparing them is looking for.
     ...(serviceFaqs[service.slug] ?? []),
-    {
-      question: `Can Oberizon review my ${city.city} space before I commit?`,
-      answer: `Yes. A review finds the permit and service risks before you sign a lease or a design. That is the cheapest point to find them — a change after drawings are sealed costs weeks, not hours.`,
-    },
   ];
 }
 
@@ -2142,41 +2151,20 @@ const serviceFocusCards: Record<string, [Feature, Feature]> = {
 
 function buildServiceFocus(service: ConstructionService): Feature[] {
   // "Project review" stays: it already carries the service keyword, and it is
-  // the card a visitor reads first. The two behind it are now per service
-  // rather than one shared by every page and one chosen by vertical.
-  const review: Feature = {
-    title: "Project review",
-    text: `We walk the space and price the risk before you commit to ${service.primaryKeyword}. Permits and services are the two that bite.`,
-  };
-
-  const cards = serviceFocusCards[service.slug];
-  if (!cards) {
-    // A service with no entry falls back to the vertical text rather than
-    // rendering one card where the layout expects three.
-    return [
-      review,
-      {
-        title: "Managed execution",
-        text: "One team holds the trades, the inspections and the deficiency list. You get one number to call.",
-      },
-      service.vertical === "Healthcare"
-        ? {
-            title: "Clinical workflow",
-            text: "Operatory clearances, suction runs and sterilization separation are planned first. Patient and staff flow follow from them.",
-          }
-        : service.vertical === "Commercial"
-          ? {
-              title: "Business operation",
-              text: "Reception, storage and customer flow are set against your opening date. The build is sequenced to protect it.",
-            }
-          : {
-              title: "Finish control",
-              text: "Millwork and fixtures are long-lead items. They are ordered before framing closes, not after.",
-            },
-    ];
-  }
-
-  return [review, ...cards];
+  // the card a visitor reads first.
+  //
+  // The vertical fallback that used to sit behind it is gone. All ten services
+  // have an entry in serviceFocusCards, so it could only ever fire on a service
+  // added without cards — and it would have shipped the vertical prose this
+  // pass exists to remove. A missing entry is now visible as two cards instead
+  // of three, which is the kind of gap worth noticing rather than papering over.
+  return [
+    {
+      title: "Project review",
+      text: `We walk the space and price the risk before you commit to ${service.primaryKeyword}.`,
+    },
+    ...(serviceFocusCards[service.slug] ?? []),
+  ];
 }
 
 function formatList(items: string[]) {
