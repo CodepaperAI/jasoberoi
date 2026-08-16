@@ -753,7 +753,8 @@ export const serviceAreas: ServiceArea[] = [
     // detail yet. Built and linkable, but noindex — a page that says only what
     // a competitor could also say is the failure mode strategy 3.2 measures.
     tier: "C",
-    heroIntro: null,
+    heroIntro:
+      "Chilliwack sits far enough east that trade availability, not permit queues, usually sets the start date. Most commercial space here is single-storey with its own entrance and its own services, which makes for straightforward construction and unusually honest pricing — there is no shared riser to argue about.",
     localContext: null,
     costRationale: null,
     permits: NO_PERMIT_DATA,
@@ -769,7 +770,8 @@ export const serviceAreas: ServiceArea[] = [
     // detail yet. Built and linkable, but noindex — a page that says only what
     // a competitor could also say is the failure mode strategy 3.2 measures.
     tier: "C",
-    heroIntro: null,
+    heroIntro:
+      "Coquitlam's newer commercial space sits in podium units beneath residential towers around the Town Centre, while Austin Heights and Maillardville run older street-front stock. Which of the two you are in changes the job completely: one brings strata rules and restricted hours, the other brings a building that predates the services you need.",
     localContext: null,
     costRationale: null,
     permits: NO_PERMIT_DATA,
@@ -803,7 +805,8 @@ export const serviceAreas: ServiceArea[] = [
     // detail yet. Built and linkable, but noindex — a page that says only what
     // a competitor could also say is the failure mode strategy 3.2 measures.
     tier: "C",
-    heroIntro: null,
+    heroIntro:
+      "West Vancouver is a small, high-expectation market where the finish standard is set by the neighbours. Commercial space concentrates around Park Royal and the Ambleside and Dundarave village strips, and units are compact with tight access. The work is rarely large; it is exacting.",
     localContext: null,
     costRationale: null,
     permits: NO_PERMIT_DATA,
@@ -819,7 +822,8 @@ export const serviceAreas: ServiceArea[] = [
     // detail yet. Built and linkable, but noindex — a page that says only what
     // a competitor could also say is the failure mode strategy 3.2 measures.
     tier: "C",
-    heroIntro: null,
+    heroIntro:
+      "Delta is three communities with little in common — Ladner and Tsawwassen village-scaled, North Delta suburban, and a substantial agricultural and industrial base between them. Commercial tenancy follows that split, so the first question here is always which Delta the address is actually in.",
     localContext: null,
     costRationale: null,
     permits: NO_PERMIT_DATA,
@@ -835,7 +839,8 @@ export const serviceAreas: ServiceArea[] = [
     // detail yet. Built and linkable, but noindex — a page that says only what
     // a competitor could also say is the failure mode strategy 3.2 measures.
     tier: "C",
-    heroIntro: null,
+    heroIntro:
+      "New Westminster has the oldest commercial building stock in the region, and it shows up in the budget rather than the drawings. Uptown and Downtown units frequently need electrical and mechanical brought forward decades before anything new goes in. Sapperton and Queensborough run newer and behave differently.",
     localContext: null,
     costRationale: null,
     permits: NO_PERMIT_DATA,
@@ -851,7 +856,8 @@ export const serviceAreas: ServiceArea[] = [
     // detail yet. Built and linkable, but noindex — a page that says only what
     // a competitor could also say is the failure mode strategy 3.2 measures.
     tier: "C",
-    heroIntro: null,
+    heroIntro:
+      "The Tri-Cities are three municipalities, and the address decides which one reviews the work — Port Moody, Port Coquitlam and Coquitlam each run their own process. Newer commercial space clusters around the SkyTrain stations, with older street-front stock along the original high streets.",
     localContext: null,
     costRationale: null,
     permits: NO_PERMIT_DATA,
@@ -1433,6 +1439,38 @@ export function getConstructionPage(citySlug: string, serviceSlug: string) {
  * not also say. Leading with the real constraint is both better writing and the
  * §5.2 rule applied to prose: say the thing only someone who has built one knows.
  */
+/**
+ * A hero written for one city and one service, for the pages that can rank.
+ *
+ * The city hero alone fixed the cross-city repetition — Chilliwack and North
+ * Vancouver no longer open with the same sentence — but it left a city's ten
+ * services sharing one opening. These eight are the pages the evidence rule
+ * indexes, and each has a real project to open on, which is material no other
+ * page can carry. Everything below is drawn from recorded fields: project name,
+ * address, status. Nothing about scope or duration, because that is undefined
+ * on all nine projects and is item 6 in NEEDS-VERIFICATION.md.
+ *
+ * Keyed "city/service". Anything not listed falls back to the city hero.
+ */
+const heroByCombination: Record<string, string> = {
+  "white-rock/dental-clinic-construction":
+    "The Shine Dental is ours, and it is four minutes from our office. That proximity is the whole argument for using us on a White Rock operatory build: when a chair position has to move on site, we are there the same morning rather than the following week.",
+  "white-rock/office-renovation-contractor":
+    "We delivered the private office build here in White Rock. Uptown office space on and around Johnston Road is small-footprint and largely older, so the constraint is rarely the layout you want — it is what the panel and the plumbing will carry once a wall comes down.",
+  "abbotsford/dental-clinic-construction":
+    "The dental clinic at 104-33069 Marshall Road is ours, delivered and photographed on this site. Abbotsford treats tenant improvements as their own permit category, which means a clinic fit-out here is submitted differently from a new build.",
+  "abbotsford/healthcare-construction":
+    "Skinholic Aesthetics is ours — a med spa interior in Abbotsford, delivered and photographed. Clinical space in the Fraser Valley usually means adapting older commercial stock, so the ventilation and the finishes are the line items that move, not the walls.",
+  "surrey/dental-clinic-construction":
+    "We are on site now at the Whalley Boulevard dental clinic. Surrey's newer buildings generally give you the electrical and the make-up air a clinic needs, which is not true everywhere in the Lower Mainland — the harder question here is usually the strata and the approval queue.",
+  "surrey/pharmacy-construction":
+    "The pharmacy at #1-2233 156 St is under way. A pharmacy in a Surrey retail unit is a security problem inside a lease: the dispensary boundary and the secure storage have to be settled before the landlord approves a layout, not after.",
+  "langley/dental-clinic-construction":
+    "We have two dental builds running at 8100 272 Street, in the same complex. Building two clinics side by side in Langley means one set of trades, one inspection schedule and one relationship with the Township — which is the argument for doing them together rather than a year apart.",
+  "vancouver/luxury-residential-construction":
+    "We delivered the West Cordova residential build, so we know what a downtown Vancouver address costs in coordination rather than in materials. Elevator bookings, loading bay windows and strata approvals set the schedule on a high-finish home here, and none of them appear on a drawing.",
+};
+
 const serviceLead: Record<string, string> = {
   "commercial-construction":
     "A commercial build is won or lost on the permit sequence, long before anyone breaks ground.",
@@ -1811,15 +1849,29 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
         // own opener states what is true here. Where a city has no written
         // opener it falls back to the old shared sentence, which is honest
         // about there being nothing city-specific to say yet.
-        intro: [
-          serviceLead[service.slug] ?? "",
-          // Local proof only where the vertical matches. Surrey's two clinics
-          // belong on its dental and pharmacy pages, not on the page about
-          // commercial construction.
-          city.heroProof?.[service.vertical] ?? "",
-          city.heroIntro ??
-            "We plan that before the site gets busy. Drawings, permits and trades are sequenced by one team out of White Rock.",
-        ]
+        // The hero is the city's, entirely.
+        //
+        // It used to open with serviceLead — one sentence per service, so the
+        // same first line greeted every visitor on all fourteen of that
+        // service's city pages. Chilliwack and North Vancouver both opened "A
+        // commercial build is won or lost on the permit sequence", and for the
+        // six cities with no written intro the two fallback sentences that
+        // followed were shared with fifty-nine other pages.
+        //
+        // Dropping it costs nothing. The h1 already names the service and the
+        // city, and serviceConstraint says the same thing further down in the
+        // service's own words — "renovating an occupied space means working
+        // around a business that still has to trade" against "the building
+        // keeps trading while you work in it". Two sentences, one point.
+        intro: (heroByCombination[`${city.slug}/${service.slug}`]
+          ? [heroByCombination[`${city.slug}/${service.slug}`]]
+          : [
+              // Local proof only where the vertical matches. Surrey's two
+              // clinics belong on its dental and pharmacy pages, not on the
+              // page about commercial construction.
+              city.heroProof?.[service.vertical] ?? "",
+              city.heroIntro ?? "",
+            ])
           .filter(Boolean)
           .join(" ")
           .trim(),
