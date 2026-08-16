@@ -1843,7 +1843,6 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
             .map((item) => ({
               label: item.name,
               href: `/construction/${city.slug}/${item.slug}`,
-              why: `Choose this if you need to ${item.intent}.`,
             })),
           // White Rock is an enclave inside Surrey and the head office is in
           // White Rock, so these two pages chase the same searcher. Pointing
@@ -1870,19 +1869,16 @@ export function getAllConstructionPages(): ConstructionPseoPage[] {
           {
             label: "All service areas",
             href: "/construction",
-            why: "Compare how Oberizon works across the Lower Mainland.",
           },
           {
             label: `All ${service.name}`,
             href: `/services/${service.slug}`,
-            why: `See the full service, pricing and every city we build it in.`,
           },
           // Ungated, matching the footer. Indexing and the sitemap stay gated
           // on ratesConfirmedByClient; reachability does not.
           {
             label: "Estimate your build",
             href: `/cost?service=${service.slug}`,
-            why: "Set your own square footage and see the range.",
           },
         ],
         heroImage: heroImageFor(city, service),
