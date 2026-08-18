@@ -144,6 +144,76 @@ export const blogPosts: BlogPost[] = [
     cardTitle: "Luxury builder vs general contractor",
     minutes: 7,
   },
+  {
+    slug: "csa-z8000-compliance-checklist",
+    title: "CSA Z8000 Compliance Checklist for Healthcare Facility Construction",
+    description:
+      "A CSA Z8000 compliance checklist for healthcare facility construction in BC — space planning, infection control, ventilation, and what to verify before drawings.",
+    published: "2026-08-18",
+    service: "healthcare-construction",
+    cardTitle: "CSA Z8000 compliance checklist",
+    minutes: 10,
+  },
+  {
+    slug: "medical-clinic-construction-cost-per-square-foot",
+    title: "Medical Clinic Construction Cost Per Square Foot in Canada (2026)",
+    description:
+      "Medical clinic construction cost per square foot in BC, with totals by clinic size and how the rate compares to office, dental and healthcare build types.",
+    published: "2026-08-18",
+    service: "medical-clinic-construction",
+    cardTitle: "Medical clinic cost per square foot",
+    minutes: 9,
+  },
+  {
+    slug: "pharmacy-build-out-cost-bc",
+    title: "Pharmacy Build-Out Cost Guide: What BC Pharmacy Owners Need to Know",
+    description:
+      "Pharmacy build-out cost in BC by size, where the budget actually goes, and what dispensary security and compounding add to a pharmacy construction project.",
+    published: "2026-08-18",
+    service: "pharmacy-construction",
+    cardTitle: "Pharmacy build-out cost in BC",
+    minutes: 9,
+  },
+  {
+    slug: "how-to-choose-a-commercial-general-contractor",
+    title: "How to Choose a Commercial General Contractor for Your Medical Clinic",
+    description:
+      "How to choose a commercial general contractor for a medical clinic in BC — the seven checks before shortlisting, and how to compare bids that priced different scopes.",
+    published: "2026-08-18",
+    service: "clinic-renovation-contractor",
+    cardTitle: "Choosing a commercial general contractor",
+    minutes: 10,
+  },
+  {
+    slug: "optometry-clinic-construction",
+    title: "Optometry & Eye Clinic Construction: What to Know Before You Build",
+    description:
+      "Optometry clinic construction in BC — cost by size, how refraction method sets your floor plan, and the dispensary and equipment scope owners underestimate.",
+    published: "2026-08-18",
+    service: "medical-clinic-construction",
+    cardTitle: "Optometry clinic construction",
+    minutes: 10,
+  },
+  {
+    slug: "physiotherapy-med-spa-clinic-construction",
+    title: "Physiotherapy & Med Spa Clinic Build-Out Guide (BC)",
+    description:
+      "Physiotherapy clinic construction and med spa construction in BC — why open rehab floor and enclosed treatment rooms sit at opposite ends of the same cost band.",
+    published: "2026-08-18",
+    service: "healthcare-construction",
+    cardTitle: "Physiotherapy & med spa build-out",
+    minutes: 9,
+  },
+  {
+    slug: "office-renovation-cost-metro-vancouver",
+    title: "Office Renovation Cost Guide for Metro Vancouver Businesses",
+    description:
+      "Office renovation cost in Metro Vancouver by size, refresh against full fit-out, what drives commercial construction cost per square foot, and what the landlord pays.",
+    published: "2026-08-18",
+    service: "office-renovation-contractor",
+    cardTitle: "Office renovation cost in Metro Vancouver",
+    minutes: 10,
+  },
 ];
 
 export const blogIndexPath = "/blog";
