@@ -7,6 +7,7 @@ import { PageHero, ReviewCta } from "@/components/SectionPrimitives";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
+import { hasCityHub } from "@/lib/cityHubs";
 import {
   constructionServices,
   portfolioTally,
@@ -187,9 +188,13 @@ export default function ConstructionIndexPage() {
                   what separates a card that reads as an object from the ringed
                   boxes this site had everywhere before.
 
-                  No arrow on the card itself, though the reference has one.
-                  There it means the whole card is a link; here it would point
-                  nowhere, because /construction/{city}/ does not exist yet.
+                  The city name is a link where a hub exists for it. That was
+                  the gap this comment used to record — /construction/{city}/
+                  did not exist, so the one page built to route people by city
+                  had no link to the city. Five of the fourteen have hubs now;
+                  the rest stay plain headings rather than linking to a page
+                  that would have nothing on it, which is the same evidence
+                  rule the sitemap and the robots directive already follow.
                 */
                 <div
                   key={city.slug}
@@ -202,7 +207,16 @@ export default function ConstructionIndexPage() {
                       aria-hidden="true"
                     />
                     <h3 id={headingId} className="h-card-lg text-ink">
-                      {city.city}
+                      {hasCityHub(city.slug) ? (
+                        <Link
+                          href={`/construction/${city.slug}`}
+                          className="transition hover:text-accent"
+                        >
+                          {city.city}
+                        </Link>
+                      ) : (
+                        city.city
+                      )}
                     </h3>
                     {delivered > 0 ? (
                       <span className="ui-font ml-auto shrink-0 text-xs font-extrabold uppercase tracking-[0.14em] text-accent">

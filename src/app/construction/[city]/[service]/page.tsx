@@ -19,6 +19,7 @@ import {
 } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 import { getAllConstructionPages, getConstructionPage } from "@/lib/site";
+import { hasCityHub } from "@/lib/cityHubs";
 
 type ConstructionProps = {
   params: Promise<{ city: string; service: string }>;
@@ -63,15 +64,55 @@ export default async function ConstructionRoute({ params }: ConstructionProps) {
 
   const serviceLabel = page.service.name.toLowerCase();
 
+  /*
+    Where a city hub exists, this page sits under it.
+
+    The breadcrumb used to read Home › Construction › {City} with the {City}
+    crumb pointing at *this* page — so the trail claimed a level of hierarchy
+    the site did not have, and the city crumb was a self-link. Now that
+    /construction/{city}/ exists for five cities, the trail is the real one and
+    the leaf is the service. The other nine keep the previous two-level shape
+    rather than linking to a page that does not exist.
+  */
+  const cityHubPath = `/construction/${page.city.slug}`;
+  const underHub = hasCityHub(page.city.slug);
+
+  const crumbs = underHub
+    ? [
+        { label: "Home", href: "/" },
+        { label: "Construction", href: "/construction" },
+        { label: page.city.city, href: cityHubPath },
+        { label: page.service.name, href: page.path },
+      ]
+    : [
+        { label: "Home", href: "/" },
+        { label: "Construction", href: "/construction" },
+        { label: page.city.city, href: page.path },
+      ];
+
+  /*
+    A link up to the hub, first in the rail.
+
+    Every link this template renders runs sideways — nine other services in the
+    same city, plus /construction and the service hub. Nothing pointed at the
+    city itself, because nothing was there to point at. Prepending rather than
+    appending because "everything we do in this city" is the more useful
+    destination than the ninth adjacent service.
+  */
+  const internalLinks = underHub
+    ? [
+        {
+          label: `Commercial Contractors in ${page.city.city}`,
+          href: cityHubPath,
+          why: `Permits, delivered work and every service we run in ${page.city.city}.`,
+        },
+        ...page.internalLinks,
+      ]
+    : page.internalLinks;
+
   return (
     <>
-      <JsonLd
-        data={breadcrumbJsonLd([
-          { label: "Home", href: "/" },
-          { label: "Construction", href: "/construction" },
-          { label: page.city.city, href: page.path },
-        ])}
-      />
+      <JsonLd data={breadcrumbJsonLd(crumbs)} />
       <JsonLd data={constructionServiceJsonLd(page)} />
       <JsonLd data={constructionWebPageJsonLd(page)} />
       <JsonLd data={faqJsonLd(page.faqs)} />
@@ -99,7 +140,7 @@ export default async function ConstructionRoute({ params }: ConstructionProps) {
       <LocalDelivery page={page} />
 
       {/* 5 — Why these services: internal links that explain themselves. */}
-      <WhyTheseServices links={page.internalLinks} cityName={page.city.city} />
+      <WhyTheseServices links={internalLinks} cityName={page.city.city} />
 
       {/* 6 — FAQs. */}
       {/* The questions below already name the service and the city; repeating
