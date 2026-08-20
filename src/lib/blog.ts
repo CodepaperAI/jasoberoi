@@ -214,6 +214,66 @@ export const blogPosts: BlogPost[] = [
     cardTitle: "Office renovation cost in Metro Vancouver",
     minutes: 10,
   },
+  {
+    slug: "best-flooring-for-medical-dental-clinics",
+    title: "Best Flooring for Medical & Dental Clinics: Compliance and Durability Compared",
+    description:
+      "The best flooring for medical and dental clinics, zone by zone — why welded sheet vinyl owns the clinical areas, where LVT and rubber belong, and the installation details that decide lifespan.",
+    published: "2026-08-20",
+    service: "healthcare-construction",
+    cardTitle: "Best flooring for clinics",
+    minutes: 9,
+  },
+  {
+    slug: "clinic-design-trends-bc",
+    title: "Medical & Dental Clinic Design Trends in BC for 2026",
+    description:
+      "The ten clinic design trends shaping BC medical and dental builds in 2026 — telehealth rooms, standardized footprints, acoustic privacy — and which must be decided before permit drawings.",
+    published: "2026-08-20",
+    service: "medical-clinic-construction",
+    cardTitle: "Clinic design trends in BC",
+    minutes: 9,
+  },
+  {
+    slug: "modular-vs-traditional-clinic-construction",
+    title: "Modular vs. Traditional Clinic Build-Outs: Cost & Timeline Compared",
+    description:
+      "Modular vs. traditional clinic construction compared honestly — where volumetric modular can physically go, why it saves schedule rather than money, and the prefab middle ground leased clinics actually use.",
+    published: "2026-08-20",
+    service: "healthcare-construction",
+    cardTitle: "Modular vs traditional clinic build-outs",
+    minutes: 9,
+  },
+  {
+    slug: "small-clinic-renovation-maximize-space",
+    title: "Small Clinic Renovation: How to Maximize Space in Under 1,500 Sq Ft",
+    description:
+      "How a small clinic renovation reclaims the equivalent of a full exam room in under 1,500 sq ft — standardized rooms, sliding doors, a smaller waiting area — and what the work costs in BC.",
+    published: "2026-08-20",
+    service: "commercial-renovation",
+    cardTitle: "Small clinic renovation",
+    minutes: 9,
+  },
+  {
+    slug: "veterinary-clinic-construction",
+    title: "Veterinary Clinic Construction: What's Different from Medical Clinic Build-Outs",
+    description:
+      "How veterinary clinic construction differs from medical clinic build-outs — washdown finishes and drains, kennel acoustics, species-separated waiting, and the CVBC accreditation path.",
+    published: "2026-08-20",
+    service: "healthcare-construction",
+    cardTitle: "Veterinary clinic construction",
+    minutes: 9,
+  },
+  {
+    slug: "telehealth-clinic-design",
+    title: "Designing a Clinic for Telehealth: Construction Considerations for Hybrid Care",
+    description:
+      "Telehealth clinic design for hybrid care — the acoustic walls, camera-first lighting, cabling and room sizing that turn video visits into planned capacity instead of an improvised corner.",
+    published: "2026-08-20",
+    service: "medical-clinic-construction",
+    cardTitle: "Telehealth clinic design",
+    minutes: 9,
+  },
 ];
 
 export const blogIndexPath = "/blog";
