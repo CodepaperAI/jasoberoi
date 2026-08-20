@@ -817,6 +817,170 @@ function checkHubStructure(hubs, sources) {
   }
 }
 
+/**
+ * A city hub has to earn its URL.
+ *
+ * These five pages are the highest-risk thing on the site. A set of city pages
+ * that differ only by a swapped place name is the exact pattern Google's
+ * scaled-content policy names, and the penalty lands on the domain rather than
+ * on the page. What separates a hub from a doorway is that it carries facts
+ * about that municipality which a competitor cannot copy without doing the same
+ * work — so this gate makes those facts mandatory rather than aspirational.
+ *
+ * Everything here is an ERROR, not a warning. A thin hub is not an absence, it
+ * is an assertion that the page is worth ranking, and that is a bluff.
+ *
+ * If a city trips this, delete the hub or go and read the municipality's permit
+ * pages. Do not relax the rule — the whole defence is that it cannot be argued
+ * with.
+ */
+function checkCityHubStructure(cityHubs, sources) {
+  const hubs = cityHubs.getAllCityHubs();
+  const where = "src/lib/cityHubs.ts";
+
+  const template = sources.find(
+    (file) => file.path.includes("construction/[city]/page") && !file.path.includes("[service]"),
+  );
+
+  if (!template) {
+    fail("city-hub-structure", "city hub template not found", "src/app/construction/[city]");
+  } else {
+    // The link set down to the services is the entire structural reason these
+    // pages exist. Without it a hub is an eleventh page competing with the ten
+    // it was built to gather.
+    if (!/hub\.services/.test(template.text)) {
+      fail(
+        "city-hub-structure",
+        "The hub template no longer passes hub.services. That link set is why these pages exist — " +
+          "without it each hub is an orphan competing with the ten city-service pages beneath it.",
+        template.path,
+      );
+    }
+    // The permit block is the differentiated content. A hub without it is a
+    // city page with a rewritten intro, which is the thing being defended
+    // against.
+    // `<CityPermitBlock`, not `CityPermitBlock` — matching the bare name also
+    // matches the import statement, so deleting the element while leaving the
+    // import behind passed a gate that exists to stop exactly that.
+    if (!template.text.includes("<CityPermitBlock")) {
+      fail(
+        "city-hub-structure",
+        "The hub template no longer renders CityPermitBlock. The sourced municipal facts are the " +
+          "only thing on these pages a competitor cannot copy.",
+        template.path,
+      );
+    }
+    // Same reasoning: check the call, not the identifier.
+    for (const required of ["breadcrumbJsonLd", "cityHubJsonLd", "faqJsonLd"]) {
+      if (!template.text.includes(`${required}(`)) {
+        fail("missing-schema", `city hub template does not emit ${required}`, template.path);
+      }
+    }
+  }
+
+  // Uniqueness is measured on the fields that are supposed to be written per
+  // city. Two hubs sharing one of these means the page was templated, which is
+  // the defect rather than a symptom of it.
+  const written = new Map();
+
+  for (const hub of hubs) {
+    const permits = hub.city.permits;
+
+    if (!permits.authority) {
+      fail(
+        "city-hub-evidence",
+        `${hub.path} has no permit authority. A hub without sourced municipal facts is a doorway ` +
+          `page — read the municipality's own permit pages or drop the hub.`,
+        where,
+      );
+    }
+
+    if (permits.sources.length === 0) {
+      fail(
+        "city-hub-evidence",
+        `${hub.path} states permit facts with no citation. Every populated permit field has to be ` +
+          `traceable to the municipality's own page — this is a licensed contractor's site, and a ` +
+          `wrong permit fact is a liability before it is an SEO problem.`,
+        where,
+      );
+    }
+
+    for (const source of permits.sources) {
+      if (!/^https:\/\//.test(source)) {
+        fail("city-hub-evidence", `${hub.path} cites a non-https source: ${source}`, where);
+      }
+    }
+
+    if (hub.services.length !== site.constructionServices.length) {
+      fail(
+        "city-hub-structure",
+        `${hub.path} links ${hub.services.length} services but there are ` +
+          `${site.constructionServices.length}. A hub must link every service it offers.`,
+        where,
+      );
+    }
+
+    if (hub.faqs.length < 4) {
+      fail("city-hub-structure", `${hub.path} has only ${hub.faqs.length} FAQs.`, where);
+    }
+
+    checkFaqSpecificity(`city hub FAQ (${hub.city.city})`, hub.faqs, where);
+
+    for (const [field, text] of [
+      ["lead", hub.lead],
+      ["angle", hub.angle],
+      ["constraint", hub.constraint],
+      ["costRationale", hub.costRationale],
+    ]) {
+      if (!text || text.trim().length < 80) {
+        fail(
+          "city-hub-structure",
+          `${hub.path} has no written ${field}. This is the per-city substance the page is ` +
+            `allowed to rank on; a generated sentence would be the doorway pattern.`,
+          where,
+        );
+        continue;
+      }
+
+      const sentences = (text.match(/\./g) || []).length || 1;
+      const commas = (text.match(/,/g) || []).length;
+      if (commas / sentences > MAX_COMMAS_PER_SENTENCE) {
+        fail(
+          "comma-density",
+          `${field} on ${hub.path} averages ${(commas / sentences).toFixed(2)} commas per ` +
+            `sentence, over the limit of ${MAX_COMMAS_PER_SENTENCE}.`,
+          where,
+        );
+      }
+
+      const seen = written.get(text);
+      if (seen) {
+        fail(
+          "city-hub-duplication",
+          `${hub.path} and ${seen} publish an identical ${field}. Two city pages carrying the same ` +
+            `sentence is precisely the scaled-content pattern these pages have to avoid.`,
+          where,
+        );
+      } else {
+        written.set(text, hub.path);
+      }
+    }
+
+    // A hub asserting delivered work has to have it in the project records,
+    // with a city recorded. getProjectsForCity already filters on that, so a
+    // mismatch here means the copy is claiming something the data does not.
+    for (const project of hub.projects) {
+      if (project.citySlug !== hub.city.slug) {
+        fail(
+          "city-hub-evidence",
+          `${hub.path} shows ${project.name}, which is recorded in ${project.citySlug || "no city"}.`,
+          where,
+        );
+      }
+    }
+  }
+}
+
 /** The landing template must keep all seven trust sections, in order. */
 function checkLandingStructure(sources) {
   const page = sources.find((file) => file.path.includes("construction/[city]/[service]"));
@@ -883,6 +1047,7 @@ const sources = await readSource();
 const site = await import("../src/lib/site.ts");
 const pricing = await import("../src/lib/pricing.ts");
 const hubs = await import("../src/lib/hubs.ts");
+const cityHubs = await import("../src/lib/cityHubs.ts");
 const blog = await import("../src/lib/blog.ts");
 
 checkCopy(sources);
@@ -908,5 +1073,6 @@ checkFooter(sources);
 checkKeywordChips(sources);
 checkSchema(site, sources);
 checkHubStructure(hubs, sources);
+checkCityHubStructure(cityHubs, sources);
 checkLandingStructure(sources);
 report();

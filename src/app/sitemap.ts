@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { allStaticPaths } from "@/lib/site";
+import { getAllCityHubs } from "@/lib/cityHubs";
 import { canonicalPageUrl } from "@/lib/seo";
 import { blogIndexPath, blogPosts, postPath } from "@/lib/blog";
 
@@ -18,6 +19,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: path === "/" ? "weekly" : "monthly",
     priority: path === "/" ? 1 : path.startsWith("/construction/") ? 0.74 : 0.84,
   }));
+
+  /*
+    City hubs, added here rather than in allStaticPaths.
+
+    src/lib/cityHubs.ts imports serviceAreas, projects and reviews from
+    src/lib/site.ts, so having site.ts import the hubs back would close an import
+    cycle — and site.ts is the module scripts/check-trust.mjs loads first. The
+    sitemap is the only consumer of allStaticPaths that needs these URLs, so the
+    list is assembled at the point of use instead.
+
+    0.8 sits them above the city-service leaves at 0.74 and below the main pages
+    at 0.84, which is the shape of the hierarchy: a hub gathers ten pages and is
+    gathered by /construction.
+  */
+  const cityHubs: MetadataRoute.Sitemap = getAllCityHubs()
+    .filter((hub) => hub.indexable)
+    .map((hub) => ({
+      url: canonicalPageUrl(hub.path),
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    }));
 
   // Posts carry their own date rather than the site-wide constant. A blog is
   // the one part of the site where lastmod is genuinely per-URL, and reporting
@@ -41,5 +64,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  return [...pages, ...index, ...posts];
+  return [...pages, ...cityHubs, ...index, ...posts];
 }

@@ -7,6 +7,7 @@ import {
 } from "@/lib/site";
 import { absoluteUrl } from "@/lib/seo";
 import { postPath, type BlogPost } from "@/lib/blog";
+import type { CityHub } from "@/lib/cityHubs";
 
 export function organizationJsonLd(url: string) {
   return {
@@ -204,5 +205,62 @@ export function faqJsonLd(faqs: Array<{ question: string; answer: string }> = ai
         text: faq.answer,
       },
     })),
+  };
+}
+
+/**
+ * A city hub as a local business page rather than a Service page.
+ *
+ * The city-service pages emit `Service`, which is right for them: each is about
+ * one named service delivered in one place. A hub is about the *business in the
+ * city* across every service, so the closer type is the organization scoped to
+ * an area, with `makesOffer` carrying the ten services it links down to.
+ *
+ * It references the existing `#organization` node rather than restating the
+ * company. Two descriptions of one business drift, and an inconsistent one is
+ * worth less than none — the same reasoning blogPostingJsonLd's publisher uses.
+ */
+export function cityHubJsonLd(hub: CityHub) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${absoluteUrl(hub.path)}#webpage`,
+    url: absoluteUrl(hub.path),
+    name: hub.title,
+    headline: hub.h1,
+    description: hub.description,
+    keywords: hub.keywords.join(", "),
+    inLanguage: "en-CA",
+    isPartOf: { "@id": `${absoluteUrl("/")}#website` },
+    primaryImageOfPage: absoluteUrl(hub.heroImage),
+    about: {
+      "@type": "GeneralContractor",
+      "@id": `${absoluteUrl(hub.path)}#business`,
+      name: siteConfig.name,
+      parentOrganization: { "@id": `${absoluteUrl("/")}#organization` },
+      url: absoluteUrl(hub.path),
+      telephone: siteConfig.phone,
+      email: siteConfig.email,
+      areaServed: {
+        "@type": "City",
+        name: hub.city.city,
+        addressRegion: "BC",
+        addressCountry: "CA",
+      },
+      makesOffer: hub.services.map((service) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: service.label,
+          areaServed: {
+            "@type": "City",
+            name: hub.city.city,
+            addressRegion: "BC",
+            addressCountry: "CA",
+          },
+        },
+        url: absoluteUrl(service.href),
+      })),
+    },
   };
 }

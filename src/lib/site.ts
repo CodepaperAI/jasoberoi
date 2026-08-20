@@ -95,6 +95,24 @@ export type CityPermitInfo = {
   pathway: string | null;
   /** Commercial review window. Null unless the municipality publishes one. */
   timeline: string | null;
+  /**
+   * The published timeline in full, with figures and the date they were read.
+   *
+   * `timeline` is interpolated mid-sentence ("Review typically runs {timeline}"),
+   * so it has to stay a short grammatical fragment. Surrey publishes a whole
+   * table of targets and running averages, which belongs on the city hub and
+   * would wreck that sentence. Hence two fields rather than one overloaded one.
+   */
+  timelineDetail?: string | null;
+  /**
+   * The code the municipality reviews against.
+   *
+   * Null means the BC Building Code, which is true of thirteen of the fourteen.
+   * Vancouver is the exception: it permits under the Vancouver Building By-law
+   * through the Vancouver Charter, so a generated sentence that asserts the BC
+   * Building Code is simply wrong there.
+   */
+  code?: string | null;
   /** What is specific about building commercially here. Sourced, not inferred. */
   notes: string | null;
   /** Pages the above was read from. Required whenever any field is non-null. */
@@ -604,7 +622,22 @@ export const serviceAreas: ServiceArea[] = [
       "Surrey's commercial activity spreads across several distinct centres rather than one downtown — City Centre around Whalley and King George, Guildford, Fleetwood and Newton each carry their own professional and retail tenancy. Much of the healthcare space is in newer mixed-use and strata buildings, which usually means better base-building services than the older Fraser Valley stock but tighter strata rules about noise, hours and shared systems. The city has been adding population faster than almost anywhere in the province, and clinic demand has followed it into the suburban centres rather than staying downtown.",
     costRationale:
       "Surrey generally prices at the lower-middle of the range: newer base buildings mean fewer structural surprises, and there is no travel premium from White Rock.",
-    permits: NO_PERMIT_DATA,
+    permits: {
+      authority: "City of Surrey — Building Division",
+      pathway:
+        "Surrey runs tenant improvements as their own permit stream and splits it three ways: minor, new and medical clinic.",
+      timeline:
+        "3 business days for a minor tenant improvement and 3 weeks for a medical clinic fit-out against the city's own published targets",
+      timelineDetail:
+        "Surrey is the only municipality in our service area that publishes what its own review actually takes. It commits to 3 business days for a Minor Tenant Improvement, 3 weeks for a Medical Clinic Tenant Improvement and 10 weeks for a New Tenant Improvement. Against those targets it reported running averages of 1 day, 2.7 weeks and 3.4 weeks as of 17 August 2026. The clock starts once a complete and accurate application is in, not on the day it is handed over.",
+      notes:
+        "Surrey is the only municipality here that publishes a separate Medical Clinic Tenant Improvement permit, with its own three-week target. A clinic fit-out is not queued behind general commercial work. Fraser Health approval is required before the permit is issued where the space involves food handling, personal services or recreational services.",
+      sources: [
+        "https://www.surrey.ca/renovating-building-development/permitting-timelines",
+        "https://www.surrey.ca/renovating-building-development/building/commercial-building-permits/tenant-and-landlord-improvement-building-permit",
+        "https://www.surrey.ca/renovating-building-development/building/commercial-building-permits",
+      ],
+    },
   },
   {
     city: "Vancouver",
@@ -620,7 +653,19 @@ export const serviceAreas: ServiceArea[] = [
       "Vancouver's professional and clinical tenancy is spread thin across the city — Cambie and Mount Pleasant carry a lot of the medical and dental space, Kitsilano and the West Side run smaller practices, and downtown is mostly office and retail. Buildings are older and denser than anywhere else in the region, and a large share of commercial space is strata-owned, which adds an approval layer before the city is even involved. Access is the recurring cost: limited loading, restricted work hours in mixed residential buildings, and material handling that has to be scheduled rather than assumed.",
     costRationale:
       "Vancouver sits at the top of the range. Access restrictions, strata coordination and older base buildings add time that does not show up on a drawing, and trade rates downtown run higher than the Fraser Valley.",
-    permits: NO_PERMIT_DATA,
+    permits: {
+      authority: "City of Vancouver — Development and Building Services Centre",
+      code: "Vancouver Building By-law",
+      pathway:
+        "Vancouver permits under its own Vancouver Building By-law rather than the BC Building Code and runs a Tenant Improvement Program for office tenants in eligible buildings.",
+      timeline: null,
+      notes:
+        "Vancouver runs a Tenant Improvement Program for office tenants in eligible buildings, which removes the need for a new development permit and gives an expedited field review. Any commercial office building permitted after 31 January 2007 is on that list automatically. The programme covers office work rather than clinical fit-outs, so a medical or dental build follows the standard building permit route.",
+      sources: [
+        "https://vancouver.ca/home-property-development/tenant-improvement-program.aspx",
+        "https://vancouver.ca/home-property-development/building-permit.aspx",
+      ],
+    },
   },
   {
     city: "Burnaby",
@@ -638,7 +683,18 @@ export const serviceAreas: ServiceArea[] = [
       "Burnaby's commercial space clusters around four town centres rather than a single core, and the newer supply at Metrotown, Brentwood and Lougheed is largely podium retail and professional space beneath residential towers. That building type dictates most of the work: shared services, strata rules, and mechanical routing that has to respect the residential floors above. Older stock around Edmonds and Hastings runs smaller and closer to the Vancouver pattern. The clinic demand here is steady rather than spiking, tied to the residential density arriving with each tower completion.",
     costRationale:
       "Burnaby prices near Vancouver rather than the Fraser Valley: podium space under occupied residential means restricted hours and more coordination than a standalone building.",
-    permits: NO_PERMIT_DATA,
+    permits: {
+      authority: "City of Burnaby — Building Division",
+      pathway:
+        "Burnaby reviews a tenant improvement either on a fast track or through a full plan review and a plan checker decides which one applies.",
+      timeline: null,
+      notes:
+        "Burnaby reviews a tenant improvement either on the fast track or through a full plan review, and a plan checker decides which. Anything needing Fraser Health approval is excluded from the fast track by the city's own guide. That covers salons, esthetics and skin-care work, so a med spa here goes to full review and needs Fraser Health sign-off before the permit application is made.",
+      sources: [
+        "https://www.burnaby.ca/services-and-payments/development-permits-construction/commercial-renovations",
+        "https://www.burnaby.ca/sites/default/files/acquiadam/2021-08/Tenant-Improvement-Permits-Informational-Guide.pdf",
+      ],
+    },
   },
   {
     city: "Richmond",
@@ -1893,12 +1949,12 @@ function buildPseoFaqs(
     {
       question: `Who issues the building permit for ${service.name.toLowerCase()} in ${city.city}?`,
       answer: city.permits.authority
-        ? `The building permit is issued by ${city.permits.authority}, reviewed against the BC Building Code and the city's own zoning. ${city.permits.pathway ?? ""}${
+        ? `The building permit is issued by ${city.permits.authority}, reviewed against the ${city.permits.code ?? "BC Building Code"} and the city's own zoning. ${city.permits.pathway ?? ""}${
             city.permits.timeline
               ? ` Review typically runs ${city.permits.timeline}.`
               : " We confirm the current review window with the city at application rather than quoting one from a previous job."
           }`.trim()
-        : `${city.city} issues its own building permit, reviewed against the BC Building Code and the city's zoning bylaw, and the route differs from neighbouring municipalities. We confirm the current requirements with the city at the start of every job rather than working from the last one.`,
+        : `${city.city} issues its own building permit, reviewed against the ${city.permits.code ?? "BC Building Code"} and the city's zoning bylaw, and the route differs from neighbouring municipalities. We confirm the current requirements with the city at the start of every job rather than working from the last one.`,
     },
     {
       question: `How much does ${service.primaryKeyword} cost in ${city.city}?`,
