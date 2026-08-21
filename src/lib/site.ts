@@ -216,6 +216,27 @@ export type ConstructionPseoPage = {
 
 const imageBase = "/oberizon/optimized";
 
+/**
+ * The office address, structured once.
+ *
+ * This is the NAP that citations, the footer, the contact page and the
+ * LocalBusiness schema must all agree on — a directory listing that disagrees
+ * with the site is worth less than either alone. Before this existed the
+ * street line was written out in three places (here, schema.ts, the contact
+ * proof) and could drift the way the pharmacy price once did.
+ *
+ * TODO(client): Google's business listing shows "1493 Foster St #306" while
+ * every copy on the site said Suite 305. One of the two is wrong. Whichever it
+ * is, this object is now the only place the site's half of the answer lives.
+ */
+export const officeAddress = {
+  streetAddress: "Suite 305, 1493 Foster St",
+  locality: "White Rock",
+  region: "BC",
+  postalCode: "V4B 0C4",
+  country: "CA",
+} as const;
+
 export const siteConfig = {
   name: "Oberizon Construction",
   legalName: "Oberizon Construction",
@@ -238,7 +259,7 @@ export const siteConfig = {
   whatsappHref:
     "https://wa.me/17789947450?text=" +
     encodeURIComponent("Hi Oberizon, I'd like to talk about a construction project."),
-  address: "Suite 305, 1493 Foster St, White Rock, BC V4B 0C4",
+  address: `${officeAddress.streetAddress}, ${officeAddress.locality}, ${officeAddress.region} ${officeAddress.postalCode}`,
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=1493+Foster+St+305+White+Rock+BC",
   heroVideo: "https://jas-project.s3.ap-south-1.amazonaws.com/home-page-video.mp4",
@@ -1271,7 +1292,7 @@ export const mainPages: SitePage[] = [
       siteConfig.phone,
       `WhatsApp ${siteConfig.whatsapp}`,
       siteConfig.email,
-      "Suite 305, 1493 Foster St",
+      officeAddress.streetAddress,
     ],
     featureTitle: "What to bring",
     features: [
