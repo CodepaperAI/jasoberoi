@@ -1,5 +1,6 @@
 import {
   aiFaqs,
+  officeAddress,
   serviceAreas,
   siteConfig,
   type ConstructionPseoPage,
@@ -19,13 +20,15 @@ export function organizationJsonLd(url: string) {
     url,
     telephone: siteConfig.phone,
     email: siteConfig.email,
+    // NAP from the one structured source, so the schema cannot disagree with
+    // the footer or the contact page. See officeAddress in site.ts.
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Suite 305, 1493 Foster St",
-      addressLocality: "White Rock",
-      addressRegion: "BC",
-      postalCode: "V4B 0C4",
-      addressCountry: "CA",
+      streetAddress: officeAddress.streetAddress,
+      addressLocality: officeAddress.locality,
+      addressRegion: officeAddress.region,
+      postalCode: officeAddress.postalCode,
+      addressCountry: officeAddress.country,
     },
     areaServed: serviceAreas.map((area) => ({
       "@type": "City",

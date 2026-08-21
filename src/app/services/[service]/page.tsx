@@ -89,6 +89,14 @@ export default async function ServiceHubPage({ params }: HubProps) {
           description: hub.description,
           serviceType: hub.service.name,
           provider: { "@id": `${absoluteUrl("/")}#organization` },
+          // The same fourteen cities section 5 links to, so the markup and
+          // the visible hub-to-spoke rail cannot tell different stories.
+          areaServed: hub.cities.map((city) => ({
+            "@type": "City",
+            name: city.label,
+            addressRegion: "BC",
+            addressCountry: "CA",
+          })),
           url: absoluteUrl(hub.path),
         }}
       />
