@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, Phone } from "lucide-react";
-import { ButtonLink } from "@/components/ButtonLink";
+import { HeaderBookButton } from "@/components/HeaderBookButton";
 import { MobileNav } from "@/components/MobileNav";
 import { navigation, siteConfig } from "@/lib/site";
 
@@ -87,9 +87,7 @@ export function Header() {
             {siteConfig.phone}
           </a>
           <div className="hidden lg:block">
-            <ButtonLink href="/contact" className="min-h-10 px-6 py-2.5 text-sm shadow-orange-600/25">
-              Book a Consultation
-            </ButtonLink>
+            <HeaderBookButton className="min-h-10 px-6 py-2.5 text-sm shadow-orange-600/25" />
           </div>
 
           <MobileNav />

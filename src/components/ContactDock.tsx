@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Phone, Send, X } from "lucide-react";
+import { OPEN_CONSULTATION_EVENT } from "@/components/BookConsultationButton";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { submitConsultation } from "@/lib/contact";
 import { siteConfig } from "@/lib/site";
@@ -27,6 +28,15 @@ export function ContactDock() {
   const [open, setOpen] = useState(false);
 
   const close = useCallback(() => setOpen(false), []);
+
+  // Buttons elsewhere on the page — the /contact hero and closing band — open
+  // this same dialog by dispatching the event, so the site has one form
+  // rather than a copy per surface.
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener(OPEN_CONSULTATION_EVENT, onOpen);
+    return () => window.removeEventListener(OPEN_CONSULTATION_EVENT, onOpen);
+  }, []);
 
   // Escape closes, and the page behind does not scroll while the dialog is up.
   // The old modal had neither.
