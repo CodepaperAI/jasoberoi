@@ -265,6 +265,17 @@ export const blogPosts: BlogPost[] = [
     minutes: 9,
   },
   {
+    slug: "build-or-renovate-clinic-2026",
+    title: "Should You Build or Renovate Your Clinic in 2026? Cost & Financing Factors",
+    description:
+      "Build or renovate your clinic in 2026? The current rate picture — 2.25% policy rate, 4.45% prime — against 3.5% construction cost escalation, and how to run the decision on fundamentals.",
+    published: "2026-08-21",
+    service: "commercial-construction",
+    cardTitle: "Build or renovate your clinic in 2026",
+    minutes: 9,
+    childOf: "commercial-renovation-vs-new-construction",
+  },
+  {
     slug: "telehealth-clinic-design",
     title: "Designing a Clinic for Telehealth: Construction Considerations for Hybrid Care",
     description:

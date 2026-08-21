@@ -74,8 +74,8 @@ export function BlogArticle({
           who wanted the general answer can leave for it immediately. */}
       {parent && (
         <p className="mt-6 rounded-xl border border-zinc-200 bg-zinc-50 px-5 py-4 text-base leading-7 text-muted">
-          This is a detailed look at one clinic size. For the general picture
-          across every size, read{" "}
+          This article goes deep on one specific case. For the general picture,
+          read{" "}
           <Link
             href={postPath(parent.slug)}
             className="text-orange-700 underline underline-offset-2"
