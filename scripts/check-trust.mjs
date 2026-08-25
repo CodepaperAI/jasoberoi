@@ -406,6 +406,76 @@ async function checkBlogRegistry(blog) {
       );
     }
   }
+
+  await checkBlogSections(blog, dir, onDisk);
+}
+
+/**
+ * The table of contents must list the headings the post actually has.
+ *
+ * `sections` restates the "## " lines of the .mdx in src/lib/blog.ts, because
+ * a static export has no access to the MDX AST and the contents list has to be
+ * rendered from data. That is the same arrangement that let the `faqs` arrays
+ * drift away from the FAQ prose for months before the prose was deleted, so it
+ * gets a gate this time rather than a convention.
+ *
+ * A mismatch is not cosmetic: BlogArticle builds each anchor with
+ * slugifyHeading(), so a heading listed here but absent from the body is a
+ * contents entry that scrolls nowhere, and one present in the body but missing
+ * here is a section the reader is never told exists.
+ */
+async function checkBlogSections(blog, dir, onDisk) {
+  for (const post of blog.blogPosts) {
+    if (!post.sections || !onDisk.has(post.slug)) continue;
+
+    const body = await readFile(join(dir, post.slug, "page.mdx"), "utf8");
+    const actual = [...body.matchAll(/^## (.+?)\s*$/gm)].map((match) => match[1]);
+
+    // The list is only useful if the post actually renders it. PostContents is
+    // placed by each .mdx rather than by the frame, so it is the one part of
+    // this that can be forgotten on a new post.
+    if (post.sections.length >= 3 && !body.includes(`<PostContents slug="${post.slug}" />`)) {
+      fail(
+        "blog-sections",
+        `"${post.slug}" declares ${post.sections.length} sections but its page.mdx never renders ` +
+          `<PostContents slug="${post.slug}" />, so the contents list exists in data and nowhere ` +
+          `else. Add it directly after the key-takeaway block.`,
+        `src/app/blog/${post.slug}/page.mdx`,
+      );
+    }
+
+    const listed = post.sections;
+    const missing = actual.filter((heading) => !listed.includes(heading));
+    const extra = listed.filter((heading) => !actual.includes(heading));
+
+    if (missing.length || extra.length) {
+      const detail = [
+        missing.length ? `in the post but not in sections: ${missing.join(", ")}` : "",
+        extra.length ? `in sections but not in the post: ${extra.join(", ")}` : "",
+      ]
+        .filter(Boolean)
+        .join("; ");
+
+      fail(
+        "blog-sections",
+        `"${post.slug}" — the contents list and the H2 headings disagree (${detail}). ` +
+          `Every anchor is built from this list, so a stale entry links to nothing.`,
+        "src/lib/blog.ts",
+      );
+      continue;
+    }
+
+    // Order matters too — a contents list that reads out of sequence is worse
+    // than none, because it misrepresents the shape of the article.
+    if (listed.join("\u0000") !== actual.join("\u0000")) {
+      fail(
+        "blog-sections",
+        `"${post.slug}" — the contents list has the right headings in the wrong order. ` +
+          `It should match the order they appear in the post.`,
+        "src/lib/blog.ts",
+      );
+    }
+  }
 }
 
 function checkContentGaps(site) {

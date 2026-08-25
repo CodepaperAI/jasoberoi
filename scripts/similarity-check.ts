@@ -134,6 +134,36 @@ async function loadFromUrl(origin: string, root: string): Promise<Page[]> {
   return pages;
 }
 
+
+/**
+ * The blog, as pages, for the same measurement.
+ *
+ * This gate was written for the 140 programmatic city pages, which were the
+ * duplication risk at the time. The blog has since grown to the largest set of
+ * indexable pages on the site and was never in the comparison — so the one
+ * place a near-duplicate post could be added without anything noticing was the
+ * blog. Adding a second cost guide for a build type that already has one is
+ * exactly the mistake this script exists to catch.
+ *
+ * Posts are compared against every other post rather than grouped, because
+ * unlike the city pages there is no dimension along which two of them are
+ * *expected* to resemble each other.
+ */
+async function loadBlog(root: string): Promise<Array<{ slug: string; text: string; indexed: boolean }>> {
+  const base = join(root, "blog");
+  const posts: Array<{ slug: string; text: string; indexed: boolean }> = [];
+  for (const entry of await readdir(base, { withFileTypes: true })) {
+    if (!entry.isDirectory() || /\s\d+$/.test(entry.name)) continue;
+    try {
+      const html = await readFile(join(base, entry.name, "index.html"), "utf8");
+      posts.push({ slug: entry.name, text: visibleText(html), indexed: isIndexed(html) });
+    } catch {
+      // A directory without an index.html is not a rendered post.
+    }
+  }
+  return posts;
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const at = (flag: string) => {
@@ -218,10 +248,13 @@ async function main() {
     );
   }
 
-  if (!failures.length) {
+  const blogFailures = await sweepBlog(root, threshold, pct);
+
+  if (!failures.length && !blogFailures) {
     console.log(`\n✓ No indexed city pair exceeds ${pct(threshold)} for the same service.\n`);
     return;
   }
+  if (!failures.length) process.exit(1);
 
   failures.sort((x, y) => y.score - x.score);
   console.error(`\n✖ ${failures.length} INDEXED pair(s) above ${pct(threshold)}:\n`);
@@ -231,6 +264,51 @@ async function main() {
   if (failures.length > 25) console.error(`  … and ${failures.length - 25} more`);
   console.error("\nDifferentiate these cities further, or move them to tier C.\n");
   process.exit(1);
+}
+
+/** Returns true when any blog pair is over threshold. */
+async function sweepBlog(root: string, threshold: number, pct: (n: number) => string) {
+  const posts = await loadBlog(root);
+  if (posts.length < 2) return false;
+
+  const grams = posts.map((post) => ({ slug: post.slug, s: shingles(post.text), indexed: post.indexed }));
+  const over: Array<{ a: string; b: string; score: number }> = [];
+  let worst = 0;
+  let total = 0;
+  let compared = 0;
+
+  for (let i = 0; i < grams.length; i++) {
+    for (let j = i + 1; j < grams.length; j++) {
+      const score = jaccard(grams[i].s, grams[j].s);
+      compared++;
+      total += score;
+      worst = Math.max(worst, score);
+      if (score > threshold && grams[i].indexed && grams[j].indexed) {
+        over.push({ a: grams[i].slug, b: grams[j].slug, score });
+      }
+    }
+  }
+
+  console.log(
+    `\nBlog: ${posts.length} posts   Pairs compared: ${compared}   ` +
+      `Mean: ${pct(total / compared)}   Worst pair: ${pct(worst)}`,
+  );
+
+  if (!over.length) {
+    console.log(`✓ No blog pair exceeds ${pct(threshold)}.`);
+    return false;
+  }
+
+  over.sort((x, y) => y.score - x.score);
+  console.error(`\n✖ ${over.length} BLOG pair(s) above ${pct(threshold)}:\n`);
+  for (const f of over.slice(0, 25)) {
+    console.error(`  ${pct(f.score).padStart(6)}  ${f.a} vs ${f.b}`);
+  }
+  console.error(
+    "\nTwo posts targeting one keyword split the ranking rather than doubling it. " +
+      "Merge them, or give one a distinct question to answer.\n",
+  );
+  return true;
 }
 
 main().catch((error) => {

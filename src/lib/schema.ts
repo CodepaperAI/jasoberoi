@@ -7,7 +7,7 @@ import {
   type SitePage,
 } from "@/lib/site";
 import { absoluteUrl } from "@/lib/seo";
-import { postPath, type BlogPost } from "@/lib/blog";
+import { blogIndexPath, postPath, type BlogPost } from "@/lib/blog";
 import type { CityHub } from "@/lib/cityHubs";
 
 export function organizationJsonLd(url: string) {
@@ -263,6 +263,49 @@ export function cityHubJsonLd(hub: CityHub) {
           },
         },
         url: absoluteUrl(service.href),
+      })),
+    },
+  };
+}
+
+/**
+ * The guides index as a Blog with its posts enumerated.
+ *
+ * The page previously emitted a breadcrumb and nothing else, which described
+ * where it sits and never what it holds. Blog plus an ItemList is the pair
+ * Google documents for a post listing, and it is the difference between a
+ * crawler finding thirty-two links and understanding thirty-two articles.
+ *
+ * Each entry points at the BlogPosting node the post's own page declares,
+ * rather than restating headline and date here — two descriptions of the same
+ * article that can disagree is worth less than one that cannot.
+ */
+export function blogIndexJsonLd(posts: BlogPost[]) {
+  const url = absoluteUrl(blogIndexPath);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "@id": `${url}#blog`,
+    url,
+    name: "Construction Guides",
+    description:
+      "Cost breakdowns, build timelines and permit guides for clinic, commercial and residential construction in British Columbia.",
+    inLanguage: "en-CA",
+    publisher: { "@id": `${absoluteUrl("/")}#organization` },
+    isPartOf: { "@id": `${absoluteUrl("/")}#website` },
+    blogPost: posts.map((post) => ({
+      "@type": "BlogPosting",
+      "@id": `${absoluteUrl(postPath(post.slug))}#post`,
+    })),
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: posts.length,
+      itemListElement: posts.map((post, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: absoluteUrl(postPath(post.slug)),
+        name: post.title,
       })),
     },
   };

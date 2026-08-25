@@ -1,0 +1,127 @@
+import { BlogArticle } from "@/components/BlogArticle";
+import { PostContents } from "@/components/PostContents";
+import { blogMetadata } from "@/lib/blog";
+
+export const metadata = blogMetadata("commercial-renovation-permits-bc");
+
+export const faqs = [
+  {
+    question: "What permits do you need for a commercial renovation in BC?",
+    answer:
+      "At minimum a municipal building permit, plus separate trade permits for plumbing, electrical and mechanical work, and Technical Safety BC permits for gas and certain electrical installations. Depending on the space you may also need a development permit, zoning confirmation or a change-of-use approval before the building permit can be issued, and health authority sign-off where food, personal services or clinical use is involved.",
+  },
+  {
+    question: "Do I need a building permit to renovate a commercial space in BC?",
+    answer:
+      "Almost certainly. Any work that moves or adds walls, changes plumbing or mechanical systems, alters exiting, affects fire separations or changes the occupancy classification needs a building permit. Purely cosmetic work — paint, floor coverings, replacing like for like — generally does not. If the drawings show a wall that was not there before, assume a permit.",
+  },
+  {
+    question: "How long does a commercial renovation permit take in BC?",
+    answer:
+      "Most Lower Mainland municipalities publish their requirements but not a review window. Surrey is the exception and commits to 3 business days for a Minor Tenant Improvement, 3 weeks for a Medical Clinic Tenant Improvement and 10 weeks for a New Tenant Improvement, measured from a complete and accurate application rather than from the submission date. Vancouver, Burnaby, Richmond, Abbotsford and White Rock publish a pathway without a published timeline, so confirm current timing with the municipality at the point of application.",
+  },
+  {
+    question: "Does Vancouver use the BC Building Code?",
+    answer:
+      "No. The City of Vancouver permits under its own Vancouver Building By-law through the Vancouver Charter, rather than under the BC Building Code that applies elsewhere in the province. A renovation inside the city boundary answers to a different rulebook than the same renovation in Surrey or Burnaby, which matters when a consultant's standard details are drawn for one and submitted to the other.",
+  },
+  {
+    question: "What is a change of use and why does it cost so much?",
+    answer:
+      "A change of use is when the occupancy classification of a space changes — retail becoming a clinic, office becoming a personal service establishment. It triggers a review against requirements the previous tenant never had to meet: exiting, fire separations, accessible washrooms, ventilation and sometimes structural loading. It is the single most common reason a commercial renovation budget is wrong, because the cost is driven by the building's shortfalls rather than by your drawings.",
+  },
+  {
+    question: "Can I start work while the permit is under review?",
+    answer:
+      "No. Work carried out before a permit is issued can be ordered stopped, ordered removed, and can complicate both your insurance and your lease. The productive way to use the review period is to finalise millwork drawings, confirm long-lead equipment and agree the construction schedule, all of which shorten the build once the permit lands.",
+  },
+];
+
+<BlogArticle slug="commercial-renovation-permits-bc" faqs={faqs}>
+
+# What Permits Do You Need for a Commercial Renovation in BC?
+
+Almost every commercial renovation in British Columbia needs a building permit, and most need three or four other approvals that have to be obtained in a particular order. The building permit is rarely the difficult one. What catches people out is the approval that has to come *before* it — a zoning confirmation, a development permit, a health authority sign-off — because until that is cleared, the building permit application cannot proceed at all. This guide sets out what you need, the order to pursue it in, and what each Lower Mainland municipality actually publishes about its own review.
+
+> **Key takeaway.** A commercial renovation in BC needs a **municipal building permit**, plus **trade permits** for plumbing, electrical and mechanical work, plus **Technical Safety BC** permits for gas and certain electrical installations. Approvals that may have to come first include zoning confirmation, a development permit and health authority sign-off. Of the municipalities we work in, **only Surrey publishes a review timeline**.
+
+
+<PostContents slug="commercial-renovation-permits-bc" />
+
+## The Permits, in the Order They Are Needed
+
+**1. Zoning confirmation.** Before anything else, confirm your intended use is permitted at that address. This is not a formality when the use is changing — a use allowed in one municipality is not automatically allowed next door. White Rock permits independently of Surrey despite being surrounded by it, and reviews against its own Zoning Bylaw and Official Community Plan.
+
+**2. Development permit, where required.** Some work — typically exterior alterations, or any project in a designated development permit area — needs a development permit before a building permit can be issued. Richmond notes this specifically for exterior alterations in a development permit area.
+
+**3. Health authority approval, where the use requires it.** Food handling, personal services such as salons, esthetics and skin care, and clinical uses generally need approval from the regional health authority. Surrey requires Fraser Health approval before the building permit is issued for those uses. Burnaby goes further: anything requiring Fraser Health approval is excluded from its fast-track review by the city's own guide, so a med spa there goes to full plan review and needs the health sign-off before the permit application is even made.
+
+**4. Building permit.** The main event, issued by the municipal building department against the applicable construction code.
+
+**5. Trade permits.** Plumbing, electrical and mechanical are usually separate permits pulled by the licensed trades, not folded into the building permit.
+
+**6. Technical Safety BC permits.** Gas installations and certain electrical work are permitted provincially through Technical Safety BC rather than by the city.
+
+**7. Inspections through construction, then occupancy.** The permit is not the finish line — it is the start of an inspection sequence that ends with permission to occupy.
+
+## Which Code Applies Depends on Where You Are
+
+Most of British Columbia builds to the **BC Building Code**. The City of Vancouver does not: it permits under its own **Vancouver Building By-law**, through the Vancouver Charter.
+
+This is a genuine practical difference rather than a technicality. A consultant working across the region has to know which set of requirements a given address answers to, and drawings prepared to one standard and submitted under the other come back for revision. If your project is inside the City of Vancouver boundary, confirm your designer has done Vancouver work before.
+
+## What Each Municipality Publishes
+
+This is the honest state of the published record across our service area, checked against each city's own pages. Where a city does not publish a review window, we do not estimate one — a wrong permit timeline is a liability before it is an inconvenience.
+
+| Municipality | Authority | Pathway | Published review window |
+| --- | --- | --- | --- |
+| Surrey | Building Division | Three tenant improvement streams: minor, new, and medical clinic | **Yes** — 3 business days minor, 3 weeks medical clinic, 10 weeks new TI |
+| Vancouver | Development and Building Services Centre | Tenant Improvement Program for office tenants in eligible buildings; standard route for clinical work | Not published |
+| Burnaby | Building Division | Fast track or full plan review, decided by a plan checker | Not published |
+| Richmond | Building Approvals | MyPermit portal against a published document checklist | Not published |
+| Abbotsford | Planning and Development Services | Tenant Improvement Permits are a distinct permit category | Not published |
+| White Rock | Building Division | Distinct Commercial Tenant Improvement permit | Not published |
+
+Sources: [Surrey permitting timelines](https://www.surrey.ca/renovating-building-development/permitting-timelines), [Surrey tenant improvement permits](https://www.surrey.ca/renovating-building-development/building/commercial-building-permits/tenant-and-landlord-improvement-building-permit), [Vancouver Tenant Improvement Program](https://vancouver.ca/home-property-development/tenant-improvement-program.aspx), [Burnaby commercial renovations](https://www.burnaby.ca/services-and-payments/development-permits-construction/commercial-renovations), [Richmond building approvals](https://www.richmond.ca/business-development/building-approvals/permits.htm), [Abbotsford building permits](https://www.abbotsford.ca/buildingpermits), [White Rock building permits](https://www.whiterockcity.ca/941/Building-Permits). Read 19 August 2026.
+
+## Surrey's Numbers, and What They Actually Mean
+
+Surrey is the only municipality in our service area that publishes what its own review takes, and it publishes both targets and running averages. The targets are **3 business days** for a Minor Tenant Improvement, **3 weeks** for a Medical Clinic Tenant Improvement and **10 weeks** for a New Tenant Improvement. As of 17 August 2026 the city reported running averages of 1 day, 2.7 weeks and 3.4 weeks against those targets.
+
+Two caveats travel with the figures and both matter to your schedule. The clock starts once a **complete and accurate** application is in, not on the day it is handed over. And the averages are a rolling 30-day figure that drifts, so treat the targets as the commitment and the averages as a snapshot.
+
+Surrey is also the only municipality here that runs a **separate Medical Clinic Tenant Improvement permit** with its own target, which means a clinic fit-out is not queued behind general commercial work.
+
+## Nobody Else Publishes One — Plan Accordingly
+
+For the other municipalities, the productive question is not "how long will review take" but "what does a complete application look like". Several are explicit that an incomplete submission is not queued, it is returned. Richmond states that applications require all documentation and drawings listed on the form and that incomplete applications will not be accepted.
+
+A complete commercial set typically includes:
+
+- A site plan showing the whole building and the tenant's location within it
+- A dimensioned floor plan showing exits, fire separations and occupancy
+- A plumbing layout sized to the current BC Plumbing Code
+- Mechanical and electrical drawings where the work touches those systems
+- Structural drawings where anything is being loaded, opened or suspended
+- Proof of the approvals that had to come first
+
+Getting that right the first time is worth more than any amount of chasing afterwards.
+
+## Change of Use Is Where Budgets Break
+
+If your renovation changes what the space is used for, you are not renovating — you are converting, and the building gets reviewed against requirements the previous tenant never had to meet. Typical triggers include exiting and travel distances, fire separations, accessible washrooms and the path of travel, ventilation rates for the new occupancy, and occupant load.
+
+The cost of a change of use is driven by the building's existing shortfalls rather than by your drawings, which is exactly why it cannot be estimated from a floor plan. Establish the occupancy classification you are moving from and to before you sign the lease, not after. [Base building against tenant improvement](/blog/base-building-vs-tenant-improvement/) covers where the landlord's responsibility for those upgrades usually falls.
+
+## Use the Review Period
+
+You cannot start construction while a permit is under review, but the period is not dead time. It is when millwork drawings get finalised, long-lead equipment gets confirmed and ordered, the construction schedule gets agreed and the trades get booked. On a well-run project the permit arrives and work starts the same week.
+
+For a clinical fit-out, our [medical clinic construction permits guide](/blog/medical-clinic-construction-permits-bc/) covers the health authority and Technical Safety BC path in more detail, and [commercial tenant improvement cost per square foot](/blog/commercial-tenant-improvement-cost-per-square-foot/) covers what the work itself costs.
+
+## Conclusion
+
+The permits a commercial renovation needs in BC are predictable; the order they have to be obtained in is what people get wrong. Confirm zoning and occupancy classification before the lease, resolve any health authority requirement before the building permit application, and submit a complete set the first time. Only Surrey tells you how long its review takes — everywhere else, a complete application is the only lever you control. We manage commercial permitting across fourteen Lower Mainland municipalities and are glad to review a space and its approval path with you before you commit. Our [commercial renovation](/services/commercial-renovation/) page covers how we run this work.
+
+</BlogArticle>

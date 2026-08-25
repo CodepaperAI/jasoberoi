@@ -4,7 +4,7 @@ Facts the city pages want but the site will not assert until someone confirms th
 
 Every item here is a field currently set to `null` in `src/lib/site.ts`. Null renders nothing — no placeholder, no hedge, no "typically around". This is a licensed contractor's site, so a wrong permit timeline is a liability before it is an SEO problem.
 
-**Last checked: 2026-08-19.**
+**Last checked: 2026-08-25.**
 
 ---
 
@@ -21,6 +21,8 @@ The blog publishes specific permit timelines:
 The **city pages state a timeline only for Surrey**, which is the one municipality that publishes its own (see item 1 below). The other thirteen still state none, because none could be sourced.
 
 So the same site asserts review windows in one place and declines to in another. Nobody has verified the blog's figures — they arrived in the consultant's content package without citations.
+
+**Partly narrowed on 2026-08-25.** The new post `/blog/commercial-renovation-permits-bc/` was written to the *city-page* standard rather than the blog's: it states Surrey's published targets with the caveats attached, cites each municipality's own page with the date read, and says plainly "Not published" for the five that publish no review window. `/blog/pharmacy-build-timeline-bc/` follows the same rule. So the newer permit content no longer adds to the contradiction — but it does not remove it either, because the three posts listed above still carry their uncited figures. The choice below is unchanged and still Jas's to make.
 
 **To resolve, pick one:**
 

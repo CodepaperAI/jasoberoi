@@ -1,5 +1,28 @@
 import type { MDXComponents } from "mdx/types";
 import Link from "next/link";
+import { slugifyHeading } from "@/lib/blog";
+
+/**
+ * The visible text of a heading, whatever it is made of.
+ *
+ * MDX hands `children` through as a string for "## Plain heading" and as an
+ * array of nodes the moment the heading contains a link or bold text. Reading
+ * only the string case would silently produce id="" on exactly the headings
+ * that are most likely to be linked to.
+ */
+function headingText(node: React.ReactNode): string {
+  if (node === null || node === undefined || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(headingText).join("");
+  if (typeof node === "object" && "props" in node) {
+    return headingText((node as { props?: { children?: React.ReactNode } }).props?.children);
+  }
+  return "";
+}
+
+function headingId(node: React.ReactNode) {
+  return slugifyHeading(headingText(node));
+}
 
 /**
  * Blog posts render through the site's own type system, not MDX defaults.
@@ -27,8 +50,18 @@ const components: MDXComponents = {
       {children}
     </h1>
   ),
+  // Every h2 is an anchor target, because BlogArticle renders a contents list
+  // above the body and each entry links here. The id comes from the same
+  // slugifyHeading() the contents list uses — computing it in two places is how
+  // you get a table of contents where half the links scroll nowhere.
+  //
+  // scroll-mt clears the fixed header, which is h-20 rising to h-24. Without it
+  // every jump lands with the heading hidden behind the nav bar.
   h2: ({ children }) => (
-    <h2 className="serif-font mt-14 text-[1.5rem] font-normal leading-[1.2] tracking-[-0.01em] text-ink text-balance sm:text-[1.875rem]">
+    <h2
+      id={headingId(children)}
+      className="serif-font mt-14 scroll-mt-28 text-[1.5rem] font-normal leading-[1.2] tracking-[-0.01em] text-ink text-balance sm:scroll-mt-32 sm:text-[1.875rem]"
+    >
       {children}
     </h2>
   ),
