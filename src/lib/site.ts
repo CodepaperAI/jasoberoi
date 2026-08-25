@@ -1726,6 +1726,26 @@ export function heroImageFor(city: ServiceArea, service: ConstructionService) {
   return pool[(cityIndex + serviceIndex) % pool.length] ?? service.image;
 }
 
+/**
+ * The photograph a blog post opens on, and the one its index card carries.
+ *
+ * Same problem heroImageFor() solves for the city pages, and the same fix.
+ * Using service.image would have been the obvious route and it repeats badly:
+ * six of the ten services share three photographs between them, and nine posts
+ * sit under healthcare-construction alone — so a topic cluster on the index
+ * rendered as the same frame nine times in a column.
+ *
+ * The seed is the post's own position in the registry rather than a hash, so
+ * the assignment is stable across builds and a post keeps its picture.
+ */
+export function postHeroImage(serviceSlug: string, seed: number) {
+  const service = constructionServices.find((item) => item.slug === serviceSlug);
+  if (!service) return `${imageBase}/hero-commercial.webp`;
+
+  const pool = heroPool[service.vertical];
+  return pool[seed % pool.length] ?? service.image;
+}
+
 export function getAllConstructionPages(): ConstructionPseoPage[] {
   return serviceAreas.flatMap((city) =>
     constructionServices.map((service) => {

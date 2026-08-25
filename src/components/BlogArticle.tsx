@@ -1,4 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
+import { Clock } from "lucide-react";
+import { FaqAccordion } from "@/components/FaqAccordion";
 import { JsonLd } from "@/components/JsonLd";
 import { LandingCta } from "@/components/LandingSections";
 import {
@@ -6,7 +9,8 @@ import {
   getPost,
   postPath,
   postsForService,
-  type BlogPost,
+  postsForTopic,
+  postImage,
 } from "@/lib/blog";
 import { blogPostingJsonLd, breadcrumbJsonLd, faqJsonLd } from "@/lib/schema";
 import { constructionServices } from "@/lib/site";
@@ -15,13 +19,16 @@ import { constructionServices } from "@/lib/site";
  * The frame every post renders inside.
  *
  * Each .mdx file is body copy and nothing else — the schema, breadcrumb,
- * byline, service link and CTA live here, so eleven posts cannot drift into
- * eleven slightly different layouts. Adding a twelfth post means adding one
- * registry entry and one .mdx file.
+ * byline, contents list, service link, FAQs and CTA live here, so thirty-two
+ * posts cannot drift into thirty-two slightly different layouts. Adding a
+ * thirty-third means adding one registry entry and one .mdx file.
  *
  * `faqs` is passed rather than scraped from the rendered markdown: FAQPage
  * markup that disagrees with the visible text is worse than none, and reading
- * it from data is the only way to be sure the two match.
+ * it from data is the only way to be sure the two match. They are also now
+ * *rendered* from that same array rather than restated in the body, which is
+ * what actually guarantees it — every post used to write its FAQs twice, once
+ * for the schema and once for the reader, with nothing holding the two together.
  */
 export function BlogArticle({
   slug,
@@ -43,11 +50,31 @@ export function BlogArticle({
   }
 
   const service = constructionServices.find((item) => item.slug === post.service);
-  const related = postsForService(post.service).filter((item) => item.slug !== slug);
   const parent = post.childOf ? getPost(post.childOf) : undefined;
+  const hero = postImage(post);
+
+  /*
+    Related reading used to be same-service only, which worked while the blog
+    was dental-heavy and silently produced an empty rail everywhere else: three
+    services carry a single post each, so those articles ended with a heading
+    and nothing under it. Same service first — it is the closest relationship —
+    then same topic to fill, because a reader who just finished one cost guide
+    is demonstrably in the market for another.
+  */
+  const sameService = postsForService(post.service).filter((item) => item.slug !== slug);
+  const sameTopic = postsForTopic(post.topic).filter(
+    (item) => item.slug !== slug && !sameService.some((other) => other.slug === item.slug),
+  );
+  const related = [...sameService, ...sameTopic].slice(0, 4);
 
   return (
-    <article className="mx-auto w-full max-w-3xl px-5 pb-24 pt-12 sm:px-6 lg:pt-20">
+    /*
+      pt clears the fixed header, which is h-20 rising to h-24 at sm. The old
+      pt-12 put the breadcrumb underneath it on every post — the site's other
+      pages never showed the bug because they all open on PageHero, which
+      carries pt-36 of its own.
+    */
+    <article className="mx-auto w-full max-w-3xl px-5 pb-24 pt-28 sm:px-6 sm:pt-32 lg:pt-36">
       <JsonLd data={blogPostingJsonLd(post)} />
       <JsonLd
         data={breadcrumbJsonLd([
@@ -60,11 +87,30 @@ export function BlogArticle({
 
       <nav aria-label="Breadcrumb" className="text-sm text-muted">
         <Link href={blogIndexPath} className="hover:text-zinc-950">
-          ← All articles
+          ← All guides
         </Link>
       </nav>
 
+      {/* Photograph, then meta, then headline. It sits above the h1 because the
+          h1 lives inside the .mdx body and cannot be rendered around — and the
+          order is the ordinary editorial one, so nothing is lost by it. Alt is
+          empty deliberately: these are decorative project photographs dealt
+          from a pool, and describing one as though it depicted this specific
+          article would be worse for a screen reader than announcing nothing. */}
+      <div className="relative mt-6 aspect-[16/9] overflow-hidden rounded-2xl bg-ink">
+        <Image
+          src={hero}
+          alt=""
+          fill
+          sizes="(min-width: 768px) 48rem, 100vw"
+          priority
+          className="object-cover"
+        />
+      </div>
+
       <p className="eyebrow mt-8">
+        {post.topic}
+        <span aria-hidden="true"> · </span>
         <time dateTime={post.published}>{formatDate(post.published)}</time>
         <span aria-hidden="true"> · </span>
         {post.minutes} min read
@@ -88,6 +134,15 @@ export function BlogArticle({
 
       {children}
 
+      {faqs.length > 0 && (
+        <section className="mt-16">
+          <h2 className="serif-font text-[1.5rem] font-normal leading-[1.2] tracking-[-0.01em] text-ink sm:text-[1.875rem]">
+            Frequently asked questions
+          </h2>
+          <FaqAccordion items={faqs} className="mt-6" />
+        </section>
+      )}
+
       {service && (
         <section className="mt-16 border-t border-zinc-200 pt-8">
           <h2 className="text-xl font-bold text-zinc-950">
@@ -108,14 +163,21 @@ export function BlogArticle({
       {related.length > 0 && (
         <section className="mt-12">
           <h2 className="text-xl font-bold text-zinc-950">Related reading</h2>
-          <ul className="mt-4 flex flex-col gap-3">
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
             {related.map((item) => (
               <li key={item.slug}>
                 <Link
                   href={postPath(item.slug)}
-                  className="text-orange-700 underline underline-offset-2"
+                  className="group flex h-full flex-col rounded-xl border border-line bg-white p-5 transition hover:-translate-y-0.5 hover:border-orange-300 hover:shadow-lg"
                 >
-                  {item.title}
+                  <p className="eyebrow">{item.topic}</p>
+                  <p className="mt-2 text-base font-bold leading-snug text-ink group-hover:text-accent">
+                    {item.cardTitle}
+                  </p>
+                  <p className="ui-font mt-auto flex items-center gap-1.5 pt-3 text-xs font-semibold text-muted">
+                    <Clock size={13} aria-hidden="true" />
+                    {item.minutes} min read
+                  </p>
                 </Link>
               </li>
             ))}

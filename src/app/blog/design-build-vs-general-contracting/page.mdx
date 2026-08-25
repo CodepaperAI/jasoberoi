@@ -1,0 +1,127 @@
+import { BlogArticle } from "@/components/BlogArticle";
+import { PostContents } from "@/components/PostContents";
+import { blogMetadata } from "@/lib/blog";
+
+export const metadata = blogMetadata("design-build-vs-general-contracting");
+
+export const faqs = [
+  {
+    question: "What is the difference between design-build and general contracting?",
+    answer:
+      "In design-build you hold one contract, and a single company is responsible for both the design and the construction. In traditional general contracting — properly called design-bid-build — you hold two contracts: one with a designer who produces the drawings, and one with a general contractor who builds them. The practical difference is who carries the risk when the drawings and the building disagree.",
+  },
+  {
+    question: "Is design-build cheaper than design-bid-build?",
+    answer:
+      "Not inherently, and any claim that it is should be treated carefully. Design-build usually produces a more reliable final cost because the builder prices what they designed, so there is less to discover during construction. Design-bid-build usually produces a more competitive tender price because several contractors bid the same completed drawings. One optimises certainty, the other optimises the initial number, and which is cheaper depends on how much changes after the contract is signed.",
+  },
+  {
+    question: "Which model is faster for a clinic fit-out?",
+    answer:
+      "Design-build is usually faster, because design and procurement overlap rather than running in sequence and long-lead items can be ordered before the drawings are fully complete. Design-bid-build adds a tender period after design is finished, which is commonly four to six weeks on a commercial fit-out before anyone has been appointed.",
+  },
+  {
+    question: "What is the main risk of design-build?",
+    answer:
+      "The check and balance is weaker. The party designing the work is the same party pricing and building it, so there is no independent professional reviewing whether the specification is adequate or whether a substitution is reasonable. It is managed by defining the performance requirements clearly at the start, or by appointing an independent adviser to review on your behalf.",
+  },
+  {
+    question: "What is the main risk of design-bid-build?",
+    answer:
+      "The gap between the drawings and reality. When the drawings are incomplete or wrong, the contractor built what was drawn and the change order is yours. On a clinic — where equipment, services and millwork all have to coordinate precisely — that gap is where most cost overruns live, because a drawing set can be complete architecturally and still not tell a plumber where the chair is going.",
+  },
+  {
+    question: "Which model should a first-time clinic owner choose?",
+    answer:
+      "Most first-time owners are better served by design-build or by a general contractor brought in early during design, because both put construction knowledge into the drawings before they are finished. Design-bid-build works best when you have a clear, complete brief and either an experienced project lead of your own or an adviser acting for you.",
+  },
+];
+
+<BlogArticle slug="design-build-vs-general-contracting" faqs={faqs}>
+
+# Design-Build vs. General Contracting: Which Model Fits Your Clinic or Commercial Space?
+
+Before you choose a contractor you have to choose a delivery model, and most owners do it accidentally — by hiring an architect first and discovering the consequences later. The choice is genuinely consequential: it determines who is responsible when the drawings and the building disagree, whether your price is a tender or an estimate, and how much of your schedule is spent before anyone is on site. This guide sets out both models fairly, including where each one is the wrong answer.
+
+> **Key takeaway.** **Design-build** gives you one contract and one accountable party, usually a faster schedule and a more reliable final cost, at the price of a weaker independent check on the design. **Design-bid-build** — traditional general contracting — gives you an independent designer, a competitive tender and a clear specification, at the price of a longer schedule and a gap between drawings and reality that becomes your change order. Neither is cheaper in principle.
+
+
+<PostContents slug="design-build-vs-general-contracting" />
+
+## The Two Models, Defined
+
+**Design-bid-build** is the traditional route and the reason "general contractor" means what it means. You appoint a designer, the designer produces a complete drawing set, that set goes out to several contractors who bid it, and you appoint the lowest or best-value bidder to build exactly what is drawn. Three phases, two contracts, sequential.
+
+**Design-build** collapses that into one contract. A single firm is responsible for both designing and constructing the project, working to your brief and budget rather than to a completed drawing set. Design and construction overlap.
+
+There is also a third model worth naming, because it is often what people mean when they say design-build:
+
+**Construction management**, where a contractor is engaged early to advise during design — buildability, cost, sequencing, long-lead procurement — but the designer is still yours and the drawings are still independent. It captures much of design-build's coordination benefit while keeping the independent check.
+
+## Who Carries the Risk When Drawings and Reality Disagree
+
+This is the whole comparison in one question, and it is worth being blunt about it.
+
+Under **design-bid-build**, the contractor priced the drawings. If the drawings are wrong, incomplete, or do not coordinate with the equipment you bought, the contractor built what was drawn and the correction is a change order. That risk sits with you, and it is the source of most commercial fit-out overruns.
+
+Under **design-build**, the same company drew it and built it. A coordination failure between the drawings and the building is theirs to resolve, because both are theirs. That is a genuine transfer of risk, and it is the strongest argument for the model.
+
+What design-build does not transfer is the risk of an inadequate brief. If you did not say the practice needs to grow to eight exam rooms, no contract structure will have accounted for it.
+
+## What Changes About the Price
+
+| | Design-bid-build | Design-build |
+| --- | --- | --- |
+| How the price is formed | Competitive tender on complete drawings | Negotiated against a brief and budget |
+| What the first number means | A firm price for a defined scope | An estimate that firms up as design develops |
+| Comparability of quotes | High — everyone priced the same set | Lower — each proposal defines its own scope |
+| Typical source of increase | Change orders from drawing gaps | Scope and specification decisions during design |
+| Final cost certainty | Lower than it appears at signing | Higher than it appears at signing |
+
+The honest summary is that design-bid-build optimises the number you see at the start and design-build optimises the number you pay at the end. Owners who have been through one overrun tend to choose design-build the second time.
+
+## Schedule
+
+Design-build is normally faster, for two structural reasons rather than because anyone works harder. Design and procurement overlap, so long-lead items — clinic millwork, mechanical equipment, engineered glazing — can be committed before drawings are fully complete. And there is no tender period, which on a commercial fit-out is commonly four to six weeks between finishing the drawings and appointing anyone.
+
+On a clinic build where equipment lead times already drive the programme, that overlap is worth more than it sounds. Our [dental clinic build timeline](/blog/dental-clinic-build-timeline/) shows how the phases actually stack.
+
+## Where Design-Bid-Build Genuinely Wins
+
+- **When the scope is well defined and unlikely to change.** A straightforward office fit-out with a clear brief tenders well.
+- **When you want competitive price discovery.** Several contractors pricing one set is the most reliable way to learn what something costs.
+- **When independence matters to you.** A designer with no stake in the construction cost is a real check on specification quality and on substitutions.
+- **When the project is publicly funded or has procurement rules** that require open tender.
+- **When you have your own experienced project lead** who can manage two contracts and adjudicate between them.
+
+## Where Design-Build Genuinely Wins
+
+- **When the build is technically coordinated** — clinical space, where equipment, plumbing, mechanical and millwork all have to meet at exact positions.
+- **When the schedule matters more than price discovery**, which is most of the time when you are paying rent on an empty space.
+- **When the brief is clear but the design is not yet.** Design-build handles "we need six operatories and this budget" better than tender does.
+- **When you do not want to arbitrate.** One contract means one accountable party and no argument about whose fault a coordination failure was.
+- **When the space is a renovation with unknowns behind the walls**, where a complete drawing set is partly fiction anyway.
+
+## What This Means for a Clinic Specifically
+
+Clinical fit-outs are the strongest case for design-build or for construction management, and the reason is specific rather than general. A large share of a clinic's cost is services routed to fixed equipment positions — chair plumbing, suction, compressed air, imaging power and shielding, sterilization mechanical. Those positions come from an equipment supplier, not from an architect, and they arrive during design rather than before it.
+
+A drawing set can be architecturally complete and still not tell a plumber where the chair is going. In design-bid-build that gap becomes a change order. In design-build it becomes a coordination meeting.
+
+That is not an argument that clinics should never be tendered. It is an argument that if you tender a clinic, the drawing set has to include the equipment coordination, and you should confirm that before you go out to bid.
+
+## How to Choose
+
+1. **How complete is your brief?** Clear brief, unclear design points to design-build. Clear design points to tender.
+2. **What is an extra month worth?** If you are paying rent on an empty space, that number is concrete and usually decides it.
+3. **Do you want an independent check?** If yes and you still want the coordination benefit, use construction management.
+4. **How much is hidden behind existing walls?** The more unknowns, the less a tendered fixed price actually means.
+5. **Who arbitrates if it goes wrong?** Under two contracts, that is you.
+
+Whichever model you choose, the questions you should ask any contractor before shortlisting are the same. We cover them in [10 questions to ask a healthcare construction contractor in BC](/blog/how-to-choose-a-commercial-general-contractor/).
+
+## Conclusion
+
+Design-build and general contracting are not better and worse, they are different allocations of risk. Design-bid-build gives you an independent designer, a competitive price and a change-order exposure. Design-build gives you one accountable party, a faster programme and a weaker independent check. For a clinic or a technically coordinated commercial fit-out, the coordination argument is strong enough that design-build or construction management usually wins — but only if the brief is clear, because no contract structure compensates for not knowing what you want. We work both ways across the Lower Mainland; our [commercial construction](/services/commercial-construction/) page covers how we scope and run each.
+
+</BlogArticle>

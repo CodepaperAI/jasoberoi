@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Banknote, Calculator, CheckCircle2, MapPin } from "lucide-react";
+import { ArrowRight, Banknote, Calculator, CheckCircle2, Clock, MapPin } from "lucide-react";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { JsonLd } from "@/components/JsonLd";
 import {
@@ -10,6 +10,7 @@ import {
   ProjectProof,
   WhyTheseServices,
 } from "@/components/LandingSections";
+import { postPath, postsForService } from "@/lib/blog";
 import { breadcrumbJsonLd, faqJsonLd } from "@/lib/schema";
 import { getAllServiceHubs, getServiceHub } from "@/lib/hubs";
 import { absoluteUrl, buildMetadata } from "@/lib/seo";
@@ -70,6 +71,8 @@ export default async function ServiceHubPage({ params }: HubProps) {
     ...located.filter((project) => project.vertical === hub.service.vertical),
     ...located.filter((project) => project.vertical !== hub.service.vertical),
   ].slice(0, 3);
+
+  const guides = postsForService(hub.service.slug);
 
   return (
     <>
@@ -227,6 +230,62 @@ export default async function ServiceHubPage({ params }: HubProps) {
           </div>
         </div>
       </section>
+
+      {/* 5b — The guides for this build type.
+
+          src/lib/blog.ts has always said its registry exists partly to feed
+          "the service-page related reading rails". There were no such rails:
+          nothing outside /blog, /thank-you and the sitemap linked a post, so
+          thirty-two articles sat one click from the index and zero clicks from
+          the pages that rank. postsForService() was written for this and had no
+          caller. */}
+      {guides.length > 0 && (
+        <section className="bg-raised px-5 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="grid gap-6 lg:grid-cols-[1fr_0.85fr] lg:items-end">
+              <div>
+                <p className="eyebrow">Guides</p>
+                <h2 className="h-section mt-4">
+                  What we have <span className="orange-italic">written about this.</span>
+                </h2>
+              </div>
+              <p className="text-lg font-medium leading-8 text-muted">
+                Cost, timeline and permit detail for {hub.service.primaryKeyword}, with the
+                numbers left in.
+              </p>
+            </div>
+
+            <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {guides.map((post) => (
+                <li key={post.slug}>
+                  <Link
+                    href={postPath(post.slug)}
+                    className="group flex h-full flex-col rounded-2xl border border-line bg-white p-6 transition duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:shadow-lg"
+                  >
+                    <p className="eyebrow">{post.topic}</p>
+                    <h3 className="h-card mt-3 text-ink group-hover:text-accent">
+                      {post.cardTitle}
+                    </h3>
+                    <p className="mt-3 text-base leading-7 text-muted">{post.description}</p>
+                    <p className="ui-font mt-auto flex items-center gap-1.5 pt-5 text-xs font-semibold text-muted">
+                      <Clock size={13} aria-hidden="true" />
+                      {post.minutes} min read
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <Link
+              href="/blog"
+              className="ui-font mt-10 inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.14em] text-accent transition-all hover:gap-3"
+            >
+              All construction guides
+              <ArrowRight size={14} aria-hidden="true" />
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* 6 — Sibling hubs. */}
       <WhyTheseServices links={hub.siblings} cityName="the Lower Mainland" />
