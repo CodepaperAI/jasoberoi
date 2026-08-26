@@ -26,6 +26,15 @@
 /**
  * Vercel's Node runtime, with Vercel's own (req, res) handler signature.
  *
+ * api/package.json exists solely to mark this directory as ESM, and it is
+ * load-bearing. This compiles to api/lead.js, the root package.json declares no
+ * "type", so Node loaded the output as CommonJS and died on the first line of
+ * the handler — `SyntaxError: Unexpected token 'export'`, every POST returning
+ * FUNCTION_INVOCATION_FAILED. `vercel dev` transpiles differently and passed
+ * cleanly, so it only appeared in production. Renaming to .mts was the obvious
+ * fix and is worse: Vercel does not detect .mts as a function at all, so the
+ * endpoint silently stopped existing.
+ *
  * The Web-standard `(request: Request) => Response` form looks tidier and it
  * does not work here: under `runtime: "nodejs"` the response is never flushed,
  * so `vercel dev` reported "The function lead.ts is still running after 30s"
