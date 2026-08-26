@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { BookConsultationButton } from "@/components/BookConsultationButton";
-import { ButtonLink } from "@/components/ButtonLink";
 import { constructionServices, processSteps, type SitePage } from "@/lib/site";
 
 type PageHeroProps = {
@@ -10,15 +9,9 @@ type PageHeroProps = {
   heading: string;
   subheading: string;
   image: string;
-  /**
-   * On /contact the CTA cannot usefully link to /contact — that was a
-   * self-link that read as a dead button. True swaps the link for the button
-   * that opens the dock's consultation form; every other page keeps the link.
-   */
-  bookOpensForm?: boolean;
 };
 
-export function PageHero({ eyebrow, heading, subheading, image, bookOpensForm }: PageHeroProps) {
+export function PageHero({ eyebrow, heading, subheading, image }: PageHeroProps) {
   return (
     /*
       Full-bleed: the project photograph is the background, not a card beside
@@ -60,13 +53,7 @@ export function PageHero({ eyebrow, heading, subheading, image, bookOpensForm }:
           <p className="mt-6 max-w-2xl text-xl font-medium leading-8 text-white/75">
             {subheading}
           </p>
-          {bookOpensForm ? (
-            <BookConsultationButton className="mt-8" />
-          ) : (
-            <ButtonLink href="/contact" className="mt-8">
-              Book a Consultation
-            </ButtonLink>
-          )}
+          <BookConsultationButton className="mt-8" />
         </div>
       </div>
     </section>
@@ -91,7 +78,7 @@ export function ServiceMarquee() {
   );
 }
 
-export function ReviewCta({ bookOpensForm }: { bookOpensForm?: boolean } = {}) {
+export function ReviewCta() {
   return (
     <section className="relative overflow-hidden bg-ink px-5 py-20 text-white sm:px-6 lg:px-8">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,79,10,0.16),transparent_34rem)]" />
@@ -108,13 +95,7 @@ export function ReviewCta({ bookOpensForm }: { bookOpensForm?: boolean } = {}) {
           review the project and help you understand what needs to be planned before construction
           starts.
         </p>
-        {bookOpensForm ? (
-          <BookConsultationButton className="mt-8" />
-        ) : (
-          <ButtonLink href="/contact" className="mt-8">
-            Book a Consultation
-          </ButtonLink>
-        )}
+        <BookConsultationButton className="mt-8" />
       </div>
     </section>
   );
@@ -122,8 +103,6 @@ export function ReviewCta({ bookOpensForm }: { bookOpensForm?: boolean } = {}) {
 
 export function ContentPage({ page }: { page: SitePage }) {
   // On the contact page the book buttons open the form; anywhere else they
-  // lead to the contact page. See PageHeroProps.bookOpensForm.
-  const bookOpensForm = page.slug === "contact";
 
   return (
     <>
@@ -132,7 +111,6 @@ export function ContentPage({ page }: { page: SitePage }) {
         heading={page.heading}
         subheading={page.subheading}
         image={page.heroImage}
-        bookOpensForm={bookOpensForm}
       />
 
       <section className="bg-paper px-5 py-20 sm:px-6 lg:px-8">
@@ -201,7 +179,7 @@ export function ContentPage({ page }: { page: SitePage }) {
       ) : null}
 
       <ProcessStrip />
-      <ReviewCta bookOpensForm={bookOpensForm} />
+      <ReviewCta />
     </>
   );
 }

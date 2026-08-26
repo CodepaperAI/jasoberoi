@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, MapPin } from "lucide-react";
-import { ButtonLink } from "@/components/ButtonLink";
+import { BookConsultationButton } from "@/components/BookConsultationButton";
 import { CallLink, ProjectProof, ReviewsBlock } from "@/components/LandingSections";
 import { PageHero, ReviewCta } from "@/components/SectionPrimitives";
 import { JsonLd } from "@/components/JsonLd";
@@ -105,7 +105,7 @@ export default function ConstructionIndexPage() {
             </dl>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href="/contact">Book a Consultation</ButtonLink>
+              <BookConsultationButton />
               <CallLink />
             </div>
           </div>

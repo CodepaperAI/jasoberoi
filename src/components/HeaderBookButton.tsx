@@ -1,29 +1,21 @@
-"use client";
-
-import { usePathname } from "next/navigation";
 import { BookConsultationButton } from "@/components/BookConsultationButton";
-import { ButtonLink } from "@/components/ButtonLink";
 
 /**
- * The header's book CTA, aware of where it is.
+ * The header's book CTA.
  *
- * The header renders once in the layout, so a plain link to /contact is right
- * on every page except /contact itself — there it was the last remaining
- * self-link after the page's own CTAs were fixed. On /contact this opens the
- * dock's consultation form instead, exactly like the page buttons do.
+ * This used to branch on the pathname: a link to /contact everywhere, and the
+ * dock-opening button only on /contact itself, where linking would have been a
+ * self-link. That branch is gone because the answer is now the same everywhere
+ * — every "Book a Consultation" on the site opens the form in place.
  *
- * A client component because the decision needs the pathname; the header
- * itself stays server-rendered.
+ * The reason is the paid funnel. The Google Ads campaign lands on
+ * /services/dental-clinic-construction/, and every CTA on that page used to
+ * navigate to /contact, where the visitor found no form on the page and had to
+ * press a second button to reach one. Two clicks and a page load between the ad
+ * and the first field. /contact is still reachable from the nav and the footer.
+ *
+ * No longer a client component: it renders one, which is enough.
  */
 export function HeaderBookButton({ className = "" }: { className?: string }) {
-  const pathname = usePathname();
-  const onContact = pathname === "/contact" || pathname === "/contact/";
-
-  return onContact ? (
-    <BookConsultationButton className={className} />
-  ) : (
-    <ButtonLink href="/contact" className={className}>
-      Book a Consultation
-    </ButtonLink>
-  );
+  return <BookConsultationButton className={className} />;
 }
