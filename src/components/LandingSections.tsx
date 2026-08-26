@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, CalendarDays, MapPin, Phone, Quote, Star } from "lucide-react";
-import { ButtonLink } from "@/components/ButtonLink";
+import { BookConsultationButton } from "@/components/BookConsultationButton";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { ReviewAvatar } from "@/components/ReviewAvatar";
 import {
@@ -176,7 +176,7 @@ export function LandingHero({
           <p className="mt-6 max-w-2xl text-xl font-medium leading-8 text-white/75">{intro}</p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <ButtonLink href="/contact">Book a Consultation</ButtonLink>
+            <BookConsultationButton />
             <CallLink onDark />
           </div>
 
@@ -516,7 +516,7 @@ export function LandingCta({ heading, body }: { heading: string; body: string })
         <h2 className="h-section">{heading}</h2>
         <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/70">{body}</p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <ButtonLink href="/contact">Book a Consultation</ButtonLink>
+          <BookConsultationButton />
           <CallLink onDark />
         </div>
       </div>

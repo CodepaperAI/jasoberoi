@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useSyncExternalStore } from "react";
 import { Calculator, Mail } from "lucide-react";
-import { ButtonLink } from "@/components/ButtonLink";
+import { BookConsultationButton } from "@/components/BookConsultationButton";
 import {
   contingency,
   finishLevels,
@@ -250,7 +250,7 @@ export function CostCalculator() {
             </p>
 
             <div className="mt-7 grid gap-3 sm:grid-cols-[1fr_auto]">
-              <ButtonLink href="/contact">Book a Consultation</ButtonLink>
+              <BookConsultationButton />
               <a
                 href={mailto}
                 className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-zinc-900/15 px-6 py-3 text-sm font-bold text-zinc-900 transition hover:border-orange-300 hover:text-accent"

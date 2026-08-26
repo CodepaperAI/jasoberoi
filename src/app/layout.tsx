@@ -5,6 +5,7 @@ import {
   GoogleTagManager,
   GoogleTagManagerNoScript,
 } from "@/components/GoogleTagManager";
+import { AttributionCapture } from "@/components/AttributionCapture";
 import { ConversionTracking } from "@/components/ConversionTracking";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -100,6 +101,8 @@ export default function RootLayout({
         */}
         <Analytics />
         <ConversionTracking />
+        {/* Must run on the landing page, not at submit time — see the component. */}
+        <AttributionCapture />
         <RouteTransition />
         {/* Reachable from every page, and it never opens itself. */}
         <ContactDock />

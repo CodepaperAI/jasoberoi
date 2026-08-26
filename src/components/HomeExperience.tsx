@@ -12,7 +12,7 @@ import {
   Users,
   Workflow,
 } from "lucide-react";
-import { ButtonLink } from "@/components/ButtonLink";
+import { BookConsultationButton } from "@/components/BookConsultationButton";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { HomeConsultationForm } from "@/components/HomeConsultationForm";
 import { ProofBar } from "@/components/ProofBar";
@@ -230,9 +230,7 @@ export function HomeExperience() {
             </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <ButtonLink href="/contact" className="px-9 py-4 text-base">
-                Book a Consultation
-              </ButtonLink>
+              <BookConsultationButton className="px-9 py-4 text-base" />
               <a
                 href={siteConfig.phoneHref}
                 className="ui-font inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-zinc-900/15 bg-white/80 px-7 py-3.5 text-base font-bold text-zinc-900 backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:text-accent"

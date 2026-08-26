@@ -1,11 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Phone, Send, X } from "lucide-react";
+import { Send, X } from "lucide-react";
 import { OPEN_CONSULTATION_EVENT } from "@/components/BookConsultationButton";
+import { ConsultationForm } from "@/components/ConsultationForm";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
-import { submitConsultation } from "@/lib/contact";
-import { siteConfig } from "@/lib/site";
 
 /**
  * The site's contact affordance: a WhatsApp link and a form button, always
@@ -18,11 +17,6 @@ import { siteConfig } from "@/lib/site";
  *
  * Now nothing opens unless a visitor asks for it.
  */
-
-const FIELD =
-  "rounded-xl border border-slate-200 bg-raised px-4 py-3 text-sm font-medium normal-case text-zinc-900 outline-none placeholder:text-slate-400 focus:border-orange-400 focus:bg-white";
-const LABEL =
-  "grid gap-2 text-[11px] font-extrabold uppercase tracking-wide text-slate-500";
 
 export function ContactDock() {
   const [open, setOpen] = useState(false);
@@ -126,86 +120,7 @@ export function ContactDock() {
               before construction starts.
             </p>
 
-            <form
-              className="mt-7 grid gap-4 sm:grid-cols-2"
-              onSubmit={(event) => {
-                event.preventDefault();
-                submitConsultation(event.currentTarget);
-                close();
-              }}
-            >
-              <label className={LABEL}>
-                Full name
-                <input name="name" required className={FIELD} placeholder="Jane Doe" />
-              </label>
-              <label className={LABEL}>
-                Email address
-                <input
-                  name="email"
-                  type="email"
-                  required
-                  className={FIELD}
-                  placeholder="jane@clinic.ca"
-                />
-              </label>
-              <label className={LABEL}>
-                Phone number
-                <input name="phone" type="tel" className={FIELD} placeholder="(604) 000-0000" />
-              </label>
-              <label className={LABEL}>
-                Project location
-                <input name="location" className={FIELD} placeholder="Abbotsford, BC" />
-              </label>
-              <label className={`${LABEL} sm:col-span-2`}>
-                Project type
-                <select name="projectType" className={FIELD} defaultValue="">
-                  <option value="" disabled>
-                    Select an option
-                  </option>
-                  <option>Dental clinic construction</option>
-                  <option>Dental office renovation</option>
-                  <option>Medical clinic construction</option>
-                  <option>Pharmacy construction</option>
-                  <option>Commercial construction or renovation</option>
-                  <option>Luxury residential</option>
-                </select>
-              </label>
-              <label className={`${LABEL} sm:col-span-2`}>
-                Anything else
-                <textarea
-                  name="details"
-                  className={`${FIELD} min-h-24`}
-                  placeholder="Square footage, target opening date, lease stage."
-                />
-              </label>
-
-              {/* Three ways out of this dialog, because the primary one is the
-                  least reliable: "Send request" composes a mailto, which does
-                  nothing on a phone with no mail client. WhatsApp and the phone
-                  number always work. */}
-              <div className="grid gap-3 sm:col-span-2 sm:grid-cols-[1fr_auto_auto]">
-                <button
-                  type="submit"
-                  className="ui-font inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-white shadow-xl shadow-orange-600/25 transition hover:bg-orange-500"
-                >
-                  <Send size={15} aria-hidden="true" />
-                  Send request
-                </button>
-                <WhatsAppLink
-                  analytics="dock-whatsapp"
-                  iconSize={15}
-                  className="ui-font inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-white shadow-lg shadow-emerald-900/15 transition hover:bg-[#1eb457]"
-                />
-                <a
-                  href={siteConfig.phoneHref}
-                  data-analytics="dock-call"
-                  className="ui-font inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-6 py-4 text-xs font-extrabold uppercase tracking-[0.18em] text-zinc-900 transition hover:border-orange-300 hover:text-accent"
-                >
-                  <Phone size={15} aria-hidden="true" />
-                  Call
-                </a>
-              </div>
-            </form>
+            <ConsultationForm formSource="dock" />
           </div>
         </div>
       ) : null}

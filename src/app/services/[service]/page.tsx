@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Banknote, Calculator, CheckCircle2, Clock, MapPin } from "lucide-react";
+import { ConsultationForm } from "@/components/ConsultationForm";
 import { FaqAccordion } from "@/components/FaqAccordion";
 import { JsonLd } from "@/components/JsonLd";
 import {
-  LandingCta,
+  CallLink,
   LandingHero,
   ProjectProof,
   WhyTheseServices,
@@ -303,11 +304,43 @@ export default async function ServiceHubPage({ params }: HubProps) {
         </div>
       </section>
 
-      {/* 8 — The ask. */}
-      <LandingCta
-        heading={`Planning ${hub.service.primaryKeyword}?`}
-        body="Tell us the space and the timeline. We will come back with what has to be planned before construction starts — anywhere from White Rock to Chilliwack."
-      />
+      {/* 8 — The ask, as a form rather than a button.
+
+          These ten pages are the campaign's landing pages —
+          /services/dental-clinic-construction/ is where the Google Ads traffic
+          arrives — and every call to action on them used to be a link to
+          /contact, which is a page with no form on it. So a paid visitor ready
+          to enquire had a page load and a second click still ahead of them
+          before reaching a single field. The form is on the page now, and the
+          project type is preselected because the visitor already told us which
+          one by being here. */}
+      <section className="relative overflow-hidden bg-ink px-5 py-20 text-white sm:px-6 lg:px-8">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(255,79,10,0.16),transparent_34rem)]" />
+        <div className="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <div>
+            <p className="eyebrow">Book a Consultation</p>
+            <h2 className="h-section mt-4 text-white">
+              Planning {hub.service.primaryKeyword}?{" "}
+              <span className="orange-italic">Tell us the space.</span>
+            </h2>
+            <p className="mt-6 max-w-xl text-base leading-7 text-white/70">
+              Tell us the space and the timeline. We will come back with what has to be planned
+              before construction starts — anywhere from White Rock to Chilliwack.
+            </p>
+            <div className="mt-8">
+              <CallLink onDark />
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur sm:p-8">
+            <ConsultationForm
+              formSource={`service-${hub.service.slug}`}
+              tone="dark"
+              defaultProjectType={hub.service.name}
+            />
+          </div>
+        </div>
+      </section>
     </>
   );
 }
