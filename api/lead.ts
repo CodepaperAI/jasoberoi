@@ -74,6 +74,9 @@ const STAGE_ID = process.env.GHL_PIPELINE_STAGE_ID ?? "";
  * reduced to the one thing only it can do.
  */
 const FALLBACK_WEBHOOK = process.env.GHL_WEBHOOK_URL ?? "";
+/** Who hears about a new lead, and the GHL contact the email is threaded on. */
+const NOTIFY_EMAIL = process.env.GHL_NOTIFY_EMAIL ?? "";
+const NOTIFY_CONTACT_ID = process.env.GHL_NOTIFY_CONTACT_ID ?? "";
 
 type Lead = {
   firstName?: string;
@@ -136,6 +139,74 @@ async function resolvePipeline() {
   if (!stage) return null;
 
   return { pipelineId: pipelines[0].id, stageId: stage.id };
+}
+
+/**
+ * Emails the new lead to whoever runs the business.
+ *
+ * GHL sends internal notifications from workflows and nowhere else, and
+ * workflow creation is not in the API — POST /workflows/ answers 404 — so the
+ * obvious route required someone to build one by hand in the builder and
+ * remember to publish it. Until that happened a captured lead sat in the
+ * pipeline and told nobody.
+ *
+ * The conversations API sends email directly, which removes that dependency
+ * entirely. It is addressed to a contact rather than to a bare address, so the
+ * recipient is a real contact record tagged internal-notifications — that also
+ * means the notification is threaded and visible in GHL rather than vanishing
+ * into an outbox.
+ *
+ * Failure here is deliberately silent to the caller. The lead is already
+ * recorded; a notification that did not send is a problem worth solving, but
+ * not one worth telling the visitor about by failing their form.
+ */
+async function notify(lead: Lead, opportunityId?: string) {
+  if (!NOTIFY_EMAIL || !NOTIFY_CONTACT_ID) return false;
+
+  /*
+    The colon lives inside the label cell on purpose. Email clients that fall
+    back to plain text strip the tags and concatenate the cells, and without it
+    the first test arrived reading "NameNotify Test Emailnotify-test@..." —
+    correct in HTML, unreadable everywhere else.
+  */
+  const row = (label: string, value?: string) =>
+    value
+      ? `<tr><td style="padding:4px 12px 4px 0;color:#6b6358">${label}:&nbsp;</td><td style="padding:4px 0"><strong>${value}</strong></td></tr>`
+      : "";
+
+  const html = `
+    <p style="margin:0 0 12px">New enquiry from the website.</p>
+    <table style="border-collapse:collapse;font-size:15px">
+      ${row("Name", lead.fullName)}
+      ${row("Email", lead.email)}
+      ${row("Phone", lead.phone)}
+      ${row("Location", lead.projectLocation)}
+      ${row("Project", lead.projectType)}
+      ${row("Source", lead.source)}
+      ${row("Campaign", lead.utmCampaign)}
+      ${row("Landed on", lead.landingPage)}
+      ${row("Submitted from", lead.submittedFrom)}
+    </table>
+    ${lead.details ? `<p style="margin:16px 0 0;white-space:pre-wrap">${lead.details}</p>` : ""}
+    ${opportunityId ? `<p style="margin:16px 0 0;color:#6b6358;font-size:13px">Opportunity ${opportunityId} — Oberizon Construction pipeline.</p>` : ""}
+  `;
+
+  try {
+    const response = await fetch(`${GHL}/conversations/messages`, {
+      method: "POST",
+      headers: ghlHeaders(),
+      body: JSON.stringify({
+        type: "Email",
+        contactId: NOTIFY_CONTACT_ID,
+        emailTo: NOTIFY_EMAIL,
+        subject: `New lead — ${lead.fullName || "website"}${lead.projectType ? ` (${lead.projectType})` : ""}`,
+        html,
+      }),
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
 }
 
 async function forwardToWebhook(lead: Lead) {
@@ -243,10 +314,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const opportunity = (await opportunityResponse.json()) as { opportunity?: { id?: string } };
 
-    // Notification. Awaited so the function is not killed mid-request, but its
-    // result cannot fail the lead — the record is already safely in GHL, and an
-    // unpublished workflow must not turn a captured lead into an error.
-    const notified = await forwardToWebhook(lead).catch(() => false);
+    // Awaited so the function is not killed mid-request, but its result cannot
+    // fail the lead — the record is already safely in GHL.
+    const notified = await notify(lead, opportunity.opportunity?.id).catch(() => false);
 
     return send(res,
       {
