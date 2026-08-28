@@ -125,6 +125,11 @@ const hubQuestions: Record<string, Array<{ question: string; answer: string }>> 
       answer:
         "Typically 90 to 120 days from permit to handover for a standard operatory fit-out. Our fastest delivered clinic with five operatories took exactly 90 days.",
     },
+    {
+      question: "What does a dental office build-out include?",
+      answer:
+        "Suction and compressed air at every operatory, plumbing set to fixed chair positions and heavier electrical for imaging. HVAC follows CSA Z8000 and finishes come last.",
+    },
   ],
   "dental-office-renovation": [
     {
@@ -138,6 +143,11 @@ const hubQuestions: Record<string, Array<{ question: string; answer: string }>> 
       question: "What permits are required for a medical clinic in BC?",
       answer:
         "A building permit, mechanical and electrical trade permits, and an accessibility review under the BC Building Code. Fraser Health sign-off is typically required before occupancy.",
+    },
+    {
+      question: "What does a medical office build-out include?",
+      answer:
+        "Exam rooms sized to the mechanical load, accessible circulation under the BC Building Code and sealed finishes for infection control. Fraser Health reviews the result before occupancy.",
     },
   ],
   "pharmacy-construction": [
