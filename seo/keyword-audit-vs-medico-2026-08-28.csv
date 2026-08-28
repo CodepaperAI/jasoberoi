@@ -1,0 +1,66 @@
+#,Keyword,Volume (CA),Currently ranking,Live target URL on oberizonconstruction.ca,Verdict / what actually moves it
+1,medical clinic contractor,0.0,No,https://www.oberizonconstruction.ca/services/medical-clinic-construction/,Live service hub; 'medical clinic contractor' already in page keywords + H1 subject.
+2,clinic design build contractor BC,0.0,No,https://www.oberizonconstruction.ca/services/medical-clinic-construction/ + https://www.oberizonconstruction.ca/blog/design-build-vs-general-contracting/,Design-build model covered by dedicated post + service hub.
+3,medical office contractor BC,0.0,Yes (~#6),https://www.oberizonconstruction.ca/construction/north-vancouver/medical-clinic-construction/,"Already ranking ~#6. Defend with project proof, not new content."
+4,pharmacy renovation contractor,0.0,No,https://www.oberizonconstruction.ca/services/pharmacy-construction/,Live service hub. Sheet said 'NEW PAGE BUILT' - confirmed live.
+5,"""clinic construction experts""",0.0,No,https://www.oberizonconstruction.ca/services/healthcare-construction/,"Brand-fluff phrase, 0 volume. No page needed."
+6,dental office build out,110.0,No,https://www.oberizonconstruction.ca/blog/dental-clinic-build-timeline/ + https://www.oberizonconstruction.ca/blog/dental-clinic-construction-cost-bc/,Substance covered (lease->first patient). Highest-volume term at 110/mo.
+7,clinic construction Surrey,0.0,Yes (~#4),https://www.oberizonconstruction.ca/construction/surrey/,"Live, ranking ~#4 vs Medico #3. Gap is proof, not content."
+8,medical office design build,0.0,No,https://www.oberizonconstruction.ca/services/medical-clinic-construction/ + https://www.oberizonconstruction.ca/blog/design-build-vs-general-contracting/,Covered across hub + design-build post.
+9,clinic construction Victoria,0.0,No,(none - Victoria not served),Medico has a Victoria office; Oberizon does not serve Vancouver Island. Building this page would be a false locality claim.
+10,clinic construction Burnaby,0.0,Yes (~#5),https://www.oberizonconstruction.ca/construction/burnaby/,Live and ranking ~#5; Medico absent. Defend with Burnaby proof.
+11,commercial renovation,1k,No,https://www.oberizonconstruction.ca/services/commercial-renovation/,1k/mo but national firms dominate. Sheet itself says deprioritize. Agreed.
+12,"""healthcare contractor""",0.0,No,https://www.oberizonconstruction.ca/services/healthcare-construction/,Live service hub.
+13,clinic construction Coquitlam,0.0,No,https://www.oberizonconstruction.ca/construction/coquitlam/,Page EXISTS but is tier C -> noindex. Needs a project or review to index.
+14,medical clinic build out,0.0,No,https://www.oberizonconstruction.ca/services/medical-clinic-construction/,Covered by hub.
+15,[dental clinic construction],40.0,No,https://www.oberizonconstruction.ca/services/dental-clinic-construction/,"Live hub, 40/mo."
+16,tenant improvement medical clinic,0.0,No,https://www.oberizonconstruction.ca/blog/tenant-improvement-allowance-explained/ + https://www.oberizonconstruction.ca/blog/base-building-vs-tenant-improvement/,Two dedicated posts already cover TI for clinics.
+17,dental office construction companies,20.0,No,https://www.oberizonconstruction.ca/services/dental-clinic-construction/,"Live hub, 20/mo."
+18,pharmacy build out cost BC,0.0,No (yet),https://www.oberizonconstruction.ca/blog/pharmacy-build-out-cost-bc/,Dedicated cost post live.
+19,"""dental clinic design build""",0.0,No,https://www.oberizonconstruction.ca/services/dental-clinic-construction/ + https://www.oberizonconstruction.ca/blog/design-build-vs-general-contracting/,Covered.
+20,"""dental clinic build out""",0.0,No,https://www.oberizonconstruction.ca/blog/dental-clinic-construction-cost-bc/,Covered in substance.
+21,optometry clinic construction,0.0,No (yet),https://www.oberizonconstruction.ca/blog/optometry-clinic-construction/,Dedicated post live.
+22,modern medical clinic design,10.0,No,https://www.oberizonconstruction.ca/blog/clinic-design-trends-bc/,Dedicated 2026 design-trends post live.
+23,"""dental office build out""",10.0,No,https://www.oberizonconstruction.ca/blog/dental-office-renovation-checklist/,Covered.
+24,"""dental clinic contractor Vancouver""",0.0,No (yet),https://www.oberizonconstruction.ca/construction/vancouver/dental-clinic-construction/,Live city x service page.
+25,dental clinic contractor Surrey,0.0,Yes (#1),https://www.oberizonconstruction.ca/construction/surrey/dental-clinic-construction/,Already #1. Hold it.
+26,medical clinic construction contractor,0.0,No,https://www.oberizonconstruction.ca/services/medical-clinic-construction/,Covered.
+27,healthcare construction company BC,0.0,No (yet),https://www.oberizonconstruction.ca/services/healthcare-construction/,Covered.
+28,medical office interior design contractor,10.0,No,(deliberately not claimed),Oberizon does not publish in-house interior design (see comparison table). Claiming it would be a bluff.
+29,"""dental clinic contractor White Rock""",0.0,No,https://www.oberizonconstruction.ca/construction/white-rock/dental-clinic-construction/,Live; White Rock is the head office city.
+30,healthcare construction BC and Alberta,0.0,No,(BC only),Alberta is Medico's territory. Oberizon serves 14 Lower Mainland/Fraser Valley cities only.
+31,"""fast dental clinic contractor""",0.0,Yes (#1),https://www.oberizonconstruction.ca/services/dental-clinic-construction/,Already #1.
+32,dental office renovation contractor,0.0,Yes,https://www.oberizonconstruction.ca/services/dental-office-renovation/,Already ranking.
+33,dental clinic construction,40.0,No,https://www.oberizonconstruction.ca/services/dental-clinic-construction/,"Live hub, 40/mo."
+34,[dental clinic contractor],0.0,No,https://www.oberizonconstruction.ca/services/dental-clinic-construction/,Covered.
+35,[dental clinic construction company],70.0,No,https://www.oberizonconstruction.ca/services/dental-clinic-construction/,"Live hub, 70/mo."
+36,dental clinic construction contractor,0.0,Yes (~#8),https://www.oberizonconstruction.ca/services/dental-clinic-construction/,"Ranking ~#8. Proof gap, not content gap."
+37,licensed and insured healthcare contractor,0.0,Unverified,(blocked - no licence numbers),Trust gate flags BC contractor licence + WorkSafeBC numbers as unconfirmed. This keyword is unwinnable until Jas supplies them.
+38,medical clinic permitting support,0.0,Unverified,https://www.oberizonconstruction.ca/blog/medical-clinic-construction-permits-bc/ + https://www.oberizonconstruction.ca/blog/commercial-renovation-permits-bc/,Two permit posts live.
+39,office renovation contractors,50.0,Unverified,https://www.oberizonconstruction.ca/services/office-renovation-contractor/ + https://www.oberizonconstruction.ca/blog/office-renovation-cost-metro-vancouver/,"Hub + cost post live, 50/mo."
+40,"""concept to completion clinic contractor""",0.0,Unverified,https://www.oberizonconstruction.ca/services/healthcare-construction/,"Brand-fluff phrase, 0 volume."
+41,"""dental clinic construction BC""",0.0,Unverified,https://www.oberizonconstruction.ca/services/dental-clinic-construction/,Covered.
+42,pharmacy construction contractor,0.0,Unverified,https://www.oberizonconstruction.ca/services/pharmacy-construction/,Covered.
+43,medico construction & design,90.0,No,https://www.oberizonconstruction.ca/blog/best-construction-company-vancouver-comparison/,"THE direct Medico play, already live: sourced 4-way comparison, competitor facts cited from medicoconstruction.com read 25 Aug 2026. 90/mo."
+44,"""pharmacy construction""",20.0,No (yet),https://www.oberizonconstruction.ca/services/pharmacy-construction/ + https://www.oberizonconstruction.ca/blog/pharmacy-build-timeline-bc/,"Covered, 20/mo."
+45,healthcare space design and build BC,0.0,Unverified,https://www.oberizonconstruction.ca/services/healthcare-construction/,Covered.
+46,[dental office renovation contractor],0.0,Yes,https://www.oberizonconstruction.ca/services/dental-office-renovation/,Already ranking.
+47,[oberizon construction],10.0,Yes (#1),https://www.oberizonconstruction.ca/,"Brand term, already #1."
+48,medical office build out contractor,0.0,Unverified,https://www.oberizonconstruction.ca/services/medical-clinic-construction/,Covered.
+49,veterinary clinic construction contractor,0.0,Unverified,https://www.oberizonconstruction.ca/blog/veterinary-clinic-construction/,Dedicated post live.
+50,medical clinic design build experts,0.0,Unverified,https://www.oberizonconstruction.ca/services/medical-clinic-construction/,"Brand-fluff phrase, 0 volume."
+51,clinic construction Vancouver,0.0,Unverified,https://www.oberizonconstruction.ca/construction/vancouver/,Live city hub.
+52,clinic contractor trusted BC,0.0,Unverified,https://www.oberizonconstruction.ca/services/clinic-renovation-contractor/,"Brand-fluff phrase, 0 volume."
+53,commercial general contractor,320.0,Unverified,https://www.oberizonconstruction.ca/services/commercial-construction/ + https://www.oberizonconstruction.ca/blog/how-to-choose-a-commercial-general-contractor/,Hub + post live. 320/mo - highest real volume on the sheet.
+54,medical clinic construction,50.0,Unverified,https://www.oberizonconstruction.ca/services/medical-clinic-construction/,"Live hub, 50/mo."
+55,healthcare facility contractor Alberta,0.0,Unverified,(BC only),Alberta out of service area.
+56,licensed medical construction company BC,0.0,Unverified,(blocked - no licence numbers),Same blocker as row 37.
+57,free consultation clinic construction,0.0,Unverified,https://www.oberizonconstruction.ca/contact/,"Conversion phrase, 0 volume. Already served by the consultation form on every page."
+58,medical clinic contractor near me,0.0,Unverified,https://www.oberizonconstruction.ca/construction/white-rock/,"'Near me' resolves to proximity + Google Business Profile, not to a page. GBP work, not content."
+59,"""dental clinic contractor Surrey""",0.0,Yes (#1),https://www.oberizonconstruction.ca/construction/surrey/dental-clinic-construction/,Already #1.
+60,dental office contractor,120.0,Unverified,https://www.oberizonconstruction.ca/services/dental-office-renovation/ + https://www.oberizonconstruction.ca/services/dental-clinic-construction/,"Covered, 120/mo."
+61,clinic construction Richmond,0.0,Unverified,https://www.oberizonconstruction.ca/construction/richmond/,Page EXISTS but held back - evidence 'none'. One dated Richmond review or confirming the Kanwarveer clinic is Richmond flips it to indexed.
+62,Vancouver clinic builders,0.0,Unverified,https://www.oberizonconstruction.ca/construction/vancouver/,Covered.
+63,dental clinic contractor Vancouver,0.0,No (yet),https://www.oberizonconstruction.ca/construction/vancouver/dental-clinic-construction/,Covered.
+64,dental clinic construction company,70.0,No,https://www.oberizonconstruction.ca/services/dental-clinic-construction/,"Live hub, 70/mo."
+65,dental office contractors,30.0,Unverified,https://www.oberizonconstruction.ca/services/dental-office-renovation/,"Covered, 30/mo."
