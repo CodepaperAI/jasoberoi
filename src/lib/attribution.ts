@@ -64,21 +64,40 @@ function write(value: Attribution) {
 }
 
 /**
- * Records the click identifiers if this is the first page of the session.
+ * Records the click identifiers, and lets a paid click take the credit.
  *
- * First write wins. A visitor who arrives on an ad and then navigates to a page
- * carrying its own utm_source in a shared link would otherwise have the paid
- * click overwritten by the later one, and the campaign would lose the lead it
- * bought.
+ * First write wins, with one exception: a *paid* click always overwrites. Both
+ * halves of that matter and they were found the same way, by testing.
+ *
+ * Without first-write-wins, a visitor who arrived on an ad and then followed an
+ * internal link carrying its own utm tags would have the paid click overwritten
+ * and the campaign would lose the lead it had bought.
+ *
+ * Without the exception, the reverse breaks. Someone who lands organically,
+ * reads a guide, then clicks the ad later in the same tab keeps the organic
+ * attribution and the campaign is never credited — sessionStorage outlives the
+ * visit, not the click. This showed up while testing five form surfaces in one
+ * browser session: the fourth loaded a gclid and still reported "Website".
+ *
+ * A new paid click therefore replaces whatever came before, which is the
+ * ordinary last-non-direct-click rule and the one Ads itself reports on.
  */
 export function captureAttribution() {
   if (typeof window === "undefined") return;
 
-  const existing = read();
-  if (existing.capturedAt) return;
-
   const params = new URLSearchParams(window.location.search);
   const value = (key: string) => params.get(key) ?? undefined;
+
+  const arrivingPaid = Boolean(
+    value("gclid") ||
+      value("wbraid") ||
+      value("gbraid") ||
+      (value("utm_source")?.toLowerCase() === "google" &&
+        ["cpc", "ppc", "paid"].includes(value("utm_medium")?.toLowerCase() ?? "")),
+  );
+
+  const existing = read();
+  if (existing.capturedAt && !arrivingPaid) return;
 
   const captured: Attribution = {
     gclid: value("gclid"),
