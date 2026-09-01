@@ -33,7 +33,7 @@ export function Header() {
 
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary navigation">
           {navigation.map((item) =>
-            item.items ? (
+            item.items || item.groups ? (
               <div key={item.label} className="group relative py-6">
                 <button
                   type="button"
@@ -42,16 +42,62 @@ export function Header() {
                   {item.label}
                   <ChevronDown size={15} aria-hidden="true" />
                 </button>
-                <div className="invisible absolute left-0 top-full w-72 translate-y-2 rounded-2xl border border-orange-100 bg-white p-2 opacity-0 shadow-2xl shadow-orange-950/10 transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
-                  {item.items.map((child) => (
-                    <Link
-                      key={child.href}
-                      href={child.href}
-                      className="block rounded-xl px-3 py-3 text-sm font-semibold text-zinc-700 transition hover:bg-orange-50 hover:text-accent"
-                    >
-                      {child.label}
-                    </Link>
-                  ))}
+                {/*
+                  Two columns when the menu is grouped. Ten services stacked in
+                  one 72-wide column ran past 600px tall, which is a scrolling
+                  menu on a laptop; the groups sit side by side instead, and the
+                  headings are what tell a visitor this contractor does
+                  healthcare, commercial and residential work.
+                */}
+                <div
+                  className={[
+                    "invisible absolute left-0 top-full translate-y-2 rounded-2xl border border-orange-100 bg-white p-3 opacity-0 shadow-2xl shadow-orange-950/10 transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100",
+                    item.groups ? "w-[34rem]" : "w-72 p-2",
+                  ].join(" ")}
+                >
+                  {/*
+                    CSS columns rather than a grid, so the browser balances the
+                    groups. On a two-column grid the row-major flow put
+                    Healthcare's six links in column one, Commercial's three in
+                    column two, and then wrapped Residential back under
+                    Healthcare — leaving half the panel empty. Columns let
+                    Commercial and Residential stack naturally beside
+                    Healthcare, and it stays balanced if a group grows.
+                  */}
+                  {item.groups ? (
+                    <div className="columns-2 gap-4">
+                      {item.groups.map((group) => (
+                        <div key={group.group} className="break-inside-avoid">
+                          <p className="ui-font px-3 pb-1 pt-2 text-[0.6875rem] font-extrabold uppercase tracking-[0.16em] text-accent">
+                            {group.group}
+                          </p>
+                          {group.items.map((child) => (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              className="block rounded-xl px-3 py-2 text-sm font-semibold text-zinc-700 transition hover:bg-orange-50 hover:text-accent"
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+
+                  {item.items?.length ? (
+                    <div className={item.groups ? "mt-2 border-t border-orange-100 pt-2" : ""}>
+                      {item.items.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className="block rounded-xl px-3 py-3 text-sm font-semibold text-zinc-700 transition hover:bg-orange-50 hover:text-accent"
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
               </div>
             ) : (

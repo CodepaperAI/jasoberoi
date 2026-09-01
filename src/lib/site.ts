@@ -2,10 +2,32 @@ import { imageBase, photoPath, subjectAllowed } from "@/lib/photos";
 import { pricingSentence, ratesConfirmedByClient } from "@/lib/pricing";
 import { cityCommercialMeta, cityDescription, cityTitle } from "@/lib/seoCopy";
 
+export type NavLink = { label: string; href: string };
+
+/**
+ * A labelled section inside a dropdown.
+ *
+ * The Services menu listed `constructionServices.slice(0, 6)` — the first six
+ * entries of the array, which are the three commercial services followed by
+ * three healthcare ones. Residential never appeared in the menu at all, so the
+ * only navigation a visitor saw read "Commercial Construction, Commercial
+ * Renovation, Office Renovation Contractor…" and the site looked like a
+ * commercial-only contractor. It builds houses too, and nothing in the header
+ * said so.
+ *
+ * Grouping rather than lengthening: ten flat links is a worse menu than ten
+ * grouped ones, and the group headings are the part that does the work here —
+ * they say "healthcare, commercial and residential" before a single link is
+ * read.
+ */
+export type NavGroup = { group: string; items: NavLink[] };
+
 export type NavItem = {
   label: string;
   href?: string;
-  items?: Array<{ label: string; href: string }>;
+  items?: NavLink[];
+  /** Rendered instead of `items` when present. */
+  groups?: NavGroup[];
 };
 
 export type Feature = {
@@ -42,6 +64,16 @@ export type ConstructionService = {
   scope: string[];
   proof: string[];
   image: string;
+  /**
+   * Whether this service generates a page per city.
+   *
+   * Defaults to true. The two residential services added alongside luxury
+   * residential opt out: fourteen cities x two services is twenty-eight new
+   * URLs on a site that is already ranking, and the reason for adding them is
+   * that the navigation read as commercial-only — a menu problem, which two hub
+   * pages solve. They can be switched on later once they have earned it.
+   */
+  cityPages?: boolean;
 };
 
 /**
@@ -574,21 +606,98 @@ export const constructionServices: ConstructionService[] = [
     proof: ["Custom homes", "High-end finishes", "Senior oversight"],
     image: `${imageBase}/project-luxury-live.jpg`,
   },
+  /*
+    Residential was one service against nine, and the Services menu cut its list
+    at six — so the only navigation a visitor saw was commercial and clinical,
+    and the client's own read of the site was that it looked like a commercial
+    contractor. Oberizon builds and renovates houses; these two say so.
+
+    Hubs only, no city pages — see `cityPages` on the type.
+  */
+  {
+    name: "Custom Home Building",
+    slug: "custom-home-building",
+    primaryKeyword: "custom home builder",
+    relatedKeywords: [
+      "custom home builder",
+      "custom home construction",
+      "new home construction",
+      "home builder Lower Mainland",
+    ],
+    vertical: "Residential",
+    cityPages: false,
+    intent: "build a new home from the ground up with the schedule, budget and finish standard held",
+    summary:
+      "New homes taken from excavation to occupancy, with the finish schedule driving procurement rather than trailing it.",
+    scope: [
+      "site servicing, excavation, foundation and framing",
+      "envelope, mechanical, electrical and finish coordination",
+      "occupancy inspection, deficiency and warranty handover",
+    ],
+    proof: ["Ground-up homes", "Finish scheduling", "Senior oversight"],
+    image: `${imageBase}/project-commercial-13.jpg`,
+  },
+  {
+    name: "Home Renovation",
+    slug: "home-renovation",
+    primaryKeyword: "home renovation contractor",
+    relatedKeywords: [
+      "home renovation contractor",
+      "house renovation contractor",
+      "home addition contractor",
+      "residential renovation",
+    ],
+    vertical: "Residential",
+    cityPages: false,
+    intent: "renovate or extend a house you are living in without losing the run of it",
+    summary:
+      "Renovations and additions to occupied houses, phased so the family keeps a kitchen, a bathroom and a way through the house.",
+    scope: [
+      "existing structure review, scope mapping and phasing",
+      "additions, kitchens, bathrooms and basement conversions",
+      "permit, inspection and deficiency management",
+    ],
+    proof: ["Renovations", "Additions", "Occupied-home phasing"],
+    image: `${imageBase}/project-med-spa.jpg`,
+  },
+];
+
+/**
+ * The verticals, in the order the site presents them.
+ *
+ * Shared by the Services menu and /services so the two cannot disagree about
+ * what this company does or in what order. Healthcare leads because it is the
+ * specialism and carries six of the ten services; residential is last but it is
+ * *present*, which is the whole point — it was missing from the header
+ * entirely.
+ */
+export const serviceVerticals: ConstructionService["vertical"][] = [
+  "Healthcare",
+  "Commercial",
+  "Residential",
 ];
 
 export const navigation: NavItem[] = [
   { label: "About Us", href: "/about" },
   {
-    // Generated from the service list and pointed at the hubs. These five links
-    // used to hardcode /construction/white-rock/*, so anyone in Abbotsford who
-    // opened the Services menu landed on a White Rock page.
+    /*
+      Generated from the service list and pointed at the hubs. These five links
+      used to hardcode /construction/white-rock/*, so anyone in Abbotsford who
+      opened the Services menu landed on a White Rock page.
+
+      Every service now appears, grouped by vertical, because the previous
+      slice(0, 6) cut the list exactly where residential began — see NavGroup.
+      The order matches /services so the menu and the page it leads to describe
+      the business the same way round.
+    */
     label: "Services",
-    items: [
-      ...constructionServices
-        .slice(0, 6)
+    groups: serviceVerticals.map((vertical) => ({
+      group: vertical,
+      items: constructionServices
+        .filter((service) => service.vertical === vertical)
         .map((service) => ({ label: service.name, href: `/services/${service.slug}` })),
-      { label: "All Services", href: "/services" },
-    ],
+    })),
+    items: [{ label: "All Services", href: "/services" }],
   },
   { label: "Projects", href: "/projects" },
   { label: "Service Areas", href: "/construction" },
@@ -1425,6 +1534,10 @@ export function getConstructionPage(citySlug: string, serviceSlug: string) {
  * §5.2 rule applied to prose: say the thing only someone who has built one knows.
  */
 const serviceLead: Record<string, string> = {
+  "custom-home-building":
+    "A custom home is decided at the finish schedule, not at the framing.",
+  "home-renovation":
+    "A renovation you are living through is a logistics problem before it is a building one.",
   "commercial-construction":
     "A commercial build is won or lost on the permit sequence, long before anyone breaks ground.",
   "commercial-renovation":
@@ -1460,6 +1573,10 @@ const serviceLead: Record<string, string> = {
  * Search Console data; adding distinct text is not, and similarity is a ratio.
  */
 const serviceConstraint: Record<string, string> = {
+  "custom-home-building":
+    "Stone, custom millwork and specialty glazing carry the longest lead times on the job, and they are ordered against framing dates rather than at finishing stage. A home that waits on a countertop template is a home that waits twelve weeks.",
+  "home-renovation":
+    "The family is still in the house. Every day without a kitchen or a second bathroom is a day the schedule is measured in, and an addition tying into an existing roof and foundation is where the unknowns live.",
   "commercial-construction":
     "A ground-up commercial build is a servicing problem before it is a building problem. Power, water and storm capacity to the lot decide the schedule long before anyone prices drywall.",
   "commercial-renovation":
@@ -1490,6 +1607,10 @@ const serviceConstraint: Record<string, string> = {
  * city-vs-city to city-vs-hub, and the all-pairs measurement would find it.
  */
 const serviceDetail: Record<string, string> = {
+  "custom-home-building":
+    "The finish schedule is fixed before framing starts, because that is what sets the procurement dates for everything with a lead time. Selections left open until drywall is the single most reliable way to add two months to a custom home.",
+  "home-renovation":
+    "Work is zoned and sealed so the part of the house you are living in stays livable, and the sequence is written around the rooms you cannot lose. Where an addition ties into existing structure, that connection is opened and inspected before the schedule is committed rather than after.",
   "commercial-construction":
     "We confirm the service capacity at the property line before pricing the build. An upgrade to the transformer or the water service runs on the utility's timeline rather than the site's. No amount of crew recovers those weeks once they are lost.",
   "commercial-renovation":
@@ -1769,8 +1890,12 @@ export function postHeroImage(serviceSlug: string, seed: number) {
 }
 
 export function getAllConstructionPages(): ConstructionPseoPage[] {
+  // `cityPages: false` services are hub-only. Undefined means yes, so the
+  // original ten are untouched and keep every URL they already rank for.
+  const cityServices = constructionServices.filter((service) => service.cityPages !== false);
+
   return serviceAreas.flatMap((city) =>
-    constructionServices.map((service) => {
+    cityServices.map((service) => {
       const path = `/construction/${city.slug}/${service.slug}`;
       const primary = `${service.primaryKeyword} in ${city.city}, BC`;
       const keywords = buildKeywordCluster(service, city);
@@ -2065,6 +2190,26 @@ function buildKeywordCluster(service: ConstructionService, city: ServiceArea) {
  * while pages are ranking.
  */
 const serviceFocusCards: Record<string, [Feature, Feature]> = {
+  "custom-home-building": [
+    {
+      title: "Long leads ordered early",
+      text: "Stone, millwork and glazing are ordered against framing dates. The critical path is procurement, not trades.",
+    },
+    {
+      title: "Selections closed before drywall",
+      text: "The finish schedule is fixed before it can hold the site up. Open selections are what add months to a custom home.",
+    },
+  ],
+  "home-renovation": [
+    {
+      title: "The house stays livable",
+      text: "Work is zoned and sealed. The sequence is written around the kitchen and bathroom you cannot lose.",
+    },
+    {
+      title: "Tie-ins opened first",
+      text: "Where an addition meets existing structure, it is opened and inspected before the schedule is committed.",
+    },
+  ],
   "commercial-construction": [
     {
       title: "Servicing confirmed",
