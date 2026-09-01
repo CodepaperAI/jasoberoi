@@ -15,6 +15,10 @@ import { siteConfig } from "@/lib/site";
  * page never has to load or render a second thing to convert.
  *
  * Hidden from lg up, where the form is already beside the headline.
+ *
+ * Sentence case, matching the form's own button. Tracked-out uppercase on a
+ * saturated block is what ad-network creative looks like, and it was part of
+ * why these pages read as untrustworthy.
  */
 export function LandingStickyCta({
   content,
@@ -35,7 +39,7 @@ export function LandingStickyCta({
       <a
         href="#request"
         data-analytics={`meta-lp-${content.campaign}-sticky-form`}
-        className="ui-font inline-flex min-h-12 flex-1 items-center justify-center rounded-xl bg-orange-600 px-4 text-xs font-extrabold uppercase tracking-[0.14em] text-white transition hover:bg-orange-500"
+        className="inline-flex min-h-12 flex-1 items-center justify-center rounded-xl bg-orange-600 px-4 text-[0.9375rem] font-bold text-white transition hover:bg-orange-700"
       >
         Request a callback
       </a>

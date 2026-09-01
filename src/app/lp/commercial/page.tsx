@@ -98,14 +98,7 @@ export default function CommercialLandingPage() {
               Get a build plan
               <ArrowRight size={16} aria-hidden="true" />
             </a>
-            <a
-              href={siteConfig.phoneHref}
-              data-analytics="meta-lp-commercial-hero-call"
-              className="ui-font hidden sm:inline-flex min-h-14 items-center gap-2.5 rounded-full border border-white/35 px-8 text-xs font-extrabold uppercase tracking-[0.16em] backdrop-blur transition hover:border-orange-400 hover:text-orange-400"
-            >
-              <Phone size={15} aria-hidden="true" />
-              {siteConfig.phone}
-            </a>
+            
           </div>
         </div>
 
@@ -151,8 +144,9 @@ export default function CommercialLandingPage() {
             </ul>
           </div>
 
-          <div className="rounded-[1.75rem] border border-white/12 bg-white/[0.05] p-6 sm:p-9">
-            <LandingLeadForm content={content} tone="dark" />
+          {/* White, deliberately. See the note in LandingLeadForm. */}
+          <div className="order-first lg:order-last rounded-[1.75rem] bg-white p-6 shadow-2xl shadow-black/40 sm:p-9">
+            <LandingLeadForm content={content} />
           </div>
         </div>
       </section>
@@ -295,14 +289,7 @@ export default function CommercialLandingPage() {
               Get a build plan
               <ArrowRight size={16} aria-hidden="true" />
             </a>
-            <a
-              href={siteConfig.phoneHref}
-              data-analytics="meta-lp-commercial-close-call"
-              className="ui-font inline-flex min-h-14 items-center gap-2.5 rounded-full border border-white/35 px-8 text-xs font-extrabold uppercase tracking-[0.16em] transition hover:border-orange-400 hover:text-orange-400"
-            >
-              <Phone size={15} aria-hidden="true" />
-              {siteConfig.phone}
-            </a>
+            
           </div>
         </div>
       </section>
