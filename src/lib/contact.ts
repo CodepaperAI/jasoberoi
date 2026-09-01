@@ -35,6 +35,16 @@ import { siteConfig } from "@/lib/site";
  */
 const LEAD_ENDPOINT = "/api/lead";
 
+/**
+ * The honeypot's field name, shared with the form and echoed to the server.
+ *
+ * Meaningless on purpose. The previous name, `companyWebsite`, was a real field
+ * name under a real label, and browser autofill filled it — see the note in
+ * ConsultationForm.tsx. Anything recognisable here will eventually be autofilled
+ * by something, so if this ever needs changing, keep it opaque.
+ */
+export const HONEYPOT_FIELD = "obz_f7";
+
 export const isLeadCaptureConfigured = true;
 
 /** Where a completed enquiry lands. GTM matches on "URL contains /thank-you". */
@@ -191,14 +201,24 @@ export async function submitLead(
   formSource: string,
 ): Promise<SubmitResult> {
   /*
-    A person cannot see the honeypot field, so anything in it came from a bot.
-    Report success and post nothing: an error would tell the bot to retry with a
-    different shape, and the pipeline stays clean either way.
-  */
-  const honeypot = String(new FormData(form).get("companyWebsite") ?? "").trim();
-  if (honeypot) return { captured: true };
+    The honeypot no longer decides anything here.
 
-  const payload = buildLeadPayload(form, formSource);
+    It used to return { captured: true } and post nothing, which is a silent
+    drop: the visitor is sent to /thank-you believing the enquiry was sent, and
+    no record of it exists anywhere — not in the CRM, not in the server log, not
+    in the dataLayer. That is exactly what happened once Chrome started
+    autofilling the old `companyWebsite` field, and it is unrecoverable because
+    nothing knows the lead existed.
+
+    A false positive costs a customer; a false negative costs a tagged contact
+    somebody deletes in two seconds. So the decision moves to the server, which
+    still keeps bot submissions out of the pipeline but records them — and every
+    submission now leaves a trace, whichever way it is judged.
+  */
+  const payload = {
+    ...buildLeadPayload(form, formSource),
+    honeypot: String(new FormData(form).get(HONEYPOT_FIELD) ?? "").trim(),
+  };
 
   const captured = await postLead(payload);
 
