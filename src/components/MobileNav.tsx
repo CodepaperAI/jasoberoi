@@ -38,12 +38,32 @@ export function MobileNav() {
       </summary>
       <div className="absolute right-0 top-14 max-h-[calc(100svh-7rem)] w-80 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-2xl border border-orange-100 bg-white p-3 shadow-2xl shadow-orange-950/10">
         {navigation.map((item) =>
-          item.items ? (
+          item.items || item.groups ? (
             <div key={item.label} className="border-b border-zinc-100 py-2 last:border-b-0">
               <p className="ui-font px-2 pb-1 text-xs font-bold uppercase tracking-[0.18em] text-accent">
                 {item.label}
               </p>
-              {item.items.map((child) => (
+              {/* Vertical headings, so the phone menu says "healthcare,
+                  commercial and residential" the same way the desktop one
+                  does. They are lighter than the section label above so the
+                  hierarchy still reads at a glance. */}
+              {item.groups?.map((group) => (
+                <div key={group.group} className="pb-1">
+                  <p className="ui-font px-2 pb-0.5 pt-2 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-slate-400">
+                    {group.group}
+                  </p>
+                  {group.items.map((child) => (
+                    <Link
+                      key={child.href}
+                      href={child.href}
+                      className="block rounded-xl px-2 py-2 text-base font-semibold text-zinc-800 hover:bg-orange-50 hover:text-accent"
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
+              ))}
+              {item.items?.map((child) => (
                 <Link
                   key={child.href}
                   href={child.href}

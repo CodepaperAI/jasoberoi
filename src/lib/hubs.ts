@@ -171,6 +171,20 @@ const hubQuestions: Record<string, Array<{ question: string; answer: string }>> 
         "Ten to fourteen months of construction for a 4,500 sq ft home, after design and permits. Long-lead millwork drives the critical path.",
     },
   ],
+  "custom-home-building": [
+    {
+      question: "When do I have to have my finishes chosen?",
+      answer:
+        "Before framing completes. Stone, custom millwork and specialty glazing are ordered against framing dates, so a selection still open at drywall stops the site rather than the showroom.",
+    },
+  ],
+  "home-renovation": [
+    {
+      question: "Can we stay in the house during the work?",
+      answer:
+        "Usually yes. The house is zoned and sealed so the rooms you cannot lose — a kitchen, a bathroom and a route between them — stay in use, and the noisy work is scheduled against that rather than around it.",
+    },
+  ],
 };
 
 function buildFaqs(service: ConstructionService) {
