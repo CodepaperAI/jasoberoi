@@ -36,7 +36,7 @@ export function organizationJsonLd(url: string) {
       addressRegion: "BC",
       addressCountry: "CA",
     })),
-    image: absoluteUrl("/oberizon/optimized/hero-commercial.webp"),
+    image: absoluteUrl("/oberizon/optimized/project-shine-dental-reception-live.jpg"),
     logo: absoluteUrl("/oberizon/optimized/oberizon-logo.png"),
     priceRange: "$$$",
     foundingDate: String(siteConfig.foundedYear),

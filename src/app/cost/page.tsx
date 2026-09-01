@@ -14,7 +14,9 @@ import {
   serviceRates,
 } from "@/lib/pricing";
 
-const HERO_IMAGE = "/oberizon/optimized/project-commercial-13.jpg";
+// Was project-commercial-13.jpg, which is a luxury house at dusk. The
+// calculator prices clinic and commercial build-outs.
+const HERO_IMAGE = "/oberizon/optimized/project-skinholic-lobby-live.jpg";
 
 /**
  * Derived from src/lib/pricing.ts, not restated.

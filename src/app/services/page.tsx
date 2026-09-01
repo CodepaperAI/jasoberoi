@@ -23,7 +23,9 @@ import { serviceAreas } from "@/lib/site";
  * them click into each one to find out is friction that costs the click.
  */
 
-const HERO_IMAGE = "/oberizon/optimized/hero-commercial.webp";
+// Healthcare and commercial interiors are what these ten services are; the
+// luxury house that headed this page is one of the ten, not the summary of them.
+const HERO_IMAGE = "/oberizon/optimized/project-shine-dental-live.jpg";
 
 const GROUPS = [
   {

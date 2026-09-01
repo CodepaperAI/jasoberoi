@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { altFor } from "@/lib/photos";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowRight, Banknote, CalendarClock, Clock, FileCheck2 } from "lucide-react";
@@ -81,7 +82,7 @@ function PostCard({ post, showTopic = false }: { post: BlogPost; showTopic?: boo
       <div className="relative aspect-[16/10] overflow-hidden bg-ink">
         <Image
           src={postImage(post)}
-          alt=""
+          alt={altFor(postImage(post))}
           fill
           sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
           className="object-cover transition duration-700 group-hover:scale-105"
@@ -239,7 +240,7 @@ export default function BlogIndex() {
           >
             <Image
               src={postImage(lead)}
-              alt=""
+              alt={altFor(postImage(lead))}
               fill
               sizes="(min-width: 1280px) 1280px, 100vw"
               priority
