@@ -366,10 +366,25 @@ function hubFaqs(city: ServiceArea, slug: CityHubSlug): Array<{ question: string
   ];
 }
 
-/** Hero image, taken off the city's own delivered work where there is some. */
+/**
+ * Hero image, taken off the city's own delivered work where there is some.
+ *
+ * Two things were wrong here. The fallback was hero-commercial.webp, a luxury
+ * house, so every city hub without a delivered project opened on a villa. And
+ * the "first local project" rule opened Vancouver on the West Cordova house,
+ * because that is Vancouver's only delivered job — a hub whose headline offer
+ * is clinic and commercial build-outs, led by a photograph of a home.
+ *
+ * Residential work is skipped for the hero specifically. It stays in the hub's
+ * project list below, where it is proof of local delivery; it is just not the
+ * first thing a clinic owner sees.
+ */
 function hubHeroImage(city: ServiceArea): string {
-  const local = getProjectsForCity(city.slug).find((project) => project.images?.length);
-  return local?.images?.[0] ?? "/oberizon/optimized/hero-commercial.webp";
+  const local = getProjectsForCity(city.slug).filter((project) => project.images?.length);
+  const nonResidential = local.find((project) => project.vertical !== "Residential");
+  return (
+    nonResidential?.images?.[0] ?? "/oberizon/optimized/project-shine-dental-reception-live.jpg"
+  );
 }
 
 export function getAllCityHubs(): CityHub[] {

@@ -128,10 +128,14 @@ export default async function ConstructionRoute({ params }: ConstructionProps) {
       />
 
       {/* 2 — Experience. */}
-      <ExperienceBlock city={page.city} items={page.projects} />
+      <ExperienceBlock city={page.city} items={page.projects} vertical={page.service.vertical} />
 
       {/* 3 — The work that earns the trust. */}
-      <ProjectProof items={page.projects} cityName={page.city.city} />
+      <ProjectProof
+        items={page.projects}
+        cityName={page.city.city}
+        vertical={page.service.vertical}
+      />
 
       {/* 4 — Reviews. */}
       <ReviewsBlock items={page.reviews} />

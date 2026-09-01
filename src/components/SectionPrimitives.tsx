@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { altFor } from "@/lib/photos";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { BookConsultationButton } from "@/components/BookConsultationButton";
@@ -31,7 +32,7 @@ export function PageHero({ eyebrow, heading, subheading, image }: PageHeroProps)
     <section className="relative flex min-h-[76svh] items-center overflow-hidden bg-ink px-5 pb-20 pt-36 sm:px-6 lg:px-8">
       <Image
         src={image}
-        alt=""
+        alt={altFor(image)}
         fill
         sizes="100vw"
         priority

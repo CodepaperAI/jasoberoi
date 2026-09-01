@@ -33,11 +33,18 @@ export function canonicalPageUrl(path: string) {
   return absoluteUrl(path.endsWith("/") ? path : `${path}/`);
 }
 
+/*
+  The default image is a delivered dental clinic, not the luxury house that
+  stood here. hero-commercial.webp is a photograph of a home at dusk, so every
+  page that did not pass its own image — the blog index, About, Contact, the
+  city hubs, the service hubs — shared to Google, Facebook and WhatsApp as a
+  villa. Clinics are the business.
+*/
 export function buildMetadata({
   title,
   description,
   path,
-  image = "/oberizon/optimized/hero-commercial.webp",
+  image = "/oberizon/optimized/project-shine-dental-reception-live.jpg",
   keywords = [],
   index = true,
 }: MetadataInput): Metadata {

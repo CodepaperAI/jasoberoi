@@ -1088,6 +1088,172 @@ function checkLandingStructure(sources) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Every photograph a page shows must depict something that page is about.
+ *
+ * This exists because it went wrong quietly and at scale. Three assets are named
+ * for the opposite of their subject — project-med-spa.jpg and
+ * project-commercial-13.jpg are luxury houses, project-office.jpg is a dental
+ * clinic — and the hero pools were built by reading the filenames. The result
+ * was a villa heading the pharmacy build-out cost guide, the clinic renovation
+ * guide, the clinic-renovation service hub and twelve healthcare city pages,
+ * and a luxury house at dusk as the Open Graph image on all 165 pages.
+ *
+ * Nothing about that was visible in a diff, in a test, or on any page a
+ * developer happened to open. So it is checked here instead: src/lib/photos.ts
+ * records what is actually in each frame, and this walks every page the site
+ * generates and fails the build if one shows a subject its vertical disallows.
+ *
+ * ERROR rather than WARN. A dental clinic page showing someone's house is a
+ * claim about what Oberizon builds, and it is the wrong one.
+ */
+function checkPhotoRegistration(sources, photos) {
+  /*
+    Every image path written anywhere in src, checked against the registry.
+
+    checkPhotoSubjects walks the generated pages, which covers the data-driven
+    surfaces. It does not see a path hardcoded in a component — and the home
+    page, the largest single surface on the site, hardcodes eleven of them. An
+    unregistered path is one nothing knows the subject of, which is precisely
+    how a luxury house ended up on the pharmacy guide.
+  */
+  const pattern = /["'`](\/oberizon\/optimized\/[^"'`]+)["'`]/g;
+  const missing = new Map();
+
+  for (const { path, text } of sources) {
+    if (path.startsWith("src/lib/photos.ts")) continue;
+    for (const [, image] of text.matchAll(pattern)) {
+      if (photos.photoFor(image)) continue;
+      if (!missing.has(image)) missing.set(image, path);
+    }
+  }
+
+  for (const [image, where] of missing) {
+    fail(
+      "photo-subject",
+      `${image} is referenced by ${where} but has no entry in src/lib/photos.ts, so nothing knows what it depicts. Add it with a verified subject and alt text.`,
+      where,
+    );
+  }
+}
+
+function checkPhotoSubjects(site, blog, cityHubs, photos) {
+  const seen = [];
+
+  for (const service of site.constructionServices) {
+    seen.push({
+      where: `/services/${service.slug}`,
+      vertical: service.vertical,
+      image: service.image,
+    });
+  }
+
+  for (const page of site.getAllConstructionPages()) {
+    seen.push({ where: page.path, vertical: page.service.vertical, image: page.heroImage });
+  }
+
+  for (const hub of cityHubs.getAllCityHubs()) {
+    // City hubs span every vertical, so a house is the only wrong answer.
+    seen.push({ where: `/construction/${hub.city.slug}`, vertical: "Commercial", image: hub.heroImage });
+  }
+
+  for (const post of blog.blogPosts) {
+    const service = site.constructionServices.find((item) => item.slug === post.service);
+    if (!service) continue;
+    seen.push({
+      where: `/blog/${post.slug}`,
+      vertical: service.vertical,
+      image: blog.postImage(post),
+    });
+  }
+
+  for (const page of site.mainPages) {
+    if (!page.heroImage) continue;
+    // These pages are not vertical-specific; they carry the brand, and the
+    // brand is clinics and commercial interiors.
+    seen.push({ where: `/${page.slug}`, vertical: "Commercial", image: page.heroImage });
+    for (const card of page.cards ?? []) {
+      if (!card.image) continue;
+      const vertical =
+        card.title === "Residential" || card.title === "Luxury Residential"
+          ? "Residential"
+          : card.title === "Healthcare"
+            ? "Healthcare"
+            : "Commercial";
+      seen.push({
+        where: `/${page.slug} — "${card.title}" card`,
+        vertical,
+        image: card.image,
+        // The portfolio shows the client's own delivered jobs under their own
+        // captions. A caption is context a city hero does not have, so a
+        // mismatch there is a question for the client rather than a bluff.
+        portfolio: page.slug === "projects",
+      });
+    }
+  }
+
+  for (const project of site.projects) {
+    for (const image of project.images ?? []) {
+      seen.push({
+        where: `project "${project.name}"`,
+        vertical: project.vertical,
+        image,
+        portfolio: true,
+      });
+    }
+  }
+
+  const offenders = seen.filter((item) => !photos.subjectAllowed(item.vertical, item.image));
+
+  const describe = ({ where, vertical, image }) => {
+    const photo = photos.photoFor(image);
+    return (
+      `${where} is ${vertical} but shows ${image.split("/").pop()}, which is a ${photo?.subject ?? "?"}: ` +
+      `"${photo?.alt ?? ""}".`
+    );
+  };
+
+  for (const item of offenders.filter((entry) => !entry.portfolio).slice(0, 12)) {
+    fail(
+      "photo-subject",
+      `${describe(item)} Pick a photograph whose registry subject is one of ${photos.allowedSubjects[item.vertical].join(" or ")}.`,
+      "src/lib/photos.ts",
+    );
+  }
+  const hidden = offenders.filter((entry) => !entry.portfolio).length - 12;
+  if (hidden > 0) {
+    fail(
+      "photo-subject",
+      `…and ${hidden} more page(s) showing a photograph of the wrong subject.`,
+      "src/lib/photos.ts",
+    );
+  }
+
+  // Portfolio photography is the client's record of their own job, so a
+  // mismatch is reported for confirmation rather than blocking the build.
+  for (const item of offenders.filter((entry) => entry.portfolio)) {
+    warn(
+      "photo-subject",
+      `${describe(item)} It is captioned, so it still reads on the portfolio — but confirm with the client which the room actually is. It is kept off every marketing hero until they do.`,
+      "src/lib/site.ts",
+    );
+  }
+
+  // A registry that has drifted from the folder is a registry nobody can trust.
+  const unregistered = [...new Set(seen.map((item) => item.image))].filter(
+    (image) => !photos.photoFor(image),
+  );
+  for (const image of unregistered) {
+    fail(
+      "photo-subject",
+      `${image} is rendered by a page but has no entry in src/lib/photos.ts, so nothing knows what it shows. Add it with a verified subject and alt text.`,
+      "src/lib/photos.ts",
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 function report() {
   const line = "─".repeat(72);
 
@@ -1119,6 +1285,7 @@ const pricing = await import("../src/lib/pricing.ts");
 const hubs = await import("../src/lib/hubs.ts");
 const cityHubs = await import("../src/lib/cityHubs.ts");
 const blog = await import("../src/lib/blog.ts");
+const photos = await import("../src/lib/photos.ts");
 
 checkCopy(sources);
 checkCopyrightYear(sources);
@@ -1145,4 +1312,6 @@ checkSchema(site, sources);
 checkHubStructure(hubs, sources);
 checkCityHubStructure(cityHubs, sources);
 checkLandingStructure(sources);
+checkPhotoRegistration(sources, photos);
+checkPhotoSubjects(site, blog, cityHubs, photos);
 report();

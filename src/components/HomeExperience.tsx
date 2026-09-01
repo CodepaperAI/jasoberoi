@@ -41,14 +41,14 @@ const verticals = [
     title: "Commercial Interiors",
     text: "Office, retail, and tenant improvements built around how the business actually needs to operate.",
     href: "/services/commercial-construction",
-    image: "/oberizon/optimized/project-dental-1.jpg",
+    image: "/oberizon/optimized/project-skinholic-lobby-live.jpg",
   },
   {
     label: "Vertical 03",
     title: "Luxury Residential",
     text: "Custom homes and high-end residential projects managed with planning, detail, and finish control.",
     href: "/services/luxury-residential-construction",
-    image: "/oberizon/optimized/hero-commercial.webp",
+    image: "/oberizon/optimized/project-luxury-live.jpg",
   },
 ];
 

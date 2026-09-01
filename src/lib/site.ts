@@ -1,3 +1,4 @@
+import { imageBase, photoPath, subjectAllowed } from "@/lib/photos";
 import { pricingSentence, ratesConfirmedByClient } from "@/lib/pricing";
 import { cityCommercialMeta, cityDescription, cityTitle } from "@/lib/seoCopy";
 
@@ -214,8 +215,6 @@ export type ConstructionPseoPage = {
 };
 
 
-const imageBase = "/oberizon/optimized";
-
 /**
  * The office address, structured once.
  *
@@ -370,7 +369,7 @@ export const constructionServices: ConstructionService[] = [
       "scope, budget, schedule, and deficiency control",
     ],
     proof: ["Commercial interiors", "Office and retail", "Permit and trade coordination"],
-    image: `${imageBase}/project-commercial-2.jpg`,
+    image: `${imageBase}/project-office.jpg`,
   },
   {
     name: "Commercial Renovation",
@@ -392,7 +391,7 @@ export const constructionServices: ConstructionService[] = [
       "finish, millwork, service, and handover coordination",
     ],
     proof: ["Commercial renovation", "Tenant improvements", "Operational planning"],
-    image: `${imageBase}/project-office.jpg`,
+    image: `${imageBase}/project-kanwarveer-reception-live.jpg`,
   },
   {
     name: "Office Renovation Contractor",
@@ -414,7 +413,7 @@ export const constructionServices: ConstructionService[] = [
       "construction sequencing with minimal operational friction",
     ],
     proof: ["Private office builds", "Professional interiors", "Finish control"],
-    image: `${imageBase}/project-office.jpg`,
+    image: `${imageBase}/reception.jpg`,
   },
   {
     name: "Healthcare Construction",
@@ -551,7 +550,7 @@ export const constructionServices: ConstructionService[] = [
       "deficiency management and reopening support",
     ],
     proof: ["Clinics", "Med spas", "Physio", "Operational readiness"],
-    image: `${imageBase}/project-med-spa.jpg`,
+    image: `${imageBase}/project-skinholic-reception-live.jpg`,
   },
   {
     name: "Luxury Residential Construction",
@@ -573,7 +572,7 @@ export const constructionServices: ConstructionService[] = [
       "quality control through final walkthrough and handover",
     ],
     proof: ["Custom homes", "High-end finishes", "Senior oversight"],
-    image: `${imageBase}/project-residential.jpg`,
+    image: `${imageBase}/project-luxury-live.jpg`,
   },
 ];
 
@@ -1148,7 +1147,7 @@ export const mainPages: SitePage[] = [
     heading: "A builder for spaces that cannot be improvised.",
     subheading:
       "Oberizon manages complex builds where planning, permits, services, trades, timelines, and finish quality need one accountable process.",
-    heroImage: `${imageBase}/project-commercial-13.jpg`,
+    heroImage: `${imageBase}/project-abby-dental-live.jpg`,
     introTitle: "Planning before construction gets loud.",
     intro:
       "From dental clinics and pharmacies to commercial interiors and luxury homes, Oberizon is built around the work that happens before the site gets busy: review, scope, services, sequencing, and handover.",
@@ -1183,12 +1182,12 @@ export const mainPages: SitePage[] = [
       {
         title: "Commercial",
         text: "Offices, retail spaces, and tenant improvements planned around business operations.",
-        image: `${imageBase}/project-office.jpg`,
+        image: `${imageBase}/reception.jpg`,
       },
       {
         title: "Residential",
         text: "Luxury residential construction with senior oversight and finish discipline.",
-        image: `${imageBase}/project-residential.jpg`,
+        image: `${imageBase}/project-commercial-13.jpg`,
       },
     ],
     canonicalPath: "/about",
@@ -1321,7 +1320,7 @@ export const mainPages: SitePage[] = [
     heading: "Privacy Policy",
     subheading:
       "How website inquiries and contact details are handled when visitors request a construction consultation.",
-    heroImage: `${imageBase}/hero-commercial.webp`,
+    heroImage: `${imageBase}/project-kanwarveer-corridor-live.jpg`,
     introTitle: "Information handling",
     intro:
       "Information submitted through the website is used to respond to project inquiries, provide requested construction guidance, and maintain communication.",
@@ -1663,32 +1662,45 @@ function firstClauses(text: string, count: number) {
 /**
  * Photography pools by vertical, for pages with no local project to show.
  *
- * Every one of these sits in public/oberizon/optimized already; three of them
- * (clinic-11, clinic-12, healthcare-5) had never been referenced by anything.
+ * Every entry is resolved through the photo registry rather than by filename,
+ * because the filenames are not reliable: the previous Healthcare pool ended on
+ * project-med-spa.jpg, which is a luxury house, and the Commercial pool carried
+ * project-commercial-13.jpg and hero-commercial.webp, which are the same luxury
+ * house at dusk. That put a villa at the top of the pharmacy cost guide, the
+ * clinic-renovation-vs-relocation guide and twelve city pages.
+ *
+ * Healthcare is clinics only. Commercial uses professional interiors —
+ * receptions, lobbies and corridors from delivered clinic fit-outs, which is
+ * what a commercial tenant improvement is and what these pages are about. The
+ * one asset filed as an office is a bar lounge, so it heads nothing. Residential
+ * is the two delivered homes; project-med-spa.jpg and hero-commercial.webp are
+ * the same two houses re-encoded, so including them would only repeat a frame.
  */
 const heroPool: Record<ConstructionService["vertical"], string[]> = {
   Healthcare: [
-    `${imageBase}/project-clinic-9.jpg`,
-    `${imageBase}/project-clinic-10.jpg`,
-    `${imageBase}/project-clinic-11.jpg`,
-    `${imageBase}/project-clinic-12.jpg`,
-    `${imageBase}/project-healthcare-3.jpg`,
-    `${imageBase}/project-healthcare-4.jpg`,
-    `${imageBase}/project-healthcare-5.jpg`,
-    `${imageBase}/dental-clinic.jpg`,
-    `${imageBase}/project-dental-1.jpg`,
-    `${imageBase}/project-med-spa.jpg`,
+    photoPath("project-clinic-9.jpg"),
+    photoPath("project-clinic-10.jpg"),
+    photoPath("project-clinic-11.jpg"),
+    photoPath("project-clinic-12.jpg"),
+    photoPath("project-healthcare-3.jpg"),
+    photoPath("project-healthcare-4.jpg"),
+    photoPath("project-healthcare-5.jpg"),
+    photoPath("dental-clinic.jpg"),
+    photoPath("project-dental-1.jpg"),
+    photoPath("project-commercial-2.jpg"),
+    photoPath("project-skinholic-treatment-live.jpg"),
+    photoPath("project-kanwarveer-operatory-live.jpg"),
   ],
   Commercial: [
-    `${imageBase}/project-office.jpg`,
-    `${imageBase}/project-commercial-2.jpg`,
-    `${imageBase}/project-commercial-13.jpg`,
-    `${imageBase}/hero-commercial.webp`,
-    `${imageBase}/reception.jpg`,
+    photoPath("project-office.jpg"),
+    photoPath("reception.jpg"),
+    photoPath("project-skinholic-lobby-live.jpg"),
+    photoPath("project-abby-dental-reception-live.jpg"),
+    photoPath("project-kanwarveer-reception-live.jpg"),
   ],
   Residential: [
-    `${imageBase}/project-residential.jpg`,
-    `${imageBase}/project-luxury-live.jpg`,
+    photoPath("project-luxury-live.jpg"),
+    photoPath("project-commercial-13.jpg"),
   ],
 };
 
@@ -1718,8 +1730,18 @@ export function heroImageFor(city: ServiceArea, service: ConstructionService) {
     .filter((project) => project.vertical === service.vertical);
 
   if (local.length) {
-    const shots = local.flatMap((project) => project.images ?? []);
-    return shots[serviceIndex % shots.length];
+    /*
+      Subject-filtered, not just vertical-filtered. White Rock's commercial
+      project is the "private office" build, whose one photograph is a bar
+      lounge — so matching on vertical alone opened all three White Rock
+      commercial pages on what reads as a living room. A local project only
+      wins where its photography actually shows the kind of space the page
+      sells; otherwise the page falls through to the pool below.
+    */
+    const shots = local
+      .flatMap((project) => project.images ?? [])
+      .filter((shot) => subjectAllowed(service.vertical, shot));
+    if (shots.length) return shots[serviceIndex % shots.length];
   }
 
   const pool = heroPool[service.vertical];
@@ -1740,7 +1762,7 @@ export function heroImageFor(city: ServiceArea, service: ConstructionService) {
  */
 export function postHeroImage(serviceSlug: string, seed: number) {
   const service = constructionServices.find((item) => item.slug === serviceSlug);
-  if (!service) return `${imageBase}/hero-commercial.webp`;
+  if (!service) return photoPath("project-shine-dental-reception-live.jpg");
 
   const pool = heroPool[service.vertical];
   return pool[seed % pool.length] ?? service.image;

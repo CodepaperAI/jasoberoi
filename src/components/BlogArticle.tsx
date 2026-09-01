@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { altFor } from "@/lib/photos";
 import Link from "next/link";
 import { Clock } from "lucide-react";
 import { FaqAccordion } from "@/components/FaqAccordion";
@@ -93,14 +94,16 @@ export function BlogArticle({
 
       {/* Photograph, then meta, then headline. It sits above the h1 because the
           h1 lives inside the .mdx body and cannot be rendered around — and the
-          order is the ordinary editorial one, so nothing is lost by it. Alt is
-          empty deliberately: these are decorative project photographs dealt
-          from a pool, and describing one as though it depicted this specific
-          article would be worse for a screen reader than announcing nothing. */}
+          order is the ordinary editorial one, so nothing is lost by it.
+
+          Alt was empty on the reasoning that a pool-dealt photograph could not
+          be described honestly — which was right while the Healthcare pool
+          could deal a luxury house to a pharmacy cost guide. The pool is now
+          subject-checked, so the alt describes the actual room. */}
       <div className="relative mt-6 aspect-[16/9] overflow-hidden rounded-2xl bg-ink">
         <Image
           src={hero}
-          alt=""
+          alt={altFor(hero)}
           fill
           sizes="(min-width: 768px) 48rem, 100vw"
           priority

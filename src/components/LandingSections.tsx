@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { altFor, subjectAllowed } from "@/lib/photos";
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, CalendarDays, MapPin, Phone, Quote, Star } from "lucide-react";
 import { BookConsultationButton } from "@/components/BookConsultationButton";
@@ -7,11 +8,50 @@ import { ReviewAvatar } from "@/components/ReviewAvatar";
 import {
   portfolioTally,
   processSteps,
+  projects as allProjects,
   siteConfig,
+  type ConstructionService,
   type Project,
   type Review,
   type ServiceArea,
 } from "@/lib/site";
+
+type Vertical = ConstructionService["vertical"];
+
+/**
+ * Delivered work to illustrate a page of this vertical, nearest first.
+ *
+ * Local work wins, because "we have built here" is the strongest thing these
+ * pages say. But only where its photography suits the page: Vancouver's one
+ * delivered job is the West Cordova house, so every Vancouver page — dental
+ * clinic construction and pharmacy construction included — put a photograph of
+ * a home beside the experience numbers and at the top of the proof grid.
+ *
+ * Where the city has nothing of the right kind, delivered work of that kind
+ * from elsewhere stands in. Every card and caption carries the project's real
+ * name, discipline and address, so nothing about the location is implied that
+ * is not stated on the card itself.
+ */
+function relevantProjects(items: Project[], vertical?: Vertical): Project[] {
+  if (!vertical) return items;
+
+  const suits = (project: Project) =>
+    (project.images ?? []).every((image) => subjectAllowed(vertical, image));
+
+  const local = items.filter(suits);
+  if (local.length) return local;
+
+  /*
+    Nothing local suits the page. Fall back to delivered work whose photography
+    does, same vertical first — never back to `items`, which is what put the
+    West Cordova house back on Vancouver's commercial pages when the filter
+    above emptied the list. An empty result renders no section at all, and a
+    missing section beats the wrong photograph.
+  */
+  const elsewhere = allProjects.filter((project) => project.images?.length && suits(project));
+  const sameVertical = elsewhere.filter((project) => project.vertical === vertical);
+  return (sameVertical.length ? sameVertical : elsewhere).slice(0, 3);
+}
 
 /**
  * The trust-first landing page, in the order a visitor earns confidence:
@@ -158,9 +198,13 @@ export function LandingHero({
     <section
       className={`relative flex ${compact ? "min-h-[64svh] pt-32" : "min-h-[82svh] pt-36"} items-center overflow-hidden bg-ink px-5 pb-20 sm:px-6 lg:px-8`}
     >
+      {/* Described, not decorative. These were alt="" while the pool could hand a
+          dental page a photograph of a house — a wrong description being worse
+          than none. The registry now guarantees the subject matches the page,
+          so the frame is worth describing and worth indexing. */}
       <Image
         src={image}
-        alt=""
+        alt={altFor(image)}
         fill
         sizes="100vw"
         priority
@@ -207,13 +251,21 @@ export function LandingHero({
  * ProofBar so the site has one way of presenting a figure, with a real photo of
  * work near this city beside them.
  */
-export function ExperienceBlock({ city, items }: { city: ServiceArea; items: Project[] }) {
+export function ExperienceBlock({
+  city,
+  items,
+  vertical,
+}: {
+  city: ServiceArea;
+  items: Project[];
+  vertical?: Vertical;
+}) {
   const figures = [
     { value: `${yearsBuilding}+`, unit: "years", label: `Building since ${siteConfig.foundedYear}` },
     { value: `${deliveredCount}+`, unit: "delivered", label: `Plus ${inProgressCount} in progress` },
     { value: "90", unit: "days", label: "Fastest clinic, five operatories" },
   ];
-  const shown = items.find((project) => project.images?.length);
+  const shown = relevantProjects(items, vertical).find((project) => project.images?.length);
 
   return (
     <section className="bg-paper px-5 py-20 sm:px-6 lg:px-8">
@@ -303,14 +355,24 @@ export function ProjectProof({
   items,
   cityName,
   heading,
+  vertical,
 }: {
   items: Project[];
   cityName?: string;
   heading?: string;
+  vertical?: Vertical;
 }) {
-  if (items.length === 0) {
+  const shownItems = relevantProjects(items, vertical);
+  if (shownItems.length === 0) {
     return null;
   }
+
+  /*
+    When the city has no delivered work of this kind, the grid shows Oberizon's
+    work of that kind from elsewhere — so the heading must stop saying "near
+    {city}", which would no longer be true of what is on screen.
+  */
+  const isLocal = shownItems.every((project) => items.includes(project));
 
   /**
    * The grid tracks the number of cards.
@@ -320,9 +382,9 @@ export function ProjectProof({
    * design. Fewer cards now means fewer columns.
    */
   const columns =
-    items.length === 1
+    shownItems.length === 1
       ? "max-w-md"
-      : items.length === 2
+      : shownItems.length === 2
         ? "md:grid-cols-2 max-w-4xl"
         : "md:grid-cols-2 xl:grid-cols-3";
 
@@ -333,11 +395,14 @@ export function ProjectProof({
           The work
         </p>
         <h2 className="h-section mt-4">
-          {heading ?? `Builds we have delivered near ${cityName}.`}
+          {heading ??
+            (isLocal
+              ? `Builds we have delivered near ${cityName}.`
+              : "Builds we have delivered.")}
         </h2>
 
         <div className={`mt-10 grid gap-5 ${columns}`}>
-          {items.map((project) => (
+          {shownItems.map((project) => (
             <article
               key={project.slug}
               className="card-shadow flex flex-col overflow-hidden rounded-3xl bg-white ring-1 ring-slate-200"
