@@ -481,3 +481,26 @@ a {
     transition-duration: 1ms !important;
   }
 }
+
+/*
+  Paid landing pages run without the site chrome.
+
+  A visitor who arrived from an ad has one job to do on the page, and the header
+  nav, the footer sitemap and the floating contact dock are all ways out of it.
+  Removing them is the single most reliable landing-page change there is.
+
+  Done with :has() rather than a second root layout. Multiple root layouts need
+  every existing route moved into a route group, which is a lot of churn on a
+  site that is ranking, for a rule two selectors express exactly.
+*/
+body:has([data-landing]) > header,
+body:has([data-landing]) > footer,
+body:has([data-landing]) > [data-contact-dock] {
+  display: none;
+}
+
+/* The site header is fixed, so main carries its offset. These pages provide
+   their own header in normal flow and must not inherit it. */
+body:has([data-landing]) > main {
+  padding-top: 0;
+}

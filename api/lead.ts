@@ -338,9 +338,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         phone: lead.phone || undefined,
         source: lead.source || "Website",
         city: lead.projectLocation || undefined,
+        /*
+          `formLocation` is what tells the Meta campaigns apart. The browser
+          sets it to meta-lp-commercial or meta-lp-residential on the paid
+          landing pages, and tagging it here is what makes "how many leads did
+          the residential ad set produce" answerable inside GHL rather than
+          only in Ads Manager.
+        */
         tags: [
           lead.source || "Website",
           lead.projectType,
+          lead.formLocation?.startsWith("meta-lp-") ? "meta-ads" : null,
+          lead.formLocation?.startsWith("meta-lp-") ? lead.formLocation : null,
           trapped ? "suspected-bot" : null,
         ].filter(Boolean) as string[],
         customFields: attributionFields(lead, fromGoogle),
