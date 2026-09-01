@@ -8,16 +8,34 @@
  * so a lead captured at submit time looks organic and the campaign gets credited
  * with nothing it actually paid for.
  *
- * So the click identifiers are read on the first page of the session and kept in
- * sessionStorage. Session, not local: attribution should expire when the visit
- * does, otherwise a lead six weeks later still reports as paid.
+ * So the click identifiers are read from whatever page carries them and kept.
  *
- * Every access is wrapped, because sessionStorage throws outright in some
- * privacy modes rather than returning null — and a storage error must never be
- * the reason a lead form stops working.
+ * Stored for ninety days, and a fresh ad click overwrites a stored one.
+ *
+ * This used sessionStorage with first-write-wins, on the reasoning that
+ * attribution should expire when the visit does. That is defensible for
+ * reporting and wrong for this business: a clinic owner reads a cost guide on
+ * Monday and books on Thursday, and under session storage Thursday's lead
+ * reported as organic while Google Ads had already been paid for Monday's
+ * click. Ninety days matches the Google Ads conversion window, so what the
+ * pipeline says and what the ads account says now agree.
+ *
+ * Last-click-wins for the same reason. If someone arrives on one ad, leaves,
+ * and returns on a second, the second is the click that earned the enquiry.
+ * The old first-write rule existed to stop a shared link carrying utm_source
+ * from stealing credit from a real ad click — still a real risk, so a bare utm
+ * set no longer displaces a stored Google click id. Only a new click id, or a
+ * utm set arriving where none was stored, replaces what is there.
+ *
+ * Every access is wrapped, because storage throws outright in some privacy
+ * modes rather than returning null — and a storage error must never be the
+ * reason a lead form stops working.
  */
 
 const KEY = "oberizon:attribution";
+
+/** Ninety days, matching the Google Ads conversion window. */
+const TTL_MS = 90 * 24 * 60 * 60 * 1000;
 
 export type Attribution = {
   gclid?: string;
@@ -48,8 +66,17 @@ export const ORGANIC_SOURCE = "Website";
 
 function read(): Attribution {
   try {
-    const raw = window.sessionStorage.getItem(KEY);
-    return raw ? (JSON.parse(raw) as Attribution) : {};
+    const raw = window.localStorage.getItem(KEY);
+    if (!raw) return {};
+
+    const stored = JSON.parse(raw) as Attribution;
+
+    // Past the conversion window it is no longer the click that earned the
+    // lead, so it is treated as absent rather than reported as paid.
+    const capturedAt = stored.capturedAt ? Date.parse(stored.capturedAt) : NaN;
+    if (Number.isFinite(capturedAt) && Date.now() - capturedAt > TTL_MS) return {};
+
+    return stored;
   } catch {
     return {};
   }
@@ -57,28 +84,39 @@ function read(): Attribution {
 
 function write(value: Attribution) {
   try {
-    window.sessionStorage.setItem(KEY, JSON.stringify(value));
+    window.localStorage.setItem(KEY, JSON.stringify(value));
   } catch {
     // Private mode. The lead still submits, it just submits unattributed.
   }
 }
 
 /**
- * Records the click identifiers if this is the first page of the session.
+ * Records the click identifiers when this page carries any.
  *
- * First write wins. A visitor who arrives on an ad and then navigates to a page
- * carrying its own utm_source in a shared link would otherwise have the paid
- * click overwritten by the later one, and the campaign would lose the lead it
- * bought.
+ * A Google click id always wins: it is the only unambiguous evidence that this
+ * visit was bought. A bare utm set does not displace a stored click id, because
+ * the common way that happens is a visitor sharing a link that already carried
+ * campaign tags — which would hand the credit for a paid click to whoever
+ * forwarded the URL.
  */
 export function captureAttribution() {
   if (typeof window === "undefined") return;
 
-  const existing = read();
-  if (existing.capturedAt) return;
-
   const params = new URLSearchParams(window.location.search);
   const value = (key: string) => params.get(key) ?? undefined;
+
+  const clickId = value("gclid") ?? value("wbraid") ?? value("gbraid");
+  const hasUtm = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"].some(
+    (key) => params.get(key),
+  );
+
+  // Nothing on this URL to record.
+  if (!clickId && !hasUtm) return;
+
+  const existing = read();
+
+  // A utm-only arrival must not overwrite a stored Google click.
+  if (!clickId && (existing.gclid || existing.wbraid || existing.gbraid)) return;
 
   const captured: Attribution = {
     gclid: value("gclid"),
