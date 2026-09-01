@@ -73,6 +73,24 @@ const STAGE_ID = process.env.GHL_PIPELINE_STAGE_ID ?? "";
  * depend on anyone mapping fields correctly in a builder, and the workflow is
  * reduced to the one thing only it can do.
  */
+/*
+  The Meta destination.
+
+  Paid landing-page leads go to a different GHL location entirely, with its own
+  private-integration token, its own pipeline and — this is the part that bites
+  — its own custom field ids. Custom fields are per-location in GHL, so the nine
+  ids the website leads use do not exist over there and silently write nothing
+  if reused.
+
+  Unset falls back to the website destination, so a missing variable degrades to
+  "the lead still lands somewhere" rather than to a 502.
+*/
+const META_TOKEN = process.env.GHL_META_API_TOKEN ?? "";
+const META_LOCATION_ID = process.env.GHL_META_LOCATION_ID ?? "";
+const META_PIPELINE_ID = process.env.GHL_META_PIPELINE_ID ?? "";
+const META_STAGE_ID = process.env.GHL_META_PIPELINE_STAGE_ID ?? "";
+const META_NOTIFY_CONTACT_ID = process.env.GHL_META_NOTIFY_CONTACT_ID ?? "";
+
 const FALLBACK_WEBHOOK = process.env.GHL_WEBHOOK_URL ?? "";
 /** Who hears about a new lead, and the GHL contact the email is threaded on. */
 const NOTIFY_EMAIL = process.env.GHL_NOTIFY_EMAIL ?? "";
@@ -121,7 +139,20 @@ type Lead = {
  * be checked against GHL by reading it — a mistyped environment variable fails
  * silently, which is the failure mode this whole file exists to avoid.
  */
-const CUSTOM_FIELD = {
+type FieldMap = {
+  googleClickId: string;
+  gbraid: string;
+  wbraid: string;
+  utmSource: string;
+  utmMedium: string;
+  utmCampaign: string;
+  utmTerm: string;
+  landingPage: string;
+  leadSource: string;
+};
+
+/** Website leads — the original Oberizon Construction location. */
+const CUSTOM_FIELD: FieldMap = {
   googleClickId: "b9sswjB83vF5uui8qWnz",
   gbraid: "52ZjWgtzQACt2wu4FvVh",
   wbraid: "LrzCMupIyU9cs4R98ZoW",
@@ -131,7 +162,70 @@ const CUSTOM_FIELD = {
   utmTerm: "XDzxECGtOKpEtlO3rU2K",
   landingPage: "EPeAsSnTLqv0LOb1gFsp",
   leadSource: "bBNrZVZnDKMm8rP7M453",
-} as const;
+};
+
+/**
+ * Meta landing-page leads — the second location.
+ *
+ * google-clid already existed there; the other eight were created against that
+ * location on 2026-09-01 because none of them did. Same names, different ids,
+ * which is exactly why this cannot be one shared map.
+ */
+const META_CUSTOM_FIELD: FieldMap = {
+  googleClickId: "yAoZINZ5nvWIXO4fjznf",
+  gbraid: "GCBUrOfFFLGSR71o41Af",
+  wbraid: "rBKw2vnmxhrXz4SXyosE",
+  utmSource: "ww8hIrhK2J26UQv1KZsh",
+  utmMedium: "6N5W2HzYhUxq7Tw9VDZI",
+  utmCampaign: "pgmgCwEzJ3Cd3C3H0crR",
+  utmTerm: "1uW3CtK4aNEmriYsxD7Y",
+  landingPage: "SNY4y16jpAX3pL2heuvz",
+  leadSource: "wOcpp6lSRv5DmPWI6fMU",
+};
+
+/** Everything that differs between the two GHL destinations. */
+type Destination = {
+  name: string;
+  token: string;
+  locationId: string;
+  pipelineId: string;
+  stageId: string;
+  fields: FieldMap;
+  notifyContactId: string;
+};
+
+/**
+ * Which GHL location a lead belongs to.
+ *
+ * Paid landing-page traffic is worked by a different team in a different
+ * location; website enquiries keep going where their history already is. The
+ * form location decides it, because that is the one thing the browser knows
+ * for certain about which page produced the lead.
+ */
+function destinationFor(lead: Lead): Destination {
+  const website: Destination = {
+    name: "website",
+    token: TOKEN,
+    locationId: LOCATION_ID,
+    pipelineId: PIPELINE_ID,
+    stageId: STAGE_ID,
+    fields: CUSTOM_FIELD,
+    notifyContactId: NOTIFY_CONTACT_ID,
+  };
+
+  const isMeta = Boolean(lead.formLocation?.startsWith("meta-lp-"));
+  if (!isMeta || !META_TOKEN || !META_LOCATION_ID) return website;
+
+  return {
+    name: "meta",
+    token: META_TOKEN,
+    locationId: META_LOCATION_ID,
+    pipelineId: META_PIPELINE_ID,
+    stageId: META_STAGE_ID,
+    fields: META_CUSTOM_FIELD,
+    notifyContactId: META_NOTIFY_CONTACT_ID,
+  };
+}
 
 /**
  * The attribution, shaped for the contact record.
@@ -140,23 +234,23 @@ const CUSTOM_FIELD = {
  * already holds a click id would erase the attribution of a returning enquirer,
  * since the contact is upserted rather than created.
  */
-function attributionFields(lead: Lead, fromGoogle: boolean) {
+function attributionFields(lead: Lead, fromGoogle: boolean, fields: FieldMap) {
   return [
-    { id: CUSTOM_FIELD.googleClickId, field_value: lead.gclid },
-    { id: CUSTOM_FIELD.gbraid, field_value: lead.gbraid },
-    { id: CUSTOM_FIELD.wbraid, field_value: lead.wbraid },
-    { id: CUSTOM_FIELD.utmSource, field_value: lead.utmSource },
-    { id: CUSTOM_FIELD.utmMedium, field_value: lead.utmMedium },
-    { id: CUSTOM_FIELD.utmCampaign, field_value: lead.utmCampaign },
-    { id: CUSTOM_FIELD.utmTerm, field_value: lead.utmTerm },
-    { id: CUSTOM_FIELD.landingPage, field_value: lead.landingPage },
-    { id: CUSTOM_FIELD.leadSource, field_value: fromGoogle ? "Google Ads" : "Website" },
+    { id: fields.googleClickId, field_value: lead.gclid },
+    { id: fields.gbraid, field_value: lead.gbraid },
+    { id: fields.wbraid, field_value: lead.wbraid },
+    { id: fields.utmSource, field_value: lead.utmSource },
+    { id: fields.utmMedium, field_value: lead.utmMedium },
+    { id: fields.utmCampaign, field_value: lead.utmCampaign },
+    { id: fields.utmTerm, field_value: lead.utmTerm },
+    { id: fields.landingPage, field_value: lead.landingPage },
+    { id: fields.leadSource, field_value: fromGoogle ? "Google Ads" : "Website" },
   ].filter((field) => field.field_value);
 }
 
-function ghlHeaders() {
+function ghlHeaders(token: string = TOKEN) {
   return {
-    Authorization: `Bearer ${TOKEN}`,
+    Authorization: `Bearer ${token}`,
     Version: API_VERSION,
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -176,12 +270,14 @@ function ghlHeaders() {
  * Auto-selection therefore happens only when the account has exactly one
  * pipeline, where there is nothing to get wrong.
  */
-async function resolvePipeline() {
-  if (PIPELINE_ID && STAGE_ID) return { pipelineId: PIPELINE_ID, stageId: STAGE_ID };
+async function resolvePipeline(destination: Destination) {
+  if (destination.pipelineId && destination.stageId) {
+    return { pipelineId: destination.pipelineId, stageId: destination.stageId };
+  }
 
   const response = await fetch(
-    `${GHL}/opportunities/pipelines?locationId=${encodeURIComponent(LOCATION_ID)}`,
-    { headers: ghlHeaders() },
+    `${GHL}/opportunities/pipelines?locationId=${encodeURIComponent(destination.locationId)}`,
+    { headers: ghlHeaders(destination.token) },
   );
   if (!response.ok) return null;
 
@@ -216,8 +312,8 @@ async function resolvePipeline() {
  * recorded; a notification that did not send is a problem worth solving, but
  * not one worth telling the visitor about by failing their form.
  */
-async function notify(lead: Lead, opportunityId?: string) {
-  if (!NOTIFY_EMAIL || !NOTIFY_CONTACT_ID) return false;
+async function notify(lead: Lead, destination: Destination, opportunityId?: string) {
+  if (!NOTIFY_EMAIL || !destination.notifyContactId) return false;
 
   /*
     The colon lives inside the label cell on purpose. Email clients that fall
@@ -250,10 +346,10 @@ async function notify(lead: Lead, opportunityId?: string) {
   try {
     const response = await fetch(`${GHL}/conversations/messages`, {
       method: "POST",
-      headers: ghlHeaders(),
+      headers: ghlHeaders(destination.token),
       body: JSON.stringify({
         type: "Email",
-        contactId: NOTIFY_CONTACT_ID,
+        contactId: destination.notifyContactId,
         emailTo: NOTIFY_EMAIL,
         subject: `New lead — ${lead.fullName || "website"}${lead.projectType ? ` (${lead.projectType})` : ""}`,
         html,
@@ -360,14 +456,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // already computed `source` from the same facts; this is the CRM's own flag.
   const fromGoogle = Boolean(lead.gclid || lead.gbraid || lead.wbraid);
 
+  // Where this lead lives. Chosen once so the contact, the opportunity and the
+  // notification cannot end up split across two locations.
+  const destination = destinationFor(lead);
+
   try {
     // 1. Contact. Upsert rather than create: an enquiry from someone already in
     //    the account should update them, not produce a duplicate record.
     const contactResponse = await fetch(`${GHL}/contacts/upsert`, {
       method: "POST",
-      headers: ghlHeaders(),
+      headers: ghlHeaders(destination.token),
       body: JSON.stringify({
-        locationId: LOCATION_ID,
+        locationId: destination.locationId,
         firstName: lead.firstName || lead.fullName || "",
         lastName: lead.lastName || "",
         email: lead.email || undefined,
@@ -389,7 +489,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           trapped ? "suspected-bot" : null,
           ...(trapped ? signals.map((signal) => `spam-${signal}`) : []),
         ].filter(Boolean) as string[],
-        customFields: attributionFields(lead, fromGoogle),
+        customFields: attributionFields(lead, fromGoogle, destination.fields),
       }),
     });
 
@@ -419,7 +519,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // 2. Opportunity. This is the part the workflow existed to do, and Source is
     //    set here directly — the browser already decided whether the session
     //    began on a paid click, which is knowledge GHL does not have.
-    const pipeline = await resolvePipeline();
+    const pipeline = await resolvePipeline(destination);
     if (!pipeline) {
       return send(res, { captured: true, contactId, opportunity: false, detail: "no pipeline" }, 200);
     }
@@ -430,9 +530,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const opportunityResponse = await fetch(`${GHL}/opportunities/`, {
       method: "POST",
-      headers: ghlHeaders(),
+      headers: ghlHeaders(destination.token),
       body: JSON.stringify({
-        locationId: LOCATION_ID,
+        locationId: destination.locationId,
         pipelineId: pipeline.pipelineId,
         pipelineStageId: pipeline.stageId,
         contactId,
@@ -456,11 +556,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Awaited so the function is not killed mid-request, but its result cannot
     // fail the lead — the record is already safely in GHL.
-    const notified = await notify(lead, opportunity.opportunity?.id).catch(() => false);
+    const notified = await notify(lead, destination, opportunity.opportunity?.id).catch(
+      () => false,
+    );
 
     return send(res,
       {
         captured: true,
+        location: destination.name,
         contactId,
         opportunity: true,
         opportunityId: opportunity.opportunity?.id,
