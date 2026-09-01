@@ -86,9 +86,10 @@ export const commercialLanding: LandingContent = {
   formNote:
     "Tell us the address and the stage you are at. You will hear back the same working day, from the office rather than a call centre.",
   proof: [
-    { figure: String(landingCounts.delivered), unit: "+ delivered", label: "Builds completed since 2021" },
-    { figure: "90", unit: " days", label: "Fastest clinic, five operatories" },
-    { figure: String(landingCounts.cities), unit: " cities", label: "Lower Mainland, from one White Rock office" },
+    { figure: String(landingCounts.delivered), unit: "+", label: "Builds delivered" },
+    { figure: "90", unit: "", label: "Day clinic, five operatories" },
+    { figure: String(landingCounts.cities), unit: "", label: "Lower Mainland cities" },
+    { figure: String(landingCounts.yearsBuilding), unit: "yrs", label: "Building since 2021" },
   ],
   objections: [
     {
@@ -149,9 +150,10 @@ export const residentialLanding: LandingContent = {
   formNote:
     "Tell us what you are thinking of doing and where. You will hear back the same working day, from the office rather than a call centre.",
   proof: [
-    { figure: "2-5-10", unit: "", label: "Home Warranty on residential builds" },
-    { figure: String(landingCounts.delivered), unit: "+ delivered", label: "Builds completed since 2021" },
-    { figure: String(landingCounts.cities), unit: " cities", label: "Lower Mainland, from one White Rock office" },
+    { figure: "2-5-10", unit: "", label: "Home Warranty" },
+    { figure: String(landingCounts.delivered), unit: "+", label: "Builds delivered" },
+    { figure: String(landingCounts.cities), unit: "", label: "Lower Mainland cities" },
+    { figure: String(landingCounts.yearsBuilding), unit: "yrs", label: "Building since 2021" },
   ],
   objections: [
     {
