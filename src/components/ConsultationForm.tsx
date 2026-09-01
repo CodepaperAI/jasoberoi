@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Phone, Send } from "lucide-react";
+import { FormTimestamp } from "@/components/FormTimestamp";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { HONEYPOT_FIELD, THANK_YOU_PATH, submitLead } from "@/lib/contact";
 import { constructionServices, siteConfig } from "@/lib/site";
@@ -123,6 +124,7 @@ export function ConsultationForm({
       <div aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
         <input name={HONEYPOT_FIELD} tabIndex={-1} autoComplete="off" readOnly />
       </div>
+      <FormTimestamp />
 
       <label className={style.label}>
         Full name

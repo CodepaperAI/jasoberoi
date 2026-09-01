@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Lock, Phone } from "lucide-react";
+import { FormTimestamp } from "@/components/FormTimestamp";
 import { HONEYPOT_FIELD, THANK_YOU_PATH, submitLead } from "@/lib/contact";
 import type { LandingContent } from "@/lib/landing";
 import { siteConfig } from "@/lib/site";
@@ -79,6 +80,7 @@ export function LandingLeadForm({ content }: { content: LandingContent }) {
       <div aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
         <input name={HONEYPOT_FIELD} tabIndex={-1} autoComplete="off" readOnly />
       </div>
+      <FormTimestamp />
 
       <label className={LABEL}>
         Your name

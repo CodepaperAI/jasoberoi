@@ -1,4 +1,5 @@
 import { getAttribution, isPaidGoogle, leadSource } from "@/lib/attribution";
+import { TIMESTAMP_FIELD } from "@/components/FormTimestamp";
 import { siteConfig } from "@/lib/site";
 
 /**
@@ -228,9 +229,20 @@ export async function submitLead(
     still keeps bot submissions out of the pipeline but records them — and every
     submission now leaves a trace, whichever way it is judged.
   */
+  const data = new FormData(form);
+  const renderedAt = Number(data.get(TIMESTAMP_FIELD) ?? 0);
+
   const payload = {
     ...buildLeadPayload(form, formSource, sourceOverride),
-    honeypot: String(new FormData(form).get(HONEYPOT_FIELD) ?? "").trim(),
+    honeypot: String(data.get(HONEYPOT_FIELD) ?? "").trim(),
+    /*
+      How long the form was on screen before it was submitted. Reported, not
+      judged — the server decides, for the same reason the honeypot moved there:
+      a rule the browser enforces is a rule that silently loses leads with no
+      record that they existed. 0 means the field never initialised, which is
+      itself worth knowing.
+    */
+    elapsedMs: renderedAt ? Date.now() - renderedAt : 0,
   };
 
   const captured = await postLead(payload);
