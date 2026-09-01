@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Phone, Send } from "lucide-react";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
-import { THANK_YOU_PATH, submitLead } from "@/lib/contact";
+import { HONEYPOT_FIELD, THANK_YOU_PATH, submitLead } from "@/lib/contact";
 import { constructionServices, siteConfig } from "@/lib/site";
 
 /**
@@ -100,20 +100,28 @@ export function ConsultationForm({
           : "relative mt-7 grid gap-4 sm:grid-cols-2"
       }
     >
-      {/* Honeypot. The webhook URL is inlined into the client bundle by
-          necessity — NEXT_PUBLIC_ is the only way a static export can reach it —
-          so it is publicly discoverable and anything pointed at it lands in the
-          pipeline. A field that is invisible to people and irresistible to form
-          bots costs nothing and removes the easy half of that traffic.
+      {/* Honeypot: invisible to people, tempting to form bots.
 
-          Hidden with position/opacity rather than type="hidden", because a
-          hidden input is exactly what a bot skips. aria-hidden and tabIndex keep
-          it away from screen readers and the keyboard. */}
+          The name is deliberately meaningless. It was `companyWebsite`, sitting
+          under a "Company website" label, and Chrome's autofill matched exactly
+          that — so once a visitor had submitted the form once and the browser
+          had learned it, every later submission arrived with the bot trap
+          filled in. submitLead() then reported success and posted nothing, and
+          the visitor was sent to /thank-you having lost their enquiry. Verified
+          against the server log: the form was reaching /thank-you with no
+          request to /api/lead at all.
+
+          Autofill matches on the field name, id, label and placeholder, so all
+          four are now either absent or meaningless. readOnly is the belt to
+          that braces: Chrome will not autofill a readonly field, while a bot
+          setting .value directly is unaffected — which is the only thing this
+          field is here to catch.
+
+          Hidden with position rather than type="hidden", because a hidden
+          input is exactly what a bot skips. aria-hidden and tabIndex keep it
+          away from screen readers and the keyboard. */}
       <div aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
-        <label>
-          Company website
-          <input name="companyWebsite" tabIndex={-1} autoComplete="off" />
-        </label>
+        <input name={HONEYPOT_FIELD} tabIndex={-1} autoComplete="off" readOnly />
       </div>
 
       <label className={style.label}>

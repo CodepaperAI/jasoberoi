@@ -99,7 +99,9 @@ type Lead = {
   landingPage?: string;
   submittedFrom?: string;
   formLocation?: string;
-  /** Honeypot. Only a bot fills this in. */
+  /** Honeypot. Only a bot should fill this in — see submitLead(). */
+  honeypot?: string;
+  /** The pre-2026-09 field name, still accepted so a cached bundle keeps working. */
   companyWebsite?: string;
 };
 
@@ -289,13 +291,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   /*
-    Honeypot, checked again here. submitLead() drops these before they leave the
-    browser, but /api/lead is a public endpoint and a bot posting straight at it
-    never runs that code. Answered as success on purpose: an error tells the bot
-    to retry with a different shape.
+    Honeypot. The browser no longer acts on this — it just reports what was in
+    the field — because acting on it there meant a false positive vanished
+    without trace. Here it is recorded rather than obeyed: the contact is still
+    written, tagged so it is filterable, but it opens no opportunity and sends
+    no notification, so the pipeline and the inbox stay clean.
+
+    The consequence of being wrong is now a tagged contact somebody deletes,
+    instead of a customer who believed they had been in touch.
   */
-  if (String(lead.companyWebsite ?? "").trim()) {
-    return send(res, { captured: true }, 200);
+  const trapped = Boolean(
+    String(lead.honeypot ?? "").trim() || String(lead.companyWebsite ?? "").trim(),
+  );
+  if (trapped) {
+    console.warn("lead: honeypot filled", {
+      email: lead.email,
+      formLocation: lead.formLocation,
+    });
   }
 
   if (!lead.email && !lead.phone) {
@@ -326,7 +338,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         phone: lead.phone || undefined,
         source: lead.source || "Website",
         city: lead.projectLocation || undefined,
-        tags: [lead.source || "Website", lead.projectType].filter(Boolean) as string[],
+        tags: [
+          lead.source || "Website",
+          lead.projectType,
+          trapped ? "suspected-bot" : null,
+        ].filter(Boolean) as string[],
         customFields: attributionFields(lead, fromGoogle),
       }),
     });
@@ -342,6 +358,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     };
     const contactId = contactBody.contact?.id ?? contactBody.id;
     if (!contactId) return send(res, { captured: false, step: "contact", detail: "no id" }, 502);
+
+    // A honeypot hit is captured but goes no further: no pipeline card, no
+    // notification. Recoverable if it turns out to be a real person, invisible
+    // to the people working the pipeline if it is not.
+    if (trapped) {
+      return send(res, { captured: true, contactId, opportunity: false, suspectedBot: true }, 200);
+    }
 
     // 2. Opportunity. This is the part the workflow existed to do, and Source is
     //    set here directly — the browser already decided whether the session
