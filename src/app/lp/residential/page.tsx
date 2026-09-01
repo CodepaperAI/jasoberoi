@@ -94,14 +94,7 @@ export default function ResidentialLandingPage() {
               Get a plan and a timeline
               <ArrowRight size={16} aria-hidden="true" />
             </a>
-            <a
-              href={siteConfig.phoneHref}
-              data-analytics="meta-lp-residential-hero-call"
-              className="ui-font hidden sm:inline-flex min-h-14 items-center gap-2.5 rounded-full border border-white/40 px-8 text-xs font-extrabold uppercase tracking-[0.16em] text-white backdrop-blur transition hover:border-orange-300 hover:text-orange-300"
-            >
-              <Phone size={15} aria-hidden="true" />
-              {siteConfig.phone}
-            </a>
+            
           </div>
         </div>
 
@@ -147,8 +140,8 @@ export default function ResidentialLandingPage() {
             </ul>
           </div>
 
-          <div className="rounded-[1.75rem] border border-stone-200 bg-white p-6 shadow-2xl shadow-stone-900/[0.07] sm:p-9">
-            <LandingLeadForm content={content} tone="light" />
+          <div className="order-first lg:order-last rounded-[1.75rem] border border-stone-200 bg-white p-6 shadow-2xl shadow-stone-900/[0.09] sm:p-9">
+            <LandingLeadForm content={content} />
           </div>
         </div>
       </section>
@@ -241,14 +234,7 @@ export default function ResidentialLandingPage() {
               Get a plan and a timeline
               <ArrowRight size={16} aria-hidden="true" />
             </a>
-            <a
-              href={siteConfig.phoneHref}
-              data-analytics="meta-lp-residential-close-call"
-              className="ui-font inline-flex min-h-14 items-center gap-2.5 rounded-full border border-white/40 px-8 text-xs font-extrabold uppercase tracking-[0.16em] transition hover:border-orange-300 hover:text-orange-300"
-            >
-              <Phone size={15} aria-hidden="true" />
-              {siteConfig.phone}
-            </a>
+            
           </div>
         </div>
       </section>
