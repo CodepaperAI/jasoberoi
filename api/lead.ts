@@ -89,6 +89,9 @@ type Lead = {
   details?: string;
   source?: string;
   gclid?: string;
+  /** Cookieless Google click ids — iOS and consent-limited traffic. */
+  gbraid?: string;
+  wbraid?: string;
   utmCampaign?: string;
   utmSource?: string;
   utmMedium?: string;
@@ -96,7 +99,56 @@ type Lead = {
   landingPage?: string;
   submittedFrom?: string;
   formLocation?: string;
+  /** Honeypot. Only a bot fills this in. */
+  companyWebsite?: string;
 };
+
+/**
+ * GoHighLevel custom field ids for the Oberizon location.
+ *
+ * The attribution has been reaching this function since it was written and
+ * stopping here: it decided `source` and the tags, then dropped the rest. So
+ * every contact in the CRM had an empty Google Click ID, and there was no way
+ * to tie a booked job back to the ad group that bought it — which reads, from
+ * inside GHL, exactly like the website form never sending anything.
+ *
+ * Hardcoded rather than configured. They are not credentials, they are
+ * meaningless outside this one location, and an id that lives in the file can
+ * be checked against GHL by reading it — a mistyped environment variable fails
+ * silently, which is the failure mode this whole file exists to avoid.
+ */
+const CUSTOM_FIELD = {
+  googleClickId: "b9sswjB83vF5uui8qWnz",
+  gbraid: "52ZjWgtzQACt2wu4FvVh",
+  wbraid: "LrzCMupIyU9cs4R98ZoW",
+  utmSource: "ZBdckL5rKZpXWaASy7V9",
+  utmMedium: "mC8d9xtbuIzyaoCFouyf",
+  utmCampaign: "ZpMUO13xXxvPi1KuRuho",
+  utmTerm: "XDzxECGtOKpEtlO3rU2K",
+  landingPage: "EPeAsSnTLqv0LOb1gFsp",
+  leadSource: "bBNrZVZnDKMm8rP7M453",
+} as const;
+
+/**
+ * The attribution, shaped for the contact record.
+ *
+ * Empty values are dropped rather than sent blank: writing "" over a field that
+ * already holds a click id would erase the attribution of a returning enquirer,
+ * since the contact is upserted rather than created.
+ */
+function attributionFields(lead: Lead, fromGoogle: boolean) {
+  return [
+    { id: CUSTOM_FIELD.googleClickId, field_value: lead.gclid },
+    { id: CUSTOM_FIELD.gbraid, field_value: lead.gbraid },
+    { id: CUSTOM_FIELD.wbraid, field_value: lead.wbraid },
+    { id: CUSTOM_FIELD.utmSource, field_value: lead.utmSource },
+    { id: CUSTOM_FIELD.utmMedium, field_value: lead.utmMedium },
+    { id: CUSTOM_FIELD.utmCampaign, field_value: lead.utmCampaign },
+    { id: CUSTOM_FIELD.utmTerm, field_value: lead.utmTerm },
+    { id: CUSTOM_FIELD.landingPage, field_value: lead.landingPage },
+    { id: CUSTOM_FIELD.leadSource, field_value: fromGoogle ? "Google Ads" : "Website" },
+  ].filter((field) => field.field_value);
+}
 
 function ghlHeaders() {
   return {
@@ -236,6 +288,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return send(res, { error: "Invalid JSON" }, 400);
   }
 
+  /*
+    Honeypot, checked again here. submitLead() drops these before they leave the
+    browser, but /api/lead is a public endpoint and a bot posting straight at it
+    never runs that code. Answered as success on purpose: an error tells the bot
+    to retry with a different shape.
+  */
+  if (String(lead.companyWebsite ?? "").trim()) {
+    return send(res, { captured: true }, 200);
+  }
+
   if (!lead.email && !lead.phone) {
     return send(res, { error: "An email address or a phone number is required" }, 400);
   }
@@ -245,6 +307,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const forwarded = await forwardToWebhook(lead);
     return send(res, { captured: forwarded, via: forwarded ? "webhook" : "none" }, forwarded ? 200 : 500);
   }
+
+  // A click id is the unambiguous evidence the visit was bought. The browser
+  // already computed `source` from the same facts; this is the CRM's own flag.
+  const fromGoogle = Boolean(lead.gclid || lead.gbraid || lead.wbraid);
 
   try {
     // 1. Contact. Upsert rather than create: an enquiry from someone already in
@@ -261,6 +327,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         source: lead.source || "Website",
         city: lead.projectLocation || undefined,
         tags: [lead.source || "Website", lead.projectType].filter(Boolean) as string[],
+        customFields: attributionFields(lead, fromGoogle),
       }),
     });
 

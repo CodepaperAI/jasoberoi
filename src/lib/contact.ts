@@ -203,10 +203,26 @@ export async function submitLead(
   const captured = await postLead(payload);
 
   if (captured) {
+    /*
+      form_source and form_name carry the same value. The existing GTM trigger
+      matches on form_source and renaming it would silently stop the Google Ads
+      conversion firing, so the new name is added beside the old one rather than
+      replacing it.
+
+      user_data is what enhanced conversions match on. Google hashes it in the
+      browser before it leaves — it is not sent in the clear — and without it a
+      click that converts on a different device to the one that saw the ad goes
+      unmatched, which is most of the mobile traffic these campaigns buy.
+    */
     track("generate_lead", {
       form_source: formSource,
+      form_name: formSource,
       lead_source: payload.source,
       project_type: payload.projectType,
+      user_data: {
+        email: payload.email || undefined,
+        phone_number: payload.phone || undefined,
+      },
     });
     return { captured: true };
   }
