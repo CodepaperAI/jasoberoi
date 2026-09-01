@@ -118,7 +118,19 @@ export function composeConsultationMailto(form: HTMLFormElement) {
  * the URL. The campaign fields travel alongside it so a lead can be traced back
  * to an ad group without the Source field having to carry that detail.
  */
-export function buildLeadPayload(form: HTMLFormElement, formSource: string) {
+export function buildLeadPayload(
+  form: HTMLFormElement,
+  formSource: string,
+  /**
+   * Overrides the Source written to the opportunity.
+   *
+   * The paid landing pages need to be tellable apart in the pipeline — a Meta
+   * commercial lead and a Meta residential lead are different campaigns with
+   * different budgets, and "Website" for both makes the ad spend unreadable.
+   * Left unset, the browser's own paid/organic call stands.
+   */
+  sourceOverride?: string,
+) {
   const fields = readForm(form);
   const attribution = getAttribution();
   const { firstName, lastName } = splitName(fields.name);
@@ -134,7 +146,7 @@ export function buildLeadPayload(form: HTMLFormElement, formSource: string) {
     projectType: fields.projectType,
     details: fields.details,
 
-    source: leadSource(attribution),
+    source: sourceOverride ?? leadSource(attribution),
     isPaidGoogle: isPaidGoogle(attribution),
 
     gclid: attribution.gclid ?? "",
@@ -199,6 +211,7 @@ export type SubmitResult = {
 export async function submitLead(
   form: HTMLFormElement,
   formSource: string,
+  sourceOverride?: string,
 ): Promise<SubmitResult> {
   /*
     The honeypot no longer decides anything here.
@@ -216,7 +229,7 @@ export async function submitLead(
     submission now leaves a trace, whichever way it is judged.
   */
   const payload = {
-    ...buildLeadPayload(form, formSource),
+    ...buildLeadPayload(form, formSource, sourceOverride),
     honeypot: String(new FormData(form).get(HONEYPOT_FIELD) ?? "").trim(),
   };
 

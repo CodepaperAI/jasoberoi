@@ -55,7 +55,14 @@ export function ContactDock() {
         header's button is `hidden lg:block` — on a phone there is no book button
         anywhere until you reach the footer.
       */}
-      <div className="fixed bottom-5 right-5 z-[80] flex flex-col items-end gap-3 sm:bottom-7 sm:right-7">
+      {/* Tagged so the paid landing pages can hide it. Its button opens the
+          six-field site form, which would submit under the dock's own source
+          rather than the campaign's — a lead from a Meta page that reports as
+          a website lead is a lead the ad does not get credit for. */}
+      <div
+        data-contact-dock
+        className="fixed bottom-5 right-5 z-[80] flex flex-col items-end gap-3 sm:bottom-7 sm:right-7"
+      >
         {/*
           WhatsApp gets its own persistent button rather than living only inside
           the dialog. Buried one click deep behind "Book a Consultation" it was
