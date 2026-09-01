@@ -148,18 +148,21 @@ export default function ResidentialLandingPage() {
 
       {/* ------------------------------------------------------- OBJECTIONS */}
       <section className="border-t border-stone-300/70 px-5 py-20 sm:px-10">
-        <div className="mx-auto grid max-w-[86rem] gap-14 lg:grid-cols-[0.8fr_1.2fr]">
+        <div className="mx-auto max-w-[86rem]">
           <h2 className="serif-font text-[clamp(2rem,4vw,3.25rem)] leading-[1.05]">
             What people <span className="orange-italic">actually worry about.</span>
           </h2>
-          <dl className="grid gap-0">
-            {content.objections.map((item, index) => (
-              <div key={item.question} className="border-t border-stone-300/70 py-7 last:border-b">
-                <dt className="flex items-baseline gap-5 text-xl font-bold text-stone-900">
-                  <span className="ui-font text-xs font-extrabold text-orange-600">0{index + 1}</span>
-                  {item.question}
-                </dt>
-                <dd className="mt-3 pl-[2.4rem] leading-7 text-stone-600">{item.answer}</dd>
+          {/*
+            Two columns under the heading rather than a list beside it. The
+            heading used to sit in its own 0.8fr column and leave roughly 575px
+            of empty page under itself at 1440 — which is most of what made this
+            page feel unorganised.
+          */}
+          <dl className="mt-12 grid gap-x-16 gap-y-0 md:grid-cols-2">
+            {content.objections.map((item) => (
+              <div key={item.question} className="border-t border-stone-300/70 py-7">
+                <dt className="text-lg font-bold text-stone-900">{item.question}</dt>
+                <dd className="mt-3 leading-7 text-stone-600">{item.answer}</dd>
               </div>
             ))}
           </dl>

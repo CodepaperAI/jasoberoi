@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { Metadata } from "next";
-import { ArrowRight, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Check, MapPin, Phone } from "lucide-react";
 import { LandingLeadForm } from "@/components/LandingLeadForm";
 import { LandingStickyCta } from "@/components/LandingStickyCta";
 import { altFor } from "@/lib/photos";
@@ -133,11 +133,13 @@ export default function CommercialLandingPage() {
             <p className="mt-6 max-w-lg text-lg leading-8 text-white/70">{content.closingText}</p>
 
             <ul className="mt-10 grid gap-5">
-              {content.reassurance.map((line, index) => (
-                <li key={line} className="flex items-start gap-5 border-t border-white/10 pt-5">
-                  <span className="ui-font text-xs font-extrabold text-orange-400">
-                    0{index + 1}
-                  </span>
+              {/* Not numbered. Three numbered lists on one page — this, the
+                  questions and the process — read as a template rather than a
+                  page. Sequence is real only in the process, so the digits
+                  live there. */}
+              {content.reassurance.map((line) => (
+                <li key={line} className="flex items-start gap-4 border-t border-white/10 pt-5">
+                  <Check size={18} aria-hidden="true" className="mt-0.5 shrink-0 text-orange-400" />
                   <span className="text-[0.9375rem] leading-7 text-white/80">{line}</span>
                 </li>
               ))}
@@ -158,21 +160,27 @@ export default function CommercialLandingPage() {
             Delivered clinics, with the address attached.
           </h2>
 
-          {/* Layered rather than a flat row: the lead frame is tall and the
-              other three stack beside it, which is what stops a gallery
-              reading as a contact sheet. */}
-          <div className="mt-12 grid gap-4 lg:grid-cols-[1.15fr_1fr]">
+          {/*
+            One wide lead frame, three equal tiles beneath it.
+
+            The previous arrangement stacked three images in a narrow column
+            against a tall one, and at lg each got a 10.5rem slot — so a 4:3
+            photograph was cropped to a sliver. One of them rendered as a strip
+            of wall with half a door number in it. A gallery whose crops are
+            accidents does more damage than no gallery.
+          */}
+          <div className="mt-12 grid gap-4">
             <figure className="group relative overflow-hidden rounded-[1.5rem]">
-              <div className="relative aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[34rem]">
+              <div className="relative aspect-[16/9] sm:aspect-[21/9]">
                 <Image
                   src={lead.image}
                   alt={altFor(lead.image)}
                   fill
-                  sizes="(min-width: 1024px) 55vw, 100vw"
+                  sizes="100vw"
                   className="object-cover transition duration-700 group-hover:scale-[1.03]"
                 />
               </div>
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink to-transparent p-6">
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/95 to-transparent p-6">
                 <figcaption className="flex items-center gap-2 text-sm font-semibold">
                   <MapPin size={15} aria-hidden="true" className="text-orange-400" />
                   {lead.caption}
@@ -180,19 +188,19 @@ export default function CommercialLandingPage() {
               </div>
             </figure>
 
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 lg:grid-rows-3">
+            <div className="grid gap-4 sm:grid-cols-3">
               {rest.map((shot) => (
                 <figure key={shot.image} className="group relative overflow-hidden rounded-[1.5rem]">
-                  <div className="relative aspect-[16/10] lg:aspect-auto lg:h-full lg:min-h-[10.5rem]">
+                  <div className="relative aspect-[4/3]">
                     <Image
                       src={shot.image}
                       alt={altFor(shot.image)}
                       fill
-                      sizes="(min-width: 1024px) 40vw, (min-width: 640px) 50vw, 100vw"
+                      sizes="(min-width: 640px) 33vw, 100vw"
                       className="object-cover transition duration-700 group-hover:scale-[1.03]"
                     />
                   </div>
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink to-transparent p-5">
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/95 to-transparent p-5">
                     <figcaption className="flex items-center gap-2 text-[0.8125rem] font-semibold">
                       <MapPin size={14} aria-hidden="true" className="text-orange-400" />
                       {shot.caption}
@@ -207,20 +215,21 @@ export default function CommercialLandingPage() {
 
       {/* ------------------------------------------------------- OBJECTIONS */}
       <section className="border-t border-white/10 px-5 py-20 sm:px-10">
-        <div className="mx-auto grid max-w-[86rem] gap-14 lg:grid-cols-[0.8fr_1.2fr]">
+        <div className="mx-auto max-w-[86rem]">
           <h2 className="serif-font text-[clamp(2rem,4vw,3.25rem)] leading-[1.05]">
             The questions <span className="orange-italic">everyone asks.</span>
           </h2>
-          <dl className="grid gap-0">
-            {content.objections.map((item, index) => (
-              <div key={item.question} className="border-t border-white/12 py-7 last:border-b">
-                <dt className="flex items-baseline gap-5 text-xl font-bold">
-                  <span className="ui-font text-xs font-extrabold text-orange-400">
-                    0{index + 1}
-                  </span>
-                  {item.question}
-                </dt>
-                <dd className="mt-3 pl-[2.4rem] leading-7 text-white/70">{item.answer}</dd>
+          {/*
+            Two columns under the heading rather than a list beside it. The
+            heading used to sit in its own 0.8fr column and leave roughly 575px
+            of empty page under itself at 1440 — which is most of what made this
+            page feel unorganised.
+          */}
+          <dl className="mt-12 grid gap-x-16 gap-y-0 md:grid-cols-2">
+            {content.objections.map((item) => (
+              <div key={item.question} className="border-t border-white/12 py-7">
+                <dt className="text-lg font-bold">{item.question}</dt>
+                <dd className="mt-3 leading-7 text-white/70">{item.answer}</dd>
               </div>
             ))}
           </dl>
