@@ -101,6 +101,8 @@ type Lead = {
   formLocation?: string;
   /** Honeypot. Only a bot should fill this in — see submitLead(). */
   honeypot?: string;
+  /** Milliseconds the form was on screen before submission. 0 if unknown. */
+  elapsedMs?: number;
   /** The pre-2026-09 field name, still accepted so a cached bundle keeps working. */
   companyWebsite?: string;
 };
@@ -275,6 +277,50 @@ async function forwardToWebhook(lead: Lead) {
   return !(body?.status ?? "").toLowerCase().startsWith("error");
 }
 
+/**
+ * Why this submission looks automated, if it does.
+ *
+ * Three signals, none of which asks the visitor to prove anything. A CAPTCHA
+ * would catch more and costs completions on every real lead to do it, which on
+ * paid traffic is the wrong trade — the spend has already been made by the time
+ * someone reaches the form.
+ *
+ * None of these blocks anything. They tag, and the caller keeps the contact but
+ * withholds the pipeline card and the notification, so a false positive costs a
+ * tagged record somebody deletes rather than a customer who thinks they got in
+ * touch. That rule was learned the hard way: an autofilled honeypot was
+ * silently discarding real enquiries and telling them it had worked.
+ */
+function spamSignals(lead: Lead): string[] {
+  const signals: string[] = [];
+
+  if (String(lead.honeypot ?? "").trim() || String(lead.companyWebsite ?? "").trim()) {
+    signals.push("honeypot");
+  }
+
+  /*
+    Filled faster than a person can. Five fields take fifteen seconds at the
+    very least; three is generous and still an order of magnitude above what a
+    script needs. `elapsedMs` of 0 means the timestamp never initialised — an
+    older cached bundle, or JavaScript that did not run — so it is not treated
+    as a signal, because "unknown" and "instant" are different things.
+  */
+  const elapsed = Number(lead.elapsedMs ?? 0);
+  if (elapsed > 0 && elapsed < 3000) signals.push("too-fast");
+
+  /*
+    A link in a name or a location. The single most reliable signature there
+    is — form spam exists to place URLs, and no clinic owner types one into
+    "City". The details field is left alone: a real enquiry might reasonably
+    paste a link to a floor plan or a listing.
+  */
+  const linkish = /https?:\/\/|www\.|\[url|<a\s/i;
+  const nameish = `${lead.fullName ?? ""} ${lead.firstName ?? ""} ${lead.lastName ?? ""} ${lead.projectLocation ?? ""}`;
+  if (linkish.test(nameish)) signals.push("link-in-name");
+
+  return signals;
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     return send(res, { error: "Method not allowed" }, 405);
@@ -290,21 +336,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return send(res, { error: "Invalid JSON" }, 400);
   }
 
-  /*
-    Honeypot. The browser no longer acts on this — it just reports what was in
-    the field — because acting on it there meant a false positive vanished
-    without trace. Here it is recorded rather than obeyed: the contact is still
-    written, tagged so it is filterable, but it opens no opportunity and sends
-    no notification, so the pipeline and the inbox stay clean.
-
-    The consequence of being wrong is now a tagged contact somebody deletes,
-    instead of a customer who believed they had been in touch.
-  */
-  const trapped = Boolean(
-    String(lead.honeypot ?? "").trim() || String(lead.companyWebsite ?? "").trim(),
-  );
+  const signals = spamSignals(lead);
+  const trapped = signals.length > 0;
   if (trapped) {
-    console.warn("lead: honeypot filled", {
+    console.warn("lead: spam signals", {
+      signals,
       email: lead.email,
       formLocation: lead.formLocation,
     });
@@ -351,6 +387,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           lead.formLocation?.startsWith("meta-lp-") ? "meta-ads" : null,
           lead.formLocation?.startsWith("meta-lp-") ? lead.formLocation : null,
           trapped ? "suspected-bot" : null,
+          ...(trapped ? signals.map((signal) => `spam-${signal}`) : []),
         ].filter(Boolean) as string[],
         customFields: attributionFields(lead, fromGoogle),
       }),
@@ -372,7 +409,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // notification. Recoverable if it turns out to be a real person, invisible
     // to the people working the pipeline if it is not.
     if (trapped) {
-      return send(res, { captured: true, contactId, opportunity: false, suspectedBot: true }, 200);
+      return send(
+        res,
+        { captured: true, contactId, opportunity: false, suspectedBot: true, signals },
+        200,
+      );
     }
 
     // 2. Opportunity. This is the part the workflow existed to do, and Source is
