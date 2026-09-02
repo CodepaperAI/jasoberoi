@@ -38,118 +38,125 @@ export default function CommercialLandingPage() {
 
   return (
     <div data-landing className="bg-[#F1F3F2] text-[#161A19]">
-      <header className="px-5 pt-6 sm:px-8">
-        <div className="mx-auto flex max-w-[82rem] items-center justify-between gap-4">
-          <Image
-            src="/oberizon/oberizon-logo.svg"
-            alt="Oberizon Construction"
-            width={192}
-            height={88}
-            className="h-11 w-auto sm:h-12"
-            priority
-          />
-          <a
-            href={siteConfig.phoneHref}
-            data-analytics="meta-lp-commercial-header-call"
-            className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#161A19] px-5 text-sm font-semibold text-white transition hover:bg-[#2c3230]"
-          >
-            <Phone size={15} aria-hidden="true" />
-            <span className="hidden sm:inline">{siteConfig.phone}</span>
-            <span className="sm:hidden">Call</span>
-          </a>
-        </div>
-      </header>
-
       {/* ------------------------------------------------------------- HERO */}
-      <section className="px-5 pb-6 pt-10 sm:px-8 sm:pt-14">
-        <div className="mx-auto grid max-w-[82rem] items-center gap-12 lg:grid-cols-[1fr_1.02fr] lg:gap-14">
-          <div>
-            <span className="inline-flex items-center rounded-full border border-[#161A19]/15 px-4 py-2 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-[#161A19]/70">
-              {content.eyebrow}
-            </span>
+      {/*
+        Full bleed. The photograph is the hero rather than an illustration
+        beside it — a contained image in a rounded box next to a column of text
+        is a product page, and this is a builder whose entire case is the rooms
+        they hand over. `isolate` so the -z-10 image and scrim stack behind the
+        content and not behind the page.
+      */}
+      <section className="relative isolate flex min-h-[92svh] flex-col text-white">
+        <Image
+          src={shine.image}
+          alt={altFor(shine.image)}
+          fill
+          sizes="100vw"
+          priority
+          className="-z-10 object-cover"
+        />
+        {/* Diagonal, so the type side is dark enough to read and the far corner
+            still shows the photograph. */}
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/88 via-black/62 to-black/25" />
 
-            <h1 className="mt-7 text-[clamp(2.05rem,3.5vw,3.05rem)] font-bold leading-[1.06] tracking-[-0.02em]">
-              {content.headline}
-              <span className="serif-font mt-1 block font-normal italic text-accent">
-                {content.headlineAccent}
-              </span>
-            </h1>
-
-            <p className="mt-6 max-w-lg text-[0.9375rem] leading-7 text-[#161A19]/65">
-              {content.subhead}
-            </p>
-
-            <div className="mt-9 flex flex-wrap items-center gap-3">
-              <a
-                href="#request"
-                data-analytics="meta-lp-commercial-hero-cta"
-                className="inline-flex min-h-14 items-center gap-2.5 rounded-full bg-[#161A19] px-8 text-[0.9375rem] font-semibold text-white transition hover:bg-[#2c3230]"
-              >
-                Get a build plan
-                <ArrowRight size={17} aria-hidden="true" />
-              </a>
-              <a
-                href={siteConfig.phoneHref}
-                data-analytics="meta-lp-commercial-hero-call"
-                className="hidden min-h-14 items-center gap-2.5 rounded-full border border-[#161A19]/20 bg-white px-8 text-[0.9375rem] font-semibold transition hover:border-[#161A19]/45 sm:inline-flex"
-              >
-                <Phone size={16} aria-hidden="true" />
-                {siteConfig.phone}
-              </a>
-            </div>
-
-            <div className="mt-9 flex items-center gap-4">
-              <div className="flex -space-x-2.5">
-                {reviews.map((review) => (
-                  <span
-                    key={review.author}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#F1F3F2] bg-[#161A19] text-xs font-bold text-white"
-                  >
-                    {review.author.replace("Dr. ", "").slice(0, 2)}
-                  </span>
-                ))}
-              </div>
-              <div className="text-sm leading-5">
-                <p className="font-bold">Clinic owners, in their own words</p>
-                <p className="text-[#161A19]/55">
-                  {landingCounts.documented} delivered builds documented on this site
-                </p>
-              </div>
-            </div>
+        <header className="px-5 pt-6 sm:px-8">
+          <div className="mx-auto flex max-w-[82rem] items-center justify-between gap-4">
+            <Image
+              src="/oberizon/optimized/oberizon-logo.png"
+              alt="Oberizon Construction"
+              width={192}
+              height={88}
+              className="h-10 w-auto brightness-0 invert sm:h-12"
+              priority
+            />
+            <a
+              href={siteConfig.phoneHref}
+              data-analytics="meta-lp-commercial-header-call"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 text-sm font-semibold backdrop-blur transition hover:bg-white/20"
+            >
+              <Phone size={15} aria-hidden="true" />
+              <span className="hidden sm:inline">{siteConfig.phone}</span>
+              <span className="sm:hidden">Call</span>
+            </a>
           </div>
+        </header>
 
-          <div className="relative">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-[#dfe3e1] lg:aspect-[5/4]">
-              <Image
-                src={shine.image}
-                alt={altFor(shine.image)}
-                fill
-                sizes="(min-width: 1024px) 52vw, 100vw"
-                priority
-                className="object-cover"
-              />
+        <div className="mx-auto flex w-full max-w-[82rem] flex-1 items-center px-5 py-14 sm:px-8">
+          <div className="grid w-full items-center gap-10 lg:grid-cols-[1.15fr_0.85fr]">
+            <div>
+              <span className="inline-flex items-center rounded-full border border-white/35 bg-white/10 px-4 py-2 text-[0.6875rem] font-bold uppercase tracking-[0.16em] backdrop-blur">
+                {content.eyebrow}
+              </span>
+
+              <h1 className="mt-7 text-[clamp(2.2rem,4.2vw,3.5rem)] font-bold leading-[1.04] tracking-[-0.025em]">
+                {content.headline}
+                <span className="serif-font mt-1 block font-normal italic text-orange-300">
+                  {content.headlineAccent}
+                </span>
+              </h1>
+
+              <p className="mt-6 max-w-lg text-[0.9375rem] leading-7 text-white/75">
+                {content.subhead}
+              </p>
+
+              <div className="mt-9 flex flex-wrap items-center gap-3">
+                <a
+                  href="#request"
+                  data-analytics="meta-lp-commercial-hero-cta"
+                  className="inline-flex min-h-14 items-center gap-2.5 rounded-full bg-white px-8 text-[0.9375rem] font-semibold text-[#161A19] transition hover:bg-white/90"
+                >
+                  Get a build plan
+                  <ArrowRight size={17} aria-hidden="true" />
+                </a>
+                <a
+                  href={siteConfig.phoneHref}
+                  data-analytics="meta-lp-commercial-hero-call"
+                  className="hidden min-h-14 items-center gap-2.5 rounded-full border border-white/35 px-8 text-[0.9375rem] font-semibold backdrop-blur transition hover:bg-white/10 sm:inline-flex"
+                >
+                  <Phone size={16} aria-hidden="true" />
+                  {siteConfig.phone}
+                </a>
+              </div>
+
+              <div className="mt-9 flex items-center gap-4">
+                <div className="flex -space-x-2.5">
+                  {reviews.map((review) => (
+                    <span
+                      key={review.author}
+                      className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/25 bg-white/15 text-xs font-bold backdrop-blur"
+                    >
+                      {review.author.replace("Dr. ", "").slice(0, 2)}
+                    </span>
+                  ))}
+                </div>
+                <div className="text-sm leading-5">
+                  <p className="font-bold">Clinic owners, in their own words</p>
+                  <p className="text-white/60">{landingCounts.documented} delivered builds documented on this site</p>
+                </div>
+              </div>
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-4 lg:absolute lg:-left-10 lg:bottom-8 lg:mt-0 lg:w-[15rem] lg:grid-cols-1">
-              <div className="rounded-[1.25rem] bg-white p-5 shadow-[0_8px_36px_rgba(22,26,25,0.10)]">
-                <Timer size={20} aria-hidden="true" className="text-accent" />
+            {/* Floating over the photograph rather than beside it. */}
+            <div className="grid gap-4 sm:grid-cols-2 lg:ml-auto lg:w-[16rem] lg:grid-cols-1">
+              <div className="rounded-[1.25rem] border border-white/15 bg-white/10 p-5 backdrop-blur-md">
+                <Timer size={20} aria-hidden="true" className="text-orange-300" />
                 <p className="mt-3 text-2xl font-bold leading-none">90 days</p>
-                <p className="mt-1.5 text-[0.8125rem] leading-5 text-[#161A19]/55">
-                  Fastest clinic, five operatories
-                </p>
+                <p className="mt-1.5 text-[0.8125rem] leading-5 text-white/65">Fastest clinic, five operatories</p>
               </div>
-              <div className="rounded-[1.25rem] bg-white p-5 shadow-[0_8px_36px_rgba(22,26,25,0.10)]">
-                <Star size={20} aria-hidden="true" className="text-accent" />
+              <div className="rounded-[1.25rem] border border-white/15 bg-white/10 p-5 backdrop-blur-md">
+                <Star size={20} aria-hidden="true" className="text-orange-300" />
                 <p className="mt-3 text-2xl font-bold leading-none">{landingCounts.delivered}+</p>
-                <p className="mt-1.5 text-[0.8125rem] leading-5 text-[#161A19]/55">
-                  Builds delivered since {siteConfig.foundedYear}
-                </p>
+                <p className="mt-1.5 text-[0.8125rem] leading-5 text-white/65">Builds delivered since {siteConfig.foundedYear}</p>
               </div>
             </div>
           </div>
         </div>
+      </section>
 
-        <div className="mx-auto mt-12 max-w-[82rem] rounded-[1.75rem] bg-white p-3 shadow-[0_8px_36px_rgba(22,26,25,0.07)]">
+      {/* The assurance bar straddles the hero edge, which is what stitches the
+          cinematic top to the light page below it. */}
+      <div className="relative z-10 -mt-14 px-5 sm:px-8">
+        <div className="mx-auto max-w-[82rem] rounded-[1.75rem] bg-white p-3 shadow-[0_12px_44px_rgba(0,0,0,0.14)]">
           <dl className="grid divide-y divide-[#161A19]/8 md:grid-cols-2 md:divide-y-0 lg:grid-cols-4 lg:divide-x">
             {content.features.map((feature, index) => {
               const Icon = FEATURE_ICONS[index] ?? ClipboardCheck;
@@ -159,7 +166,7 @@ export default function CommercialLandingPage() {
                     <Icon size={19} aria-hidden="true" className="text-accent" />
                   </span>
                   <div>
-                    <dt className="text-[0.9375rem] font-bold">{feature.title}</dt>
+                    <dt className="text-[0.9375rem] font-bold text-[#161A19]">{feature.title}</dt>
                     <dd className="mt-1 text-[0.8125rem] leading-5 text-[#161A19]/55">{feature.text}</dd>
                   </div>
                 </div>
@@ -167,7 +174,7 @@ export default function CommercialLandingPage() {
             })}
           </dl>
         </div>
-      </section>
+      </div>
 
       {/* ------------------------------------------------------------- WORK */}
       {/*
