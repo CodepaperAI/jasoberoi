@@ -25,8 +25,10 @@ import { siteConfig } from "@/lib/site";
  *      field.
  *   3. A named human, a privacy line and the licence row directly under the
  *      button. Who gets this, what happens to it, and who is asking.
- *   4. Sentence case on the button. Tracked-out uppercase on a saturated block
- *      is what ad-network creative looks like.
+ *   4. A near-black pill, sentence case. A large saturated orange block is what
+ *      ad-network creative looks like, and it was the last thing on these pages
+ *      still shouting; orange stays as the accent on headlines and icons, which
+ *      is more of the brand in less of the page.
  *
  * Still four fields plus a qualifier — the completion argument has not changed.
  */
@@ -118,7 +120,7 @@ export function LandingLeadForm({ content }: { content: LandingContent }) {
       <button
         type="submit"
         disabled={state === "sending"}
-        className="mt-1 inline-flex min-h-14 items-center justify-center rounded-xl bg-orange-600 px-6 text-base font-bold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:opacity-70"
+        className="mt-1 inline-flex min-h-14 items-center justify-center rounded-full bg-[#161A19] px-6 text-base font-semibold text-white transition hover:bg-[#2c3230] disabled:cursor-not-allowed disabled:opacity-70"
       >
         {state === "sending" ? "Sending…" : "Request a callback"}
       </button>
