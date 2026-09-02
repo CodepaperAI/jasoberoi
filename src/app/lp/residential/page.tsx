@@ -304,18 +304,18 @@ export default function ResidentialLandingPage() {
               The same room,
               <span className="serif-font font-normal italic text-accent"> before and after.</span>
             </h2>
-            <div className="mt-10 grid gap-8 lg:grid-cols-2">
+            <div className="mt-10 grid gap-10">
               {content.beforeAfter.map((pair) => (
                 <figure key={pair.after}>
-                  <div className="grid grid-cols-2 gap-1 overflow-hidden rounded-[1.5rem]">
+                  <div className="grid grid-cols-2 gap-1.5 overflow-hidden rounded-[1.75rem]">
                     {([["Before", pair.before], ["After", pair.after]] as const).map(
                       ([label, src]) => (
-                        <div key={label} className="relative aspect-[4/5]">
+                        <div key={label} className="relative aspect-[4/3]">
                           <Image
                             src={src}
                             alt={`${pair.caption} — ${label.toLowerCase()}`}
                             fill
-                            sizes="(min-width: 1024px) 25vw, 50vw"
+                            sizes="(min-width: 1024px) 41vw, 50vw"
                             className="object-cover"
                           />
                           <span className="absolute left-4 top-4 rounded-full bg-black/60 px-3 py-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-white backdrop-blur">
