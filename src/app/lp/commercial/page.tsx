@@ -105,7 +105,7 @@ export default function CommercialLandingPage() {
 
               {/* Brighter than white/75. Over a photograph this line was the
                   first thing to disappear. */}
-              <p className="mt-6 max-w-lg text-[0.9375rem] font-medium leading-7 text-[#FF811C] [text-shadow:0_1px_12px_rgba(0,0,0,0.55)]">
+              <p className="mt-6 max-w-xl text-[1.1875rem] font-bold leading-8 text-[#FF811C] [text-shadow:0_1px_14px_rgba(0,0,0,0.6)] sm:text-[1.3125rem] sm:leading-9">
                 {content.subhead}
               </p>
 
