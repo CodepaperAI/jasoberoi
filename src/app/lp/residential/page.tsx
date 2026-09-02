@@ -304,30 +304,68 @@ export default function ResidentialLandingPage() {
               The same room,
               <span className="serif-font font-normal italic text-accent"> before and after.</span>
             </h2>
-            <div className="mt-10 grid gap-10">
-              {content.beforeAfter.map((pair) => (
-                <figure key={pair.after}>
-                  <div className="grid grid-cols-2 gap-1.5 overflow-hidden rounded-[1.75rem]">
-                    {([["Before", pair.before], ["After", pair.after]] as const).map(
-                      ([label, src]) => (
-                        <div key={label} className="relative aspect-[4/3]">
-                          <Image
-                            src={src}
-                            alt={`${pair.caption} — ${label.toLowerCase()}`}
-                            fill
-                            sizes="(min-width: 1024px) 41vw, 50vw"
-                            className="object-cover"
-                          />
-                          <span className="absolute left-4 top-4 rounded-full bg-black/60 px-3 py-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-white backdrop-blur">
-                            {label}
+            <div className="mt-10 grid gap-12">
+              {content.beforeAfter.map((pair) => {
+                /*
+                  Two stages or three, depending on what exists for that room.
+                  The middle frame is the one that proves the work: protected
+                  floors and a controlled strip-out say more about a contractor
+                  than either finished photograph does.
+                */
+                const stages = [
+                  { label: "Before", src: pair.before },
+                  ...(pair.during ? [{ label: "During", src: pair.during }] : []),
+                  { label: "After", src: pair.after },
+                ];
+
+                return (
+                  <figure key={pair.after}>
+                    {/* Stacked on a phone so each frame is legible, side by side
+                        from sm up where the comparison is the whole point. */}
+                    <div
+                      className={[
+                        "grid gap-2 sm:gap-2.5",
+                        stages.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2",
+                      ].join(" ")}
+                    >
+                      {stages.map((stage, index) => (
+                        <div
+                          key={stage.label}
+                          className="group relative overflow-hidden rounded-[1.5rem] bg-[#e6e1d8]"
+                        >
+                          <div className="relative aspect-[4/3]">
+                            <Image
+                              src={stage.src}
+                              alt={`${pair.caption} — ${stage.label.toLowerCase()}`}
+                              fill
+                              sizes={
+                                stages.length === 3
+                                  ? "(min-width: 640px) 30vw, 100vw"
+                                  : "(min-width: 640px) 45vw, 100vw"
+                              }
+                              className="object-cover transition duration-[1200ms] ease-out group-hover:scale-[1.03]"
+                            />
+                          </div>
+
+                          {/* The last frame is the result, so it gets the solid
+                              badge and the others sit back in glass. */}
+                          <span
+                            className={[
+                              "absolute left-4 top-4 rounded-full px-3.5 py-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.14em] backdrop-blur",
+                              index === stages.length - 1
+                                ? "bg-[#FF811C] text-white"
+                                : "bg-black/45 text-white",
+                            ].join(" ")}
+                          >
+                            {stage.label}
                           </span>
                         </div>
-                      ),
-                    )}
-                  </div>
-                  <figcaption className="mt-3 text-sm text-[#1B1A18]/55">{pair.caption}</figcaption>
-                </figure>
-              ))}
+                      ))}
+                    </div>
+                    <figcaption className="mt-4 text-sm text-[#1B1A18]/55">{pair.caption}</figcaption>
+                  </figure>
+                );
+              })}
             </div>
           </div>
         </section>
