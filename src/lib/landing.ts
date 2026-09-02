@@ -55,6 +55,15 @@ export type LandingFeature = { title: string; text: string };
  */
 export type LandingBeforeAfter = {
   before: string;
+  /**
+   * The room stripped back, between the two.
+   *
+   * Optional, and worth having where it exists. Two finished photographs prove
+   * the room changed; the middle frame proves who changed it — that the floor
+   * was protected, that the strip-out was controlled, that somebody was on site
+   * doing the work rather than photographing a showroom.
+   */
+  during?: string;
   after: string;
   caption: string;
 };
@@ -249,9 +258,10 @@ export const residentialLanding: LandingContent = {
     guarantees, and this section exists only because that list does not exist yet.
   */
   /*
-    One pair, because one pair is what has been verified. The two frames are the
-    same kitchen — same bay window, same ceiling soffit above it, same tile —
-    which is the only thing that makes a before/after worth anything.
+    One room, three stages, all verified as the same kitchen: same bay window,
+    same circular ceiling soffit above it, same range and hood in the same
+    position. That check is the only thing that makes a before/after worth
+    anything.
 
     TODO(client): the living-room "before" is in the library as
     project-reno-living-before.jpg and has no matching "after" yet. Send the
@@ -260,6 +270,7 @@ export const residentialLanding: LandingContent = {
   beforeAfter: [
     {
       before: "/oberizon/optimized/project-reno-kitchen-before.jpg",
+      during: "/oberizon/optimized/project-reno-kitchen-during.jpg",
       after: "/oberizon/optimized/project-reno-kitchen-after.jpg",
       caption: "Kitchen renovation — Metro Vancouver",
     },

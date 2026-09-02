@@ -297,6 +297,11 @@ export const photos: Photo[] = [
     alt: "Kitchen before renovation, with cream shaker cabinetry, a dark stained island and wrought-iron chandeliers",
   },
   {
+    file: "project-reno-kitchen-during.jpg",
+    subject: "Home",
+    alt: "The same kitchen stripped back mid-renovation, with cabinet carcasses exposed, the floor protected and tools on site",
+  },
+  {
     file: "project-reno-kitchen-after.jpg",
     subject: "Home",
     alt: "The same kitchen after renovation, with greige cabinetry, a fluted oak island, a book-matched stone backsplash and brass ring pendants",
