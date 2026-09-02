@@ -98,14 +98,14 @@ export default function CommercialLandingPage() {
 
               <h1 className="mt-7 text-[clamp(2.2rem,4.2vw,3.5rem)] font-bold leading-[1.04] tracking-[-0.025em]">
                 {content.headline}
-                <span className="serif-font mt-1 block font-normal italic text-orange-300">
+                <span className="serif-font mt-1 block font-normal italic text-[#FF811C]">
                   {content.headlineAccent}
                 </span>
               </h1>
 
               {/* Brighter than white/75. Over a photograph this line was the
                   first thing to disappear. */}
-              <p className="mt-6 max-w-lg text-[0.9375rem] font-medium leading-7 text-orange-300 [text-shadow:0_1px_12px_rgba(0,0,0,0.55)]">
+              <p className="mt-6 max-w-lg text-[0.9375rem] font-medium leading-7 text-[#FF811C] [text-shadow:0_1px_12px_rgba(0,0,0,0.55)]">
                 {content.subhead}
               </p>
 
@@ -150,12 +150,12 @@ export default function CommercialLandingPage() {
             {/* Floating over the photograph rather than beside it. */}
             <div className="grid gap-4 sm:grid-cols-2 lg:ml-auto lg:w-[16rem] lg:grid-cols-1">
               <div className="rounded-[1.25rem] border border-white/15 bg-white/10 p-5 backdrop-blur-md">
-                <Timer size={20} aria-hidden="true" className="text-orange-300" />
+                <Timer size={20} aria-hidden="true" className="text-[#FF811C]" />
                 <p className="mt-3 text-2xl font-bold leading-none">90 days</p>
                 <p className="mt-1.5 text-[0.8125rem] leading-5 text-white/65">Fastest clinic, five operatories</p>
               </div>
               <div className="rounded-[1.25rem] border border-white/15 bg-white/10 p-5 backdrop-blur-md">
-                <Star size={20} aria-hidden="true" className="text-orange-300" />
+                <Star size={20} aria-hidden="true" className="text-[#FF811C]" />
                 <p className="mt-3 text-2xl font-bold leading-none">{landingCounts.delivered}+</p>
                 <p className="mt-1.5 text-[0.8125rem] leading-5 text-white/65">Builds delivered since {siteConfig.foundedYear}</p>
               </div>
