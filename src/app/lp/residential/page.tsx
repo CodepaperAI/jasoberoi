@@ -71,14 +71,14 @@ export default function ResidentialLandingPage() {
             </span>
 
             {/* Bold sans, then the accent line in serif italic. */}
-            <h1 className="mt-7 text-[clamp(2.4rem,4.6vw,3.9rem)] font-bold leading-[1.04] tracking-[-0.025em]">
+            <h1 className="mt-7 text-[clamp(2.05rem,3.5vw,3.05rem)] font-bold leading-[1.06] tracking-[-0.02em]">
               {content.headline}
               <span className="serif-font mt-1 block font-normal italic text-accent">
                 {content.headlineAccent}
               </span>
             </h1>
 
-            <p className="mt-7 max-w-xl text-[1.0625rem] leading-8 text-[#1B1A18]/65">
+            <p className="mt-6 max-w-lg text-[0.9375rem] leading-7 text-[#1B1A18]/65">
               {content.subhead}
             </p>
 
@@ -174,9 +174,9 @@ export default function ResidentialLandingPage() {
       </section>
 
       {/* ------------------------------------------------------------- WORK */}
-      <section className="px-5 py-20 sm:px-8">
+      <section className="px-5 py-16 sm:px-8">
         <div className="mx-auto max-w-[82rem]">
-          <h2 className="max-w-[18ch] text-[clamp(1.9rem,3.4vw,2.9rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+          <h2 className="max-w-[18ch] text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
             Finished rooms in a home we
             <span className="serif-font font-normal italic text-accent"> actually built.</span>
           </h2>
@@ -201,11 +201,11 @@ export default function ResidentialLandingPage() {
       </section>
 
       {/* ------------------------------------------------------------- FORM */}
-      <section id="request" className="scroll-mt-4 px-5 pb-20 sm:px-8">
+      <section id="request" className="scroll-mt-4 px-5 pb-16 sm:px-8">
         <div className="mx-auto max-w-[82rem] overflow-hidden rounded-[2rem] bg-white shadow-[0_10px_50px_rgba(27,26,24,0.09)]">
           <div className="grid lg:grid-cols-[0.95fr_1.05fr]">
             <div className="order-last p-7 sm:p-11 lg:order-first">
-              <h2 className="text-[clamp(1.75rem,2.8vw,2.4rem)] font-bold leading-[1.1] tracking-[-0.02em]">
+              <h2 className="text-[clamp(1.5rem,2.3vw,2rem)] font-bold leading-[1.1] tracking-[-0.02em]">
                 {content.formHeading}
               </h2>
               <p className="mt-5 max-w-md text-[1.0625rem] leading-8 text-[#1B1A18]/65">
@@ -243,9 +243,9 @@ export default function ResidentialLandingPage() {
       </section>
 
       {/* ------------------------------------------------------- OBJECTIONS */}
-      <section className="px-5 pb-20 sm:px-8">
+      <section className="px-5 pb-16 sm:px-8">
         <div className="mx-auto max-w-[82rem]">
-          <h2 className="text-[clamp(1.9rem,3.4vw,2.9rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+          <h2 className="text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
             What people
             <span className="serif-font font-normal italic text-accent"> actually worry about.</span>
           </h2>
@@ -264,20 +264,24 @@ export default function ResidentialLandingPage() {
       </section>
 
       {/* ---------------------------------------------------------- PROCESS */}
-      <section className="px-5 pb-20 sm:px-8">
-        <div className="mx-auto max-w-[82rem]">
-          <h2 className="text-[clamp(1.9rem,3.4vw,2.9rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+      {/* The one dark band. Seven light sections in a row read as one long
+          page rather than a sequence, and the process is the natural place to
+          break it: it is the only section that is a claim about how the
+          company works rather than evidence. */}
+      <section className="mx-5 mb-16 rounded-[2rem] bg-[#1B1A18] px-5 py-16 text-white sm:mx-8 sm:px-8">
+        <div className="mx-auto max-w-[78rem]">
+          <h2 className="text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
             From first walk
             <span className="serif-font font-normal italic text-accent"> to handover.</span>
           </h2>
           <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {content.steps.map((step) => (
-              <li key={step.step} className="rounded-[1.5rem] bg-white p-7 shadow-[0_4px_24px_rgba(27,26,24,0.05)]">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F4F1EB] text-sm font-bold text-accent">
+              <li key={step.step} className="rounded-[1.5rem] border border-white/12 bg-white/[0.05] p-7">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-sm font-bold text-accent">
                   {step.step}
                 </span>
                 <h3 className="mt-5 text-lg font-bold">{step.title}</h3>
-                <p className="mt-2 text-[0.9375rem] leading-7 text-[#1B1A18]/60">{step.text}</p>
+                <p className="mt-2 text-[0.9375rem] leading-7 text-white/60">{step.text}</p>
               </li>
             ))}
           </ol>
@@ -285,9 +289,9 @@ export default function ResidentialLandingPage() {
       </section>
 
       {/* ---------------------------------------------------------- REVIEWS */}
-      <section className="px-5 pb-20 sm:px-8">
+      <section className="px-5 pb-16 sm:px-8">
         <div className="mx-auto max-w-[82rem]">
-          <h2 className="max-w-[22ch] text-[clamp(1.9rem,3.4vw,2.9rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+          <h2 className="max-w-[22ch] text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
             The same team, in their
             <span className="serif-font font-normal italic text-accent"> clients&rsquo; words.</span>
           </h2>
@@ -319,9 +323,15 @@ export default function ResidentialLandingPage() {
       </section>
 
       {/* ------------------------------------------------------------ CLOSE */}
-      <section className="px-5 pb-20 sm:px-8">
+      <section className="px-5 pb-16 sm:px-8">
         <div className="relative mx-auto max-w-[82rem] overflow-hidden rounded-[2rem]">
-          <div className="relative min-h-[26rem] p-8 sm:p-14">
+          {/*
+          `isolate` is load-bearing. The photograph and its scrim sit at
+          -z-10, and without a stacking context here they render behind the
+          page background rather than behind the text — so this section
+          shipped as white type on cream with no image at all.
+        */}
+        <div className="relative isolate min-h-[24rem] p-8 sm:p-14">
             <Image
               src={exterior.image}
               alt=""
@@ -331,7 +341,7 @@ export default function ResidentialLandingPage() {
             />
             <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#12100e]/90 via-[#12100e]/70 to-[#12100e]/35" />
             <div className="max-w-lg text-white">
-              <h2 className="text-[clamp(1.9rem,3.4vw,2.9rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+              <h2 className="text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
                 {content.closingHeading}
               </h2>
               <a
