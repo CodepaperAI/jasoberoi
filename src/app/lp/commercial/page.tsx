@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 import { ArrowRight, ClipboardCheck, HardHat, MapPin, PhoneCall, Phone, Star, Timer } from "lucide-react";
+import { LandingFormDialog } from "@/components/LandingFormDialog";
 import { LandingLeadForm } from "@/components/LandingLeadForm";
 import { LandingStickyCta } from "@/components/LandingStickyCta";
 import { altFor } from "@/lib/photos";
@@ -81,7 +82,9 @@ export default function CommercialLandingPage() {
           </div>
         </header>
 
-        <div className="mx-auto flex w-full max-w-[82rem] flex-1 items-center px-5 py-14 sm:px-8">
+        {/* pb clears the assurance bar, which is pulled up 14 units to straddle
+            the hero edge and was landing on top of the social-proof row. */}
+        <div className="mx-auto flex w-full max-w-[82rem] flex-1 items-center px-5 pb-28 pt-14 sm:px-8">
           <div className="grid w-full items-center gap-10 lg:grid-cols-[1.15fr_0.85fr]">
             <div>
               <span className="inline-flex items-center rounded-full border border-white/35 bg-white/10 px-4 py-2 text-[0.6875rem] font-bold uppercase tracking-[0.16em] backdrop-blur">
@@ -102,6 +105,7 @@ export default function CommercialLandingPage() {
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 <a
                   href="#request"
+                data-open-lead-form
                   data-analytics="meta-lp-commercial-hero-cta"
                   className="inline-flex min-h-14 items-center gap-2.5 rounded-full bg-white px-8 text-[0.9375rem] font-semibold text-[#161A19] transition hover:bg-white/90"
                 >
@@ -161,13 +165,12 @@ export default function CommercialLandingPage() {
             {content.features.map((feature, index) => {
               const Icon = FEATURE_ICONS[index] ?? ClipboardCheck;
               return (
-                <div key={feature.title} className="flex items-start gap-3.5 px-5 py-5">
+                <div key={feature.title} className="flex items-center gap-3.5 px-5 py-5">
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#F1F3F2]">
                     <Icon size={19} aria-hidden="true" className="text-accent" />
                   </span>
                   <div>
-                    <dt className="text-[0.9375rem] font-bold text-[#161A19]">{feature.title}</dt>
-                    <dd className="mt-1 text-[0.8125rem] leading-5 text-[#161A19]/55">{feature.text}</dd>
+                    <dt className="text-[0.9375rem] font-bold leading-snug text-[#161A19]">{feature.title}</dt>
                   </div>
                 </div>
               );
@@ -355,6 +358,7 @@ export default function CommercialLandingPage() {
               </h2>
               <a
                 href="#request"
+                data-open-lead-form
                 data-analytics="meta-lp-commercial-close-cta"
                 className="mt-8 inline-flex min-h-14 items-center gap-2.5 rounded-full bg-white px-8 text-[0.9375rem] font-semibold text-[#161A19] transition hover:bg-white/90"
               >
@@ -366,6 +370,7 @@ export default function CommercialLandingPage() {
         </div>
       </section>
 
+      <LandingFormDialog content={content} />
       <LandingStickyCta content={content} tone="light" />
 
       <footer className="border-t border-[#161A19]/10 px-5 pb-28 pt-8 text-sm text-[#161A19]/50 sm:px-8 lg:pb-8">
