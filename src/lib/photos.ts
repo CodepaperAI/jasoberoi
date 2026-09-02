@@ -107,22 +107,22 @@ export const photos: Photo[] = [
   {
     file: "project-kanwarveer-reception-live.jpg",
     subject: "Clinic",
-    alt: "Reception desk and timber slat wall at Dr. Kanwarveer Family Dentist Clinic",
+    alt: "Reception desk and timber slat wall at a completed family dentist clinic",
   },
   {
     file: "project-kanwarveer-operatory-live.jpg",
     subject: "Clinic",
-    alt: "Finished dental operatory at Dr. Kanwarveer Family Dentist Clinic",
+    alt: "Finished dental operatory at a completed family dentist clinic",
   },
   {
     file: "project-kanwarveer-corridor-live.jpg",
     subject: "Clinic",
-    alt: "Operatory corridor at Dr. Kanwarveer Family Dentist Clinic",
+    alt: "Operatory corridor at a completed family dentist clinic",
   },
   {
     file: "project-kanwarveer-sterilization-live.jpg",
     subject: "Clinic",
-    alt: "Sterilization bay at Dr. Kanwarveer Family Dentist Clinic",
+    alt: "Sterilization bay at a completed family dentist clinic",
   },
   {
     file: "project-skinholic-reception-live.jpg",
