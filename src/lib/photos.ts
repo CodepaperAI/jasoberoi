@@ -281,6 +281,32 @@ export const photos: Photo[] = [
     alt: "Kitchen of a completed custom home, with full-height oak joinery, a stone waterfall island and herringbone floors",
   },
 
+  /*
+    Renovation before/after, client photography 2026-09-02.
+
+    The kitchen pair is the same room: the bay window sits in the same place in
+    both frames, the circular ceiling soffit above it survives the renovation,
+    the large-format tile runs unchanged, and the dark panel on the far right
+    becomes the fluted one. Checked before pairing them, because a "before" that
+    is actually a different house is the one mistake a renovation page cannot
+    survive.
+  */
+  {
+    file: "project-reno-kitchen-before.jpg",
+    subject: "Home",
+    alt: "Kitchen before renovation, with cream shaker cabinetry, a dark stained island and wrought-iron chandeliers",
+  },
+  {
+    file: "project-reno-kitchen-after.jpg",
+    subject: "Home",
+    alt: "The same kitchen after renovation, with greige cabinetry, a fluted oak island, a book-matched stone backsplash and brass ring pendants",
+  },
+  {
+    file: "project-reno-living-before.jpg",
+    subject: "Home",
+    alt: "Double-height living room part-way through renovation, with floor protection down and new cabinetry being fitted either side of the fireplace",
+  },
+
   // ---- Brand -----------------------------------------------------------
   {
     file: "oberizon-logo.png",

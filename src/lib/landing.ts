@@ -248,6 +248,22 @@ export const residentialLanding: LandingContent = {
     Attributed quotes from people who had a house built outperform any list of
     guarantees, and this section exists only because that list does not exist yet.
   */
+  /*
+    One pair, because one pair is what has been verified. The two frames are the
+    same kitchen — same bay window, same ceiling soffit above it, same tile —
+    which is the only thing that makes a before/after worth anything.
+
+    TODO(client): the living-room "before" is in the library as
+    project-reno-living-before.jpg and has no matching "after" yet. Send the
+    finished shot of that room and it becomes the second pair.
+  */
+  beforeAfter: [
+    {
+      before: "/oberizon/optimized/project-reno-kitchen-before.jpg",
+      after: "/oberizon/optimized/project-reno-kitchen-after.jpg",
+      caption: "Kitchen renovation — Metro Vancouver",
+    },
+  ],
   assurances: [
     {
       title: "2-5-10 Home Warranty",
