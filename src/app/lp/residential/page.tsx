@@ -60,12 +60,12 @@ export default function ResidentialLandingPage() {
         />
         {/* Diagonal, so the type side is dark enough to read and the far corner
             still shows the photograph. */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/88 via-black/62 to-black/25" />
-        {/* A second scrim, anchored left and under the type column only. The
-            diagonal above has already lifted to black/25 by mid-frame, which
-            is exactly where the sub and the proof line sit — so they were the
-            first things to wash out against a bright frame. */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/75 via-black/35 to-transparent" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/62 via-black/34 to-black/10" />
+        {/* A light second scrim under the type column — enough to hold the
+            headline, not enough to read as a dark panel laid over the
+            photograph. The description carries its own contrast in orange
+            rather than relying on the background being dark. */}
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/45 via-black/15 to-transparent" />
 
         <header className="px-5 pt-6 sm:px-8">
           <div className="mx-auto flex max-w-[82rem] items-center justify-between gap-4">
@@ -105,7 +105,7 @@ export default function ResidentialLandingPage() {
                 </span>
               </h1>
 
-              <p className="mt-6 max-w-lg text-[0.9375rem] leading-7 text-white">
+              <p className="mt-6 max-w-lg text-[0.9375rem] font-medium leading-7 text-orange-300 [text-shadow:0_1px_12px_rgba(0,0,0,0.55)]">
                 {content.subhead}
               </p>
 
