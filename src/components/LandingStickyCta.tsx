@@ -38,6 +38,7 @@ export function LandingStickyCta({
     >
       <a
         href="#request"
+        data-open-lead-form
         data-analytics={`meta-lp-${content.campaign}-sticky-form`}
         className="inline-flex min-h-12 flex-1 items-center justify-center rounded-xl bg-orange-600 px-4 text-[0.9375rem] font-bold text-white transition hover:bg-orange-700"
       >
