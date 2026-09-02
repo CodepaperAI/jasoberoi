@@ -238,6 +238,28 @@ export const photos: Photo[] = [
     alt: "Timber-slat reception desk in a completed clinic interior",
   },
 
+  // ---- Custom homes, client photography 2026-09-02 ---------------------
+  /*
+    The residential library was two exterior shots of the same two houses and
+    nothing of an interior, which is why the residential page had to lead on a
+    driveway. These are the finished rooms.
+  */
+  {
+    file: "project-custom-home-exterior-live.jpg",
+    subject: "Home",
+    alt: "Completed custom home lit at dusk, with gated entry and cedar soffits",
+  },
+  {
+    file: "project-custom-home-living-live.jpg",
+    subject: "Home",
+    alt: "Living and dining room of a completed custom home, with a tiered chandelier, cedar feature wall and open-riser staircase",
+  },
+  {
+    file: "project-custom-home-lounge-live.jpg",
+    subject: "Home",
+    alt: "Living room of a completed custom home, with a linear fireplace set into a stone feature wall and walnut slat joinery",
+  },
+
   // ---- Brand -----------------------------------------------------------
   {
     file: "oberizon-logo.png",

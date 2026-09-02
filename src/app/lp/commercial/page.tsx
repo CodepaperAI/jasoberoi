@@ -1,29 +1,29 @@
 import Image from "next/image";
 import type { Metadata } from "next";
-import { ArrowRight, Check, MapPin, Phone } from "lucide-react";
+import { ArrowRight, ClipboardCheck, HardHat, MapPin, PhoneCall, Phone, Star, Timer } from "lucide-react";
 import { LandingLeadForm } from "@/components/LandingLeadForm";
 import { LandingStickyCta } from "@/components/LandingStickyCta";
 import { altFor } from "@/lib/photos";
-import { commercialLanding as content } from "@/lib/landing";
+import { commercialLanding as content, landingCounts } from "@/lib/landing";
 import { buildMetadata } from "@/lib/seo";
 import { reviews, siteConfig } from "@/lib/site";
 
 /**
  * Meta ads landing page — clinics, offices, retail.
  *
- * Rebuilt cinematic. The first version put the photograph in a rounded card
- * beside a large form panel, which read as a document with a contact form
- * attached rather than as a landing page — the client's word for it was
- * garbage, and they were right. The reference work in this category does the
- * opposite: one photograph filling the viewport, oversized type sitting on it,
- * and the numbers running across the foot of the image.
+ * Same design system as the residential page, from the reference the client
+ * supplied: light ground, floating white cards on soft shadows, a bold sans
+ * headline with a serif italic accent line, pill buttons with a near-black
+ * primary, a stat rail over the photograph and a four-up assurance bar.
  *
- * The form moves to the second screen. The hero keeps two buttons and the
- * sticky bar keeps the form one tap away, so the call to action is still above
- * the fold even though the fields are not.
+ * Cooler ground than residential — #F1F3F2 against its #F4F1EB — because the
+ * two pages run in the same account and a practice owner and a homeowner should
+ * not feel like they landed on the same offer. Same system, different register.
  *
  * noindex — see the note at the top of src/lib/landing.ts.
  */
+
+const FEATURE_ICONS = [ClipboardCheck, HardHat, PhoneCall, Timer];
 
 export const metadata: Metadata = buildMetadata({
   title: content.metaTitle,
@@ -34,202 +34,228 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default function CommercialLandingPage() {
-  const [lead, ...rest] = content.gallery;
+  const [shine, operatory, skinholic, kanwarveer] = content.gallery;
 
   return (
-    <div data-landing className="bg-ink text-white">
-      {/* ---------------------------------------------------------------- HERO */}
-      <section className="relative isolate flex min-h-[88svh] flex-col">
-        <Image
-          src={content.gallery[1].image}
-          alt={altFor(content.gallery[1].image)}
-          fill
-          sizes="100vw"
-          priority
-          className="-z-10 object-cover"
-        />
-        {/* Two scrims: a hard floor under the type, a softer wash over the rest,
-            so the photograph still reads as a photograph. */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/70 to-ink/35" />
-        <div className="absolute inset-0 -z-10 bg-ink/25" />
+    <div data-landing className="bg-[#F1F3F2] text-[#161A19]">
+      <header className="px-5 pt-6 sm:px-8">
+        <div className="mx-auto flex max-w-[82rem] items-center justify-between gap-4">
+          <Image
+            src="/oberizon/oberizon-logo.svg"
+            alt="Oberizon Construction"
+            width={192}
+            height={88}
+            className="h-11 w-auto sm:h-12"
+            priority
+          />
+          <a
+            href={siteConfig.phoneHref}
+            data-analytics="meta-lp-commercial-header-call"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#161A19] px-5 text-sm font-semibold text-white transition hover:bg-[#2c3230]"
+          >
+            <Phone size={15} aria-hidden="true" />
+            <span className="hidden sm:inline">{siteConfig.phone}</span>
+            <span className="sm:hidden">Call</span>
+          </a>
+        </div>
+      </header>
 
-        {/* Top scrim. The residential hero opens on a bright dusk sky and the
-            white logo disappeared into it — a header you cannot read is a
-            brand the ad did not get credit for. */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-black/55 to-transparent" />
-        <header className="px-5 py-6 sm:px-10">
-          <div className="mx-auto flex max-w-[86rem] items-center justify-between gap-4">
-            <Image
-              src="/oberizon/optimized/oberizon-logo.png"
-              alt="Oberizon Construction"
-              width={192}
-              height={88}
-              className="h-9 w-auto brightness-0 invert sm:h-11"
-              priority
-            />
-            <a
-              href={siteConfig.phoneHref}
-              data-analytics="meta-lp-commercial-header-call"
-              className="ui-font inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-2.5 text-xs font-extrabold uppercase tracking-[0.14em] backdrop-blur transition hover:border-orange-400 hover:text-orange-400"
-            >
-              <Phone size={14} aria-hidden="true" />
-              <span className="hidden sm:inline">{siteConfig.phone}</span>
-              <span className="sm:hidden">Call</span>
-            </a>
+      {/* ------------------------------------------------------------- HERO */}
+      <section className="px-5 pb-6 pt-10 sm:px-8 sm:pt-14">
+        <div className="mx-auto grid max-w-[82rem] items-center gap-12 lg:grid-cols-[1fr_1.02fr] lg:gap-14">
+          <div>
+            <span className="inline-flex items-center rounded-full border border-[#161A19]/15 px-4 py-2 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-[#161A19]/70">
+              {content.eyebrow}
+            </span>
+
+            <h1 className="mt-7 text-[clamp(2.4rem,4.6vw,3.9rem)] font-bold leading-[1.04] tracking-[-0.025em]">
+              {content.headline}
+              <span className="serif-font mt-1 block font-normal italic text-accent">
+                {content.headlineAccent}
+              </span>
+            </h1>
+
+            <p className="mt-7 max-w-xl text-[1.0625rem] leading-8 text-[#161A19]/65">
+              {content.subhead}
+            </p>
+
+            <div className="mt-9 flex flex-wrap items-center gap-3">
+              <a
+                href="#request"
+                data-analytics="meta-lp-commercial-hero-cta"
+                className="inline-flex min-h-14 items-center gap-2.5 rounded-full bg-[#161A19] px-8 text-[0.9375rem] font-semibold text-white transition hover:bg-[#2c3230]"
+              >
+                Get a build plan
+                <ArrowRight size={17} aria-hidden="true" />
+              </a>
+              <a
+                href={siteConfig.phoneHref}
+                data-analytics="meta-lp-commercial-hero-call"
+                className="hidden min-h-14 items-center gap-2.5 rounded-full border border-[#161A19]/20 bg-white px-8 text-[0.9375rem] font-semibold transition hover:border-[#161A19]/45 sm:inline-flex"
+              >
+                <Phone size={16} aria-hidden="true" />
+                {siteConfig.phone}
+              </a>
+            </div>
+
+            <div className="mt-9 flex items-center gap-4">
+              <div className="flex -space-x-2.5">
+                {reviews.map((review) => (
+                  <span
+                    key={review.author}
+                    className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#F1F3F2] bg-[#161A19] text-xs font-bold text-white"
+                  >
+                    {review.author.replace("Dr. ", "").slice(0, 2)}
+                  </span>
+                ))}
+              </div>
+              <div className="text-sm leading-5">
+                <p className="font-bold">Clinic owners, in their own words</p>
+                <p className="text-[#161A19]/55">
+                  {landingCounts.documented} delivered builds documented on this site
+                </p>
+              </div>
+            </div>
           </div>
-        </header>
 
-        <div className="mx-auto flex w-full max-w-[86rem] flex-1 flex-col justify-end px-5 pb-7 pt-12 max-lg:pb-24 sm:px-10">
-          <p className="ui-font text-[0.6875rem] font-extrabold uppercase tracking-[0.28em] text-orange-400">
-            {content.eyebrow}
-          </p>
-          {/* Fluid, and large. This is the one thing every visitor sees. */}
-          <h1 className="serif-font mt-6 max-w-[18ch] text-[clamp(2.5rem,7.2vw,5.75rem)] font-normal leading-[0.98] tracking-[-0.02em]">
-            {content.headline}
-          </h1>
-          <p className="mt-6 max-w-xl text-base leading-7 sm:mt-7 sm:text-lg sm:leading-8 text-white/80">{content.subhead}</p>
+          <div className="relative">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-[#dfe3e1] lg:aspect-[5/4]">
+              <Image
+                src={shine.image}
+                alt={altFor(shine.image)}
+                fill
+                sizes="(min-width: 1024px) 52vw, 100vw"
+                priority
+                className="object-cover"
+              />
+            </div>
 
-          <div className="mt-9 flex flex-wrap items-center gap-3">
-            <a
-              href="#request"
-              data-analytics="meta-lp-commercial-hero-cta"
-              className="ui-font inline-flex min-h-14 items-center gap-2.5 rounded-full bg-orange-600 px-8 text-xs font-extrabold uppercase tracking-[0.16em] text-white shadow-2xl shadow-orange-600/30 transition hover:bg-orange-500"
-            >
-              Get a build plan
-              <ArrowRight size={16} aria-hidden="true" />
-            </a>
-            
+            <div className="mt-4 grid grid-cols-2 gap-4 lg:absolute lg:-left-10 lg:bottom-8 lg:mt-0 lg:w-[15rem] lg:grid-cols-1">
+              <div className="rounded-[1.25rem] bg-white p-5 shadow-[0_8px_36px_rgba(22,26,25,0.10)]">
+                <Timer size={20} aria-hidden="true" className="text-accent" />
+                <p className="mt-3 text-2xl font-bold leading-none">90 days</p>
+                <p className="mt-1.5 text-[0.8125rem] leading-5 text-[#161A19]/55">
+                  Fastest clinic, five operatories
+                </p>
+              </div>
+              <div className="rounded-[1.25rem] bg-white p-5 shadow-[0_8px_36px_rgba(22,26,25,0.10)]">
+                <Star size={20} aria-hidden="true" className="text-accent" />
+                <p className="mt-3 text-2xl font-bold leading-none">{landingCounts.delivered}+</p>
+                <p className="mt-1.5 text-[0.8125rem] leading-5 text-[#161A19]/55">
+                  Builds delivered since {siteConfig.foundedYear}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* The numbers, on the image. */}
-        <div className="border-t border-white/20 bg-ink/35 backdrop-blur-sm">
-          <dl className="mx-auto grid max-w-[86rem] grid-cols-2 gap-y-5 px-5 py-6 sm:px-10 lg:grid-cols-4">
-            {content.proof.map((item) => (
-              <div key={item.label}>
-                <dt className="sr-only">{item.label}</dt>
-                <dd>
-                  <span className="serif-font block text-4xl leading-none sm:text-5xl">
-                    {item.figure}
-                    <span className="text-orange-400">{item.unit}</span>
+        <div className="mx-auto mt-12 max-w-[82rem] rounded-[1.75rem] bg-white p-3 shadow-[0_8px_36px_rgba(22,26,25,0.07)]">
+          <dl className="grid divide-y divide-[#161A19]/8 md:grid-cols-2 md:divide-y-0 lg:grid-cols-4 lg:divide-x">
+            {content.features.map((feature, index) => {
+              const Icon = FEATURE_ICONS[index] ?? ClipboardCheck;
+              return (
+                <div key={feature.title} className="flex items-start gap-3.5 px-5 py-5">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#F1F3F2]">
+                    <Icon size={19} aria-hidden="true" className="text-accent" />
                   </span>
-                  <span className="mt-2.5 block text-[0.8125rem] leading-5 text-white/60">
-                    {item.label}
-                  </span>
-                </dd>
-              </div>
-            ))}
+                  <div>
+                    <dt className="text-[0.9375rem] font-bold">{feature.title}</dt>
+                    <dd className="mt-1 text-[0.8125rem] leading-5 text-[#161A19]/55">{feature.text}</dd>
+                  </div>
+                </div>
+              );
+            })}
           </dl>
         </div>
       </section>
 
-      {/* -------------------------------------------------------------- FORM */}
-      <section id="request" className="scroll-mt-2 border-t border-white/10 px-5 py-20 sm:px-10">
-        <div className="mx-auto grid max-w-[86rem] gap-12 lg:grid-cols-[1fr_0.85fr] lg:gap-20">
-          <div>
-            <h2 className="serif-font text-[clamp(2rem,4vw,3.25rem)] leading-[1.05]">
-              {content.formHeading}
-            </h2>
-            <p className="mt-6 max-w-lg text-lg leading-8 text-white/70">{content.closingText}</p>
+      {/* ------------------------------------------------------------- WORK */}
+      <section className="px-5 py-20 sm:px-8">
+        <div className="mx-auto max-w-[82rem]">
+          <h2 className="max-w-[20ch] text-[clamp(1.9rem,3.4vw,2.9rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+            Delivered clinics, with the
+            <span className="serif-font font-normal italic text-accent"> address attached.</span>
+          </h2>
 
-            <ul className="mt-10 grid gap-5">
-              {/* Not numbered. Three numbered lists on one page — this, the
-                  questions and the process — read as a template rather than a
-                  page. Sequence is real only in the process, so the digits
-                  live there. */}
-              {content.reassurance.map((line) => (
-                <li key={line} className="flex items-start gap-4 border-t border-white/10 pt-5">
-                  <Check size={18} aria-hidden="true" className="mt-0.5 shrink-0 text-orange-400" />
-                  <span className="text-[0.9375rem] leading-7 text-white/80">{line}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* White, deliberately. See the note in LandingLeadForm. */}
-          <div className="order-first lg:order-last rounded-[1.75rem] bg-white p-6 shadow-2xl shadow-black/40 sm:p-9">
-            <LandingLeadForm content={content} />
+          <div className="mt-10 grid gap-4 lg:grid-cols-3">
+            {[operatory, skinholic, kanwarveer].map((shot) => (
+              <figure key={shot.image}>
+                <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] bg-[#dfe3e1]">
+                  <Image
+                    src={shot.image}
+                    alt={altFor(shot.image)}
+                    fill
+                    sizes="(min-width: 1024px) 33vw, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+                <figcaption className="mt-3 flex items-center gap-2 text-sm text-[#161A19]/55">
+                  <MapPin size={14} aria-hidden="true" className="text-accent" />
+                  {shot.caption}
+                </figcaption>
+              </figure>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ------------------------------------------------------------- WORK */}
-      <section className="border-t border-white/10 px-5 py-20 sm:px-10">
-        <div className="mx-auto max-w-[86rem]">
-          <h2 className="serif-font max-w-[16ch] text-[clamp(2rem,4vw,3.25rem)] leading-[1.05]">
-            Delivered clinics, with the address attached.
-          </h2>
+      {/* ------------------------------------------------------------- FORM */}
+      <section id="request" className="scroll-mt-4 px-5 pb-20 sm:px-8">
+        <div className="mx-auto max-w-[82rem] overflow-hidden rounded-[2rem] bg-white shadow-[0_10px_50px_rgba(22,26,25,0.09)]">
+          <div className="grid lg:grid-cols-[0.95fr_1.05fr]">
+            <div className="order-last p-7 sm:p-11 lg:order-first">
+              <h2 className="text-[clamp(1.75rem,2.8vw,2.4rem)] font-bold leading-[1.1] tracking-[-0.02em]">
+                {content.formHeading}
+              </h2>
+              <p className="mt-5 max-w-md text-[1.0625rem] leading-8 text-[#161A19]/65">
+                {content.closingText}
+              </p>
 
-          {/*
-            One wide lead frame, three equal tiles beneath it.
+              <ul className="mt-9 grid gap-4">
+                {content.reassurance.map((line) => (
+                  <li key={line} className="flex items-start gap-3.5 text-[0.9375rem] leading-7">
+                    <ClipboardCheck size={19} aria-hidden="true" className="mt-1 shrink-0 text-accent" />
+                    {line}
+                  </li>
+                ))}
+              </ul>
 
-            The previous arrangement stacked three images in a narrow column
-            against a tall one, and at lg each got a 10.5rem slot — so a 4:3
-            photograph was cropped to a sliver. One of them rendered as a strip
-            of wall with half a door number in it. A gallery whose crops are
-            accidents does more damage than no gallery.
-          */}
-          <div className="mt-12 grid gap-4">
-            <figure className="group relative overflow-hidden rounded-[1.5rem]">
-              <div className="relative aspect-[16/9] sm:aspect-[21/9]">
-                <Image
-                  src={lead.image}
-                  alt={altFor(lead.image)}
-                  fill
-                  sizes="100vw"
-                  className="object-cover transition duration-700 group-hover:scale-[1.03]"
-                />
+              <div className="mt-10 flex items-center gap-4 border-t border-[#161A19]/10 pt-7">
+                {/* Initials, not a cropped interior. A round crop of a room reads
+                    as a broken avatar, which is the opposite of reassuring next to
+                    the sentence naming who reads the enquiry. */}
+                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#F1F3F2] text-base font-bold text-accent">
+                  JO
+                </span>
+                <p className="text-sm leading-6 text-[#161A19]/60">
+                  Every enquiry is read by {siteConfig.founderName}, {siteConfig.founderRole}, at the
+                  White Rock office.
+                </p>
               </div>
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/95 to-transparent p-6">
-                <figcaption className="flex items-center gap-2 text-sm font-semibold">
-                  <MapPin size={15} aria-hidden="true" className="text-orange-400" />
-                  {lead.caption}
-                </figcaption>
-              </div>
-            </figure>
+            </div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
-              {rest.map((shot) => (
-                <figure key={shot.image} className="group relative overflow-hidden rounded-[1.5rem]">
-                  <div className="relative aspect-[4/3]">
-                    <Image
-                      src={shot.image}
-                      alt={altFor(shot.image)}
-                      fill
-                      sizes="(min-width: 640px) 33vw, 100vw"
-                      className="object-cover transition duration-700 group-hover:scale-[1.03]"
-                    />
-                  </div>
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/95 to-transparent p-5">
-                    <figcaption className="flex items-center gap-2 text-[0.8125rem] font-semibold">
-                      <MapPin size={14} aria-hidden="true" className="text-orange-400" />
-                      {shot.caption}
-                    </figcaption>
-                  </div>
-                </figure>
-              ))}
+            <div className="bg-[#F1F3F2] p-7 sm:p-11">
+              <LandingLeadForm content={content} />
             </div>
           </div>
         </div>
       </section>
 
       {/* ------------------------------------------------------- OBJECTIONS */}
-      <section className="border-t border-white/10 px-5 py-20 sm:px-10">
-        <div className="mx-auto max-w-[86rem]">
-          <h2 className="serif-font text-[clamp(2rem,4vw,3.25rem)] leading-[1.05]">
-            The questions <span className="orange-italic">everyone asks.</span>
+      <section className="px-5 pb-20 sm:px-8">
+        <div className="mx-auto max-w-[82rem]">
+          <h2 className="text-[clamp(1.9rem,3.4vw,2.9rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+            The questions
+            <span className="serif-font font-normal italic text-accent"> everyone asks.</span>
           </h2>
-          {/*
-            Two columns under the heading rather than a list beside it. The
-            heading used to sit in its own 0.8fr column and leave roughly 575px
-            of empty page under itself at 1440 — which is most of what made this
-            page feel unorganised.
-          */}
-          <dl className="mt-12 grid gap-x-16 gap-y-0 md:grid-cols-2">
+          <dl className="mt-10 grid gap-4 md:grid-cols-2">
             {content.objections.map((item) => (
-              <div key={item.question} className="border-t border-white/12 py-7">
-                <dt className="text-lg font-bold">{item.question}</dt>
-                <dd className="mt-3 leading-7 text-white/70">{item.answer}</dd>
+              <div
+                key={item.question}
+                className="rounded-[1.5rem] bg-white p-7 shadow-[0_4px_24px_rgba(22,26,25,0.05)]"
+              >
+                <dt className="text-lg font-bold leading-snug">{item.question}</dt>
+                <dd className="mt-3 leading-7 text-[#161A19]/65">{item.answer}</dd>
               </div>
             ))}
           </dl>
@@ -237,15 +263,20 @@ export default function CommercialLandingPage() {
       </section>
 
       {/* ---------------------------------------------------------- PROCESS */}
-      <section className="border-t border-white/10 px-5 py-20 sm:px-10">
-        <div className="mx-auto max-w-[86rem]">
-          <h2 className="serif-font text-[clamp(2rem,4vw,3.25rem)] leading-[1.05]">How a build runs.</h2>
-          <ol className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="px-5 pb-20 sm:px-8">
+        <div className="mx-auto max-w-[82rem]">
+          <h2 className="text-[clamp(1.9rem,3.4vw,2.9rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+            How a build
+            <span className="serif-font font-normal italic text-accent"> actually runs.</span>
+          </h2>
+          <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {content.steps.map((step) => (
-              <li key={step.step} className="border-t border-orange-500/40 pt-6">
-                <p className="serif-font text-5xl leading-none text-orange-400">{step.step}</p>
-                <h3 className="mt-5 text-xl font-bold">{step.title}</h3>
-                <p className="mt-2.5 text-[0.9375rem] leading-7 text-white/65">{step.text}</p>
+              <li key={step.step} className="rounded-[1.5rem] bg-white p-7 shadow-[0_4px_24px_rgba(22,26,25,0.05)]">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F1F3F2] text-sm font-bold text-accent">
+                  {step.step}
+                </span>
+                <h3 className="mt-5 text-lg font-bold">{step.title}</h3>
+                <p className="mt-2 text-[0.9375rem] leading-7 text-[#161A19]/60">{step.text}</p>
               </li>
             ))}
           </ol>
@@ -253,19 +284,26 @@ export default function CommercialLandingPage() {
       </section>
 
       {/* ---------------------------------------------------------- REVIEWS */}
-      <section className="border-t border-white/10 px-5 py-20 sm:px-10">
-        <div className="mx-auto max-w-[86rem]">
-          <h2 className="serif-font text-[clamp(2rem,4vw,3.25rem)] leading-[1.05]">
-            What clinic owners say.
+      <section className="px-5 pb-20 sm:px-8">
+        <div className="mx-auto max-w-[82rem]">
+          <h2 className="text-[clamp(1.9rem,3.4vw,2.9rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+            What clinic owners
+            <span className="serif-font font-normal italic text-accent"> say.</span>
           </h2>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
             {reviews.map((review) => (
-              <figure key={review.author} className="border-t border-white/15 pt-6">
-                <blockquote className="text-[1.0625rem] leading-8 text-white/80">
-                  “{review.quote}”
-                </blockquote>
-                <figcaption className="mt-6 text-sm text-white/50">
-                  <span className="block font-bold text-white">{review.author}</span>
+              <figure
+                key={review.author}
+                className="rounded-[1.5rem] bg-white p-7 shadow-[0_4px_24px_rgba(22,26,25,0.05)]"
+              >
+                <div className="flex gap-0.5 text-accent">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <Star key={index} size={15} aria-hidden="true" fill="currentColor" />
+                  ))}
+                </div>
+                <blockquote className="mt-4 leading-7 text-[#161A19]/75">“{review.quote}”</blockquote>
+                <figcaption className="mt-5 text-sm text-[#161A19]/50">
+                  <span className="block font-bold text-[#161A19]">{review.author}</span>
                   {review.role}
                   {review.city ? ` · ${review.city}` : ""}
                 </figcaption>
@@ -276,37 +314,32 @@ export default function CommercialLandingPage() {
       </section>
 
       {/* ------------------------------------------------------------ CLOSE */}
-      <section className="relative isolate overflow-hidden border-t border-white/10 px-5 py-24 sm:px-10">
-        <Image
-          src={content.gallery[3].image}
-          alt=""
-          fill
-          sizes="100vw"
-          className="-z-10 object-cover opacity-25"
-        />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-ink/85 via-ink/75 to-ink" />
-        <div className="mx-auto max-w-[86rem] text-center">
-          <h2 className="serif-font mx-auto max-w-[20ch] text-[clamp(2.25rem,5vw,4rem)] leading-[1.02]">
-            {content.closingHeading}
-          </h2>
-          <div className="mt-10 flex flex-wrap justify-center gap-3">
-            <a
-              href="#request"
-              data-analytics="meta-lp-commercial-close-cta"
-              className="ui-font inline-flex min-h-14 items-center gap-2.5 rounded-full bg-orange-600 px-8 text-xs font-extrabold uppercase tracking-[0.16em] text-white shadow-2xl shadow-orange-600/30 transition hover:bg-orange-500"
-            >
-              Get a build plan
-              <ArrowRight size={16} aria-hidden="true" />
-            </a>
-            
+      <section className="px-5 pb-20 sm:px-8">
+        <div className="relative mx-auto max-w-[82rem] overflow-hidden rounded-[2rem]">
+          <div className="relative min-h-[26rem] p-8 sm:p-14">
+            <Image src={kanwarveer.image} alt="" fill sizes="100vw" className="-z-10 object-cover" />
+            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#0d100f]/92 via-[#0d100f]/72 to-[#0d100f]/35" />
+            <div className="max-w-lg text-white">
+              <h2 className="text-[clamp(1.9rem,3.4vw,2.9rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+                {content.closingHeading}
+              </h2>
+              <a
+                href="#request"
+                data-analytics="meta-lp-commercial-close-cta"
+                className="mt-8 inline-flex min-h-14 items-center gap-2.5 rounded-full bg-white px-8 text-[0.9375rem] font-semibold text-[#161A19] transition hover:bg-white/90"
+              >
+                Get a build plan
+                <ArrowRight size={17} aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
-      <LandingStickyCta content={content} tone="dark" />
+      <LandingStickyCta content={content} tone="light" />
 
-      <footer className="border-t border-white/10 px-5 pb-28 pt-8 text-sm text-white/45 sm:px-10 lg:pb-8">
-        <div className="mx-auto flex max-w-[86rem] flex-wrap items-center justify-between gap-3">
+      <footer className="border-t border-[#161A19]/10 px-5 pb-28 pt-8 text-sm text-[#161A19]/50 sm:px-8 lg:pb-8">
+        <div className="mx-auto flex max-w-[82rem] flex-wrap items-center justify-between gap-3">
           <p>
             {siteConfig.name} · {siteConfig.address}
           </p>
