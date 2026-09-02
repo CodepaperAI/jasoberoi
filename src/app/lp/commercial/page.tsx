@@ -68,14 +68,14 @@ export default function CommercialLandingPage() {
               {content.eyebrow}
             </span>
 
-            <h1 className="mt-7 text-[clamp(2.4rem,4.6vw,3.9rem)] font-bold leading-[1.04] tracking-[-0.025em]">
+            <h1 className="mt-7 text-[clamp(2.05rem,3.5vw,3.05rem)] font-bold leading-[1.06] tracking-[-0.02em]">
               {content.headline}
               <span className="serif-font mt-1 block font-normal italic text-accent">
                 {content.headlineAccent}
               </span>
             </h1>
 
-            <p className="mt-7 max-w-xl text-[1.0625rem] leading-8 text-[#161A19]/65">
+            <p className="mt-6 max-w-lg text-[0.9375rem] leading-7 text-[#161A19]/65">
               {content.subhead}
             </p>
 
@@ -170,9 +170,9 @@ export default function CommercialLandingPage() {
       </section>
 
       {/* ------------------------------------------------------------- WORK */}
-      <section className="px-5 py-20 sm:px-8">
+      <section className="px-5 py-16 sm:px-8">
         <div className="mx-auto max-w-[82rem]">
-          <h2 className="max-w-[20ch] text-[clamp(1.9rem,3.4vw,2.9rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+          <h2 className="max-w-[20ch] text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
             Delivered clinics, with the
             <span className="serif-font font-normal italic text-accent"> address attached.</span>
           </h2>
@@ -200,11 +200,11 @@ export default function CommercialLandingPage() {
       </section>
 
       {/* ------------------------------------------------------------- FORM */}
-      <section id="request" className="scroll-mt-4 px-5 pb-20 sm:px-8">
+      <section id="request" className="scroll-mt-4 px-5 pb-16 sm:px-8">
         <div className="mx-auto max-w-[82rem] overflow-hidden rounded-[2rem] bg-white shadow-[0_10px_50px_rgba(22,26,25,0.09)]">
           <div className="grid lg:grid-cols-[0.95fr_1.05fr]">
             <div className="order-last p-7 sm:p-11 lg:order-first">
-              <h2 className="text-[clamp(1.75rem,2.8vw,2.4rem)] font-bold leading-[1.1] tracking-[-0.02em]">
+              <h2 className="text-[clamp(1.5rem,2.3vw,2rem)] font-bold leading-[1.1] tracking-[-0.02em]">
                 {content.formHeading}
               </h2>
               <p className="mt-5 max-w-md text-[1.0625rem] leading-8 text-[#161A19]/65">
@@ -242,9 +242,9 @@ export default function CommercialLandingPage() {
       </section>
 
       {/* ------------------------------------------------------- OBJECTIONS */}
-      <section className="px-5 pb-20 sm:px-8">
+      <section className="px-5 pb-16 sm:px-8">
         <div className="mx-auto max-w-[82rem]">
-          <h2 className="text-[clamp(1.9rem,3.4vw,2.9rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+          <h2 className="text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
             The questions
             <span className="serif-font font-normal italic text-accent"> everyone asks.</span>
           </h2>
@@ -263,20 +263,24 @@ export default function CommercialLandingPage() {
       </section>
 
       {/* ---------------------------------------------------------- PROCESS */}
-      <section className="px-5 pb-20 sm:px-8">
-        <div className="mx-auto max-w-[82rem]">
-          <h2 className="text-[clamp(1.9rem,3.4vw,2.9rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+      {/* The one dark band. Seven light sections in a row read as one long
+          page rather than a sequence, and the process is the natural place to
+          break it: it is the only section that is a claim about how the
+          company works rather than evidence. */}
+      <section className="mx-5 mb-16 rounded-[2rem] bg-[#161A19] px-5 py-16 text-white sm:mx-8 sm:px-8">
+        <div className="mx-auto max-w-[78rem]">
+          <h2 className="text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
             How a build
             <span className="serif-font font-normal italic text-accent"> actually runs.</span>
           </h2>
           <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {content.steps.map((step) => (
-              <li key={step.step} className="rounded-[1.5rem] bg-white p-7 shadow-[0_4px_24px_rgba(22,26,25,0.05)]">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F1F3F2] text-sm font-bold text-accent">
+              <li key={step.step} className="rounded-[1.5rem] border border-white/12 bg-white/[0.05] p-7">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-sm font-bold text-accent">
                   {step.step}
                 </span>
                 <h3 className="mt-5 text-lg font-bold">{step.title}</h3>
-                <p className="mt-2 text-[0.9375rem] leading-7 text-[#161A19]/60">{step.text}</p>
+                <p className="mt-2 text-[0.9375rem] leading-7 text-white/60">{step.text}</p>
               </li>
             ))}
           </ol>
@@ -284,9 +288,9 @@ export default function CommercialLandingPage() {
       </section>
 
       {/* ---------------------------------------------------------- REVIEWS */}
-      <section className="px-5 pb-20 sm:px-8">
+      <section className="px-5 pb-16 sm:px-8">
         <div className="mx-auto max-w-[82rem]">
-          <h2 className="text-[clamp(1.9rem,3.4vw,2.9rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+          <h2 className="text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
             What clinic owners
             <span className="serif-font font-normal italic text-accent"> say.</span>
           </h2>
@@ -314,13 +318,19 @@ export default function CommercialLandingPage() {
       </section>
 
       {/* ------------------------------------------------------------ CLOSE */}
-      <section className="px-5 pb-20 sm:px-8">
+      <section className="px-5 pb-16 sm:px-8">
         <div className="relative mx-auto max-w-[82rem] overflow-hidden rounded-[2rem]">
-          <div className="relative min-h-[26rem] p-8 sm:p-14">
+          {/*
+          `isolate` is load-bearing. The photograph and its scrim sit at
+          -z-10, and without a stacking context here they render behind the
+          page background rather than behind the text — so this section
+          shipped as white type on cream with no image at all.
+        */}
+        <div className="relative isolate min-h-[24rem] p-8 sm:p-14">
             <Image src={kanwarveer.image} alt="" fill sizes="100vw" className="-z-10 object-cover" />
             <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#0d100f]/92 via-[#0d100f]/72 to-[#0d100f]/35" />
             <div className="max-w-lg text-white">
-              <h2 className="text-[clamp(1.9rem,3.4vw,2.9rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+              <h2 className="text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
                 {content.closingHeading}
               </h2>
               <a
