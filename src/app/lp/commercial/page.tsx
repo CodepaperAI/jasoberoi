@@ -170,32 +170,40 @@ export default function CommercialLandingPage() {
       </section>
 
       {/* ------------------------------------------------------------- WORK */}
-      <section className="px-5 py-16 sm:px-8">
-        <div className="mx-auto max-w-[82rem]">
+      {/*
+        Full-bleed, edge to edge, addresses set on the photograph. These were in
+        rounded cards on the page ground like every other module, which flattens
+        the one thing a competitor cannot copy — delivered rooms with a real
+        address under them.
+      */}
+      <section className="py-16">
+        <div className="mx-auto max-w-[82rem] px-5 sm:px-8">
           <h2 className="max-w-[20ch] text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
             Delivered clinics, with the
             <span className="serif-font font-normal italic text-accent"> address attached.</span>
           </h2>
+        </div>
 
-          <div className="mt-10 grid gap-4 lg:grid-cols-3">
-            {[operatory, skinholic, kanwarveer].map((shot) => (
-              <figure key={shot.image}>
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] bg-[#dfe3e1]">
-                  <Image
-                    src={shot.image}
-                    alt={altFor(shot.image)}
-                    fill
-                    sizes="(min-width: 1024px) 33vw, 100vw"
-                    className="object-cover"
-                  />
-                </div>
-                <figcaption className="mt-3 flex items-center gap-2 text-sm text-[#161A19]/55">
+        <div className="mt-10 grid gap-1 sm:grid-cols-3">
+          {[operatory, skinholic, kanwarveer].map((shot) => (
+            <figure key={shot.image} className="group relative overflow-hidden">
+              <div className="relative aspect-[4/3]">
+                <Image
+                  src={shot.image}
+                  alt={altFor(shot.image)}
+                  fill
+                  sizes="(min-width: 640px) 33vw, 100vw"
+                  className="object-cover transition duration-[1200ms] ease-out group-hover:scale-[1.04]"
+                />
+              </div>
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent p-6">
+                <figcaption className="flex items-center gap-2 text-sm font-semibold text-white">
                   <MapPin size={14} aria-hidden="true" className="text-accent" />
                   {shot.caption}
                 </figcaption>
-              </figure>
-            ))}
-          </div>
+              </div>
+            </figure>
+          ))}
         </div>
       </section>
 
@@ -203,11 +211,16 @@ export default function CommercialLandingPage() {
       <section id="request" className="scroll-mt-4 px-5 pb-16 sm:px-8">
         <div className="mx-auto max-w-[82rem] overflow-hidden rounded-[2rem] bg-white shadow-[0_10px_50px_rgba(22,26,25,0.09)]">
           <div className="grid lg:grid-cols-[0.95fr_1.05fr]">
-            <div className="order-last p-7 sm:p-11 lg:order-first">
+            {/*
+              Dark left, white right. The right half used to be tinted the same
+              value as the page, so the card had no edge on that side and read
+              as an unfinished panel bleeding into the background.
+            */}
+            <div className="order-last bg-[#161A19] p-7 text-white sm:p-11 lg:order-first">
               <h2 className="text-[clamp(1.5rem,2.3vw,2rem)] font-bold leading-[1.1] tracking-[-0.02em]">
                 {content.formHeading}
               </h2>
-              <p className="mt-5 max-w-md text-[1.0625rem] leading-8 text-[#161A19]/65">
+              <p className="mt-5 max-w-md text-[0.9375rem] leading-7 text-white/65">
                 {content.closingText}
               </p>
 
@@ -220,21 +233,21 @@ export default function CommercialLandingPage() {
                 ))}
               </ul>
 
-              <div className="mt-10 flex items-center gap-4 border-t border-[#161A19]/10 pt-7">
+              <div className="mt-10 flex items-center gap-4 border-t border-white/15 pt-7">
                 {/* Initials, not a cropped interior. A round crop of a room reads
                     as a broken avatar, which is the opposite of reassuring next to
                     the sentence naming who reads the enquiry. */}
-                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#F1F3F2] text-base font-bold text-accent">
+                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white/10 text-base font-bold text-accent">
                   JO
                 </span>
-                <p className="text-sm leading-6 text-[#161A19]/60">
+                <p className="text-sm leading-6 text-white/60">
                   Every enquiry is read by {siteConfig.founderName}, {siteConfig.founderRole}, at the
                   White Rock office.
                 </p>
               </div>
             </div>
 
-            <div className="bg-[#F1F3F2] p-7 sm:p-11">
+            <div className="bg-white p-7 sm:p-11">
               <LandingLeadForm content={content} />
             </div>
           </div>

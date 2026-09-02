@@ -174,29 +174,37 @@ export default function ResidentialLandingPage() {
       </section>
 
       {/* ------------------------------------------------------------- WORK */}
-      <section className="px-5 py-16 sm:px-8">
-        <div className="mx-auto max-w-[82rem]">
+      {/*
+        Full-bleed, edge to edge, captions set on the photograph rather than
+        under it. The rooms were sitting in rounded cards on cream like every
+        other module on the page, which is a gallery, not a moment — these are
+        the best assets on the site and they should own the full width.
+      */}
+      <section className="py-16">
+        <div className="mx-auto max-w-[82rem] px-5 sm:px-8">
           <h2 className="max-w-[18ch] text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
             Finished rooms in a home we
             <span className="serif-font font-normal italic text-accent"> actually built.</span>
           </h2>
+        </div>
 
-          <div className="mt-10 grid gap-4 lg:grid-cols-2">
-            {[living, lounge].map((shot) => (
-              <figure key={shot.image}>
-                <div className="relative aspect-[16/11] overflow-hidden rounded-[1.75rem] bg-[#e6e1d8]">
-                  <Image
-                    src={shot.image}
-                    alt={altFor(shot.image)}
-                    fill
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                    className="object-cover"
-                  />
-                </div>
-                <figcaption className="mt-3 text-sm text-[#1B1A18]/55">{shot.caption}</figcaption>
-              </figure>
-            ))}
-          </div>
+        <div className="mt-10 grid gap-1 sm:grid-cols-2">
+          {[living, lounge].map((shot) => (
+            <figure key={shot.image} className="group relative overflow-hidden">
+              <div className="relative aspect-[4/3]">
+                <Image
+                  src={shot.image}
+                  alt={altFor(shot.image)}
+                  fill
+                  sizes="(min-width: 640px) 50vw, 100vw"
+                  className="object-cover transition duration-[1200ms] ease-out group-hover:scale-[1.04]"
+                />
+              </div>
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent p-6 sm:p-8">
+                <figcaption className="text-sm font-semibold text-white">{shot.caption}</figcaption>
+              </div>
+            </figure>
+          ))}
         </div>
       </section>
 
@@ -204,11 +212,16 @@ export default function ResidentialLandingPage() {
       <section id="request" className="scroll-mt-4 px-5 pb-16 sm:px-8">
         <div className="mx-auto max-w-[82rem] overflow-hidden rounded-[2rem] bg-white shadow-[0_10px_50px_rgba(27,26,24,0.09)]">
           <div className="grid lg:grid-cols-[0.95fr_1.05fr]">
-            <div className="order-last p-7 sm:p-11 lg:order-first">
+            {/*
+              Dark left, white right. The right half used to be tinted the same
+              value as the page, so the card had no edge on that side and read
+              as an unfinished panel bleeding into the background.
+            */}
+            <div className="order-last bg-[#1B1A18] p-7 text-white sm:p-11 lg:order-first">
               <h2 className="text-[clamp(1.5rem,2.3vw,2rem)] font-bold leading-[1.1] tracking-[-0.02em]">
                 {content.formHeading}
               </h2>
-              <p className="mt-5 max-w-md text-[1.0625rem] leading-8 text-[#1B1A18]/65">
+              <p className="mt-5 max-w-md text-[0.9375rem] leading-7 text-white/65">
                 {content.closingText}
               </p>
 
@@ -221,21 +234,21 @@ export default function ResidentialLandingPage() {
                 ))}
               </ul>
 
-              <div className="mt-10 flex items-center gap-4 border-t border-[#1B1A18]/10 pt-7">
+              <div className="mt-10 flex items-center gap-4 border-t border-white/15 pt-7">
                 {/* Initials, not a cropped interior. A round crop of a room reads
                     as a broken avatar, which is the opposite of reassuring next to
                     the sentence naming who reads the enquiry. */}
-                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#F4F1EB] text-base font-bold text-accent">
+                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white/10 text-base font-bold text-accent">
                   JO
                 </span>
-                <p className="text-sm leading-6 text-[#1B1A18]/60">
+                <p className="text-sm leading-6 text-white/60">
                   Every enquiry is read by {siteConfig.founderName}, {siteConfig.founderRole}, at the
                   White Rock office.
                 </p>
               </div>
             </div>
 
-            <div className="bg-[#F4F1EB] p-7 sm:p-11">
+            <div className="bg-white p-7 sm:p-11">
               <LandingLeadForm content={content} />
             </div>
           </div>
