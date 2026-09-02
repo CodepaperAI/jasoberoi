@@ -37,7 +37,7 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default function ResidentialLandingPage() {
-  const [exterior, living, lounge] = content.gallery;
+  const [exterior, entry, kitchen] = content.gallery;
 
   return (
     <div data-landing className="bg-[#F4F1EB] text-[#1B1A18]">
@@ -197,7 +197,7 @@ export default function ResidentialLandingPage() {
         </div>
 
         <div className="mt-10 grid gap-1 sm:grid-cols-2">
-          {[living, lounge].map((shot) => (
+          {[entry, kitchen].map((shot) => (
             <figure key={shot.image} className="group relative overflow-hidden">
               <div className="relative aspect-[4/3]">
                 <Image
@@ -292,8 +292,8 @@ export default function ResidentialLandingPage() {
       <section className="mx-5 mb-16 rounded-[2rem] bg-[#1B1A18] px-5 py-16 text-white sm:mx-8 sm:px-8">
         <div className="mx-auto max-w-[78rem]">
           <h2 className="text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
-            From first walk
-            <span className="serif-font font-normal italic text-accent"> to handover.</span>
+            How your build
+            <span className="serif-font font-normal italic text-accent"> actually runs.</span>
           </h2>
           <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {content.steps.map((step) => (
@@ -308,6 +308,47 @@ export default function ResidentialLandingPage() {
           </ol>
         </div>
       </section>
+
+      {/* ------------------------------------------------------ BEFORE/AFTER */}
+      {/*
+        Renders nothing until content.beforeAfter has real pairs. A renovation
+        page that fakes a "before" is worse than one that has none.
+      */}
+      {content.beforeAfter?.length ? (
+        <section className="px-5 pb-16 sm:px-8">
+          <div className="mx-auto max-w-[82rem]">
+            <h2 className="text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+              The same room,
+              <span className="serif-font font-normal italic text-accent"> before and after.</span>
+            </h2>
+            <div className="mt-10 grid gap-8 lg:grid-cols-2">
+              {content.beforeAfter.map((pair) => (
+                <figure key={pair.after}>
+                  <div className="grid grid-cols-2 gap-1 overflow-hidden rounded-[1.5rem]">
+                    {([["Before", pair.before], ["After", pair.after]] as const).map(
+                      ([label, src]) => (
+                        <div key={label} className="relative aspect-[4/5]">
+                          <Image
+                            src={src}
+                            alt={`${pair.caption} — ${label.toLowerCase()}`}
+                            fill
+                            sizes="(min-width: 1024px) 25vw, 50vw"
+                            className="object-cover"
+                          />
+                          <span className="absolute left-4 top-4 rounded-full bg-black/60 px-3 py-1.5 text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-white backdrop-blur">
+                            {label}
+                          </span>
+                        </div>
+                      ),
+                    )}
+                  </div>
+                  <figcaption className="mt-3 text-sm text-[#1B1A18]/55">{pair.caption}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {/* ---------------------------------------------------------- REVIEWS */}
       <section className="px-5 pb-16 sm:px-8">

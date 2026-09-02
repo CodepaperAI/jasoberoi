@@ -260,6 +260,27 @@ export const photos: Photo[] = [
     alt: "Living room of a completed custom home, with a linear fireplace set into a stone feature wall and walnut slat joinery",
   },
 
+  /*
+    Client photography, 2026-09-02, second set. Brighter than the first — the
+    exterior is shot at blue hour against a clear sky rather than full dusk, so
+    it carries a hero scrim without going murky.
+  */
+  {
+    file: "project-custom-home-hero-live.jpg",
+    subject: "Home",
+    alt: "Completed custom home at dusk, with cedar soffits, a double garage and a lit entry path",
+  },
+  {
+    file: "project-custom-home-entry-live.jpg",
+    subject: "Home",
+    alt: "Double-height entry and living room of a completed custom home, with a tiered chandelier and slatted cedar feature wall",
+  },
+  {
+    file: "project-custom-home-kitchen-live.jpg",
+    subject: "Home",
+    alt: "Kitchen of a completed custom home, with full-height oak joinery, a stone waterfall island and herringbone floors",
+  },
+
   // ---- Brand -----------------------------------------------------------
   {
     file: "oberizon-logo.png",
