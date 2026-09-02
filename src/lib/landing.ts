@@ -74,8 +74,14 @@ export type LandingContent = {
   subhead: string;
   /** The four-up bar under the hero. */
   features: LandingFeature[];
-  /** Renovation pairs. Section is skipped while this is empty. */
+  /** Renovation pairs. Replaces the process section once populated. */
   beforeAfter?: LandingBeforeAfter[];
+  /**
+   * Shown instead of the review cards where the reviews do not fit the
+   * audience. Residential uses it because every review Oberizon holds is from
+   * a clinic owner.
+   */
+  assurances?: Array<{ title: string; text: string }>;
   /** Three short lines under the headline. Not a feature list — objections. */
   reassurance: string[];
   formHeading: string;
@@ -97,10 +103,10 @@ export const commercialLanding: LandingContent = {
   metaDescription:
     "Office, retail and clinic build-outs across Metro Vancouver. Permits, trades and inspections run by one team from a White Rock office.",
   eyebrow: "Offices · Retail · Clinics",
-  headline: "Your space opens on the",
-  headlineAccent: "date you promised.",
+  headline: "Your space is finished on the",
+  headlineAccent: "date we promised.",
   subhead:
-    "Offices, retail, clinics and medical suites across the Lower Mainland. Permits, trades, inspections and handover run by one team, so the date you gave your staff and your customers is a plan rather than a hope.",
+    "Offices, Retail, Clinics and Medical Suites across the Lower Mainland. Permits, trades, inspections and handover are run by one team, so the date you gave your staff and your customers is a plan rather than a hope.",
   reassurance: [
     "One site lead, not a rotating cast of subcontractors",
     "Permits and inspections handled, not handed back to you",
@@ -230,6 +236,35 @@ export const residentialLanding: LandingContent = {
     { image: "/oberizon/optimized/project-custom-home-entry-live.jpg", caption: "Double-height entry and living room" },
     { image: "/oberizon/optimized/project-custom-home-kitchen-live.jpg", caption: "Kitchen, same build" },
     { image: "/oberizon/optimized/project-custom-home-living-live.jpg", caption: "Living and dining, same build" },
+  ],
+  /*
+    Residential shows these instead of the review cards. Every review Oberizon
+    holds is from a clinic owner, and a homeowner reading dental testimonials on
+    a home-building page learns nothing about whether their house is safe.
+    Every line here is checkable against siteConfig or BC's warranty rules
+    rather than being a claim about how good the work is.
+
+    TODO(client): replace with real homeowner reviews the moment there are any.
+    Attributed quotes from people who had a house built outperform any list of
+    guarantees, and this section exists only because that list does not exist yet.
+  */
+  assurances: [
+    {
+      title: "2-5-10 Home Warranty",
+      text: "British Columbia's mandatory new-home warranty: two years on labour and materials, five on the building envelope, ten on structure.",
+    },
+    {
+      title: "Licensed and insured",
+      text: "A BC-licensed general contractor, fully insured and WorkSafeBC registered, with the coverage in place before anyone is on site.",
+    },
+    {
+      title: "The scope is written first",
+      text: "What is included is agreed in writing before a number is given, so the quote can explain what it excludes.",
+    },
+    {
+      title: "One site lead throughout",
+      text: "The same person runs the trades from the first walk to the day you move back in, and calls you weekly with what moved.",
+    },
   ],
   closingHeading: "Tell us what you are thinking of building.",
   closingText:

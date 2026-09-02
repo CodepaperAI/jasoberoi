@@ -289,35 +289,13 @@ export default function ResidentialLandingPage() {
         </div>
       </section>
 
-      {/* ---------------------------------------------------------- PROCESS */}
-      {/* The one dark band. Seven light sections in a row read as one long
-          page rather than a sequence, and the process is the natural place to
-          break it: it is the only section that is a claim about how the
-          company works rather than evidence. */}
-      <section className="mx-5 mb-16 rounded-[2rem] bg-[#1B1A18] px-5 py-16 text-white sm:mx-8 sm:px-8">
-        <div className="mx-auto max-w-[78rem]">
-          <h2 className="text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
-            How your build
-            <span className="serif-font font-normal italic text-accent"> actually runs.</span>
-          </h2>
-          <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {content.steps.map((step) => (
-              <li key={step.step} className="rounded-[1.5rem] border border-white/12 bg-white/[0.05] p-7">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-sm font-bold text-accent">
-                  {step.step}
-                </span>
-                <h3 className="mt-5 text-lg font-bold">{step.title}</h3>
-                <p className="mt-2 text-[0.9375rem] leading-7 text-white/60">{step.text}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------ BEFORE/AFTER */}
+      {/* ------------------------------------------ PROCESS / BEFORE-AFTER */}
       {/*
-        Renders nothing until content.beforeAfter has real pairs. A renovation
-        page that fakes a "before" is worse than one that has none.
+        One slot, two occupants. Before-and-after pairs are stronger proof on a
+        renovation page than a description of how the work is sequenced, so the
+        moment real pairs exist they take this position and the process steps
+        step aside. Until then the steps hold it — better than an empty gap or
+        a staged "before".
       */}
       {content.beforeAfter?.length ? (
         <section className="px-5 pb-16 sm:px-8">
@@ -353,39 +331,60 @@ export default function ResidentialLandingPage() {
             </div>
           </div>
         </section>
-      ) : null}
+      ) : (
+        // The dark band. Seven light sections in a row read as one long page
+        // rather than a sequence, and the process is the natural place to break
+        // it — the only section that is a claim rather than evidence.
+        <section className="mx-5 mb-16 rounded-[2rem] bg-[#1B1A18] px-5 py-16 text-white sm:mx-8 sm:px-8">
+        <div className="mx-auto max-w-[78rem]">
+          <h2 className="text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+            How your build
+            <span className="serif-font font-normal italic text-accent"> actually runs.</span>
+          </h2>
+          <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {content.steps.map((step) => (
+              <li key={step.step} className="rounded-[1.5rem] border border-white/12 bg-white/[0.05] p-7">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-sm font-bold text-accent">
+                  {step.step}
+                </span>
+                <h3 className="mt-5 text-lg font-bold">{step.title}</h3>
+                <p className="mt-2 text-[0.9375rem] leading-7 text-white/60">{step.text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+      )}
 
-      {/* ---------------------------------------------------------- REVIEWS */}
+      {/* ------------------------------------------------------- ASSURANCES */}
+      {/*
+        Not the review cards. Every review Oberizon holds is from a clinic owner,
+        and dental testimonials on a home-building page tell a homeowner nothing
+        about whether their house is in safe hands — it reads as borrowed proof,
+        which is worse than none. These are checkable facts instead.
+
+        TODO(client): swap back to reviews as soon as there are homeowner ones.
+      */}
       <section className="px-5 pb-16 sm:px-8">
         <div className="mx-auto max-w-[82rem]">
-          <h2 className="max-w-[22ch] text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
-            The same team, in their
-            <span className="serif-font font-normal italic text-accent"> clients&rsquo; words.</span>
+          <h2 className="max-w-[24ch] text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
+            What stands behind
+            <span className="serif-font font-normal italic text-accent"> every home we build.</span>
           </h2>
-          <p className="mt-5 max-w-2xl text-[1.0625rem] leading-8 text-[#1B1A18]/60">
-            Most of Oberizon&rsquo;s work is clinical construction, so most of its reviews are from
-            clinic owners. It is the same site leads and the same process on a house.
-          </p>
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {reviews.map((review) => (
-              <figure
-                key={review.author}
+          <dl className="mt-10 grid gap-4 md:grid-cols-2">
+            {(content.assurances ?? []).map((item) => (
+              <div
+                key={item.title}
                 className="rounded-[1.5rem] bg-white p-7 shadow-[0_4px_24px_rgba(27,26,24,0.05)]"
               >
-                <div className="flex gap-0.5 text-accent">
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <Star key={index} size={15} aria-hidden="true" fill="currentColor" />
-                  ))}
-                </div>
-                <blockquote className="mt-4 leading-7 text-[#1B1A18]/75">“{review.quote}”</blockquote>
-                <figcaption className="mt-5 text-sm text-[#1B1A18]/50">
-                  <span className="block font-bold text-[#1B1A18]">{review.author}</span>
-                  {review.role}
-                  {review.city ? ` · ${review.city}` : ""}
-                </figcaption>
-              </figure>
+                <dt className="flex items-center gap-3 text-lg font-bold">
+                  <ShieldCheck size={20} aria-hidden="true" className="shrink-0 text-accent" />
+                  {item.title}
+                </dt>
+                <dd className="mt-3 leading-7 text-[#1B1A18]/65">{item.text}</dd>
+              </div>
             ))}
-          </div>
+          </dl>
         </div>
       </section>
 
