@@ -98,7 +98,9 @@ export default function CommercialLandingPage() {
                 </span>
               </h1>
 
-              <p className="mt-6 max-w-lg text-[0.9375rem] leading-7 text-white/75">
+              {/* Brighter than white/75. Over a photograph this line was the
+                  first thing to disappear. */}
+              <p className="mt-6 max-w-lg text-[0.9375rem] leading-7 text-white/90">
                 {content.subhead}
               </p>
 
@@ -135,7 +137,7 @@ export default function CommercialLandingPage() {
                 </div>
                 <div className="text-sm leading-5">
                   <p className="font-bold">Clinic owners, in their own words</p>
-                  <p className="text-white/60">{landingCounts.documented} delivered builds documented on this site</p>
+                  <p className="text-white/75">{landingCounts.documented} delivered builds documented on this site</p>
                 </div>
               </div>
             </div>
@@ -189,7 +191,7 @@ export default function CommercialLandingPage() {
       <section className="py-16">
         <div className="mx-auto max-w-[82rem] px-5 sm:px-8">
           <h2 className="max-w-[20ch] text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
-            Delivered clinics, with the
+            Delivered spaces, with the
             <span className="serif-font font-normal italic text-accent"> address attached.</span>
           </h2>
         </div>
@@ -314,7 +316,7 @@ export default function CommercialLandingPage() {
       <section className="px-5 pb-16 sm:px-8">
         <div className="mx-auto max-w-[82rem]">
           <h2 className="text-[clamp(1.6rem,2.6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.02em]">
-            What clinic owners
+            What owners
             <span className="serif-font font-normal italic text-accent"> say.</span>
           </h2>
           <div className="mt-10 grid gap-4 md:grid-cols-3">

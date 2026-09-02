@@ -46,6 +46,19 @@ export const landingCounts = {
 /** One item in the bar under the hero. */
 export type LandingFeature = { title: string; text: string };
 
+/**
+ * A renovation, before and after.
+ *
+ * Empty until the client sends the pairs. The section renders nothing while the
+ * list is empty rather than shipping a placeholder — a "before" that is not a
+ * real before is the one thing on a renovation page nobody would forgive.
+ */
+export type LandingBeforeAfter = {
+  before: string;
+  after: string;
+  caption: string;
+};
+
 export type LandingContent = {
   campaign: LandingCampaign;
   /** Ad-side label, echoed into GHL so the pipeline shows which page produced the lead. */
@@ -61,6 +74,8 @@ export type LandingContent = {
   subhead: string;
   /** The four-up bar under the hero. */
   features: LandingFeature[];
+  /** Renovation pairs. Section is skipped while this is empty. */
+  beforeAfter?: LandingBeforeAfter[];
   /** Three short lines under the headline. Not a feature list — objections. */
   reassurance: string[];
   formHeading: string;
@@ -78,14 +93,14 @@ export const commercialLanding: LandingContent = {
   campaign: "commercial",
   leadSource: "Meta Ads – Commercial",
   path: "/lp/commercial",
-  metaTitle: "Clinic & Commercial Build-Outs in Metro Vancouver | Oberizon Construction",
+  metaTitle: "Commercial Build-Outs & Fit-Outs in Metro Vancouver | Oberizon Construction",
   metaDescription:
-    "Dental, medical, physiotherapy and office build-outs across Metro Vancouver. Permits, trades and inspections run by one team from a White Rock office.",
-  eyebrow: "Clinics · Offices · Retail",
-  headline: "Your clinic opens on the",
+    "Office, retail and clinic build-outs across Metro Vancouver. Permits, trades and inspections run by one team from a White Rock office.",
+  eyebrow: "Offices · Retail · Clinics",
+  headline: "Your space opens on the",
   headlineAccent: "date you promised.",
   subhead:
-    "Oberizon builds dental, medical, physiotherapy and office interiors across the Lower Mainland — permits, trades, inspections and handover run by one team, so the opening date is a plan rather than a hope.",
+    "Offices, retail, clinics and medical suites across the Lower Mainland. Permits, trades, inspections and handover run by one team, so the date you gave your staff and your customers is a plan rather than a hope.",
   reassurance: [
     "One site lead, not a rotating cast of subcontractors",
     "Permits and inspections handled, not handed back to you",
@@ -137,8 +152,8 @@ export const commercialLanding: LandingContent = {
   gallery: [
     { image: "/oberizon/optimized/project-shine-dental-reception-live.jpg", caption: "The Shine Dental — White Rock" },
     { image: "/oberizon/optimized/project-abby-dental-operatory-live.jpg", caption: "Marshall Road dental clinic — Abbotsford" },
-    { image: "/oberizon/optimized/project-skinholic-reception-live.jpg", caption: "Skinholic Aesthetics med spa — Abbotsford" },
-    { image: "/oberizon/optimized/project-kanwarveer-sterilization-live.jpg", caption: "Dr. Kanwarveer Family Dentist Clinic" },
+    { image: "/oberizon/optimized/project-skinholic-reception-live.jpg", caption: "Skinholic Aesthetics med spa — Aldergrove" },
+    { image: "/oberizon/optimized/project-kanwarveer-sterilization-live.jpg", caption: "Family dentist clinic — Lower Mainland" },
   ],
   closingHeading: "Send us the address and the stage you are at.",
   closingText:
@@ -151,12 +166,12 @@ export const residentialLanding: LandingContent = {
   path: "/lp/residential",
   metaTitle: "Custom Homes & Home Renovations in Metro Vancouver | Oberizon Construction",
   metaDescription:
-    "Custom home building and home renovations across Metro Vancouver, backed by 2-5-10 Home Warranty and run by the team that builds surgical-grade clinics.",
+    "Custom home building and full home renovations across Metro Vancouver, covered by the 2-5-10 Home Warranty and run by one team from drawings to handover.",
   eyebrow: "Custom homes · Renovations · Additions",
-  headline: "The standard we hold on an operating theatre,",
-  headlineAccent: "applied to your home.",
+  headline: "Your home is finished on the",
+  headlineAccent: "date we promised.",
   subhead:
-    "Oberizon builds custom homes and renovates existing ones across Metro Vancouver. Most of our week is clinical construction, where a millimetre and a sign-off matter — your house gets the same process, and the 2-5-10 Home Warranty behind it.",
+    "New custom homes and full renovations across Metro Vancouver. One team handles the drawings, the permits, the trades and the finishing — and every build is covered by the 2-5-10 Home Warranty.",
   reassurance: [
     "2-5-10 Home Warranty on residential builds",
     "Selections closed before drywall, so the schedule holds",
@@ -200,7 +215,7 @@ export const residentialLanding: LandingContent = {
     },
   ],
   steps: [
-    { step: "01", title: "Walk the site", text: "We see the house or the lot, and say plainly what is realistic and what is not." },
+    { step: "01", title: "We walk the site", text: "We see the house or the lot, and say plainly what is realistic and what is not." },
     { step: "02", title: "Design and permit", text: "Drawings and permits go in while long-lead millwork, stone and glazing are ordered." },
     { step: "03", title: "Build", text: "One site lead holds the trades, and the house you live in stays livable." },
     { step: "04", title: "Handover", text: "Deficiency list closed and warranty documented before you move back in." },
@@ -211,10 +226,10 @@ export const residentialLanding: LandingContent = {
     open on a driveway. These are finished rooms in a delivered home.
   */
   gallery: [
-    { image: "/oberizon/optimized/project-custom-home-exterior-live.jpg", caption: "Completed custom home — Metro Vancouver" },
+    { image: "/oberizon/optimized/project-custom-home-hero-live.jpg", caption: "Completed custom home — Metro Vancouver" },
+    { image: "/oberizon/optimized/project-custom-home-entry-live.jpg", caption: "Double-height entry and living room" },
+    { image: "/oberizon/optimized/project-custom-home-kitchen-live.jpg", caption: "Kitchen, same build" },
     { image: "/oberizon/optimized/project-custom-home-living-live.jpg", caption: "Living and dining, same build" },
-    { image: "/oberizon/optimized/project-custom-home-lounge-live.jpg", caption: "Family room with linear fireplace" },
-    { image: "/oberizon/optimized/project-luxury-live.jpg", caption: "West Cordova residential build — Vancouver" },
   ],
   closingHeading: "Tell us what you are thinking of building.",
   closingText:
