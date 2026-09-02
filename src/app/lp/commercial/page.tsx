@@ -59,6 +59,11 @@ export default function CommercialLandingPage() {
         {/* Diagonal, so the type side is dark enough to read and the far corner
             still shows the photograph. */}
         <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black/88 via-black/62 to-black/25" />
+        {/* A second scrim, anchored left and under the type column only. The
+            diagonal above has already lifted to black/25 by mid-frame, which
+            is exactly where the sub and the proof line sit — so they were the
+            first things to wash out against a bright frame. */}
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/75 via-black/35 to-transparent" />
 
         <header className="px-5 pt-6 sm:px-8">
           <div className="mx-auto flex max-w-[82rem] items-center justify-between gap-4">
@@ -100,7 +105,7 @@ export default function CommercialLandingPage() {
 
               {/* Brighter than white/75. Over a photograph this line was the
                   first thing to disappear. */}
-              <p className="mt-6 max-w-lg text-[0.9375rem] leading-7 text-white/90">
+              <p className="mt-6 max-w-lg text-[0.9375rem] leading-7 text-white">
                 {content.subhead}
               </p>
 
@@ -137,7 +142,7 @@ export default function CommercialLandingPage() {
                 </div>
                 <div className="text-sm leading-5">
                   <p className="font-bold">Clinic owners, in their own words</p>
-                  <p className="text-white/75">{landingCounts.documented} delivered builds documented on this site</p>
+                  <p className="text-white/80">{landingCounts.documented} delivered builds documented on this site</p>
                 </div>
               </div>
             </div>
