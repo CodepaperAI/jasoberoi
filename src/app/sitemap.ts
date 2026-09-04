@@ -13,9 +13,39 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // moving is the signal Google learns to stop trusting.
   const lastModified = new Date("2026-08-10T00:00:00-04:00");
 
+  /*
+    Pages that changed after that sweep, dated individually.
+
+    Three of these were claiming 2026-08-10 while not existing until weeks
+    later, which is the same credibility problem the constant above is written
+    to avoid, pointed the other way: a lastmod that predates the page. A crawler
+    that fetches a "month-old" URL it has never seen has been told something
+    untrue on the first thing it read.
+
+    Deliberately short. The image and alt-text pass on 2026-09-01 touched most
+    of the site, and bumping a hundred URLs to one date is precisely the uniform
+    signal the comment above warns about — a swapped photograph is not a content
+    change worth re-crawling for. Only genuinely new pages, and pages whose text
+    changed, are listed.
+  */
+  const changed: Record<string, string> = {
+    // Added when the Services menu was split by vertical.
+    "/services/custom-home-building": "2026-09-01",
+    "/services/home-renovation": "2026-09-01",
+    // Built against measured Search Console demand; new city hub.
+    "/construction/langley": "2026-09-04",
+    // Gained the "is a remodel different from a renovation" answer.
+    "/services/dental-office-renovation": "2026-09-04",
+  };
+
+  const modified = (path: string) => {
+    const iso = changed[path.replace(/\/$/, "")];
+    return iso ? new Date(`${iso}T00:00:00-07:00`) : lastModified;
+  };
+
   const pages: MetadataRoute.Sitemap = allStaticPaths.map((path) => ({
     url: canonicalPageUrl(path),
-    lastModified,
+    lastModified: modified(path),
     changeFrequency: path === "/" ? "weekly" : "monthly",
     priority: path === "/" ? 1 : path.startsWith("/construction/") ? 0.74 : 0.84,
   }));
@@ -37,7 +67,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter((hub) => hub.indexable)
     .map((hub) => ({
       url: canonicalPageUrl(hub.path),
-      lastModified,
+      lastModified: modified(hub.path),
       changeFrequency: "monthly",
       priority: 0.8,
     }));
