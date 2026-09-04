@@ -137,6 +137,18 @@ const hubQuestions: Record<string, Array<{ question: string; answer: string }>> 
       answer:
         "Most clinics keep seeing patients. The work runs in phases behind sealed barriers, planned around your booking schedule.",
     },
+    {
+      /*
+        "remodel" carries the same monthly volume as "renovation" in the
+        client's research and appeared nowhere on the site. Answering the
+        question honestly is a better way to hold the phrase than collecting
+        both words in a keyword list — they are the same job, and saying so is
+        more useful than pretending there is a distinction to sell.
+      */
+      question: "Is a dental office remodel different from a renovation?",
+      answer:
+        "No. The two words describe the same work and it is priced the same way: existing conditions reviewed, the clinic phased so it keeps operating, and services rerouted before the finishes go back. What moves the number is how much of the operatory plumbing and electrical has to shift, not which word is on the quote.",
+    },
   ],
   "medical-clinic-construction": [
     {
