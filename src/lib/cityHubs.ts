@@ -66,6 +66,15 @@ export const CITY_HUB_SLUGS = [
   "vancouver",
   "burnaby",
   "abbotsford",
+  /*
+    Added 2026-09-04. Search Console shows four Langley queries — "general
+    contractor langley bc" and three variants — taking roughly 290 impressions
+    in 28 days at zero clicks, while /construction/langley/ returned a 404.
+    Google was already associating the site with the city and had nothing to
+    send anyone to. The ten Langley service pages existed; the hub that gathers
+    them did not.
+  */
+  "langley",
 ] as const;
 
 export type CityHubSlug = (typeof CITY_HUB_SLUGS)[number];
@@ -119,6 +128,8 @@ const hubLead: Record<CityHubSlug, string> = {
     "Almost every commercial suite in Burnaby sits underneath somebody's apartment, and the permit route forks before you get that far. A tenant improvement here goes to either a fast track or a full plan review, and a plan checker decides which. Which side you land on is largely set by what the space is going to be used for.",
   abbotsford:
     "Abbotsford treats a tenant improvement as its own permit category rather than folding it into a general commercial application. That changes the submission route rather than just the paperwork. We have delivered two projects here and both are photographed on this site.",
+  langley:
+    "Langley is two municipalities, not one. The Township and the City permit separately, and the address decides which of them reviews your drawings — not the mailing city on your lease. We have two dental builds in progress on 272 Street, in the same complex.",
 };
 
 /**
@@ -137,6 +148,8 @@ const hubAngle: Record<CityHubSlug, string> = {
     "Burnaby's own guide lists what disqualifies a tenant improvement from the fast track, and anything requiring Fraser Health Authority approval is on that list. Fraser Health approval is required before the building permit application for personal service establishments, which covers salons, esthetics, laser and skin care.",
   abbotsford:
     "Abbotsford issues Tenant Improvement Permits as a distinct application type, separate from the residential and complex-project streams. The city also publishes its building permit wait times apart from the application pages, so the current window is checkable at the point of application rather than assumed from a previous job.",
+  langley:
+    "The Township of Langley runs a Tenant Improvement X-Press service — an expedited route for eligible interior projects, applied for separately from the standard tenant improvement stream and administered by its Permit, Licence and Inspection Services department. The City of Langley is a different municipality with its own tenant improvement guide and no equivalent published stream.",
 };
 
 /** What the angle costs you if it is discovered late rather than planned for. */
@@ -151,6 +164,8 @@ const hubConstraint: Record<CityHubSlug, string> = {
     "The practical effect is that a med spa or salon needs Fraser Health sign-off in hand before the permit application goes in, and it will not fast track. Sequencing that approval after the building permit application is what turns a simple fit-out into a two-stage wait.",
   abbotsford:
     "The practical effect is that the application is assembled to the tenant improvement route from the start. A commercial package submitted through the wrong stream comes back, and the resubmission is the delay rather than the review.",
+  langley:
+    "The practical effect is that the boundary has to be checked before anything else. Two addresses a few hundred metres apart can sit in different municipalities, go to different departments and follow different application routes — and eligibility for the Township's X-Press stream is worth confirming before the drawings are packaged, not after.",
 };
 
 /**
@@ -172,6 +187,8 @@ const hubCost: Record<CityHubSlug, string> = {
     "Burnaby prices closer to Vancouver than to the Fraser Valley. Podium space under occupied residential means restricted hours and strata coordination before the city is even involved.",
   abbotsford:
     "Abbotsford is usually the lowest-cost city on our range. Fraser Valley trade rates run below Metro Vancouver and most sites have straightforward access and parking. The offset is travel time from White Rock on larger jobs.",
+  langley:
+    "Langley prices at the lower-middle of the band. Much of the clinic and office stock in Willoughby and along the 200 Street corridor is recent construction, which usually means adequate base-building services and fewer structural surprises than the older municipalities, and the drive from White Rock adds nothing to a job.",
 };
 
 /**
@@ -264,6 +281,16 @@ const hubNeighbours: Record<CityHubSlug, Array<{ slug: string; why: string }>> =
       why: "Bigger corridors and a city that publishes what its permit review takes.",
     },
   ],
+  langley: [
+    {
+      slug: "surrey",
+      why: "Immediately west, and the one municipality nearby that publishes what its permit review actually takes.",
+    },
+    {
+      slug: "abbotsford",
+      why: "Further up the valley, where a tenant improvement is again its own permit category rather than a general commercial application.",
+    },
+  ],
 };
 
 /** The commercial band, read from pricing.ts rather than restated here. */
@@ -305,6 +332,8 @@ const hubDescription: Record<CityHubSlug, string> = {
     "Commercial contractors in Burnaby, BC — fast track versus full plan review, Fraser Health approvals, and podium space under occupied residential. Free quotes.",
   abbotsford:
     "Commercial contractors in Abbotsford, BC, where tenant improvements are their own permit category. Two delivered projects in the city. Free quotes.",
+  langley:
+    "Commercial contractors in Langley, BC — the Township's Tenant Improvement X-Press stream, the City/Township permit split, and two dental builds in progress on 272 St. Free quotes.",
 };
 
 /** The consultant's cluster shape: primary first, then the local variants. */

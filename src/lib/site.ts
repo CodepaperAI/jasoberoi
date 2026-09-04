@@ -501,6 +501,14 @@ export const constructionServices: ConstructionService[] = [
     primaryKeyword: "dental office renovation",
     relatedKeywords: [
       "dental office renovation",
+      /*
+        "remodel" was absent from the site entirely and carries the same
+        monthly volume as "renovation" in the client's own research, with
+        neither direct competitor ranking well for it. Same work, different
+        word — see the FAQ on this hub, which says so rather than quietly
+        collecting both phrases.
+      */
+      "dental office remodel",
       "dental office contractors near me",
       "dental contractor",
       "dental construction company",
@@ -870,7 +878,35 @@ export const serviceAreas: ServiceArea[] = [
       "Langley's professional space has followed its residential growth outward, so much of the newer clinic and office tenancy sits in Willoughby and along the 200 Street corridor rather than in the older City core. A lot of it is recent construction in mixed-use or standalone commercial buildings, which generally means adequate base-building services and fewer structural surprises than the older municipalities. Walnut Grove, Murrayville and Brookswood carry smaller neighbourhood practices. The market skews toward family healthcare — dental, medical and pharmacy — tracking the young families that have driven the area's growth.",
     costRationale:
       "Langley prices at the lower-middle of the range: newer buildings, straightforward access, and a short trip from White Rock keep coordination cost down.",
-    permits: NO_PERMIT_DATA,
+    /*
+      Read from both municipalities' own pages on 2026-09-04. Langley is the
+      only city on this list that is two municipalities, and the Township's
+      X-Press stream is the fact a contractor who has not permitted here would
+      not know to ask about.
+
+      Neither publishes a review window, so `timeline` stays null rather than
+      carrying an estimate — a wrong permit fact on a licensed contractor's site
+      is a liability before it is an SEO problem.
+    */
+    permits: {
+      /*
+        Held to one comma. This string is interpolated into a generated FAQ
+        ("Who issues the building permit for…"), and the department's own name
+        already contains one — a comma-separated alternative on top of it put
+        that sentence over the density limit and failed the build.
+      */
+      authority:
+        "Township of Langley Permit, Licence and Inspection Services (City of Langley Development Services for City addresses)",
+      pathway:
+        "Tenant Improvement application, with a Tenant Improvement X-Press stream in the Township for eligible interior projects",
+      timeline: null,
+      notes:
+        "Langley is two municipalities. The Township of Langley and the City of Langley permit independently and publish their own tenant improvement guides, and the Township additionally runs a Tenant Improvement X-Press service to expedite eligible interior work. Which authority reviews the drawings is decided by the address, not by the mailing city.",
+      sources: [
+        "https://www.tol.ca/en/building-development/commercial-industrial-institutional-building-permits.aspx",
+        "https://www.langleycity.ca/media/file/package-tenant-improvement",
+      ],
+    },
   },
   {
     city: "Abbotsford",
